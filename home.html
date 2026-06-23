@@ -2757,8 +2757,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  </div>
  <!-- Auth buttons (logged out) -->
  <div id="auth-btns-out" style="display:none;">
-  <button class="enter-btn" data-i18n="btn_entrar" onclick="openAuthModal('login')">Entrar</button>
-  <button class="signup-btn" data-i18n="btn_cadastrar" onclick="openAuthModal('signup')">Cadastrar-se</button>
+  <button class="enter-btn" data-i18n="btn_entrar" onclick="openAuthModal('login')">Log in</button>
+  <button class="signup-btn" data-i18n="btn_cadastrar" onclick="openAuthModal('signup')">Sign up</button>
  </div>
  <!-- User menu (logged in) -->
  <div id="auth-btns-in" style="display:none;">
@@ -2766,9 +2766,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
    <div style="position:relative;"><div class="user-avatar-sm" id="nav-avatar">U</div><div id="nav-pro-badge" class="pro-badge" style="display:none;"><svg viewBox="0 0 24 24" fill="#07090D" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div>
    <span id="nav-user-name">Usuário</span>
    <div class="user-dd" id="user-dd-menu"><div class="user-dd-inner">
-    <button class="user-dd-item" data-i18n="btn_meu_painel" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');go('painel')">Meu Painel</button>
-    <button class="user-dd-item" id="dd-manage-sub" data-i18n="pro_manage_sub" style="display:none;" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');openStripePortal()">Gerenciar assinatura</button>
-    <button class="user-dd-item" data-i18n="btn_sair" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');doLogout()">Sair</button>
+    <button class="user-dd-item" data-i18n="btn_meu_painel" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');go('painel')">My Dashboard</button>
+    <button class="user-dd-item" id="dd-manage-sub" data-i18n="pro_manage_sub" style="display:none;" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');openStripePortal()">Manage subscription</button>
+    <button class="user-dd-item" data-i18n="btn_sair" onclick="event.stopPropagation();document.getElementById('user-dd-menu').classList.remove('open');doLogout()">Log out</button>
    </div></div>
   </div>
  </div>
@@ -2808,35 +2808,35 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
   <div class="mm-auth-welcome" data-i18n="mm_auth_welcome">Bem-vindo ao <span>Markets Coupons</span></div>
   <button class="mm-auth-btn" onclick="closeMM();openAuthModal('login')">
    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-   <span data-i18n="mm_entrar">Entrar na Conta</span>
+   <span data-i18n="mm_entrar">Sign In</span>
   </button>
   <button class="mm-auth-btn mm-auth-signup" onclick="closeMM();openAuthModal('signup')">
    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-   <span data-i18n="mm_criar_conta">Criar Conta</span>
+   <span data-i18n="mm_criar_conta">Create Account</span>
   </button>
  </div>
- <div class="mm-sec" data-i18n="mm_principal">Principal</div>
- <button class="mm-item" onclick="mgo('home')" data-i18n="mm_ofertas"> Ofertas & Cupons</button>
- <div class="mm-sec" data-i18n="mm_sec_firmas">Firmas</div>
- <button class="mm-item" onclick="mgo('firms')" data-i18n="mm_firmas"> Ver todas as firmas</button>
- <button class="mm-item" onclick="mgo('compare')" data-i18n="mm_comparar"> Comparar firmas</button>
- <button class="mm-item" onclick="mgo('quiz')" data-i18n="mm_quiz"> Quiz, qual firma?</button>
- <div class="mm-sec" data-i18n="mm_sec_ferramentas">Ferramentas</div>
- <button class="mm-item" onclick="mgo('calc')" data-i18n="mm_calc"> Position Size</button>
- <button class="mm-item" onclick="mgo('calendar')" data-i18n="mm_calendario"> Calendário Econômico</button>
- <button class="mm-item" onclick="mgo('heatmap')" data-i18n="mm_heatmap"> Mapa de Calor</button>
- <button class="mm-item" onclick="mgo('analise')" data-i18n="mm_analise"> Análise Diária de Mercado</button>
- <button class="mm-item" onclick="mgo('gamma')" data-i18n="mm_gamma"> Gamma Exposure (GEX)</button>
- <button class="mm-item" onclick="mgo('indicators')" data-i18n="mm_indicadores"> Indicadores</button>
- <div class="mm-sec" data-i18n="mm_sec_plataformas">Plataformas</div>
- <button class="mm-item" onclick="mgo('plataformas')" data-i18n="mm_plataformas"> Plataformas de Trading</button>
- <div class="mm-sec" data-i18n="mm_sec_aprender">Aprender</div>
- <button class="mm-item" onclick="mgo('guides')" data-i18n="mm_guias"> Guias & Educação</button>
- <button class="mm-item" onclick="mgo('blog')" data-i18n="nav_blog"> Blog</button>
- <div class="mm-sec" data-i18n="mm_sec_live">Live & Mais</div>
+ <div class="mm-sec" data-i18n="mm_principal">Home</div>
+ <button class="mm-item" onclick="mgo('home')" data-i18n="mm_ofertas">Deals &amp; Coupons</button>
+ <div class="mm-sec" data-i18n="mm_sec_firmas">Firms</div>
+ <button class="mm-item" onclick="mgo('firms')" data-i18n="mm_firmas">View all companies</button>
+ <button class="mm-item" onclick="mgo('compare')" data-i18n="mm_comparar">Compare companies</button>
+ <button class="mm-item" onclick="mgo('quiz')" data-i18n="mm_quiz">Quiz, Which company?</button>
+ <div class="mm-sec" data-i18n="mm_sec_ferramentas">Tools</div>
+ <button class="mm-item" onclick="mgo('calc')" data-i18n="mm_calc">Position Size</button>
+ <button class="mm-item" onclick="mgo('calendar')" data-i18n="mm_calendario">Economic Calendar</button>
+ <button class="mm-item" onclick="mgo('heatmap')" data-i18n="mm_heatmap">Heat Map</button>
+ <button class="mm-item" onclick="mgo('analise')" data-i18n="mm_analise">Daily Market Analysis</button>
+ <button class="mm-item" onclick="mgo('gamma')" data-i18n="mm_gamma">Gamma Exposure (GEX)</button>
+ <button class="mm-item" onclick="mgo('indicators')" data-i18n="mm_indicadores">Indicators</button>
+ <div class="mm-sec" data-i18n="mm_sec_plataformas">Platforms</div>
+ <button class="mm-item" onclick="mgo('plataformas')" data-i18n="mm_plataformas">Trading Platforms</button>
+ <div class="mm-sec" data-i18n="mm_sec_aprender">Learn</div>
+ <button class="mm-item" onclick="mgo('guides')" data-i18n="mm_guias">Guides &amp; Education</button>
+ <button class="mm-item" onclick="mgo('blog')" data-i18n="nav_blog">Blog</button>
+ <div class="mm-sec" data-i18n="mm_sec_live">Live &amp; More</div>
  <button class="mm-item" onclick="mgo('live')" data-i18n="mm_live">Live Room</button>
- <button class="mm-item" id="mm-bot-item" style="display:none" onclick="closeMM();openBot()" data-i18n="mm_assistente"> Assistente</button>
- <div class="mm-sec" data-i18n="mm_sec_idioma">Idioma</div>
+ <button class="mm-item" id="mm-bot-item" style="display:none" onclick="closeMM();openBot()" data-i18n="mm_assistente">Assistant</button>
+ <div class="mm-sec" data-i18n="mm_sec_idioma">Language</div>
  <div class="mm-langs">
  <button class="mm-flag" onclick="setL('pt','','BR');closeMM()">&#x1F1E7;&#x1F1F7; PT</button>
  <button class="mm-flag" onclick="setL('en','','EN');closeMM()">&#x1F1FA;&#x1F1F8; EN</button>
@@ -2846,11 +2846,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <button class="mm-flag" onclick="setL('de','','DE');closeMM()">&#x1F1E9;&#x1F1EA; DE</button>
  <button class="mm-flag" onclick="setL('ar','','AR');closeMM()">&#x1F1F8;&#x1F1E6; AR</button>
  </div>
- <a href="https://t.me/marketcouponss" target="_blank" rel="noopener noreferrer"><div class="mm-tg" data-i18n="mm_telegram"> Entrar no Telegram</div></a>
- <div class="mm-sec" data-i18n="mm_sec_conta">Conta</div>
+ <a href="https://t.me/marketcouponss" target="_blank" rel="noopener noreferrer"><div class="mm-tg" data-i18n="mm_telegram">Sign in to Telegram</div></a>
+ <div class="mm-sec" data-i18n="mm_sec_conta">Account</div>
  <div id="mm-auth-in" style="display:none;">
-  <button class="mm-item" onclick="mgo('painel')" data-i18n="mm_painel">Meu Painel</button>
-  <button class="mm-item" onclick="closeMM();doLogout()" data-i18n="mm_sair">Sair da Conta</button>
+  <button class="mm-item" onclick="mgo('painel')" data-i18n="mm_painel">My Dashboard</button>
+  <button class="mm-item" onclick="closeMM();doLogout()" data-i18n="mm_sair">Log Out</button>
  </div>
  </div>
 </div>
@@ -2904,11 +2904,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
        </div>
       </div>
       <h2 data-i18n="as_l0_h">Ate <em>90% OFF</em> nas maiores Prop Firms do mundo</h2>
-      <p data-i18n="as_l0_p">Cupons exclusivos negociados direto com Apex, Bulenox, FTMO, FundedNext e mais. Conta de 100K a partir de $23.65.</p>
+      <p data-i18n="as_l0_p">Exclusive coupons negotiated directly with Apex, Bulenox, FTMO, FundedNext and more. 100K account from $23.65.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_l0_f1">6+ prop firms com cupons verificados e ativos</div>
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_l0_f2">Preços atualizados direto do site oficial de cada firma</div>
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_l0_f3">Checkout com cupom aplicado automaticamente</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_l0_f1">{n}+ prop firms with verified and active coupons</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_l0_f2">Prices updated directly from each firm's official site</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_l0_f3">Checkout with coupon applied automatically</div>
       </div>
      </div>
 
@@ -2923,19 +2923,19 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
           <div class="mu-cmp-tp">4.4 · 17.6K</div>
           <div class="mu-cmp-disc">90% OFF</div>
           <div class="mu-cmp-stats">
-           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">Preço 100K</span><span class="mu-cmp-stat-val">$39.90</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">100K Price</span><span class="mu-cmp-stat-val">$39.90</span></div>
            <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">Split</span><span class="mu-cmp-stat-val">80%</span></div>
            <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">DD</span><span class="mu-cmp-stat-val">Trailing</span></div>
           </div>
          </div>
          <div class="mu-cmp-card win" style="--acc-rgb:16,185,129;">
-          <div class="mu-cmp-badge" data-i18n="mu_vencedor">VENCEDOR</div>
+          <div class="mu-cmp-badge" data-i18n="mu_vencedor">WINNER</div>
           <img loading="lazy" class="mu-cmp-logo" src="/img/Firms/bulenox.webp" alt="Bulenox" width="32" height="32" decoding="async">
           <div class="mu-cmp-nm">Bulenox</div>
           <div class="mu-cmp-tp">4.8 · 1.4K</div>
           <div class="mu-cmp-disc">89% OFF</div>
           <div class="mu-cmp-stats">
-           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">Preço 100K</span><span class="mu-cmp-stat-val">$23.65</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">100K Price</span><span class="mu-cmp-stat-val">$23.65</span></div>
            <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">Split</span><span class="mu-cmp-stat-val">90%</span></div>
            <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">DD</span><span class="mu-cmp-stat-val">Trailing</span></div>
           </div>
@@ -2946,7 +2946,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
           <div class="mu-cmp-tp">4.4 · 8.5K</div>
           <div class="mu-cmp-disc">50% OFF</div>
           <div class="mu-cmp-stats">
-           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">Preço 100K</span><span class="mu-cmp-stat-val">$198</span></div>
+           <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl" data-i18n="mu_100k_price">100K Price</span><span class="mu-cmp-stat-val">$198</span></div>
            <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">Split</span><span class="mu-cmp-stat-val">80%</span></div>
            <div class="mu-cmp-stat"><span class="mu-cmp-stat-lbl">DD</span><span class="mu-cmp-stat-val">EOD</span></div>
           </div>
@@ -2956,11 +2956,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
        </div>
       </div>
       <h2 data-i18n="as_l1_h">Compare <span class="cyan">todas as firmas</span> antes de escolher</h2>
-      <p data-i18n="as_l1_p">Coloque firmas lado a lado e compare drawdown, profit split, preços, plataformas e regras. Faça o quiz e descubra qual firma combina com você.</p>
+      <p data-i18n="as_l1_p">Place firms side by side and compare drawdown, profit split, prices, platforms and rules. Take the quiz and find which firm fits you.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_l1_f1">Comparador visual com filtros por tipo, preco e regras</div>
-       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_l1_f2">Nota Trustpilot e avaliacoes reais de cada firma</div>
-       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_l1_f3">Quiz interativo: descubra sua prop firm ideal em 2 min</div>
+       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_l1_f1">Visual comparator with filters by type, price and rules</div>
+       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_l1_f2">Real Trustpilot ratings and reviews for each firm</div>
+       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_l1_f3">Interactive quiz: find your ideal prop firm in 2 min</div>
       </div>
      </div>
 
@@ -2971,8 +2971,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
         <div class="mu-live-screen">
          <div class="mu-live-top">
           <div class="mu-live-dot"></div>
-          <div class="mu-live-tag" data-i18n="mu_ao_vivo">AO VIVO</div>
-          <div class="mu-live-pair" data-i18n="mu_sessao_ny">ES / NQ, Sessao NY</div>
+          <div class="mu-live-tag" data-i18n="mu_ao_vivo">LIVE</div>
+          <div class="mu-live-pair" data-i18n="mu_sessao_ny">ES / NQ, NY Session</div>
          </div>
          <div class="mu-live-price">
           <div class="mu-live-price-val">5,621.50</div>
@@ -2995,7 +2995,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
          </div>
         </div>
         <div class="mu-live-chat">
-         <div class="mu-live-chat-title" data-i18n="mu_chat_vip">Chat VIP</div>
+         <div class="mu-live-chat-title" data-i18n="mu_chat_vip">VIP Chat</div>
          <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(249,115,22,.3);">T</div><div class="mu-live-msg-txt"><b>Trader01</b> Long ES 5620</div></div>
          <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(34,197,94,.3);">M</div><div class="mu-live-msg-txt"><b>Maria</b> NQ rompeu OB</div></div>
          <div class="mu-live-msg"><div class="mu-live-msg-av" style="background:rgba(6,182,212,.3);">C</div><div class="mu-live-msg-txt"><b>Carlos</b> TP1 bateu!</div></div>
@@ -3005,11 +3005,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
        </div>
       </div>
       <h2 data-i18n="as_l2_h">Live Room <span class="purple">VIP</span> e indicadores exclusivos</h2>
-      <p data-i18n="as_l2_p">Acesse conteúdo exclusivo, análise diária, GEX e indicadores profissionais. Cadastro gratuito.</p>
+      <p data-i18n="as_l2_p">Access exclusive content and professional indicators, unlocked when you create your free account.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f1">Sessões exclusivas para membros VIP</div>
-       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f2">Indicadores exclusivos para membros VIP</div>
-       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f3">Sorteios mensais de contas funded</div>
+       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f1">Exclusive sessions for VIP members</div>
+       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f2">Exclusive indicators for VIP members</div>
+       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_l2_f3">Monthly funded account giveaways</div>
       </div>
      </div>
 
@@ -3042,31 +3042,31 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
         </div>
         <div style="flex:0 0 200px;padding:12px;display:flex;flex-direction:column;gap:6px;background:rgba(0,0,0,.2);">
          <div style="display:flex;align-items:center;gap:6px;">
-          <span style="font-size:7px;font-weight:800;color:var(--green);letter-spacing:.5px;text-transform:uppercase;" data-i18n="mu_analise_dia">Análise do Dia</span>
+          <span style="font-size:7px;font-weight:800;color:var(--green);letter-spacing:.5px;text-transform:uppercase;" data-i18n="mu_analise_dia">Daily Analysis</span>
           <span style="font-size:6px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(34,197,94,.15);color:var(--green);">BULLISH</span>
          </div>
-         <div style="font-size:6.5px;color:rgba(255,255,255,.35);line-height:1.6;" data-i18n="mu_analise_resumo">Tarifas de Trump impactam mercados globais. ES testa suporte em 5580 após selloff. FVG no 4H como zona de interesse. FOMC ata confirma pausa nos juros.</div>
+         <div style="font-size:6.5px;color:rgba(255,255,255,.35);line-height:1.6;" data-i18n="mu_analise_resumo">Trump tariffs impact global markets. ES tests support at 5580 after selloff. FVG on 4H as zone of interest. FOMC minutes confirm rate pause.</div>
          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:auto;">
-          <div style="background:rgba(34,197,94,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;" data-i18n="mu_suporte1">SUPORTE 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,580</div></div>
-          <div style="background:rgba(239,68,68,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;" data-i18n="mu_resist1">RESISTENCIA 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,650</div></div>
-          <div style="background:rgba(34,197,94,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;" data-i18n="mu_suporte2">SUPORTE 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,540</div></div>
-          <div style="background:rgba(239,68,68,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;" data-i18n="mu_resist2">RESISTENCIA 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,700</div></div>
+          <div style="background:rgba(34,197,94,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;" data-i18n="mu_suporte1">SUPPORT 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,580</div></div>
+          <div style="background:rgba(239,68,68,.08);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;" data-i18n="mu_resist1">RESISTANCE 1</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,650</div></div>
+          <div style="background:rgba(34,197,94,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--green);font-weight:700;" data-i18n="mu_suporte2">SUPPORT 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,540</div></div>
+          <div style="background:rgba(239,68,68,.05);border-radius:4px;padding:4px 6px;"><div style="font-size:5px;color:var(--red);font-weight:700;" data-i18n="mu_resist2">RESISTANCE 2</div><div style="font-size:8px;font-weight:800;color:rgba(255,255,255,.7);">5,700</div></div>
          </div>
          <div style="display:flex;gap:3px;margin-top:2px;">
           <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(34,197,94,.1);color:var(--green);font-weight:700;">SMC</span>
           <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(168,85,247,.1);color:var(--purple);font-weight:700;">Macro</span>
-          <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(240,180,41,.1);color:var(--gold);font-weight:700;" data-i18n="mu_tarifas">Tarifas</span>
+          <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(240,180,41,.1);color:var(--gold);font-weight:700;" data-i18n="mu_tarifas">Tariffs</span>
           <span style="font-size:5.5px;padding:2px 5px;border-radius:3px;background:rgba(6,182,212,.1);color:var(--cyan);font-weight:700;">FOMC</span>
          </div>
         </div>
        </div>
       </div>
       <h2 data-i18n="as_l3_h">Analise Diaria <span class="green">profissional</span> todo dia as 6h</h2>
-      <p data-i18n="as_l3_p">4 ativos analisados: ES, NQ, Petroleo e Ouro. Bias, suportes, resistencias, cenarios e contexto macro com grafico ao vivo.</p>
+      <p data-i18n="as_l3_p">4 assets analyzed: ES, NQ, Oil and Gold. Bias, supports, resistances, scenarios and macro context with live chart.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--green);" data-i18n="as_l3_f1">Analises diarias com zonas, cenarios e impacto de noticias</div>
-       <div class="auth-feat" style="color:var(--green);" data-i18n="as_l3_f2">Grafico TradingView ao vivo integrado em cada ativo</div>
-       <div class="auth-feat" style="color:var(--green);" data-i18n="as_l3_f3">Calendario Economico com eventos de alto impacto</div>
+       <div class="auth-feat" style="color:var(--green);" data-i18n="as_l3_f1">Daily analysis with zones, scenarios and news impact</div>
+       <div class="auth-feat" style="color:var(--green);" data-i18n="as_l3_f2">Live TradingView chart integrated for each asset</div>
+       <div class="auth-feat" style="color:var(--green);" data-i18n="as_l3_f3">Economic Calendar with high-impact events</div>
       </div>
      </div>
 
@@ -3075,31 +3075,31 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <div class="mu">
        <div class="mu-platforms">
         <div class="mu-plat">
-         <div class="mu-plat-tag" data-i18n="mu_disponivel">DISPONIVEL</div>
+         <div class="mu-plat-tag" data-i18n="mu_disponivel">AVAILABLE</div>
          <img loading="lazy" class="mu-plat-logo" src="/img/Plataformas/Tradingview.webp" alt="TradingView" width="80" height="32" decoding="async">
          <div class="mu-plat-name">TradingView</div>
-         <div class="mu-plat-desc" data-i18n="mu_tv_desc">Plataforma de graficos mais usada do mundo</div>
+         <div class="mu-plat-desc" data-i18n="mu_tv_desc">The world's most used charting platform</div>
          <div class="mu-plat-price">$12.95</div>
-         <div class="mu-plat-period" data-i18n="mu_por_mes">por mes</div>
-         <div class="mu-plat-btn" data-i18n="mu_ver_planos">VER PLANOS</div>
+         <div class="mu-plat-period" data-i18n="mu_por_mes">per month</div>
+         <div class="mu-plat-btn" data-i18n="mu_ver_planos">VIEW PLANS</div>
         </div>
         <div class="mu-plat">
-         <div class="mu-plat-tag" data-i18n="mu_disponivel">DISPONIVEL</div>
+         <div class="mu-plat-tag" data-i18n="mu_disponivel">AVAILABLE</div>
          <img loading="lazy" class="mu-plat-logo" src="/img/Plataformas/NinjaTrader.webp" alt="NinjaTrader" width="80" height="32" decoding="async">
          <div class="mu-plat-name">NinjaTrader</div>
-         <div class="mu-plat-desc" data-i18n="mu_nt_desc">Execucao profissional para futuros</div>
+         <div class="mu-plat-desc" data-i18n="mu_nt_desc">Professional execution for futures</div>
          <div class="mu-plat-price">$99</div>
          <div class="mu-plat-period">Lifetime</div>
-         <div class="mu-plat-btn" data-i18n="mu_ver_planos">VER PLANOS</div>
+         <div class="mu-plat-btn" data-i18n="mu_ver_planos">VIEW PLANS</div>
         </div>
        </div>
       </div>
       <h2 data-i18n="as_s0_h">TradingView e <em>NinjaTrader</em> com desconto</h2>
-      <p data-i18n="as_s0_p">Adquira as melhores plataformas de trading direto pelo site. Licenças oficiais com preços exclusivos para membros.</p>
+      <p data-i18n="as_s0_p">Get the best trading platforms directly from the site. Official licenses with exclusive prices for members.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s0_f1">TradingView com planos a preços exclusivos</div>
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s0_f2">NinjaTrader licenciado com desconto para membros</div>
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s0_f3">Marketplace de plataformas verificadas</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s0_f1">TradingView with exclusive pricing plans</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s0_f2">Licensed NinjaTrader with member discount</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s0_f3">Verified platforms marketplace</div>
       </div>
      </div>
 
@@ -3108,8 +3108,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <div class="mu" style="padding:0;overflow:hidden;">
        <div style="position:relative;height:200px;border-radius:16px;overflow:hidden;">
         <div style="position:absolute;top:10px;left:14px;z-index:2;display:flex;align-items:center;gap:8px;">
-         <span style="font-size:10px;font-weight:800;color:#fff;" data-i18n="mu_heatmap">Mapa de Calor</span>
-         <span style="font-size:7px;color:rgba(255,255,255,.35);" data-i18n="mu_heatmap_sub">S&P 500, Tempo real</span>
+         <span style="font-size:10px;font-weight:800;color:#fff;" data-i18n="mu_heatmap">Heat Map</span>
+         <span style="font-size:7px;color:rgba(255,255,255,.35);" data-i18n="mu_heatmap_sub">S&amp;P 500, Real time</span>
         </div>
         <div style="position:absolute;top:8px;right:12px;z-index:2;display:flex;gap:4px;">
          <span style="font-size:6.5px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--gold-dim);color:var(--gold);">S&amp;P 500</span>
@@ -3121,11 +3121,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
        </div>
       </div>
       <h2 data-i18n="as_s1_h">Mapa de Calor e <span class="cyan">indicadores</span> profissionais</h2>
-      <p data-i18n="as_s1_p">Visualize o mercado inteiro de um relance com o heatmap integrado. S&amp;P 500, Nasdaq, Global e Cripto, tudo em tempo real.</p>
+      <p data-i18n="as_s1_p">See the entire market at a glance with the integrated heatmap. S&amp;amp;P 500, Nasdaq, Global and Crypto, all in real time.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f1">Heatmap real do TradingView com dados ao vivo</div>
-       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f2">4 mercados: S&amp;P 500, Nasdaq 100, Global, Cripto</div>
-       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f3">Indicadores profissionais (em breve)</div>
+       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f1">Real TradingView heatmap with live data</div>
+       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f2">4 markets: S&amp;amp;P 500, Nasdaq 100, Global, Crypto</div>
+       <div class="auth-feat" style="color:var(--cyan);" data-i18n="as_s1_f3">Professional indicators for registered members</div>
       </div>
      </div>
 
@@ -3134,29 +3134,29 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <div class="mu">
        <div class="mu-tools">
         <div class="mu-calc">
-         <div class="mu-calc-title" data-i18n="mu_calc_title">Calculadora Position Size</div>
-         <div class="mu-calc-field"><span data-i18n="mu_conta">Conta</span><span>$50,000</span></div>
-         <div class="mu-calc-field"><span data-i18n="mu_risco_pct">Risco %</span><span>1.5%</span></div>
+         <div class="mu-calc-title" data-i18n="mu_calc_title">Position Size Calculator</div>
+         <div class="mu-calc-field"><span data-i18n="mu_conta">Account</span><span>$50,000</span></div>
+         <div class="mu-calc-field"><span data-i18n="mu_risco_pct">Risk %</span><span>1.5%</span></div>
          <div class="mu-calc-field"><span>Stop Loss</span><span>25 pts</span></div>
-         <div class="mu-calc-result"><span data-i18n="mu_lotes">Lotes</span><span>3.0</span></div>
-         <div class="mu-calc-result"><span data-i18n="mu_risco_val">Risco $</span><span>$750</span></div>
+         <div class="mu-calc-result"><span data-i18n="mu_lotes">Lots</span><span>3.0</span></div>
+         <div class="mu-calc-result"><span data-i18n="mu_risco_val">Risk $</span><span>$750</span></div>
         </div>
         <div class="mu-quiz">
-         <div class="mu-quiz-title" data-i18n="mu_quiz_title">Quiz, Sua Firma Ideal</div>
-         <div class="mu-quiz-q" data-i18n="mu_quiz_q">Qual mercado você opera?</div>
-         <div class="mu-quiz-opt selected" data-i18n="mu_quiz_futuros">Futuros (ES, NQ, CL)</div>
+         <div class="mu-quiz-title" data-i18n="mu_quiz_title">Quiz, Your Ideal Firm</div>
+         <div class="mu-quiz-q" data-i18n="mu_quiz_q">Which market do you trade?</div>
+         <div class="mu-quiz-opt selected" data-i18n="mu_quiz_futuros">Futures (ES, NQ, CL)</div>
          <div class="mu-quiz-opt" data-i18n="mu_quiz_forex">Forex (EUR/USD, GBP)</div>
-         <div class="mu-quiz-opt" data-i18n="mu_quiz_ambos">Ambos</div>
+         <div class="mu-quiz-opt" data-i18n="mu_quiz_ambos">Both</div>
          <div class="mu-quiz-bar"><div class="mu-quiz-bar-fill"></div></div>
         </div>
        </div>
       </div>
       <h2 data-i18n="as_s2_h">Position Size e <span class="purple">Quiz</span> interativo</h2>
-      <p data-i18n="as_s2_p">Calcule o tamanho ideal de cada trade antes de entrar. Faça o quiz e descubra qual prop firm combina com seu perfil e estilo de operação.</p>
+      <p data-i18n="as_s2_p">Calculate the ideal size for each trade before entering. Take the quiz and find which prop firm matches your profile and trading style.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_s2_f1">Calculadora de Position Size com risco personalizado</div>
-       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_s2_f2">Quiz inteligente para encontrar sua firma ideal</div>
-       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_s2_f3">Ferramentas de gestao de risco profissional</div>
+       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_s2_f1">Position Size calculator with custom risk</div>
+       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_s2_f2">Smart quiz to find your ideal firm</div>
+       <div class="auth-feat" style="color:var(--purple);" data-i18n="as_s2_f3">Professional risk management tools</div>
       </div>
      </div>
 
@@ -3168,30 +3168,30 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
          <div class="mu-blog-card">
           <img loading="lazy" class="mu-blog-thumb" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=80&h=80&fit=crop" alt="Prop Firm" width="80" height="80" decoding="async" style="object-fit:cover;">
           <div class="mu-blog-info">
-           <div class="mu-blog-cat" style="color:var(--green);" data-i18n="mu_iniciante">Iniciante</div>
-           <div class="mu-blog-t" data-i18n="mu_blog1_t">Sua Primeira Prop Firm: Guia Completo 2025</div>
-           <div class="mu-blog-meta" data-i18n="mu_blog1_meta">12 min leitura</div>
+           <div class="mu-blog-cat" style="color:var(--green);" data-i18n="mu_iniciante">Beginner</div>
+           <div class="mu-blog-t" data-i18n="mu_blog1_t">Your First Prop Firm: Complete Guide 2025</div>
+           <div class="mu-blog-meta" data-i18n="mu_blog1_meta">12 min read</div>
           </div>
          </div>
          <div class="mu-blog-card">
           <img loading="lazy" class="mu-blog-thumb" src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=80&h=80&fit=crop" alt="Drawdown" width="80" height="80" decoding="async" style="object-fit:cover;">
           <div class="mu-blog-info">
-           <div class="mu-blog-cat" style="color:var(--gold);" data-i18n="mu_intermediario">Intermediário</div>
-           <div class="mu-blog-t" data-i18n="mu_blog2_t">Trailing vs Static Drawdown: qual escolher</div>
-           <div class="mu-blog-meta" data-i18n="mu_blog2_meta">8 min leitura</div>
+           <div class="mu-blog-cat" style="color:var(--gold);" data-i18n="mu_intermediario">Intermediate</div>
+           <div class="mu-blog-t" data-i18n="mu_blog2_t">Trailing vs Static Drawdown: which to choose</div>
+           <div class="mu-blog-meta" data-i18n="mu_blog2_meta">8 min read</div>
           </div>
          </div>
          <div class="mu-blog-card">
           <img loading="lazy" class="mu-blog-thumb" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=80&h=80&fit=crop" alt="Estrategia" width="80" height="80" decoding="async" style="object-fit:cover;">
           <div class="mu-blog-info">
-           <div class="mu-blog-cat" style="color:var(--red);" data-i18n="mu_avancado">Avançado</div>
-           <div class="mu-blog-t" data-i18n="mu_blog3_t">Order Flow + Delta: leitura institucional</div>
-           <div class="mu-blog-meta" data-i18n="mu_blog3_meta">15 min leitura</div>
+           <div class="mu-blog-cat" style="color:var(--red);" data-i18n="mu_avancado">Advanced</div>
+           <div class="mu-blog-t" data-i18n="mu_blog3_t">Order Flow + Delta: institutional reading</div>
+           <div class="mu-blog-meta" data-i18n="mu_blog3_meta">15 min read</div>
           </div>
          </div>
         </div>
         <div class="mu-cal">
-         <div class="mu-cal-title" data-i18n="mu_calendario">Calendario</div>
+         <div class="mu-cal-title" data-i18n="mu_calendario">Calendar</div>
          <div class="mu-cal-ev">
           <div class="mu-cal-time">08:30</div>
           <div class="mu-cal-imp" style="background:var(--red);"></div>
@@ -3216,11 +3216,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
        </div>
       </div>
       <h2 data-i18n="as_s3_h">Blog, Calendario e tudo em <span class="green">7 idiomas</span></h2>
-      <p data-i18n="as_s3_p">Conteúdo educacional completo, calendário econômico integrado e análises diárias. Tudo traduzido em 7 idiomas para traders do mundo inteiro.</p>
+      <p data-i18n="as_s3_p">Complete educational content, integrated economic calendar and daily analysis. All translated into 8 languages for traders worldwide.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--green);" data-i18n="as_s3_f1">Blog com guias, estratégias e conteúdo educacional</div>
-       <div class="auth-feat" style="color:var(--green);" data-i18n="as_s3_f2">Calendario Economico com filtros de impacto</div>
-       <div class="auth-feat" style="color:var(--green);" data-i18n="as_s3_f3">Site completo em PT, EN, ES, IT, FR, DE e AR</div>
+       <div class="auth-feat" style="color:var(--green);" data-i18n="as_s3_f1">Blog with guides, strategies and educational content</div>
+       <div class="auth-feat" style="color:var(--green);" data-i18n="as_s3_f2">Economic Calendar with impact filters</div>
+       <div class="auth-feat" style="color:var(--green);" data-i18n="as_s3_f3">Full site in PT, EN, ES, IT, FR, DE and AR</div>
       </div>
      </div>
 
@@ -3257,13 +3257,13 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
        </div>
       </div>
       <h2 data-i18n="as_s4_h">Qual firma escolher: Apex, TakeProfit ou <span class="gold">Bulenox</span>?</h2>
-      <p data-i18n="as_s4_p">Comparamos as 3 maiores prop firms de futuros lado a lado, preços, drawdown, profit split e veredito por perfil. Tudo em um guia único.</p>
+      <p data-i18n="as_s4_p">We compare the top 3 futures prop firms side by side, prices, drawdown, profit split and verdict by profile. All in one guide.</p>
       <div class="auth-features">
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f1">Apex vs TakeProfit vs Bulenox, comparativo completo</div>
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f2">Veredito objetivo: qual firma combina com seu perfil</div>
-       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f3">Cupons exclusivos já incluídos no guia</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f1">Apex vs TakeProfit vs Bulenox, full comparison</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f2">Objective verdict: which firm fits your profile</div>
+       <div class="auth-feat" style="color:var(--gold);" data-i18n="as_s4_f3">Exclusive coupons already included in the guide</div>
       </div>
-      <a href="/guides/comparativo-apex-tpt-bulenox" target="_blank" rel="noopener" class="auth-cta-link" data-i18n="as_s4_cta">Ler comparativo completo</a>
+      <a href="/guides/comparativo-apex-tpt-bulenox" target="_blank" rel="noopener" class="auth-cta-link" data-i18n="as_s4_cta">Read full comparison</a>
      </div>
 
     </div>
@@ -3276,9 +3276,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <button class="auth-dot" onclick="goAuthSlide(3)"></button>
      </div>
      <div class="auth-stats">
-      <div><div class="auth-stat-val" style="color:var(--gold);">6+</div><div class="auth-stat-label" data-i18n="as_stat_firms">Firmas</div></div>
-      <div><div class="auth-stat-val" style="color:var(--green);">$821M+</div><div class="auth-stat-label" data-i18n="as_stat_paid">Pagos a traders</div></div>
-      <div><div class="auth-stat-val">7</div><div class="auth-stat-label" data-i18n="as_stat_langs">Idiomas</div></div>
+      <div><div class="auth-stat-val" style="color:var(--gold);">6+</div><div class="auth-stat-label" data-i18n="as_stat_firms">Firms</div></div>
+      <div><div class="auth-stat-val" style="color:var(--green);">$821M+</div><div class="auth-stat-label" data-i18n="as_stat_paid">Paid to traders</div></div>
+      <div><div class="auth-stat-val">7</div><div class="auth-stat-label" data-i18n="as_stat_langs">Languages</div></div>
      </div>
     </div>
    </div>
@@ -3294,56 +3294,56 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
      <span>Markets <b>Coupons</b></span>
     </div>
     <div class="auth-mob-stats">
-     <div class="auth-mob-stat"><div class="v" style="color:var(--gold)">6+</div><div class="l" data-i18n="as_stat_firms">Firmas</div></div>
-     <div class="auth-mob-stat"><div class="v" style="color:var(--green)">$821M+</div><div class="l" data-i18n="as_stat_paid">Pagos a traders</div></div>
+     <div class="auth-mob-stat"><div class="v" style="color:var(--gold)">6+</div><div class="l" data-i18n="as_stat_firms">Firms</div></div>
+     <div class="auth-mob-stat"><div class="v" style="color:var(--green)">$821M+</div><div class="l" data-i18n="as_stat_paid">Paid to traders</div></div>
      <div class="auth-mob-stat"><div class="v">90%</div><div class="l">Max OFF</div></div>
-     <div class="auth-mob-stat"><div class="v">7</div><div class="l" data-i18n="as_stat_langs">Idiomas</div></div>
+     <div class="auth-mob-stat"><div class="v">7</div><div class="l" data-i18n="as_stat_langs">Languages</div></div>
     </div>
    </div>
    <!-- LOGIN FORM -->
    <form class="auth-form" id="auth-login-form" onsubmit="event.preventDefault();doAuthLogin();return false;" autocomplete="on">
-    <div class="auth-form-title" data-i18n="login_titulo_new">Entrar</div>
-    <div class="auth-sub" data-i18n="login_subtitulo">Bem-vindo de volta! Entre para continuar.</div>
+    <div class="auth-form-title" data-i18n="login_titulo_new">Sign In</div>
+    <div class="auth-sub" data-i18n="login_subtitulo">Welcome back! Sign in to continue.</div>
     <div class="auth-error" id="login-error"></div>
     <button type="button" class="auth-google-btn" onclick="doGoogleAuth()">
      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-     <span data-i18n="auth_google_login">Entrar com Google</span>
+     <span data-i18n="auth_google_login">Sign in with Google</span>
     </button>
-    <div class="auth-divider" data-i18n="auth_ou">ou</div>
-    <div class="auth-field"><label data-i18n="login_email">E-mail</label><input type="email" id="auth-login-email" name="email" autocomplete="email" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
+    <div class="auth-divider" data-i18n="auth_ou">or</div>
+    <div class="auth-field"><label data-i18n="login_email">Email</label><input type="email" id="auth-login-email" name="email" autocomplete="email" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doAuthLogin()"></div>
     <div class="auth-field">
-     <label data-i18n="login_senha">Senha</label>
+     <label data-i18n="login_senha">Password</label>
      <div class="auth-field-pw"><input type="password" id="auth-login-pass" name="password" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuthLogin()"><button class="auth-pw-toggle" onclick="togglePw(this)" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
     </div>
-    <button type="button" class="auth-btn" id="login-btn" onclick="doAuthLogin()" data-i18n="login_entrar">Entrar</button>
-    <div class="auth-switch"><span data-i18n="login_nao_tem">Não tem conta?</span> <button type="button" class="link-btn" onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Cadastrar-se</button></div>
-    <div class="auth-footer"><a href="/privacy" onclick="event.preventDefault();closeAuthModals();go('privacy')" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="/terms" onclick="event.preventDefault();closeAuthModals();go('terms')" data-i18n="auth_termos">Termos</a></div>
+    <button type="button" class="auth-btn" id="login-btn" onclick="doAuthLogin()" data-i18n="login_entrar">Log in</button>
+    <div class="auth-switch"><span data-i18n="login_nao_tem">Don't have an account?</span> <button type="button" class="link-btn" onclick="openAuthModal('signup')" data-i18n="login_cadastrar">Sign up</button></div>
+    <div class="auth-footer"><a href="/privacy" onclick="event.preventDefault();closeAuthModals();go('privacy')" data-i18n="auth_privacidade">Privacy</a> &middot; <a href="/terms" onclick="event.preventDefault();closeAuthModals();go('terms')" data-i18n="auth_termos">Terms</a></div>
    </form>
    <!-- SIGNUP FORM -->
    <form class="auth-form" id="auth-signup-form" style="display:none;" onsubmit="event.preventDefault();doAuthSignup();return false;" autocomplete="on">
-    <div class="auth-form-title" data-i18n="signup_titulo_new">Criar Conta</div>
-    <div class="auth-sub" data-i18n="signup_subtitulo">Desbloqueie oportunidades ilimitadas no trading.</div>
+    <div class="auth-form-title" data-i18n="signup_titulo_new">Create Account</div>
+    <div class="auth-sub" data-i18n="signup_subtitulo">Unlock limitless trading opportunities.</div>
     <div class="auth-error" id="signup-error"></div>
     <div class="auth-success" id="signup-success"></div>
     <button type="button" class="auth-google-btn" onclick="doGoogleAuth()">
      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-     <span data-i18n="auth_google_signup">Cadastrar com Google</span>
+     <span data-i18n="auth_google_signup">Sign up with Google</span>
     </button>
-    <div class="auth-divider" data-i18n="auth_ou_email">ou cadastre-se com e-mail</div>
-    <div class="auth-required-note" data-i18n="signup_dados_reais">Precisamos do seu nome e melhor email para enviar as ofertas exclusivas e novidades.</div>
+    <div class="auth-divider" data-i18n="auth_ou_email">or sign up with email</div>
+    <div class="auth-required-note" data-i18n="signup_dados_reais">To join promotions and giveaways we need your real data and best email.</div>
     <div class="auth-row">
-     <div class="auth-field"><label data-i18n="signup_first_name">Nome</label><input type="text" id="auth-signup-first" name="given-name" autocomplete="given-name" placeholder="João"></div>
-     <div class="auth-field"><label data-i18n="signup_last_name">Sobrenome</label><input type="text" id="auth-signup-last" name="family-name" autocomplete="family-name" placeholder="Silva"></div>
+     <div class="auth-field"><label data-i18n="signup_first_name">First name</label><input type="text" id="auth-signup-first" name="given-name" autocomplete="given-name" placeholder="João"></div>
+     <div class="auth-field"><label data-i18n="signup_last_name">Last name</label><input type="text" id="auth-signup-last" name="family-name" autocomplete="family-name" placeholder="Silva"></div>
     </div>
-    <div class="auth-field"><label data-i18n="signup_nickname">Apelido</label><input type="text" id="auth-signup-nickname" name="nickname" autocomplete="nickname" placeholder="jaozin"></div>
-    <div class="auth-field"><label data-i18n="signup_email">E-mail</label><input type="email" id="auth-signup-email" name="email" autocomplete="email" placeholder="email@example.com"></div>
+    <div class="auth-field"><label data-i18n="signup_nickname">Nickname</label><input type="text" id="auth-signup-nickname" name="nickname" autocomplete="nickname" placeholder="jaozin"></div>
+    <div class="auth-field"><label data-i18n="signup_email">Email</label><input type="email" id="auth-signup-email" name="email" autocomplete="email" placeholder="email@example.com"></div>
     <div class="auth-field">
-     <label data-i18n="signup_senha">Senha (mín. 6 caracteres)</label>
+     <label data-i18n="signup_senha">Password (min. 6 characters)</label>
      <div class="auth-field-pw"><input type="password" id="auth-signup-pass" name="new-password" autocomplete="new-password" placeholder="••••••••"><button class="auth-pw-toggle" onclick="togglePw(this)" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
     </div>
-    <div class="auth-field"><label data-i18n="signup_telefone">Telefone</label><input type="tel" id="auth-signup-phone" placeholder="+55 11 99999-9999"></div>
-    <div class="auth-field"><label data-i18n="signup_birthday">Data de nascimento</label><input type="date" id="auth-signup-birthday" max="2008-01-01"></div>
-    <div class="auth-field"><label data-i18n="signup_pais">País</label>
+    <div class="auth-field"><label data-i18n="signup_telefone">Phone</label><input type="tel" id="auth-signup-phone" placeholder="+55 11 99999-9999"></div>
+    <div class="auth-field"><label data-i18n="signup_birthday">Date of birth</label><input type="date" id="auth-signup-birthday" max="2008-01-01"></div>
+    <div class="auth-field"><label data-i18n="signup_pais">Country</label>
      <select id="auth-signup-country" onchange="onCountryChange()">
       <option value="BR">Brasil</option>
       <option value="AR">Argentina</option>
@@ -3370,25 +3370,25 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <option value="AT">Österreich</option>
       <option value="AU">Australia</option>
       <option value="JP">日本</option>
-      <option value="OTHER" data-i18n="country_other">Outro</option>
+      <option value="OTHER" data-i18n="country_other">Other</option>
      </select>
     </div>
-    <div class="auth-field"><label data-i18n="signup_zip">CEP</label>
+    <div class="auth-field"><label data-i18n="signup_zip">ZIP code</label>
      <div style="position:relative;">
       <input type="text" id="auth-signup-zip" placeholder="00000-000" onblur="onZipBlur()">
       <div id="auth-signup-zip-spin" class="auth-zip-spin" style="display:none;"></div>
      </div>
      <div class="auth-zip-msg" id="auth-signup-zip-msg" style="display:none;"></div>
     </div>
-    <div class="auth-field"><label data-i18n="signup_address">Endereço</label><input type="text" id="auth-signup-address" placeholder="Rua, número"></div>
+    <div class="auth-field"><label data-i18n="signup_address">Address</label><input type="text" id="auth-signup-address" placeholder="Rua, número"></div>
     <div class="auth-row">
-     <div class="auth-field"><label data-i18n="signup_cidade">Cidade</label><input type="text" id="auth-signup-city" placeholder="Sua cidade"></div>
-     <div class="auth-field" id="auth-signup-state-wrap"><label data-i18n="signup_estado">Estado</label><input type="text" id="auth-signup-state" placeholder="UF"></div>
+     <div class="auth-field"><label data-i18n="signup_cidade">City</label><input type="text" id="auth-signup-city" placeholder="Sua cidade"></div>
+     <div class="auth-field" id="auth-signup-state-wrap"><label data-i18n="signup_estado">State</label><input type="text" id="auth-signup-state" placeholder="UF"></div>
     </div>
     <div class="auth-terms"><label class="auth-terms-row"><input type="checkbox" id="auth-signup-terms"><span data-i18n="signup_terms_label">Li e aceito a <a href="/privacy" target="_blank">Política de Privacidade</a> e os <a href="/terms" target="_blank">Termos de Uso</a></span></label></div>
-    <button type="button" class="auth-btn" id="signup-btn" onclick="doAuthSignup()" data-i18n="signup_criar">Criar Conta</button>
-    <div class="auth-switch"><span data-i18n="signup_ja_tem">Já tem conta?</span> <button type="button" class="link-btn" onclick="openAuthModal('login')" data-i18n="signup_entrar">Entrar</button></div>
-    <div class="auth-footer"><a href="/privacy" onclick="event.preventDefault();closeAuthModals();go('privacy')" data-i18n="auth_privacidade">Privacidade</a> &middot; <a href="/terms" onclick="event.preventDefault();closeAuthModals();go('terms')" data-i18n="auth_termos">Termos</a></div>
+    <button type="button" class="auth-btn" id="signup-btn" onclick="doAuthSignup()" data-i18n="signup_criar">Create Account</button>
+    <div class="auth-switch"><span data-i18n="signup_ja_tem">Do you already have an account?</span> <button type="button" class="link-btn" onclick="openAuthModal('login')" data-i18n="signup_entrar">Log in</button></div>
+    <div class="auth-footer"><a href="/privacy" onclick="event.preventDefault();closeAuthModals();go('privacy')" data-i18n="auth_privacidade">Privacy</a> &middot; <a href="/terms" onclick="event.preventDefault();closeAuthModals();go('terms')" data-i18n="auth_termos">Terms</a></div>
    </form>
   </div>
  </div>
@@ -3404,15 +3404,15 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  </div>
  <div class="up-grid">
   <div class="up-card">
-   <h3 data-i18n="painel_dados_pessoais">Dados Pessoais</h3>
+   <h3 data-i18n="painel_dados_pessoais">Personal Information</h3>
    <div class="auth-row">
-    <div class="auth-field"><label data-i18n="signup_first_name">Nome</label><input type="text" id="up-edit-first" placeholder="João"></div>
-    <div class="auth-field"><label data-i18n="signup_last_name">Sobrenome</label><input type="text" id="up-edit-last" placeholder="Silva"></div>
+    <div class="auth-field"><label data-i18n="signup_first_name">First name</label><input type="text" id="up-edit-first" placeholder="João"></div>
+    <div class="auth-field"><label data-i18n="signup_last_name">Last name</label><input type="text" id="up-edit-last" placeholder="Silva"></div>
    </div>
-   <div class="auth-field"><label data-i18n="signup_nickname">Apelido</label><input type="text" id="up-edit-nickname" placeholder="jaozin"></div>
-   <div class="auth-field"><label data-i18n="painel_telefone">Telefone</label><input type="tel" id="up-edit-phone" placeholder="+55 11 99999-9999"></div>
-   <div class="auth-field"><label data-i18n="signup_birthday">Data de nascimento</label><input type="date" id="up-edit-birthday" max="2008-01-01"></div>
-   <div class="auth-field"><label data-i18n="painel_pais">País</label>
+   <div class="auth-field"><label data-i18n="signup_nickname">Nickname</label><input type="text" id="up-edit-nickname" placeholder="jaozin"></div>
+   <div class="auth-field"><label data-i18n="painel_telefone">Phone</label><input type="tel" id="up-edit-phone" placeholder="+55 11 99999-9999"></div>
+   <div class="auth-field"><label data-i18n="signup_birthday">Date of birth</label><input type="date" id="up-edit-birthday" max="2008-01-01"></div>
+   <div class="auth-field"><label data-i18n="painel_pais">Country</label>
     <select id="up-edit-country" onchange="onCountryChangePainel()">
      <option value="BR">Brasil</option>
      <option value="AR">Argentina</option>
@@ -3439,46 +3439,46 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
      <option value="AT">Österreich</option>
      <option value="AU">Australia</option>
      <option value="JP">日本</option>
-     <option value="OTHER" data-i18n="country_other">Outro</option>
+     <option value="OTHER" data-i18n="country_other">Other</option>
     </select>
    </div>
-   <div class="auth-field"><label data-i18n="signup_zip">CEP</label>
+   <div class="auth-field"><label data-i18n="signup_zip">ZIP code</label>
     <div style="position:relative;">
      <input type="text" id="up-edit-zip" placeholder="00000-000" onblur="onZipBlurPainel()">
      <div id="up-edit-zip-spin" class="auth-zip-spin" style="display:none;"></div>
     </div>
     <div class="auth-zip-msg" id="up-edit-zip-msg" style="display:none;"></div>
    </div>
-   <div class="auth-field"><label data-i18n="signup_address">Endereço</label><input type="text" id="up-edit-address" placeholder="Rua, número"></div>
+   <div class="auth-field"><label data-i18n="signup_address">Address</label><input type="text" id="up-edit-address" placeholder="Rua, número"></div>
    <div class="auth-row">
-    <div class="auth-field"><label data-i18n="painel_cidade">Cidade</label><input type="text" id="up-edit-city"></div>
-    <div class="auth-field" id="up-edit-state-wrap"><label data-i18n="painel_estado">Estado</label><input type="text" id="up-edit-state" placeholder="UF"></div>
+    <div class="auth-field"><label data-i18n="painel_cidade">City</label><input type="text" id="up-edit-city"></div>
+    <div class="auth-field" id="up-edit-state-wrap"><label data-i18n="painel_estado">State</label><input type="text" id="up-edit-state" placeholder="UF"></div>
    </div>
    <div class="auth-field">
-    <label data-i18n="complete_profile_firms_label">Suas firmas favoritas (selecione 1 ou mais)</label>
+    <label data-i18n="complete_profile_firms_label">Your favorite firms (select 1 or more)</label>
     <div class="firm-pills" id="up-edit-firm-pills"></div>
    </div>
-   <button class="auth-btn" onclick="saveProfile()" data-i18n="painel_salvar">Salvar Alterações</button>
+   <button class="auth-btn" onclick="saveProfile()" data-i18n="painel_salvar">Save Changes</button>
    <div class="auth-error" id="up-save-err" style="margin-top:12px;display:none;"></div>
-   <div class="auth-success" id="up-save-ok" style="margin-top:12px;" data-i18n="painel_salvos">Dados salvos com sucesso!</div>
+   <div class="auth-success" id="up-save-ok" style="margin-top:12px;" data-i18n="painel_salvos">Data saved successfully!</div>
   </div>
   <div class="up-card">
-   <h3 data-i18n="painel_alterar_senha">Alterar Senha</h3>
-   <div class="auth-field"><label data-i18n="painel_senha_atual">Senha Atual</label><div style="position:relative;"><input type="password" id="up-pass-current"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <div class="auth-field"><label data-i18n="painel_nova_senha">Nova Senha</label><div style="position:relative;"><input type="password" id="up-pass-new" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <div class="auth-field"><label data-i18n="painel_confirmar_senha">Confirmar Nova Senha</label><div style="position:relative;"><input type="password" id="up-pass-confirm" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
-   <button class="auth-btn" onclick="changePassword()" data-i18n="painel_btn_alterar_senha">Alterar Senha</button>
+   <h3 data-i18n="painel_alterar_senha">Change Password</h3>
+   <div class="auth-field"><label data-i18n="painel_senha_atual">Current Password</label><div style="position:relative;"><input type="password" id="up-pass-current"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <div class="auth-field"><label data-i18n="painel_nova_senha">New Password</label><div style="position:relative;"><input type="password" id="up-pass-new" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <div class="auth-field"><label data-i18n="painel_confirmar_senha">Confirm New Password</label><div style="position:relative;"><input type="password" id="up-pass-confirm" minlength="6"><button type="button" onclick="togglePw(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;line-height:1;">&#128065;</button></div></div>
+   <button class="auth-btn" onclick="changePassword()" data-i18n="painel_btn_alterar_senha">Change Password</button>
    <div class="auth-error" id="up-pass-error" style="margin-top:8px;"></div>
-   <div class="auth-success" id="up-pass-ok" style="margin-top:8px;" data-i18n="painel_senha_alterada">Senha alterada com sucesso!</div>
+   <div class="auth-success" id="up-pass-ok" style="margin-top:8px;" data-i18n="painel_senha_alterada">Password changed successfully!</div>
   </div>
   <div class="up-card">
-   <h3 data-i18n="painel_resumo">Resumo</h3>
+   <h3 data-i18n="painel_resumo">Summary</h3>
    <div class="up-stats">
-    <div class="up-stat"><div class="v" id="up-st-visits">0</div><div class="l" data-i18n="painel_visitas">Visitas</div></div>
-    <div class="up-stat"><div class="v" id="up-st-clicks">0</div><div class="l" data-i18n="painel_cliques">Cliques</div></div>
-    <div class="up-stat"><div class="v" id="up-st-coupons">0</div><div class="l" data-i18n="painel_cupons">Cupons</div></div>
+    <div class="up-stat"><div class="v" id="up-st-visits">0</div><div class="l" data-i18n="painel_visitas">Visits</div></div>
+    <div class="up-stat"><div class="v" id="up-st-clicks">0</div><div class="l" data-i18n="painel_cliques">Clicks</div></div>
+    <div class="up-stat"><div class="v" id="up-st-coupons">0</div><div class="l" data-i18n="painel_cupons">Coupons</div></div>
    </div>
-   <p style="font-size:12px;color:var(--t3);text-align:center;" data-i18n="painel_em_breve">Em breve: histórico de cupons usados, firmas favoritas e mais.</p>
+   <p style="font-size:12px;color:var(--t3);text-align:center;" data-i18n="painel_em_breve">Coming soon: a history of redeemed coupons, favorite stores, and more.</p>
   </div>
  </div>
 
@@ -3487,25 +3487,25 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- HOME -->
 <div class="page" id="page-home">
  <div class="hero">
- <div class="hero-badge" data-i18n="hero_badge">Cupons Verificados, Atualizados Diariamente</div>
+ <div class="hero-badge" data-i18n="hero_badge">Verified Coupons, Updated Daily</div>
  <h1 id="hero-h1">Save up to <em>90% OFF</em> <br>at the best Prop Firms</h1>
- <p data-i18n="hero_sub">Compare firmas, use cupons exclusivos e acesse ferramentas profissionais, tudo em um só lugar.</p>
+ <p data-i18n="hero_sub">Compare prop firms, use exclusive coupons, and access professional tools, all in one place.</p>
  <div class="hero-trust">
    <div class="ht-item"><strong>6+</strong><span data-i18n="hero_trust_firms">Prop Firms</span></div>
    <div class="ht-sep">·</div>
-   <div class="ht-item"><strong>$821M+</strong><span data-i18n="hero_trust_paid">Pagos a Traders</span></div>
+   <div class="ht-item"><strong>$821M+</strong><span data-i18n="hero_trust_paid">Paid to Traders</span></div>
    <div class="ht-sep">·</div>
-   <div class="ht-item"><strong>7</strong><span data-i18n="hero_trust_langs">Idiomas</span></div>
+   <div class="ht-item"><strong>7</strong><span data-i18n="hero_trust_langs">Languages</span></div>
  </div>
  <div class="hero-stats">
- <div class="hst" onclick="go('firms')"><div class="v" style="color:var(--green)" data-i18n="hst_box_firms">Top Prop Firms</div><div class="l" data-i18n="hst_box_firms_l">As Melhores de 2026</div></div>
- <div class="hst" onclick="go('quiz')"><div class="v" style="color:var(--gold)" data-i18n="hst_box_quiz">Firma Ideal?</div><div class="l" data-i18n="hst_box_quiz_l">Faça o Quiz de Seleção</div></div>
- <div class="hst" onclick="go('calc')"><div class="v" style="color:#60a5fa" data-i18n="hst_box_calc">Calculadora</div><div class="l" data-i18n="hst_box_calc_l">Calcule seu Risco</div></div>
- <div class="hst" onclick="go('analise')"><div class="v" style="color:#a78bfa" data-i18n="hst_box_analise">Análise Diária</div><div class="l" data-i18n="hst_box_analise_l">Insights de Mercado</div></div>
+ <div class="hst" onclick="go('firms')"><div class="v" style="color:var(--green)" data-i18n="hst_box_firms">Top Prop Firms</div><div class="l" data-i18n="hst_box_firms_l">The Best of 2026</div></div>
+ <div class="hst" onclick="go('quiz')"><div class="v" style="color:var(--gold)" data-i18n="hst_box_quiz">Ideal Firm?</div><div class="l" data-i18n="hst_box_quiz_l">Take the Selection Quiz</div></div>
+ <div class="hst" onclick="go('calc')"><div class="v" style="color:#60a5fa" data-i18n="hst_box_calc">Calculator</div><div class="l" data-i18n="hst_box_calc_l">Calculate Your Risk</div></div>
+ <div class="hst" onclick="go('analise')"><div class="v" style="color:#a78bfa" data-i18n="hst_box_analise">Daily Analysis</div><div class="l" data-i18n="hst_box_analise_l">Market Insights</div></div>
  </div>
  <a href="https://t.me/marketcouponss" target="_blank" rel="noopener noreferrer" class="hero-tg-cta" onclick="track('telegram_click',{location:'hero'})">
    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
-   <span data-i18n="hero_tg_cta">Acessar Cupons Exclusivos no Telegram</span>
+   <span data-i18n="hero_tg_cta">Get Exclusive Coupons on Telegram</span>
  </a>
  </div>
 
@@ -3520,9 +3520,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <div class="page" id="page-offers">
   <div class="offers-wrap">
     <div class="offers-hero">
-      <div class="offers-hero-label" data-i18n="offers_hero_label">Cupons Exclusivos</div>
-      <h2 class="offers-hero-title" data-i18n="offers_hero_titulo">Economize nas melhores prop firms</h2>
-      <p class="offers-hero-sub" data-i18n="offers_hero_sub">Cupons verificados e atualizados. Copie, aplique no checkout e comece a operar com desconto.</p>
+      <div class="offers-hero-label" data-i18n="offers_hero_label">Exclusive Coupons</div>
+      <h2 class="offers-hero-title" data-i18n="offers_hero_titulo">Save money with the best prop firms</h2>
+      <p class="offers-hero-sub" data-i18n="offers_hero_sub">Verified and updated coupons. Copy them, apply them at checkout, and start trading at a discount.</p>
     </div>
     <div class="offers-grid" id="offers-grid"></div>
   </div>
@@ -3532,42 +3532,42 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <div class="firms-layout">
  <aside class="firms-sb">
  <div class="sb-grp">
- <div class="sb-title" data-i18n="sb_mercado">Mercado</div>
- <div class="sb-chk"><input type="checkbox" id="fFut" checked onchange="applyF()"><label for="fFut" data-i18n="firm_type_futuros">Futuros</label></div>
+ <div class="sb-title" data-i18n="sb_mercado">Market</div>
+ <div class="sb-chk"><input type="checkbox" id="fFut" checked onchange="applyF()"><label for="fFut" data-i18n="firm_type_futuros">Futures</label></div>
  <div class="sb-chk"><input type="checkbox" id="fFx" checked onchange="applyF()"><label for="fFx" data-i18n="firm_type_forex">Forex</label></div>
  </div>
  <hr class="sb-sep">
  <div class="sb-grp">
- <div class="sb-title" data-i18n="sb_desconto">Desconto</div>
+ <div class="sb-title" data-i18n="sb_desconto">Discount</div>
  <div class="sb-chk"><input type="checkbox" id="dH" checked onchange="applyF()"><label for="dH">+80%</label></div>
  <div class="sb-chk"><input type="checkbox" id="dM" checked onchange="applyF()"><label for="dM">50–80%</label></div>
- <div class="sb-chk"><input type="checkbox" id="dL" checked onchange="applyF()"><label for="dL" data-i18n="sb_abaixo50">Abaixo 50%</label></div>
+ <div class="sb-chk"><input type="checkbox" id="dL" checked onchange="applyF()"><label for="dL" data-i18n="sb_abaixo50">Less than 50%</label></div>
  </div>
  <hr class="sb-sep">
  <div class="sb-grp">
- <div class="sb-title" data-i18n="sb_caracteristicas">Características</div>
+ <div class="sb-title" data-i18n="sb_caracteristicas">Features</div>
  <div class="sb-chk"><input type="checkbox" id="fLT" onchange="applyF()"><label for="fLT" data-i18n="sb_lifetime">Lifetime</label></div>
- <div class="sb-chk"><input type="checkbox" id="fNews" onchange="applyF()"><label for="fNews" data-i18n="sb_trade_noticias">Trade notícias</label></div>
- <div class="sb-chk"><input type="checkbox" id="fD1" onchange="applyF()"><label for="fD1" data-i18n="sb_saque_dia1">Saque dia 1</label></div>
+ <div class="sb-chk"><input type="checkbox" id="fNews" onchange="applyF()"><label for="fNews" data-i18n="sb_trade_noticias">Trade news</label></div>
+ <div class="sb-chk"><input type="checkbox" id="fD1" onchange="applyF()"><label for="fD1" data-i18n="sb_saque_dia1">Draw Day 1</label></div>
  </div>
  <hr class="sb-sep">
  <div class="sb-grp">
- <div class="sb-title" data-i18n="sb_meus_favoritos">Meus Favoritos</div>
- <div class="sb-chk"><input type="checkbox" id="fFavOnly" onchange="applyF()"><label for="fFavOnly"><span data-i18n="sb_so_favoritas">Só favoritas</span></label></div>
+ <div class="sb-title" data-i18n="sb_meus_favoritos">My Favorites</div>
+ <div class="sb-chk"><input type="checkbox" id="fFavOnly" onchange="applyF()"><label for="fFavOnly"><span data-i18n="sb_so_favoritas">Only favorites</span></label></div>
  </div>
- <button class="sb-clear" onclick="clearF()" data-i18n="sb_limpar">Limpar filtros</button>
+ <button class="sb-clear" onclick="clearF()" data-i18n="sb_limpar">Clear filters</button>
  </aside>
  <div class="firms-sb-overlay" id="firms-sb-overlay" onclick="toggleFirmsSb()"></div>
  <main class="firms-main">
  <div class="search-wrap"><span class="search-ico"></span><input type="text" id="search" data-i18n-placeholder="search_placeholder" placeholder="Search prop firms..." oninput="applyF()"></div>
  <div class="sort-row">
- <button class="firms-filter-btn" onclick="toggleFirmsSb()" data-i18n="sb_filtros">Filtros</button>
- <div class="cnt"><span data-i18n="sb_mostrando">Mostrando</span> <strong id="cnt">6</strong> <span data-i18n="sb_firmas">firmas</span></div>
+ <button class="firms-filter-btn" onclick="toggleFirmsSb()" data-i18n="sb_filtros">Filters</button>
+ <div class="cnt"><span data-i18n="sb_mostrando">Showing</span> <strong id="cnt">6</strong> <span data-i18n="sb_firmas">companies</span></div>
  <select class="sort-sel" onchange="applyF()">
- <option value="rating" data-i18n="firms_ordenar_rating">Melhor avaliadas</option>
- <option value="discount" data-i18n="firms_ordenar_desc">Maior desconto</option>
- <option value="reviews" data-i18n="firms_ordenar_reviews">Mais avaliações</option>
- <option value="name" data-i18n="firms_ordenar_nome">Nome A-Z</option>
+ <option value="rating" data-i18n="firms_ordenar_rating">Higher rating</option>
+ <option value="discount" data-i18n="firms_ordenar_desc">Biggest discount</option>
+ <option value="reviews" data-i18n="firms_ordenar_reviews">More reviews</option>
+ <option value="name" data-i18n="firms_ordenar_nome">Name A–Z</option>
  </select>
  </div>
  <div class="firms-list" id="firms-list"></div>
@@ -3581,13 +3581,13 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     <div class="ach-header">
       <div class="ach-header-inner">
         <div>
-          <div class="ach-title" id="ach-firm-title" data-i18n="checkout_selecione_firma">Selecione a Prop Firm</div>
-          <div class="ach-sub" data-i18n="checkout_sub">Escolha a firma, o tipo de drawdown e a plataforma, acesse o checkout direto com o seu desconto.</div>
+          <div class="ach-title" id="ach-firm-title" data-i18n="checkout_selecione_firma">Select the Prop Firm</div>
+          <div class="ach-sub" data-i18n="checkout_sub">Choose the broker, the type of drawdown, and the platform—proceed directly to checkout with your discount.</div>
         </div>
         <div class="ach-coupon-strip" id="ach-coupon-strip" style="display:none;">
-          <div class="ach-coupon-label" data-i18n="checkout_cupom_ativo">Cupom ativo</div>
+          <div class="ach-coupon-label" data-i18n="checkout_cupom_ativo">Active coupon</div>
           <div class="ach-coupon-code" id="ach-code-display">—</div>
-          <button class="ach-copy-btn" onclick="achCopyCoupon()" data-i18n="checkout_copiar_codigo">Copiar código</button>
+          <button class="ach-copy-btn" onclick="achCopyCoupon()" data-i18n="checkout_copiar_codigo">Copy code</button>
         </div>
       </div>
     </div>
@@ -3603,7 +3603,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 
     <!-- INCLUDES per firm -->
     <div class="ach-includes" id="ach-includes" style="display:none;">
-      <div class="ach-inc-title" data-i18n="checkout_todos_planos">Todos os planos incluem</div>
+      <div class="ach-inc-title" data-i18n="checkout_todos_planos">All plans include</div>
       <div class="ach-inc-grid" id="ach-inc-grid"></div>
     </div>
   </div>
@@ -3612,12 +3612,12 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- COMPARE -->
 <div class="page" id="page-compare">
  <div class="cmp-wrap">
- <div class="cmp-h" data-i18n="cmp_titulo"> Comparar Prop Firms</div>
- <div class="cmp-sub" data-i18n="cmp_sub">Selecione até 3 firmas para comparar lado a lado</div>
+ <div class="cmp-h" data-i18n="cmp_titulo">Compare Prop Firms</div>
+ <div class="cmp-sub" data-i18n="cmp_sub">Select up to 3 companies to compare side by side</div>
  <div class="cmp-sels">
- <select class="cmp-sel" id="c1" onchange="renderCmp()"><option value="" data-i18n="cmp_firma1">-- Firma 1 --</option></select>
- <select class="cmp-sel" id="c2" onchange="renderCmp()"><option value="" data-i18n="cmp_firma2">-- Firma 2 --</option></select>
- <select class="cmp-sel" id="c3" onchange="renderCmp()"><option value="" data-i18n="cmp_firma3">-- Firma 3 --</option></select>
+ <select class="cmp-sel" id="c1" onchange="renderCmp()"><option value="" data-i18n="cmp_firma1">-- Firm 1 --</option></select>
+ <select class="cmp-sel" id="c2" onchange="renderCmp()"><option value="" data-i18n="cmp_firma2">-- Firm 2 --</option></select>
+ <select class="cmp-sel" id="c3" onchange="renderCmp()"><option value="" data-i18n="cmp_firma3">-- Firm 3 --</option></select>
  </div>
  <div class="cmp-winner-banner" id="cmp-winner-banner" style="display:none;"></div>
  <div class="cmp-tbl-wrap"><table class="cmp-tbl" id="cmp-tbl"></table></div>
@@ -3629,13 +3629,13 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <div class="page" id="page-indicators">
   <div class="ind-page">
     <div class="ind-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 5-9"/></svg></div>
-    <h2 class="ind-title" data-i18n="ind_em_breve_titulo">Novo conceito de indicadores chegando em breve</h2>
-    <p class="ind-sub" data-i18n="ind_em_breve_texto">Estamos desenvolvendo indicadores exclusivos com uma abordagem totalmente nova. Acesso reservado para usuários cadastrados.</p>
+    <h2 class="ind-title" data-i18n="ind_em_breve_titulo">New indicator concept coming soon</h2>
+    <p class="ind-sub" data-i18n="ind_em_breve_texto">We're developing exclusive professional indicators with a brand-new approach. Create your free account to get access first.</p>
     <div class="ind-box">
-      <div class="ind-box-label" data-i18n="ind_em_breve_como">Como garantir acesso</div>
-      <p class="ind-box-text" data-i18n="ind_em_breve_passos">Crie sua conta gratuita no Markets Coupons e você terá acesso aos indicadores assim que lançarmos.</p>
+      <div class="ind-box-label" data-i18n="ind_em_breve_como">How to secure access</div>
+      <p class="ind-box-text" data-i18n="ind_em_breve_passos">Create your free account, use our coupons on your purchases, and you'll be first in line for the new indicators.</p>
     </div>
-    <button class="ind-cta" onclick="currentUser?go('panel'):openAuthModal('signup')" data-i18n="ind_em_breve_btn">Criar conta gratuita</button>
+    <button class="ind-cta" onclick="currentUser?go('panel'):openAuthModal('signup')" data-i18n="ind_em_breve_btn">Create your free account</button>
   </div>
 </div>
 
@@ -3652,22 +3652,22 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     <div class="cal-countdown-bar" id="cal-countdown-bar" style="display:none;">
       <div class="cal-cd-icon">🔴</div>
       <div class="cal-cd-info">
-        <div class="cal-cd-label" data-i18n="cal_proximo_evento">Próximo evento de alto impacto</div>
+        <div class="cal-cd-label" data-i18n="cal_proximo_evento">Next high-impact event</div>
         <div class="cal-cd-name" id="cal-cd-name"></div>
       </div>
       <div class="cal-cd-timer" id="cal-cd-timer"></div>
     </div>
     <div class="cal-page-hd">
-      <div class="cal-title" data-i18n="cal_titulo">Calendário Econômico</div>
-      <div class="cal-sub" data-i18n="cal_sub">Eventos econômicos globais que impactam os mercados financeiros</div>
+      <div class="cal-title" data-i18n="cal_titulo">Economic Calendar</div>
+      <div class="cal-sub" data-i18n="cal_sub">Global economic events that impact financial markets</div>
       <div class="cal-meta"><span id="cal-count"></span><span class="cal-sep-dot"></span><span id="cal-updated" style="font-size:11px;"></span></div>
     </div>
     <div class="cal-filter-bar" id="cal-filters">
-      <button class="cal-f active" data-filter="all" onclick="calFilter('all',this)" data-i18n="cal_todos">Todos</button>
+      <button class="cal-f active" data-filter="all" onclick="calFilter('all',this)" data-i18n="cal_todos">All</button>
       <span class="cal-sep"></span>
-      <button class="cal-f cal-f-h" data-filter="h" onclick="calFilter('h',this)"><span class="cal-f-stars h">★★★</span> <span data-i18n="cal_alto">Alto</span></button>
-      <button class="cal-f cal-f-m" data-filter="m" onclick="calFilter('m',this)"><span class="cal-f-stars m">★★</span> <span data-i18n="cal_medio">Médio</span></button>
-      <button class="cal-f cal-f-l" data-filter="l" onclick="calFilter('l',this)"><span class="cal-f-stars l">★</span> <span data-i18n="cal_baixo">Baixo</span></button>
+      <button class="cal-f cal-f-h" data-filter="h" onclick="calFilter('h',this)"><span class="cal-f-stars h">★★★</span> <span data-i18n="cal_alto">High</span></button>
+      <button class="cal-f cal-f-m" data-filter="m" onclick="calFilter('m',this)"><span class="cal-f-stars m">★★</span> <span data-i18n="cal_medio">Medium</span></button>
+      <button class="cal-f cal-f-l" data-filter="l" onclick="calFilter('l',this)"><span class="cal-f-stars l">★</span> <span data-i18n="cal_baixo">Low</span></button>
       <span class="cal-sep"></span>
       <button class="cal-f" data-filter="USD" onclick="calFilter('USD',this)">USD</button>
       <button class="cal-f" data-filter="EUR" onclick="calFilter('EUR',this)">EUR</button>
@@ -3698,13 +3698,13 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       </div>
     </div>
     <div class="cal-tbl-hd">
-      <div data-i18n="cal_hora">Hora</div>
-      <div data-i18n="cal_moeda">Moeda</div>
-      <div data-i18n="cal_evento">Evento</div>
-      <div data-i18n="cal_atual">Atual</div>
-      <div data-i18n="cal_previsao">Previsão</div>
-      <div data-i18n="cal_anterior">Anterior</div>
-      <div data-i18n="cal_impacto">Impacto</div>
+      <div data-i18n="cal_hora">Time</div>
+      <div data-i18n="cal_moeda">Currency</div>
+      <div data-i18n="cal_evento">Event</div>
+      <div data-i18n="cal_atual">Actual</div>
+      <div data-i18n="cal_previsao">Forecast</div>
+      <div data-i18n="cal_anterior">Previous</div>
+      <div data-i18n="cal_impacto">Impact</div>
     </div>
     <div class="cal-content" id="cal-list"></div>
   </div>
@@ -3714,16 +3714,16 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <div class="page" id="page-analise">
   <div class="analise-wrap">
     <div class="analise-hd">
-      <div class="analise-title" data-i18n="analise_titulo">Análise Diária de Mercado</div>
-      <div class="analise-sub" data-i18n="analise_sub">Atualizada todos os dias úteis às 5:00 AM ET. Viés direcional, zonas de atenção, impacto de notícias e contexto macro para os principais futuros.</div>
+      <div class="analise-title" data-i18n="analise_titulo">Daily Market Analysis</div>
+      <div class="analise-sub" data-i18n="analise_sub">Updated every weekday at 5:00 AM ET. Directional bias, attention zones, news impact, and macro context for the main futures.</div>
       <div class="analise-meta" id="da-meta"></div>
     </div>
     <div class="da-wrap-inner" id="da-wrap-inner">
       <div class="da-grid" id="da-grid">
-        <div class="da-loading"><div class="ar-spinner"></div><div data-i18n="da_carregando">Carregando análises...</div></div>
+        <div class="da-loading"><div class="ar-spinner"></div><div data-i18n="da_carregando">Loading analyses...</div></div>
       </div>
-      <div class="da-disclaimer" data-i18n="da_disclaimer">Conteúdo exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou sinal de operação. Trading envolve risco de perda. Consulte um profissional antes de operar.</div>
-      <div class="da-disclaimer" style="margin-top:4px;font-size:10px;" data-i18n="da_realtime_note">Os gráficos exibem índices e cotações spot em tempo real (NDX, SPX, GOLD, USOIL), que acompanham fielmente os contratos futuros correspondentes (NQ, ES, CL, GC).</div>
+      <div class="da-disclaimer" data-i18n="da_disclaimer">Educational and informational content only. This does not constitute investment advice, financial consulting, or trading signals. Trading involves risk of loss. Consult a professional before trading.</div>
+      <div class="da-disclaimer" style="margin-top:4px;font-size:10px;" data-i18n="da_realtime_note">Charts display real-time spot indices and prices (NDX, SPX, GOLD, USOIL), which closely track the corresponding futures contracts (NQ, ES, CL, GC).</div>
       <div class="da-gate" id="da-gate"></div>
     </div>
   </div>
@@ -3735,40 +3735,40 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     <div class="gx-hd">
       <div class="gx-badge">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        <span data-i18n="gx_badge">Atualizado Diariamente</span>
+        <span data-i18n="gx_badge">Updated Daily</span>
       </div>
       <div class="gx-title"><span>Gamma</span> Exposure (GEX)</div>
-      <div class="gx-sub" data-i18n="gx_sub2">Acompanhe os níveis de Gamma Exposure dos market makers nos principais índices e ações. Veja onde estão as maiores concentrações de opções e como afetam o preço.</div>
-      <div class="gx-updated" id="gx-date" data-i18n="gx_loading">Carregando dados...</div>
-      <div class="gx-schedule" style="font-size:12px;color:var(--t2);margin-top:4px;" data-i18n="gx_schedule">Atualizada todos os dias úteis às 5:00 AM ET.</div>
+      <div class="gx-sub" data-i18n="gx_sub2">Track market maker Gamma Exposure levels across major indices and stocks. See where the largest options concentrations are and how they affect price movement.</div>
+      <div class="gx-updated" id="gx-date" data-i18n="gx_loading">Loading data...</div>
+      <div class="gx-schedule" style="font-size:12px;color:var(--t2);margin-top:4px;" data-i18n="gx_schedule">Updated every business day at 5:00 AM ET.</div>
     </div>
     <div class="gx-ticker-bar" id="gx-ticker-bar"></div>
     <div class="gx-exp-bar" id="gx-exp-bar"></div>
     <div class="gx-wrap-inner" id="gx-wrap-inner">
     <div class="gx-loading-box" id="gx-loading">
       <div class="ar-spinner" style="width:24px;height:24px;border:2px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;"></div>
-      <div data-i18n="gx_carregando">Carregando dados...</div>
+      <div data-i18n="gx_carregando">Loading data...</div>
     </div>
     <div class="gx-view-tabs" id="gx-view-tabs">
-      <button class="gx-vtab sel" onclick="gxSwitchView('chart')" data-v="chart" data-i18n="gx_tab_chart">Gráfico</button>
+      <button class="gx-vtab sel" onclick="gxSwitchView('chart')" data-v="chart" data-i18n="gx_tab_chart">Chart</button>
       <button class="gx-vtab" onclick="gxSwitchView('heatmap')" data-v="heatmap" data-i18n="gx_tab_heatmap">Heatmap</button>
-      <button class="gx-vtab" onclick="gxSwitchView('vanna')" data-v="vanna" data-i18n="gx_tab_vanna">Vanna & Charm</button>
+      <button class="gx-vtab" onclick="gxSwitchView('vanna')" data-v="vanna" data-i18n="gx_tab_vanna">Vanna &amp; Charm</button>
     </div>
     <div id="gx-grid" style="display:none;"></div>
     <div id="gx-heatmap" style="display:none;"></div>
     <div id="gx-vanna" style="display:none;"></div>
       <div class="da-gate" id="gx-gate"></div>
     </div>
-    <div class="gx-disclaimer" data-i18n="gx_disclaimer">Dados com atraso. Níveis de GEX são estimativas baseadas em modelos matemáticos e não constituem recomendação de investimento. Trading envolve risco de perda.</div>
+    <div class="gx-disclaimer" data-i18n="gx_disclaimer">Delayed data. GEX levels are estimates based on mathematical models and do not constitute investment advice. Trading involves risk of loss.</div>
 
     <div style="margin-top:40px;">
       <h2 style="font-size:20px;font-weight:700;margin:0 0 20px;display:flex;align-items:center;gap:10px;">
         <span style="width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block;"></span>
-        <span data-i18n="gx_edu_title">O que é Gamma Exposure (GEX)?</span>
+        <span data-i18n="gx_edu_title">What is Gamma Exposure (GEX)?</span>
       </h2>
       <div class="gx-edu-grid">
         <article class="gx-edu-card">
-          <h3 data-i18n="gx_edu_what_title">O que é GEX?</h3>
+          <h3 data-i18n="gx_edu_what_title">What is GEX?</h3>
           <p data-i18n="gx_edu_what">Gamma Exposure (GEX) mede o <strong>volume de opções</strong> que os market makers (grandes bancos e instituições) precisam fazer hedge em cada nível de preço. Quando um market maker vende uma opção, ele precisa comprar ou vender o ativo para se proteger. O GEX mostra <strong>ONDE</strong> e <strong>QUANTO</strong> eles precisam fazer isso.</p>
         </article>
         <article class="gx-edu-card">
@@ -3776,7 +3776,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
           <p data-i18n="gx_edu_zero">O nível <strong>Zero Gamma</strong> é onde a exposição total muda de positiva para negativa. <strong>Acima do zero gamma</strong>, os market makers compram nas quedas e vendem nas altas (suprimem volatilidade). <strong>Abaixo do zero gamma</strong>, fazem o oposto e AMPLIFICAM os movimentos. É o nível mais importante do dia.</p>
         </article>
         <article class="gx-edu-card">
-          <h3 data-i18n="gx_edu_walls_title">Put Wall & Call Wall</h3>
+          <h3 data-i18n="gx_edu_walls_title">Put Wall &amp; Call Wall</h3>
           <p data-i18n="gx_edu_walls">A <strong>Put Wall</strong> é o strike com a maior concentração de puts, funciona como <strong>suporte forte</strong> porque os market makers compram o ativo nesse nível. A <strong>Call Wall</strong> é o oposto, maior concentração de calls, funciona como <strong>resistência</strong>.</p>
         </article>
         <article class="gx-edu-card">
@@ -3784,11 +3784,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
           <p data-i18n="gx_edu_hvl">O <strong>HVL</strong> é o strike com o maior volume absoluto de gamma. O preço tende a "grudar" nesse nível durante o dia porque os market makers estão constantemente fazendo hedge ali. Se o preço rompe o HVL com força, geralmente sinaliza um <strong>movimento direcional forte</strong>.</p>
         </article>
         <article class="gx-edu-card">
-          <h3 data-i18n="gx_edu_posneg_title">GEX Positivo vs Negativo</h3>
+          <h3 data-i18n="gx_edu_posneg_title">Positive vs Negative GEX</h3>
           <p data-i18n="gx_edu_posneg">Positive GEX (total > 0): Market is "pinned", market makers absorb moves. Tight range days. Negative GEX (total < 0): Market is "loose", moves are amplified. High volatility days. This is when stops get swept and trends accelerate.</p>
         </article>
         <article class="gx-edu-card">
-          <h3 data-i18n="gx_edu_use_title">Como usar no trading?</h3>
+          <h3 data-i18n="gx_edu_use_title">How to use in trading?</h3>
           <p data-i18n="gx_edu_use">Use o <strong>Zero Gamma</strong> como nível-chave do dia. Se o preço está acima, opere reversões à média. Se abaixo, opere rompimentos e tendências. A <strong>Put Wall</strong> é suporte confiável e a <strong>Call Wall</strong> é resistência. Combine com sua análise técnica para aumentar a precisão.</p>
         </article>
       </div>
@@ -3800,8 +3800,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <div class="page" id="page-plataformas">
   <div class="plat-page">
     <div class="plat-hero">
-      <h2 data-i18n="plat_titulo">Plataformas de Trading</h2>
-      <p data-i18n="plat_sub">Ferramentas profissionais usadas pelos melhores traders de prop firms. Compare e escolha a ideal para seu estilo.</p>
+      <h2 data-i18n="plat_titulo">Trading Platforms</h2>
+      <p data-i18n="plat_sub">Professional tools used by top traders at prop firms. Compare them and choose the one that best suits your trading style.</p>
     </div>
     <div class="plat-grid" id="plat-grid"></div>
   </div>
@@ -3811,12 +3811,12 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <div class="page" id="page-heatmap">
   <div class="heatmap-wrap">
     <div class="heatmap-hd">
-      <div class="heatmap-title" id="hm-title"><span data-i18n="hm_mapa_calor">Mapa de Calor —</span> S&P 500</div>
+      <div class="heatmap-title" id="hm-title"><span data-i18n="hm_mapa_calor">Heat Map, </span> S&P 500</div>
       <div class="heatmap-filters">
         <button class="cal-f active" id="hm-btn-spx" onclick="loadHeatmap('SPX500',this)">S&P 500</button>
         <button class="cal-f" id="hm-btn-ndx" onclick="loadHeatmap('NASDAQ100',this)">Nasdaq 100</button>
         <button class="cal-f" id="hm-btn-world" onclick="loadHeatmap('WORLD',this)">Global</button>
-        <button class="cal-f" id="hm-btn-crypto" data-i18n="hm_cripto" onclick="loadHeatmap('CRYPTO',this)">Cripto</button>
+        <button class="cal-f" id="hm-btn-crypto" data-i18n="hm_cripto" onclick="loadHeatmap('CRYPTO',this)">Crypto</button>
       </div>
     </div>
     <iframe id="heatmap-frame" class="heatmap-frame" src="https://www.tradingview.com/embed-widget/stock-heatmap/?locale=br#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22sector%22%2C%22locale%22%3A%22br%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Atrue%2C%22isDataSetEnabled%22%3Atrue%2C%22isZoomEnabled%22%3Atrue%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D" frameborder="0" allowtransparency="true" scrolling="no" loading="lazy"></iframe>
@@ -3825,7 +3825,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 
 <!-- GUIDES -->
 <div class="page" id="page-guides">
- <div class="sec" id="guides-header"><div class="sec-hd" data-i18n="guides_titulo">Guias & Educação</div></div>
+ <div class="sec" id="guides-header"><div class="sec-hd" data-i18n="guides_titulo">Guides &amp; Education</div></div>
  <div class="guides-grid" id="guides-grid"></div>
  <div class="guide-article" id="guide-article"></div>
 </div>
@@ -3834,10 +3834,10 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <div class="page" id="page-blog">
  <div class="sec" id="blog-header"><div class="sec-hd" data-i18n="nav_blog">Blog</div></div>
  <div class="blog-filters" id="blog-filters">
-  <button class="bf-btn active" onclick="filterBlog('all',this)" data-i18n="blog_filtro_todos">Todos</button>
-  <button class="bf-btn bf-green" onclick="filterBlog('iniciante',this)" data-i18n="blvl_iniciante">Iniciante</button>
-  <button class="bf-btn bf-yellow" onclick="filterBlog('intermediario',this)" data-i18n="blvl_intermediario">Intermediário</button>
-  <button class="bf-btn bf-red" onclick="filterBlog('profissional',this)" data-i18n="blvl_profissional">Profissional</button>
+  <button class="bf-btn active" onclick="filterBlog('all',this)" data-i18n="blog_filtro_todos">All</button>
+  <button class="bf-btn bf-green" onclick="filterBlog('iniciante',this)" data-i18n="blvl_iniciante">Beginner</button>
+  <button class="bf-btn bf-yellow" onclick="filterBlog('intermediario',this)" data-i18n="blvl_intermediario">Intermediate</button>
+  <button class="bf-btn bf-red" onclick="filterBlog('profissional',this)" data-i18n="blvl_profissional">Professional</button>
  </div>
  <div class="blog-grid" id="blog-grid"></div>
  <div class="blog-article" id="blog-article"></div>
@@ -3848,30 +3848,30 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <!-- Gate: shown if not registered -->
  <div class="calc-gate" id="calc-gate">
    <div class="calc-gate-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-   <div class="calc-gate-title" data-i18n="calc_titulo">Calculadora de Tamanho de Posição</div>
-   <div class="calc-gate-sub" data-i18n="calc_gate_sub">Calcule o tamanho ideal da sua posição. Ferramenta exclusiva para membros cadastrados.</div>
+   <div class="calc-gate-title" data-i18n="calc_titulo">Position Size Calculator</div>
+   <div class="calc-gate-sub" data-i18n="calc_gate_sub">Calculate the optimal size of your position. Exclusive tool for registered members.</div>
    <div class="calc-gate-form">
-     <div class="calc-gate-field"><label data-i18n="calc_gate_label_nome">Nome</label><input type="text" id="cg-name" data-i18n-placeholder="calc_gate_placeholder_nome" placeholder="Seu nome"></div>
-     <div class="calc-gate-field"><label data-i18n="calc_gate_label_email">E-mail</label><input type="email" id="cg-email" data-i18n-placeholder="calc_gate_placeholder_email" placeholder="email@example.com"></div>
+     <div class="calc-gate-field"><label data-i18n="calc_gate_label_nome">Name</label><input type="text" id="cg-name" data-i18n-placeholder="calc_gate_placeholder_nome" placeholder="Seu nome"></div>
+     <div class="calc-gate-field"><label data-i18n="calc_gate_label_email">Email</label><input type="email" id="cg-email" data-i18n-placeholder="calc_gate_placeholder_email" placeholder="email@example.com"></div>
    </div>
-   <button class="calc-gate-btn" onclick="unlockCalc()" data-i18n="calc_gate_btn">Desbloquear →</button>
-   <div style="font-size:11px;color:var(--t3);margin-top:10px;" data-i18n="calc_gate_privacidade">Seus dados são privados. Nenhum cartão necessário.</div>
+   <button class="calc-gate-btn" onclick="unlockCalc()" data-i18n="calc_gate_btn">Unlock →</button>
+   <div style="font-size:11px;color:var(--t3);margin-top:10px;" data-i18n="calc_gate_privacidade">Your information is private. No credit card required.</div>
  </div>
  <!-- Calculator: shown after registration -->
  <div class="calc-wrap" id="calc-content">
- <div class="calc-h" data-i18n="calc_titulo">Calculadora de Tamanho de Posição</div>
- <div class="calc-sub" data-i18n="calc_sub_ps">Calcule o tamanho ideal da posição baseado no risco da sua conta</div>
+ <div class="calc-h" data-i18n="calc_titulo">Position Size Calculator</div>
+ <div class="calc-sub" data-i18n="calc_sub_ps">Calculate the optimal position size based on your account's risk tolerance</div>
  <div class="calc-tabs">
- <button class="calc-tab active" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')" data-i18n="firm_type_futuros">Futuros</button>
+ <button class="calc-tab active" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')" data-i18n="firm_type_futuros">Futures</button>
  <button class="calc-tab" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Forex</button>
- <button class="calc-tab" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')" data-i18n="calc_tab_acoes">Ações</button>
+ <button class="calc-tab" onclick="this.closest('.calc-tabs').querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')" data-i18n="calc_tab_acoes">Stocks</button>
  </div>
  <div class="calc-form">
- <div class="cf"><label data-i18n="calc_saldo">Saldo ($)</label><input type="number" id="ps-bal" value="100000" oninput="calcPS()"></div>
- <div class="cf"><label data-i18n="calc_risco">Risco (%)</label><input type="number" id="ps-risk" value="1" step="0.1" oninput="calcPS()"></div>
- <div class="cf"><label data-i18n="calc_entrada">Entrada</label><input type="number" id="ps-ent" value="4500" step="0.25" oninput="calcPS()"></div>
+ <div class="cf"><label data-i18n="calc_saldo">Balance ($)</label><input type="number" id="ps-bal" value="100000" oninput="calcPS()"></div>
+ <div class="cf"><label data-i18n="calc_risco">Risk (%)</label><input type="number" id="ps-risk" value="1" step="0.1" oninput="calcPS()"></div>
+ <div class="cf"><label data-i18n="calc_entrada">Home</label><input type="number" id="ps-ent" value="4500" step="0.25" oninput="calcPS()"></div>
  <div class="cf"><label>Stop Loss</label><input type="number" id="ps-sl" value="4490" step="0.25" oninput="calcPS()"></div>
- <div class="cf"><label data-i18n="calc_instr">Instrumento</label>
+ <div class="cf"><label data-i18n="calc_instr">Instrument</label>
  <select id="ps-instr" onchange="calcPS()">
  <option value="50">ES (S&P 500), $50/pt</option>
  <option value="20">NQ (Nasdaq), $20/pt</option>
@@ -3886,10 +3886,10 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  </div>
  <div class="calc-res">
  <div class="res-grid">
- <div class="ri"><div class="rl" data-i18n="calc_contratos">Contratos</div><div class="rv2" id="r-ct">—</div></div>
- <div class="ri"><div class="rl" data-i18n="calc_risco_res">Risco ($)</div><div class="rv2" id="r-rs" style="color:var(--red)">—</div></div>
+ <div class="ri"><div class="rl" data-i18n="calc_contratos">Contracts</div><div class="rv2" id="r-ct">—</div></div>
+ <div class="ri"><div class="rl" data-i18n="calc_risco_res">Risk ($)</div><div class="rv2" id="r-rs" style="color:var(--red)">—</div></div>
  <div class="ri"><div class="rl">R:R</div><div class="rv2" id="r-rr">—</div></div>
- <div class="ri"><div class="rl" data-i18n="calc_lucro_pot">Lucro Pot.</div><div class="rv2" id="r-lp" style="color:var(--green)">—</div></div>
+ <div class="ri"><div class="rl" data-i18n="calc_lucro_pot">Potential Profit</div><div class="rv2" id="r-lp" style="color:var(--green)">—</div></div>
  </div>
  </div>
  </div>
@@ -3909,7 +3909,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
    <div id="live-gate-static">
     <div class="da-gate-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
     <h2 style="font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;" data-i18n="live_titulo">Live Trading Room</h2>
-    <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px;" data-i18n="live_hero_desc">Conteúdo exclusivo em tempo real para usuários cadastrados.</p>
+    <p style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px;" data-i18n="live_hero_desc">Exclusive real-time content for Pro subscribers.</p>
    </div>
    <div id="live-gate-content"></div>
   </div>
@@ -3922,29 +3922,29 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
    <div style="text-align:center;margin-bottom:32px;">
     <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.15);margin-bottom:16px;">
      <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);animation:livePulse 1.5s ease infinite;"></div>
-     <span style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;" data-i18n="live_em_breve">Em Breve</span>
+     <span style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;" data-i18n="live_em_breve">Coming Soon</span>
     </div>
     <h2 style="font-size:28px;font-weight:800;letter-spacing:-.6px;margin-bottom:8px;line-height:1.1;">Live Trading <span style="color:var(--gold);">Room</span></h2>
-    <p style="font-size:13px;color:var(--t2);line-height:1.7;max-width:480px;margin:0 auto;" data-i18n="live_disponivel_em">O Live Trading Room estara disponivel a partir de 20 de abril de 2026. Estamos finalizando todos os detalhes para entregar a melhor experiencia.</p>
+    <p style="font-size:13px;color:var(--t2);line-height:1.7;max-width:480px;margin:0 auto;" data-i18n="live_disponivel_em">The Live Trading Room will be available from April 20, 2026. We are finalizing all the details to deliver the best experience.</p>
    </div>
 
    <!-- Countdown cards -->
    <div class="lv-cd-grid" id="live-countdown">
     <div class="lv-cd-card">
      <div class="lv-cd-num" style="color:var(--gold);" id="lv-cd-days">--</div>
-     <div class="lv-cd-lbl" data-i18n="live_dias">Dias</div>
+     <div class="lv-cd-lbl" data-i18n="live_dias">Days</div>
     </div>
     <div class="lv-cd-card">
      <div class="lv-cd-num" id="lv-cd-hours">--</div>
-     <div class="lv-cd-lbl" data-i18n="live_horas">Horas</div>
+     <div class="lv-cd-lbl" data-i18n="live_horas">Hours</div>
     </div>
     <div class="lv-cd-card">
      <div class="lv-cd-num" id="lv-cd-mins">--</div>
-     <div class="lv-cd-lbl" data-i18n="live_minutos">Minutos</div>
+     <div class="lv-cd-lbl" data-i18n="live_minutos">Minutes</div>
     </div>
     <div class="lv-cd-card">
      <div class="lv-cd-num" id="lv-cd-secs">--</div>
-     <div class="lv-cd-lbl" data-i18n="live_segundos">Segundos</div>
+     <div class="lv-cd-lbl" data-i18n="live_segundos">Seconds</div>
     </div>
    </div>
 
@@ -3955,8 +3955,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
      </div>
      <div class="lv-feat-body">
-      <div class="lv-feat-title" data-i18n="live_feat_stream">Streaming ao Vivo</div>
-      <div class="lv-feat-desc" data-i18n="live_feat_stream_desc">Conteúdo exclusivo em tempo real durante o horário de pregão para membros VIP.</div>
+      <div class="lv-feat-title" data-i18n="live_feat_stream">Live Streaming</div>
+      <div class="lv-feat-desc" data-i18n="live_feat_stream_desc">Exclusive real-time content during market hours for VIP members.</div>
      </div>
     </div>
     <div class="lv-feat-card">
@@ -3964,8 +3964,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
      </div>
      <div class="lv-feat-body">
-      <div class="lv-feat-title" data-i18n="live_feat_signals">Insights de Mercado</div>
-      <div class="lv-feat-desc" data-i18n="live_feat_signals_desc">Níveis-chave e contexto de mercado atualizados em tempo real para futuros.</div>
+      <div class="lv-feat-title" data-i18n="live_feat_signals">Market Insights</div>
+      <div class="lv-feat-desc" data-i18n="live_feat_signals_desc">Key levels and market context updated in real time for futures.</div>
      </div>
     </div>
     <div class="lv-feat-card">
@@ -3973,23 +3973,23 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
      </div>
      <div class="lv-feat-body">
-      <div class="lv-feat-title" data-i18n="live_feat_community">Comunidade VIP</div>
-      <div class="lv-feat-desc" data-i18n="live_feat_community_desc">Espaço exclusivo para membros compartilharem ideias e discutirem o mercado.</div>
+      <div class="lv-feat-title" data-i18n="live_feat_community">VIP Community</div>
+      <div class="lv-feat-desc" data-i18n="live_feat_community_desc">Exclusive members-only space for sharing ideas and market discussions.</div>
      </div>
     </div>
    </div>
 
    <!-- Stats preview -->
    <div class="live-stats" style="margin-bottom:24px;">
-    <div class="ls-card"><div class="ls-lbl" data-i18n="live_assistindo">Assistindo</div><div class="ls-val" id="lv-viewers">—</div></div>
-    <div class="ls-card"><div class="ls-lbl" data-i18n="live_sinais">Insights hoje</div><div class="ls-val" style="color:var(--green);">—</div></div>
-    <div class="ls-card"><div class="ls-lbl" data-i18n="live_status">Status</div><div class="ls-val" style="color:var(--gold);font-size:13px;" data-i18n="live_em_breve">Em Breve</div></div>
+    <div class="ls-card"><div class="ls-lbl" data-i18n="live_assistindo">Watching</div><div class="ls-val" id="lv-viewers">—</div></div>
+    <div class="ls-card"><div class="ls-lbl" data-i18n="live_sinais">Insights today</div><div class="ls-val" style="color:var(--green);">—</div></div>
+    <div class="ls-card"><div class="ls-lbl" data-i18n="live_status">Status</div><div class="ls-val" style="color:var(--gold);font-size:13px;" data-i18n="live_em_breve">Coming Soon</div></div>
    </div>
 
    <!-- Risk disclaimer -->
    <div class="live-risk">
-    <strong class="live-risk-title" data-i18n="live_risk_title">Aviso de Risco</strong><br>
-    <span data-i18n="live_risk_text">O conteúdo apresentado no Live Room é exclusivamente educacional e informativo. Não constitui recomendação de investimento, consultoria financeira ou incentivo à compra ou venda de ativos. Operar mercados futuros envolve risco significativo de perda. Resultados passados não garantem resultados futuros. Opere apenas com capital que você pode perder.</span>
+    <strong class="live-risk-title" data-i18n="live_risk_title">Risk Disclaimer</strong><br>
+    <span data-i18n="live_risk_text">The content presented in the Live Room is exclusively educational and informational. It does not constitute investment advice, financial consulting, or an incentive to buy or sell assets. Trading futures markets involves significant risk of loss. Past results do not guarantee future results. Only trade with capital you can afford to lose.</span>
    </div>
 
   </div>
@@ -3999,8 +3999,8 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- FAQ -->
 <div class="page" id="page-faq">
  <div style="max-width:720px;margin:0 auto;padding:20px;">
-  <h2 style="font-size:22px;font-weight:800;margin-bottom:6px;" data-i18n="faq_titulo">Perguntas Frequentes</h2>
-  <p style="font-size:13px;color:var(--t2);margin-bottom:24px;" data-i18n="faq_sub">Tire suas dúvidas sobre cupons, prop firms e como usar o Markets Coupons.</p>
+  <h2 style="font-size:22px;font-weight:800;margin-bottom:6px;" data-i18n="faq_titulo">Frequently Asked Questions</h2>
+  <p style="font-size:13px;color:var(--t2);margin-bottom:24px;" data-i18n="faq_sub">Get answers to your questions about coupons, prop firms, and how to use Markets Coupons.</p>
   <div id="faq-list"></div>
  </div>
 </div>
@@ -4011,11 +4011,11 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     <div class="awards-hero">
       <div class="awards-year-tag">2026</div>
       <h2 class="awards-title"><span style="-webkit-text-fill-color:initial;background:none;">Markets</span> <em style="-webkit-text-fill-color:var(--gold);background:none;font-style:normal;">Coupons</em> Awards</h2>
-      <p class="awards-sub" data-i18n="aw_sub">Reconhecendo as melhores prop firms com base em dados reais de avaliações, descontos, condições e satisfação dos traders.</p>
+      <p class="awards-sub" data-i18n="aw_sub">Recognizing the best prop firms based on real data regarding ratings, rebates, trading conditions, and trader satisfaction.</p>
       <div class="awards-stats">
-        <div class="aw-stat"><div class="aw-stat-n">9</div><div class="aw-stat-l" data-i18n="aw_stat_firmas">Firmas analisadas</div></div>
-        <div class="aw-stat"><div class="aw-stat-n">210K+</div><div class="aw-stat-l" data-i18n="aw_stat_avaliacoes">Avaliações consideradas</div></div>
-        <div class="aw-stat"><div class="aw-stat-n">8</div><div class="aw-stat-l" data-i18n="aw_stat_categorias">Categorias premiadas</div></div>
+        <div class="aw-stat"><div class="aw-stat-n">9</div><div class="aw-stat-l" data-i18n="aw_stat_firmas">Companies analyzed</div></div>
+        <div class="aw-stat"><div class="aw-stat-n">210K+</div><div class="aw-stat-l" data-i18n="aw_stat_avaliacoes">Reviews taken into account</div></div>
+        <div class="aw-stat"><div class="aw-stat-n">8</div><div class="aw-stat-l" data-i18n="aw_stat_categorias">Award-winning categories</div></div>
       </div>
     </div>
     <div class="awards-grid" id="awards-grid"></div>
@@ -4070,9 +4070,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- PRIVACY POLICY -->
 <div class="page" id="page-privacy">
  <div class="policy-content">
-  <button class="policy-back" onclick="go('home')">← <span data-i18n="policy_voltar">Voltar</span></button>
-  <h2 data-i18n="priv_titulo">Política de Privacidade</h2>
-  <p data-i18n="priv_atualizado">Última atualização: Abril 2026</p>
+  <button class="policy-back" onclick="go('home')">← <span data-i18n="policy_voltar">Back</span></button>
+  <h2 data-i18n="priv_titulo">Privacy Policy</h2>
+  <p data-i18n="priv_atualizado">Last updated: May 2026</p>
   <div id="privacy-body"></div>
  </div>
 </div>
@@ -4080,9 +4080,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- TERMS OF USE -->
 <div class="page" id="page-terms">
  <div class="policy-content">
-  <button class="policy-back" onclick="go('home')">← <span data-i18n="policy_voltar">Voltar</span></button>
-  <h2 data-i18n="terms_titulo">Termos de Uso</h2>
-  <p data-i18n="terms_atualizado">Última atualização: Abril 2026</p>
+  <button class="policy-back" onclick="go('home')">← <span data-i18n="policy_voltar">Back</span></button>
+  <h2 data-i18n="terms_titulo">Terms of Use</h2>
+  <p data-i18n="terms_atualizado">Last updated: May 2026</p>
   <div id="terms-body"></div>
  </div>
 </div>
@@ -4090,9 +4090,9 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 <!-- COOKIE POLICY -->
 <div class="page" id="page-cookies">
  <div class="policy-content">
-  <button class="policy-back" onclick="go('home')">← <span data-i18n="policy_voltar">Voltar</span></button>
-  <h2 data-i18n="cookies_titulo">Política de Cookies</h2>
-  <p data-i18n="cookies_atualizado">Última atualização: Abril 2026</p>
+  <button class="policy-back" onclick="go('home')">← <span data-i18n="policy_voltar">Back</span></button>
+  <h2 data-i18n="cookies_titulo">Cookie Policy</h2>
+  <p data-i18n="cookies_atualizado">Last updated: May 2026</p>
   <div id="cookies-body"></div>
  </div>
 </div>
@@ -4101,14 +4101,14 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <div class="ft-grid">
  <div>
  <div class="ft-logo"><svg class="nav-logo-icon" width="28" height="28" viewBox="0 0 50 50" fill="none"><defs><linearGradient id="lg2" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lg2)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#lg2)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#lg2)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#lg2)"/></svg><em>Markets</em> Coupons</div>
- <p class="ft-desc" data-i18n="ft_desc">Cupons verificados para as melhores prop firms. Ferramentas profissionais para traders de futuros e forex.</p>
+ <p class="ft-desc" data-i18n="ft_desc">Verified coupons for the best prop firms. Professional tools for futures and forex traders.</p>
  <!-- Newsletter -->
  <div class="ft-newsletter" style="margin:16px 0;">
    <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.35);margin-bottom:8px;" data-i18n="ft_newsletter_label">Newsletter</div>
-   <div style="font-size:12px;color:var(--t2);margin-bottom:8px;line-height:1.5;" data-i18n="ft_newsletter_desc">Receba as melhores promos e dicas de Prop Firms toda semana.</div>
+   <div style="font-size:12px;color:var(--t2);margin-bottom:8px;line-height:1.5;" data-i18n="ft_newsletter_desc">Get the best Prop Firm deals and tips every week.</div>
    <form onsubmit="return subscribeNewsletter(event)" style="display:flex;gap:6px;">
      <input type="email" id="ft-nl-email" required placeholder="seu@email.com" style="flex:1;min-width:0;padding:8px 12px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:7px;color:#fff;font-size:12px;font-family:var(--f);outline:none;transition:.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(107,182,201,.18)'">
-     <button type="submit" id="ft-nl-btn" style="padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);white-space:nowrap;transition:.2s;" data-i18n="ft_newsletter_btn">Inscrever</button>
+     <button type="submit" id="ft-nl-btn" style="padding:8px 16px;background:var(--gold);color:#07090D;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);white-space:nowrap;transition:.2s;" data-i18n="ft_newsletter_btn">Subscribe</button>
    </form>
    <div id="ft-nl-msg" style="font-size:10px;margin-top:6px;display:none;"></div>
  </div>
@@ -4152,12 +4152,12 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <a href="https://app.goatfundedfutures.com/sign-up?referral_id=MARKET" target="_blank" rel="noopener noreferrer">Goat Funded Futures</a>
  </div>
  <div class="fc-col">
- <h2 class="ft-h" data-i18n="ft_col_ferramentas">Ferramentas</h2>
+ <h2 class="ft-h" data-i18n="ft_col_ferramentas">Tools</h2>
  <a href="/calculator" onclick="event.preventDefault();go('calc')">Position Size</a>
- <a href="/quiz" onclick="event.preventDefault();go('quiz')" data-i18n="ft_quiz">Quiz de Firma</a>
- <a href="/compare" onclick="event.preventDefault();go('compare')" data-i18n="ft_comparador">Comparador</a>
- <a href="/calendar" onclick="event.preventDefault();go('calendar')" data-i18n="ft_calendario">Calendário</a>
- <a href="/indicators" onclick="event.preventDefault();go('indicators')" data-i18n="ft_indicadores">Indicadores</a>
+ <a href="/quiz" onclick="event.preventDefault();go('quiz')" data-i18n="ft_quiz">Company Quiz</a>
+ <a href="/compare" onclick="event.preventDefault();go('compare')" data-i18n="ft_comparador">Comparison Tool</a>
+ <a href="/calendar" onclick="event.preventDefault();go('calendar')" data-i18n="ft_calendario">Calendar</a>
+ <a href="/indicators" onclick="event.preventDefault();go('indicators')" data-i18n="ft_indicadores">Indicators</a>
  <a href="/gamma" onclick="event.preventDefault();go('gamma')" data-i18n="ft_gamma">Gamma (GEX)</a>
  </div>
  <div class="fc-col">
@@ -4166,52 +4166,52 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <a href="https://www.instagram.com/marketscoupons" target="_blank" rel="noopener noreferrer">Instagram</a>
  <a href="https://x.com/marketscoupons" target="_blank" rel="noopener noreferrer">X</a>
  <a href="https://www.threads.com/@marketscoupons" target="_blank" rel="noopener noreferrer">Threads</a>
- <a href="/guides" onclick="event.preventDefault();go('guides')" data-i18n="ft_guias">Guias</a>
+ <a href="/guides" onclick="event.preventDefault();go('guides')" data-i18n="ft_guias">Guides</a>
  <a href="/blog" onclick="event.preventDefault();go('blog')">Blog</a>
  <a href="/live" onclick="event.preventDefault();go('live')">Live Room</a>
  <a href="/#faq" onclick="event.preventDefault();go('faq')">FAQ</a>
  </div>
  <div class="fc-col">
  <h2 class="ft-h" data-i18n="ft_col_legal">Legal</h2>
- <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ft_privacidade">Política de Privacidade</a>
- <a href="/terms" onclick="event.preventDefault();go('terms')" data-i18n="ft_termos">Termos de Uso</a>
- <a href="/privacy#cookies" onclick="event.preventDefault();go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
+ <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ft_privacidade">Privacy Policy</a>
+ <a href="/terms" onclick="event.preventDefault();go('terms')" data-i18n="ft_termos">Terms of Use</a>
+ <a href="/privacy#cookies" onclick="event.preventDefault();go('cookies')" data-i18n="ft_cookies">Cookie Policy</a>
  </div>
  </div>
  <div class="ft-bot">
-  <span data-i18n="ft_legal">Todas as informações têm fins educacionais. Cupons sujeitos a alteração. Trading envolve risco. Termos, preços e benefícios podem ser alterados a qualquer momento sem aviso prévio. © 2025 Markets Coupons.</span>
+  <span data-i18n="ft_legal">All information is provided for educational purposes only. Coupons are subject to change. Trading involves risk. Terms, prices, and benefits may be changed at any time without prior notice. © 2025 Markets Coupons.</span>
   <div class="ft-links">
-   <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ft_privacidade">Política de Privacidade</a>
-   <a href="/terms" onclick="event.preventDefault();go('terms')" data-i18n="ft_termos">Termos de Uso</a>
-   <a href="/privacy#cookies" onclick="event.preventDefault();go('cookies')" data-i18n="ft_cookies">Política de Cookies</a>
+   <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ft_privacidade">Privacy Policy</a>
+   <a href="/terms" onclick="event.preventDefault();go('terms')" data-i18n="ft_termos">Terms of Use</a>
+   <a href="/privacy#cookies" onclick="event.preventDefault();go('cookies')" data-i18n="ft_cookies">Cookie Policy</a>
   </div>
  </div>
  <div class="ft-disclaimers" style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(107,182,201,.18);font-size:12px;line-height:1.7;color:var(--t3);">
   <div style="margin-bottom:16px;">
-   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_risco_title">Declaração de risco:</strong>
-   <p style="margin:6px 0 0;" data-i18n="disc_risco">A negociação de futuros e forex acarreta riscos substanciais e não é para qualquer investidor. Um investidor pode potencialmente perder tudo ou mais do que o investimento inicial. Capital de risco é o dinheiro que pode ser perdido sem comprometer a segurança financeira ou o estilo de vida da pessoa. Apenas o capital de risco deve ser usado para negociação, e apenas aqueles com capital de risco suficiente devem considerar a negociação. Resultados passados não são necessariamente indicativos de resultados futuros.</p>
+   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_risco_title">Risk Disclosure:</strong>
+   <p style="margin:6px 0 0;" data-i18n="disc_risco">Trading futures and forex involves substantial risk and is not for every investor. An investor could potentially lose all or more than the initial investment. Risk capital is money that can be lost without jeopardizing financial security or lifestyle. Only risk capital should be used for trading, and only those with sufficient risk capital should consider trading. Past performance is not necessarily indicative of future results.</p>
   </div>
   <div style="margin-bottom:16px;">
-   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_simulados_title">Declaração de resultados simulados:</strong>
-   <p style="margin:6px 0 0;" data-i18n="disc_simulados">Os resultados obtidos em simulações possuem muitas limitações inerentes. Nenhuma premissa deve ser feita de que qualquer conta terá resultados semelhantes aos apresentados em simulação. Existem diferenças frequentes entre os resultados de simulação e os resultados reais. A negociação simulada não envolve risco financeiro e nenhum registro de negociação simulada pode explicar o risco financeiro da negociação real.</p>
+   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_simulados_title">Hypothetical Performance Disclosure:</strong>
+   <p style="margin:6px 0 0;" data-i18n="disc_simulados">Hypothetical performance results have many inherent limitations. No representation is being made that any account will or is likely to achieve results similar to those shown. There are frequently sharp differences between hypothetical results and actual results. Simulated trading does not involve financial risk, and no simulated trading record can completely account for the impact of financial risk in actual trading.</p>
   </div>
   <div style="margin-bottom:16px;">
-   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_depoimentos_title">Divulgação de depoimentos:</strong>
-   <p style="margin:6px 0 0;" data-i18n="disc_depoimentos">Os depoimentos que aparecem neste site podem não ser representativos de outros clientes e não são uma garantia de desempenho ou sucesso futuro.</p>
+   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_depoimentos_title">Testimonial Disclosure:</strong>
+   <p style="margin:6px 0 0;" data-i18n="disc_depoimentos">Testimonials appearing on this site may not be representative of other clients or customers and are not a guarantee of future performance or success.</p>
   </div>
   <div>
-   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_sala_title">Divulgação de Sala de Trade Ao Vivo:</strong>
-   <p style="margin:6px 0 0;" data-i18n="disc_sala">Esta apresentação é apenas para fins educacionais e as opiniões expressas são exclusivamente do apresentador. Todas as operações apresentadas devem ser consideradas hipotéticas e não devem ser esperadas como replicáveis em uma conta de negociação real.</p>
+   <strong style="color:var(--t2);font-size:12px;" data-i18n="disc_sala_title">Live Trading Room Disclosure:</strong>
+   <p style="margin:6px 0 0;" data-i18n="disc_sala">This presentation is for educational purposes only and the opinions expressed are solely those of the presenter. All trades presented should be considered hypothetical and should not be expected to be replicated in a real trading account.</p>
   </div>
  </div>
 </footer>
 
 <!-- COOKIE CONSENT BANNER -->
 <div class="ck-banner" id="ck-banner" style="display:none;">
- <div class="ck-text"><span data-i18n="ck_texto">Usamos cookies para analytics e melhorar sua experiência. Ao aceitar, você concorda com nossa</span> <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ck_link_privacidade">Política de Privacidade</a>.</div>
+ <div class="ck-text"><span data-i18n="ck_texto">We use cookies for analytics and to improve your experience. By accepting, you agree to our</span> <a href="/privacy" onclick="event.preventDefault();go('privacy')" data-i18n="ck_link_privacidade">Privacy Policy</a>.</div>
  <div class="ck-btns">
-  <button class="ck-reject" onclick="rejectCookies()" data-i18n="ck_recusar">Recusar</button>
-  <button class="ck-accept" onclick="acceptCookies()" data-i18n="ck_aceitar">Aceitar</button>
+  <button class="ck-reject" onclick="rejectCookies()" data-i18n="ck_recusar">Decline</button>
+  <button class="ck-accept" onclick="acceptCookies()" data-i18n="ck_aceitar">Accept</button>
  </div>
 </div>
 
@@ -4226,14 +4226,14 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
  <button class="bot-x" onclick="toggleBot()">&#10005;</button>
  </div>
  <div class="bot-msgs" id="bot-msgs">
- <div class="bmsg bot"><div class="bbbl" data-i18n="bot_welcome" data-i18n-html="1">Yo, trader!<br>Before we start, what should I call you?<br><br>I'm <strong>Max</strong>. I can help you with everything about prop firms, coupons and rules, even the ones almost nobody reads.<br><br>Feel free to pick an option below or type your question.</div><span class="btime" data-i18n="bot_now">agora</span></div>
+ <div class="bmsg bot"><div class="bbbl" data-i18n="bot_welcome" data-i18n-html="1">Yo, trader!<br>Before we start, what should I call you?<br><br>I'm <strong>Max</strong>. I can help you with everything about prop firms, coupons and rules, even the ones almost nobody reads.<br><br>Feel free to pick an option below or type your question.</div><span class="btime" data-i18n="bot_now">now</span></div>
  </div>
  <div class="bot-typing" id="bot-typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>
  <div class="bot-quick" id="bot-quick">
- <button class="bq" onclick="qmsg(this.textContent,'bot_q_firm')" data-i18n="bot_q_firm">Qual a melhor prop firm pra mim?</button>
- <button class="bq" onclick="qmsg(this.textContent,'bot_q_coupons')" data-i18n="bot_q_coupons">Tem cupom de desconto agora?</button>
- <button class="bq" onclick="qmsg(this.textContent,'bot_q_risk')" data-i18n="bot_q_risk">Como passar na avaliação?</button>
- <button class="bq" onclick="qmsg(this.textContent,'bot_q_tips')" data-i18n="bot_q_tips">Quais são as regras mais importantes?</button>
+ <button class="bq" onclick="qmsg(this.textContent,'bot_q_firm')" data-i18n="bot_q_firm">Which prop firm is best for me?</button>
+ <button class="bq" onclick="qmsg(this.textContent,'bot_q_coupons')" data-i18n="bot_q_coupons">Any discount coupon right now?</button>
+ <button class="bq" onclick="qmsg(this.textContent,'bot_q_risk')" data-i18n="bot_q_risk">How do I pass the evaluation?</button>
+ <button class="bq" onclick="qmsg(this.textContent,'bot_q_tips')" data-i18n="bot_q_tips">What are the most important rules?</button>
  </div>
  <div class="bot-inp-row">
  <input class="bot-inp" id="bot-inp" data-i18n-placeholder="bot_placeholder" placeholder="Type your question..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendBot();}">
