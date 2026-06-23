@@ -1330,10 +1330,8 @@ html[dir="rtl"] .pain-list li, html[dir="rtl"] .steps li { direction: rtl; }
     if (p && SUPPORTED.includes(p)) return p;
     // 3) localStorage
     try { const ls = localStorage.getItem('vf_lang'); if (ls && SUPPORTED.includes(ls)) return ls; } catch(e){}
-    // 4) navigator
-    const n = (navigator.language || 'pt').toLowerCase().slice(0,2);
-    if (SUPPORTED.includes(n)) return n;
-    return 'en'; // default to EN for global audience
+    // EN-default (LEI): sem navigator.language, raiz = inglês. Idioma só via path /xx/, ?lang= ou escolha salva.
+    return 'en';
   }
   function applyLang(lang){
     if (!window.VF_I18N || !window.VF_I18N[lang]) return;

@@ -811,8 +811,8 @@ function detectLang() {
     const stored = localStorage.getItem('mc_lang');
     if (stored && I18N[stored]) return stored;
   } catch(e) {}
-  const nav = (navigator.language || 'en').toLowerCase().split('-')[0];
-  return I18N[nav] ? nav : 'en';
+  // EN-default (LEI): raiz sempre inglês, NUNCA navigator.language. Idioma só via path /xx/, ?lang= ou escolha salva.
+  return 'en';
 }
 const LANG = detectLang();
 Object.assign(I18N.en, { lpb_eyebrow:"Coupon alerts in the app", lpb_h:"The best coupon hits the app <em>first</em>", lpb_sub:"We ping you the moment a new coupon drops or a discount goes up. Free, and you can leave anytime.", lpb_cta:"Enable alerts", lpb_foot:"iPhone and Android · 1 minute" });

@@ -104,7 +104,7 @@ h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;
   var to = p.get('to') || '';
   var coupon = p.get('coupon') || '';
   var firmName = p.get('name') || '';
-  var i18n = (navigator.language||'pt').slice(0,2);
+  var i18n = (p.get('lang')||'en').slice(0,2); // EN-default (LEI): sem navigator.language, idioma só via ?lang=
 
   // ── Tracking ──
   var SUPABASE_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
