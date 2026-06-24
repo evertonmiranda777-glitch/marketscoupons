@@ -41,7 +41,9 @@ const EVENT_MAP: Record<string, string[]> = {
   'loyalty_checkout_click': ['InitiateCheckout'],
   'copy_coupon':            ['CopyCode'],
   'search':                 ['Search'],
+  'purchase':               ['Purchase'],
   'pro_purchase':           ['Purchase'],
+  'affiliate_purchase':     ['Purchase'],
   'newsletter_subscribe':   ['Subscribe'],
 };
 
@@ -51,7 +53,7 @@ const EVENT_MAP: Record<string, string[]> = {
 const CAPI_ALLOW = new Set([
   'page_view','firm_detail_open','platform_detail_open','coupon_copy','copy_coupon',
   'checkout_click','loyalty_checkout_click','platform_checkout_click','pro_checkout_click',
-  'tool_lead_capture','purchase','pro_purchase','newsletter_subscribe',
+  'tool_lead_capture','purchase','pro_purchase','affiliate_purchase','newsletter_subscribe',
   'user_signup','loyalty_register','user_login','search',
   'firm_redirect','offer_card_click','lp_explore_site','user_reactivated','platform_select','platform_click',
 ]);
