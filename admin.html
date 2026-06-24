@@ -1343,7 +1343,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
    <div class="tpl-grid">
      <div class="tpl-card" onclick="loadQuickTemplate('welcome')"><div class="tpl-card-icon">BV</div><div class="tpl-card-text"><div class="tpl-card-name">Boas-vindas</div><div class="tpl-card-hook">Primeiro contato com o lead</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('site-invite')"><div class="tpl-card-icon">CS</div><div class="tpl-card-text"><div class="tpl-card-name">Convite Site</div><div class="tpl-card-hook">Traga o trader pro site</div></div></div>
-     <div class="tpl-card" onclick="loadQuickTemplate('loyalty')"><div class="tpl-card-icon">FD</div><div class="tpl-card-text"><div class="tpl-card-name">Fidelidade</div><div class="tpl-card-hook">Programa de cashback</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('indicators')"><div class="tpl-card-icon">FT</div><div class="tpl-card-text"><div class="tpl-card-name">Ferramentas</div><div class="tpl-card-hook">Ferramentas de trading</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('blog-guides')"><div class="tpl-card-icon">BG</div><div class="tpl-card-text"><div class="tpl-card-name">Blog &amp; Guias</div><div class="tpl-card-hook">Conteudo educacional</div></div></div>
      <div class="tpl-card" onclick="loadQuickTemplate('ultimas-horas')"><div class="tpl-card-icon">UH</div><div class="tpl-card-text"><div class="tpl-card-name">Últimas Horas</div><div class="tpl-card-hook">Urgência de promoção</div></div></div>
@@ -1558,7 +1557,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <div class="seg-opt sel" onclick="toggleSeg(this,'all')">Todos</div>
        <div class="seg-opt" onclick="toggleSeg(this,'leads')">Leads</div>
        <div class="seg-opt" onclick="toggleSeg(this,'subscribers')">Inscritos</div>
-       <div class="seg-opt" onclick="toggleSeg(this,'loyalty')">Fidelidade</div>
      </div>
      <div id="seg-firma-grid"></div>
      <div id="seg-customtag-grid"></div>
@@ -5070,7 +5068,6 @@ function renderOverview(){
  <div class="stat-card"><div class="stat-lbl">Guias Lidos</div><div class="stat-val" style="color:#3B82F6;">${guideReads}</div><div class="stat-change">${ecToday('guide_read')} hoje</div></div>
  <div class="stat-card"><div class="stat-lbl">Quiz Completos</div><div class="stat-val">${quizzes}</div><div class="stat-change">${leads.length?Math.round(quizzes/leads.length*100):0}% taxa</div></div>
  <div class="stat-card"><div class="stat-lbl">Bot Mensagens</div><div class="stat-val">${botMsgs}</div><div class="stat-change">${ecToday('bot_message')} hoje</div></div>
- <div class="stat-card"><div class="stat-lbl">Fidelidade</div><div class="stat-val" style="color:var(--gold);">${loyaltyRegs}</div><div class="stat-change">${loyaltyProofs} comprovantes</div></div>
  <div class="stat-card"><div class="stat-lbl">Favoritos + Social</div><div class="stat-val" style="color:var(--green);">${favs}</div><div class="stat-change">${socialClicks} cliques social</div></div>`;
 
  // Charts
@@ -5115,23 +5112,7 @@ async function renderAlerts(){
   const todayStr = now.toISOString().slice(0,10);
   const hour = (now.getUTCHours() - 3 + 24) % 24; // BRT approx
 
-  // 1. Loyalty pending (red), DESATIVADO (loyalty removido 02/jun), query órfã esgotava Disk IO
-  _alertCache.pending = 0;
-  if(_alertCache.pending > 0){
-    banners.push(`<div class="alert-banner alert-red">
-      <span class="ab-icon">&#9679;</span>
-      <span class="ab-text"><b>${_alertCache.pending}</b> validação(ões) de fidelidade pendente(s)</span>
-      <button class="ab-action" onclick="adminGo('monetizacao');setTimeout(()=>_switchSub('monetizacao','loyalty'),100)">Ver pendentes</button>
-    </div>`);
-  }
-  // Update nav badge
-  ['loyalty-badge','loyalty-badge-m'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){
-      if(_alertCache.pending>0){ el.textContent=_alertCache.pending; el.style.display=''; }
-      else{ el.style.display='none'; }
-    }
-  });
+  // Programa de fidelidade extinto (2026-06): alerta e badge de validação pendente removidos.
 
   // 2. Daily Analysis missing (yellow), only on weekdays after 9h UTC (6h BRT)
   const dayOfWeek = now.getUTCDay(); // 0=Sun, 6=Sat
