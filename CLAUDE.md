@@ -203,6 +203,17 @@ Validar com curl `?v=$(date +%s)` antes de falar "no ar". `VERCEL_TOKEN` no `.ba
 
 **Limite Vercel Hobby = 12 Serverless Functions.** Adicionar nova exige consolidar com existente.
 
+### Deploy de Edge Function Supabase (canônico 2026-06-23)
+`supabase/functions/<nome>/` deploya com **CLI byte-exato**, NUNCA via MCP retranscrito:
+```
+export SUPABASE_ACCESS_TOKEN=<sbp_ do ~/.bashrc>
+npx supabase functions deploy <nome> --project-ref qfwhduvutfumsaxnuofa
+```
+**Por que NÃO MCP `deploy_edge_function`:** ele exige conteúdo inline; arquivos com chars Unicode invisíveis (ex: combining marks numa regex, `facebook-capi/index.ts` linhas 63-64) podem quebrar na carga se a transcrição falhar → derruba a função inteira ao vivo (= atribuição de anúncio = R$). CLI lê o arquivo do disco, zero risco. Token `sbp_` expira , se der **401 Unauthorized**, Everton gera novo em https://supabase.com/dashboard/account/tokens e troca no `~/.bashrc`. **Pós-deploy OBRIGATÓRIO:** disparar pelo gatilho real + verificar (curl com Origin certo/errado, ler `{ok,sent}`), nunca declarar pronto sem receipt. Detalhe: `memory/project_secure_build_audit_2026_06_22.md`.
+
+### Edge function anon-callable = Origin allowlist (canônico 2026-06-23)
+Toda edge function chamável com anon key (CORS `*`) que faz efeito (CAPI, webhook, write) DEVE ter gate de Origin: `ALLOWED_ORIGINS` (marketscoupons.com www+apex) → 403 quando Origin presente e estranho, tolera Origin ausente (server-to-server não quebra). Aplicado no `facebook-capi`. Anti-spam cross-site sem Upstash/rate-limit pago.
+
 ## CSS / Design
 
 Tema dark, font Inter, paleta gold (`--gold` `#F0B429`). **Mínimos de contraste:** card bg `rgba(255,255,255,.10)`, border `.14`, texto `var(--t1)`/`var(--t2)` (nunca `t3` em conteúdo). Backdrop-filter PROIBIDO em cards (só nav/overlay/footer com bg opaco). Sobre hero image: usar bg `rgba(13,20,28,.78)` semi-opaco.
