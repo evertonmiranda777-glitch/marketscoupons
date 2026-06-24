@@ -197,8 +197,7 @@ function updateSEO(post, slug, blogUrl, lang){
   const url   = blogUrl || SITE+'/blog/'+slug;
   const title = post.title+', Markets Coupons';
   const desc  = post.excerpt||post.title;
-  const ogLang = lang && lang !== 'pt' ? '-'+lang : '';
-  const img   = post.cover_image||SITE+'/img/og-cover'+ogLang+'.png';
+  const img   = post.cover_image||post.cover_url||SITE+'/img/og-cover.png';
   const pub   = post.created_at ? new Date(post.created_at).toISOString() : new Date().toISOString();
 
   document.title = title;
@@ -214,10 +213,11 @@ function updateSEO(post, slug, blogUrl, lang){
 
   // Hreflang: link language variants
   const baseSlug = post.base_slug || slug;
-  const ptUrl = SITE+'/blog/'+baseSlug;
-  const hlPt = document.getElementById('hl-pt'); if(hlPt) hlPt.href = ptUrl;
-  const hlX = document.getElementById('hl-x'); if(hlX) hlX.href = ptUrl;
-  ['en','es','fr','de','it','ar','id'].forEach(l=>{
+  // EN-default: RAIZ = EN; x-default -> raiz; pt e demais idiomas em /blog/<lang>/<slug>
+  const rootUrl = SITE+'/blog/'+baseSlug;
+  const hlEn = document.getElementById('hl-en'); if(hlEn) hlEn.href = rootUrl;
+  const hlX  = document.getElementById('hl-x');  if(hlX)  hlX.href  = rootUrl;
+  ['pt','es','fr','de','it','ar','id'].forEach(l=>{
     const el = document.getElementById('hl-'+l);
     if(el) el.href = SITE+'/blog/'+l+'/'+baseSlug;
   });
@@ -323,44 +323,48 @@ const CTA_I18N = {
 
 async function init(){
   const parts = window.location.pathname.split('/').filter(Boolean);
-  // Detect /blog/en/slug or /blog/slug
-  let lang = 'pt', slug = '';
+  // /blog/<lang>/<slug> (localizado) ou /blog/<slug> (RAIZ = EN-default, igual o site)
+  let lang = 'en', slug = '';
   if(parts.length >= 3 && LANGS_VALID.includes(parts[1])){
     lang = parts[1]; slug = parts[2];
   } else {
     slug = parts[parts.length-1] || '';
   }
-  const T = CTA_I18N[lang]||CTA_I18N.pt;
-  document.documentElement.lang = lang === 'ar' ? 'ar' : lang;
-  if(lang==='ar') document.documentElement.dir = 'rtl';
+  if(!slug || slug==='blog'){ window.location.replace('/#blog'); return; }
 
-  // Update static UI text
+  // Fetch com fallback: idioma pedido -> EN -> PT (nunca 404 num slug válido, ex: post só-PT).
+  // Adota a língua EFETIVA do post achado, pra UI/canonical/hreflang baterem com o conteúdo.
+  let data=null, error=null;
+  try {
+    const tryLangs = [...new Set([lang,'en','pt'])];
+    for(const l of tryLangs){
+      const r = await db.from('blog_posts').select('*').eq('slug',slug).eq('lang',l).eq('active',true).maybeSingle();
+      if(r.error){ error=r.error; break; }
+      if(r.data){ data=r.data; lang=l; break; }
+    }
+  } catch(e){ error=e; }
+
+  const T = CTA_I18N[lang]||CTA_I18N.en;
+  document.documentElement.lang = lang;
+  if(lang==='ar') document.documentElement.dir = 'rtl';
   document.getElementById('state-loading').querySelector('.state-title').textContent = T.loading;
   document.querySelector('.nav-back span').textContent = T.back;
   document.querySelector('.nav-cta-btn').textContent = T.coupons;
 
-  if(!slug || slug==='blog'){ window.location.replace('/#blog'); return; }
-
-  const blogUrl = lang==='pt' ? SITE+'/blog/'+slug : SITE+'/blog/'+lang+'/'+slug;
-
-  try {
-    const {data, error} = await db.from('blog_posts').select('*').eq('slug',slug).eq('lang',lang).eq('active',true).maybeSingle();
-
-    if(error){
-      document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">⚠️</div><div class="state-title">${T.error}</div><button class="state-btn" onclick="location.reload()">${T.retry}</button></div>`;
-      return;
-    }
-    if(data===null){
-      document.title = T.notfound+', Markets Coupons';
-      document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">📭</div><div class="state-title">${T.notfound}</div><div class="state-desc">${T.notfounddesc}</div><button class="state-btn" onclick="window.location.href='/#blog'">${T.all}</button></div>`;
-      return;
-    }
-
-    updateSEO(data, slug, blogUrl, lang);
-    renderPost(data, slug, blogUrl, T);
-  } catch(e) {
-    document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">⚠️</div><div class="state-title">${T.error||'Error loading'}</div><button class="state-btn" onclick="location.reload()">${T.retry||'Try again'}</button></div>`;
+  if(error){
+    document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">⚠️</div><div class="state-title">${T.error}</div><button class="state-btn" onclick="location.reload()">${T.retry}</button></div>`;
+    return;
   }
+  if(!data){
+    document.title = T.notfound+', Markets Coupons';
+    document.getElementById('main-content').innerHTML = `<div class="state-wrap"><div class="state-icon">📭</div><div class="state-title">${T.notfound}</div><div class="state-desc">${T.notfounddesc}</div><button class="state-btn" onclick="window.location.href='/#blog'">${T.all}</button></div>`;
+    return;
+  }
+
+  // RAIZ = EN; demais idiomas em /blog/<lang>/<slug>
+  const blogUrl = lang==='en' ? SITE+'/blog/'+slug : SITE+'/blog/'+lang+'/'+slug;
+  updateSEO(data, slug, blogUrl, lang);
+  renderPost(data, slug, blogUrl, T);
 }
 
 document.addEventListener('DOMContentLoaded', init);
