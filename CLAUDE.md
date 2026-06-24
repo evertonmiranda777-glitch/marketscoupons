@@ -207,8 +207,9 @@ Validar com curl `?v=$(date +%s)` antes de falar "no ar". `VERCEL_TOKEN` no `.ba
 `supabase/functions/<nome>/` deploya com **CLI byte-exato**, NUNCA via MCP retranscrito:
 ```
 export SUPABASE_ACCESS_TOKEN=<sbp_ do ~/.bashrc>
-npx supabase functions deploy <nome> --project-ref qfwhduvutfumsaxnuofa
+npx supabase functions deploy <nome> --project-ref qfwhduvutfumsaxnuofa --no-verify-jwt
 ```
+🚨 **`--no-verify-jwt` OBRIGATÓRIO** pra função chamada pelo browser SEM Authorization header (ex: `facebook-capi`, que o `app.js _sendCAPI` chama só com `Content-Type`). O CLI religa `verify_jwt=true` por DEFAULT a cada deploy → quebra com **401 silencioso** (incidente 23/jun: redeploy do facebook-capi derrubou TODO o CAPI do browser, pego só no pente fino e2e com Playwright). Segurança da função é o **Origin gate**, não o JWT.
 **Por que NÃO MCP `deploy_edge_function`:** ele exige conteúdo inline; arquivos com chars Unicode invisíveis (ex: combining marks numa regex, `facebook-capi/index.ts` linhas 63-64) podem quebrar na carga se a transcrição falhar → derruba a função inteira ao vivo (= atribuição de anúncio = R$). CLI lê o arquivo do disco, zero risco. Token `sbp_` expira , se der **401 Unauthorized**, Everton gera novo em https://supabase.com/dashboard/account/tokens e troca no `~/.bashrc`. **Pós-deploy OBRIGATÓRIO:** disparar pelo gatilho real + verificar (curl com Origin certo/errado, ler `{ok,sent}`), nunca declarar pronto sem receipt. Detalhe: `memory/project_secure_build_audit_2026_06_22.md`.
 
 ### Edge function anon-callable = Origin allowlist (canônico 2026-06-23)
