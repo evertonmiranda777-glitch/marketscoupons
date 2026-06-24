@@ -316,10 +316,8 @@ const GA4_FUNNEL = {
   coupon_copy:             'add_to_cart',
   copy_coupon:             'add_to_cart',   // variante legada, mesmo destino
   checkout_click:          'begin_checkout',
-  loyalty_checkout_click:  'begin_checkout',
   platform_checkout_click: 'begin_checkout',
   user_signup:             'sign_up',
-  loyalty_register:        'sign_up',
   newsletter_subscribe:    'subscribe',
   tool_lead_capture:       'generate_lead',
   purchase:                'purchase',
@@ -332,11 +330,11 @@ const CAPI_ALLOW = new Set([
   'page_view',                                                   // PageView
   'firm_detail_open','platform_detail_open',                     // ViewContent
   'coupon_copy','copy_coupon',                                   // CopyCode
-  'checkout_click','loyalty_checkout_click','platform_checkout_click','pro_checkout_click', // InitiateCheckout/Lead
+  'checkout_click','platform_checkout_click',                    // InitiateCheckout/Lead
   'tool_lead_capture',                                           // Lead
-  'purchase','pro_purchase',                                     // Purchase
+  'purchase','affiliate_purchase',                               // Purchase
   'newsletter_subscribe',                                        // Subscribe
-  'user_signup','loyalty_register',                              // CompleteRegistration
+  'user_signup',                                                 // CompleteRegistration
   'user_login',                                                  // Login
   'search',                                                      // Search
   // custom comerciais (p/ Custom Conversion)
@@ -689,12 +687,21 @@ function _sendCAPI(event, params, eid, ts) {
   } catch(e){}
 }
 
-// Helper: extract price value from firm for FB Pixel enrichment
-// Valor de conversão (Lead/CAPI) = $3.00 flat por Lead (decidido c/ Everton 2026-05-20).
-// Comissão é 10% da venda mas varia muito por plano; Everton optou por valor fixo.
-// Constante, NUNCA 0: a Meta acusava "Lead sem value" quando isso devolvia 0.
-// Mantém a assinatura (f,size) pois callers passam args, JS ignora os extras.
-function _fbVal(){
+// Helper: valor real do Lead pra Meta, VARIADO por firma/plano.
+// Meta penaliza Lead com value uniforme (diag #3, -5% ROAS). Usa o preço com desconto
+// (f.prices[].n) do plano; varia por firma e tamanho. Fallback 3.00 (NUNCA 0/uniforme só
+// quando não há dado de preço carregado).
+function _fbVal(f, size){
+  try {
+    if (f && f.prices && f.prices.length) {
+      const numOf = s => { const m=String(s||'').replace(/[,$]/g,'').match(/(\d+(?:\.\d+)?)/); return m?parseFloat(m[1]):null; };
+      let m = size ? f.prices.find(p=>numOf(p.a)===numOf(size)) : null;
+      if (!m) m = f.prices.find(p=>p.pop) || f.prices[Math.floor(f.prices.length/2)] || f.prices[0];
+      const raw = m && (m.n || m.disc || m.o);
+      const v = raw ? parseFloat(String(raw).replace(/[^\d.]/g,'')) : 0;
+      if (v > 0) return v;
+    }
+  } catch(_){}
   return 3.00;
 }
 
@@ -4237,7 +4244,7 @@ const FAQ_LANGS = {
     {q:'Posso usar mais de um cupom ao mesmo tempo?', a:'Geralmente não. Cada prop firm aceita apenas um código de desconto por compra. Nossos cupons já são os maiores disponíveis no mercado.'},
     {q:'O que é Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se move conforme o lucro, podendo voltar ao breakeven. EOD (End of Day) Drawdown só é calculado no fechamento do dia, dando mais flexibilidade durante a operação.'},
     {q:'Quanto tempo leva para receber o payout?', a:'Varia por firma. Apex e Bulenox processam em 5 dias úteis. FundedNext garante payout em 24h.'},
-    {q:'O que é o programa de fidelidade?', a:'Nosso programa de fidelidade recompensa membros com benefícios exclusivos por compras validadas. Com 1 compra aprovada você desbloqueia o Live Room VIP, análises diárias e GEX.'},
+    {q:'Como acesso indicadores, análise diária e gamma?', a:'Basta criar uma conta gratuita no site. O cadastro libera o acesso a indicadores, análise diária e gamma (GEX), sem custo. O Live Room VIP estreia em 03/08/2026, também liberado com o cadastro.'},
     {q:'Os cupons têm data de validade?', a:'Alguns cupons são por tempo limitado e outros são permanentes. As promoções de cada firma são atualizadas diariamente. Recomendamos usar o cupom assim que possível.'},
     {q:'Como faço para comparar prop firms?', a:'Use nossa ferramenta de comparação na aba "Comparar" ou acesse a aba "Firmas" para ver todas as opções lado a lado com ratings, preços, plataformas e avaliações do Trustpilot.'},
   ],
@@ -4249,7 +4256,7 @@ const FAQ_LANGS = {
     {q:'Can I use more than one coupon at the same time?', a:'Generally no. Each prop firm accepts only one discount code per purchase. Our coupons are already the largest available in the market.'},
     {q:'What is Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown moves with profit, potentially returning to breakeven. EOD (End of Day) Drawdown is only calculated at market close, giving more flexibility during the trading session.'},
     {q:'How long does it take to receive a payout?', a:'Varies by firm. Apex and Bulenox process in 5 business days. FundedNext guarantees payout in 24h.'},
-    {q:'What is the loyalty program?', a:'Our loyalty program rewards members with exclusive benefits for validated purchases. With 1 approved purchase you unlock the VIP Live Room, daily analysis and GEX.'},
+    {q:'How do I access indicators, daily analysis and gamma?', a:'Just create a free account on the site. Signing up unlocks indicators, daily analysis and gamma (GEX) at no cost. The VIP Live Room launches on Aug 3, 2026, also free with your account.'},
     {q:'Do coupons have an expiration date?', a:'Some coupons are time-limited and others are permanent. Each firm\'s promotions are updated daily. We recommend using the coupon as soon as possible.'},
     {q:'How do I compare prop firms?', a:'Use our comparison tool in the "Compare" tab or access the "Firms" tab to see all options side by side with ratings, prices, platforms and Trustpilot reviews.'},
   ],
@@ -4261,7 +4268,7 @@ const FAQ_LANGS = {
     {q:'¿Puedo usar más de un cupón al mismo tiempo?', a:'Generalmente no. Cada prop firm acepta solo un código de descuento por compra.'},
     {q:'¿Qué es Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown se mueve con el beneficio. EOD Drawdown solo se calcula al cierre del mercado, dando más flexibilidad.'},
     {q:'¿Cuánto tiempo lleva recibir el payout?', a:'Varía por firma. Apex y Bulenox procesan en 5 días hábiles. FundedNext garantiza payout en 24h.'},
-    {q:'¿Qué es el programa de fidelidad?', a:'Nuestro programa de fidelidad recompensa a los miembros con beneficios exclusivos por sus compras validadas. Con 1 compra aprobada desbloqueas el Live Room VIP, análisis diarios y GEX.'},
+    {q:'¿Cómo accedo a indicadores, análisis diario y gamma?', a:'Solo crea una cuenta gratuita en el sitio. El registro desbloquea indicadores, análisis diario y gamma (GEX), sin costo. El Live Room VIP se estrena el 03/08/2026, también gratis con tu cuenta.'},
     {q:'¿Los cupones tienen fecha de vencimiento?', a:'Algunos son por tiempo limitado y otros son permanentes. Recomendamos usar el cupón lo antes posible.'},
     {q:'¿Cómo comparo prop firms?', a:'Usa nuestra herramienta de comparación en la pestaña "Comparar" o accede a "Firmas" para ver todas las opciones lado a lado.'},
   ],
@@ -4273,7 +4280,7 @@ const FAQ_LANGS = {
     {q:'Posso usare più di un coupon contemporaneamente?', a:'In generale no. Ogni prop firm accetta solo un codice sconto per acquisto.'},
     {q:'Cos\'è il Trailing Drawdown vs EOD Drawdown?', a:'Il Trailing Drawdown si muove con il profitto. L\'EOD Drawdown viene calcolato solo alla chiusura del mercato, offrendo maggiore flessibilità.'},
     {q:'Quanto tempo ci vuole per ricevere il payout?', a:'Varia per firma. Apex e Bulenox processano in 5 giorni lavorativi. FundedNext garantisce il payout in 24h.'},
-    {q:'Cos\'è il programma fedeltà?', a:'Il nostro programma fedeltà premia i membri con benefici esclusivi per gli acquisti validati. Con 1 acquisto approvato sblocchi il Live Room VIP.'},
+    {q:'Come accedo a indicatori, analisi giornaliera e gamma?', a:'Basta creare un account gratuito sul sito. La registrazione sblocca indicatori, analisi giornaliera e gamma (GEX), senza costi. Il Live Room VIP debutta il 03/08/2026, anche gratis con il tuo account.'},
     {q:'I coupon hanno una data di scadenza?', a:'Alcuni sono a tempo limitato e altri sono permanenti. Consigliamo di usare il coupon il prima possibile.'},
     {q:'Come confronto le prop firm?', a:'Usa il nostro strumento di confronto nella scheda "Confronta" o accedi ad "Aziende" per vedere tutte le opzioni fianco a fianco.'},
   ],
@@ -4285,7 +4292,7 @@ const FAQ_LANGS = {
     {q:'Puis-je utiliser plusieurs coupons en même temps ?', a:'En général non. Chaque prop firm accepte seulement un code de réduction par achat.'},
     {q:'Qu\'est-ce que le Trailing Drawdown vs EOD Drawdown ?', a:'Le Trailing Drawdown suit le profit. L\'EOD Drawdown n\'est calculé qu\'à la clôture du marché, offrant plus de flexibilité.'},
     {q:'Combien de temps faut-il pour recevoir le payout ?', a:'Varie selon la firme. Apex et Bulenox traitent en 5 jours ouvrables. FundedNext garantit le payout en 24h.'},
-    {q:'Qu\'est-ce que le programme de fidélité ?', a:'Notre programme de fidélité récompense les membres avec des avantages exclusifs pour leurs achats validés. Avec 1 achat approuvé vous débloquez le Live Room VIP.'},
+    {q:'Comment accéder aux indicateurs, à l\'analyse quotidienne et au gamma ?', a:'Il suffit de créer un compte gratuit sur le site. L\'inscription débloque les indicateurs, l\'analyse quotidienne et le gamma (GEX), sans frais. Le Live Room VIP arrive le 03/08/2026, également gratuit avec votre compte.'},
     {q:'Les coupons ont-ils une date d\'expiration ?', a:'Certains sont limités dans le temps et d\'autres sont permanents. Nous recommandons d\'utiliser le coupon le plus tôt possible.'},
     {q:'Comment comparer les prop firms ?', a:'Utilisez notre outil de comparaison dans l\'onglet "Comparer" ou accédez à "Firmes" pour voir toutes les options côte à côte.'},
   ],
@@ -4297,7 +4304,7 @@ const FAQ_LANGS = {
     {q:'Kann ich mehr als einen Gutschein gleichzeitig verwenden?', a:'Im Allgemeinen nein. Jede Prop Firm akzeptiert nur einen Rabattcode pro Kauf.'},
     {q:'Was ist Trailing Drawdown vs EOD Drawdown?', a:'Trailing Drawdown bewegt sich mit dem Gewinn. EOD Drawdown wird nur bei Marktschluss berechnet und bietet mehr Flexibilität.'},
     {q:'Wie lange dauert es, eine Auszahlung zu erhalten?', a:'Variiert je nach Firma. Apex und Bulenox verarbeiten in 5 Werktagen. FundedNext garantiert Auszahlung in 24h.'},
-    {q:'Was ist das Treueprogramm?', a:'Unser Treueprogramm belohnt Mitglieder mit exklusiven Vorteilen für validierte Einkäufe. Mit 3 genehmigten Käufen schaltest du den Live Room VIP frei.'},
+    {q:'Wie greife ich auf Indikatoren, Tagesanalyse und Gamma zu?', a:'Erstelle einfach ein kostenloses Konto auf der Website. Die Anmeldung schaltet Indikatoren, Tagesanalyse und Gamma (GEX) kostenlos frei. Der VIP Live Room startet am 03.08.2026, ebenfalls kostenlos mit deinem Konto.'},
     {q:'Haben Gutscheine ein Ablaufdatum?', a:'Einige sind zeitlich begrenzt und andere sind dauerhaft. Wir empfehlen, den Gutschein so bald wie möglich zu verwenden.'},
     {q:'Wie vergleiche ich Prop Firms?', a:'Nutze unser Vergleichstool im Tab "Vergleichen" oder gehe zu "Firmen", um alle Optionen nebeneinander zu sehen.'},
   ],
@@ -4309,7 +4316,7 @@ const FAQ_LANGS = {
     {q:'هل يمكنني استخدام أكثر من كوبون في نفس الوقت؟', a:'عموماً لا. تقبل كل شركة كوداً واحداً فقط للخصم لكل عملية شراء.'},
     {q:'ما الفرق بين Trailing Drawdown و EOD Drawdown؟', a:'Trailing Drawdown يتحرك مع الربح. EOD Drawdown يُحسب فقط عند إغلاق السوق مما يمنح مرونة أكبر.'},
     {q:'كم من الوقت يستغرق استلام الدفعة؟', a:'يختلف حسب الشركة. Apex وBulenox تعالج خلال 5 أيام عمل. FundedNext تضمن الدفع خلال 24 ساعة.'},
-    {q:'ما هو برنامج الولاء؟', a:'برنامج الولاء يكافئ الأعضاء بمزايا حصرية على المشتريات المعتمدة. مع 3 مشتريات موافق عليها تفتح Live Room VIP.'},
+    {q:'كيف أصل إلى المؤشرات والتحليل اليومي والغاما؟', a:'فقط أنشئ حسابًا مجانيًا على الموقع. التسجيل يفتح المؤشرات والتحليل اليومي والغاما (GEX) مجانًا. ينطلق Live Room VIP في 03/08/2026، مجانًا أيضًا مع حسابك.'},
     {q:'هل للكوبونات تاريخ انتهاء؟', a:'بعضها محدود بوقت وآخر دائم. نوصي باستخدام الكوبون في أقرب وقت ممكن.'},
     {q:'كيف أقارن بين شركات Prop؟', a:'استخدم أداة المقارنة في تبويب "مقارنة" أو انتقل إلى "شركات" لرؤية جميع الخيارات جنباً إلى جنب.'},
   ],
@@ -5842,12 +5849,7 @@ async function checkProBadge(){
       const{data}=await db.from('subscriptions').select('status').eq('user_id',currentUser.id).in('status',['active','trialing']).limit(1);
       if(data&&data.length>0){ isPro=true; hasSub=true; }
     }
-    // Check approved loyalty proof
-    if(!isPro){
-      const email=currentProfile?.email||currentUser.email;
-      const{data}=await db.from('loyalty_proofs').select('id').eq('member_email',email).eq('status','approved').limit(1);
-      if(data&&data.length>0) isPro=true;
-    }
+    // Programa de fidelidade extinto (2026-06): acesso = só cadastro. loyalty_proofs não gateia mais nada.
     if(badge)badge.style.display=isPro?'flex':'none';
     // "Gerenciar assinatura" só pra quem TEM assinatura Stripe, loyalty/VIP não tem portal
     if(manageBtn)manageBtn.style.display=hasSub?'block':'none';

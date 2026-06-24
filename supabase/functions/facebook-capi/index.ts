@@ -149,9 +149,13 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({ error: 'no events' }), { status: 400, headers: CORS });
   }
 
-  // Server-side enrichment shared per request
-  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-                   req.headers.get('cf-connecting-ip') || '';
+  // Server-side enrichment shared per request.
+  // body.ip override: caller server-to-server (ex: sale-instant-attrib) manda "" pra NÃO
+  // enviar o IP da edge function (que seria 1 IP compartilhado entre N usuários = diag #4).
+  const clientIp = (typeof body.ip === 'string')
+    ? body.ip.trim()
+    : (req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+       req.headers.get('cf-connecting-ip') || '');
   const userAgent = body.ua || req.headers.get('user-agent') || '';
   const ip = ipEnrich(req);
 
@@ -189,9 +193,11 @@ Deno.serve(async (req: Request) => {
     };
 
     const userData: any = {
-      client_ip_address: clientIp,
       client_user_agent: userAgent,
     };
+    // Só manda IP se for real do usuário; vazio (evento server-to-server) NÃO envia IP
+    // compartilhado da edge (evita "1 IP, vários usuários" da Meta).
+    if (clientIp) userData.client_ip_address = clientIp;
     if (ev.fbp) userData.fbp = ev.fbp;
     if (ev.fbc) userData.fbc = ev.fbc;
 

@@ -113,7 +113,8 @@ serve(async (req) => {
       const r = await fetch(FB_CAPI_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ events: [ev], ua: bestClick?.user_agent || "" }),
+        // ip: "" -> facebook-capi NÃO manda o IP da edge (1 IP compartilhado = diag #4 da Meta)
+        body: JSON.stringify({ events: [ev], ua: bestClick?.user_agent || "", ip: "" }),
       });
       capiResp = await r.json().catch(() => null);
       // "OK" honesto: só conta se a Meta REALMENTE recebeu (sent>0 + events_received),

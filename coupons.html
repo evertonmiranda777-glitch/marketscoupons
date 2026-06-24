@@ -1084,8 +1084,9 @@ function renderFirms() {
     card.querySelector('.fr-cta').addEventListener('click', () => {
       const plans = firm.plans[state.type];
       const plan = plans[state.sizeIdx] || plans[0];
-      // value $3.00 flat por Lead (decidido c/ Everton 2026-05-20), Meta acusava Lead sem value
-      trackEvent('checkout_click', { firm_id: firm.id, firm_name: firm.name, coupon_code: firm.coupon, plan_size: plan.size, plan_type: state.type, value: 3.00, currency: 'USD', location: 'lp_coupons' });
+      // value = preço real do plano selecionado (varia por firma/plano). Meta penaliza Lead com value uniforme (diag #3).
+      const leadVal = parseFloat(String(plan.disc||plan.na||'').replace(/[^\d.]/g,'')) || 3.00;
+      trackEvent('checkout_click', { firm_id: firm.id, firm_name: firm.name, coupon_code: firm.coupon, plan_size: plan.size, plan_type: state.type, value: leadVal, currency: 'USD', location: 'lp_coupons' });
     });
   });
 }
@@ -1266,8 +1267,10 @@ function trackEvent(event, params={}){
       location: params.location || null,
     });
   }
-  // 3. Facebook CAPI server-side (MESMO event_id do dataLayer → Meta dedupa Pixel browser × CAPI)
-  try {
+  // 3. Facebook CAPI server-side, SÓ evento comercial (mesmo allowlist do GA4/servidor).
+  // Antes mandava TODO evento (lp_*, scroll_depth...) e poluía o Pixel; servidor já dropa, mas
+  // cortar na origem é mais limpo + economiza request. MESMO event_id → Meta dedupa Pixel × CAPI.
+  if (_ga4Event) try {
     fetch(SB_URL+'/functions/v1/facebook-capi', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
