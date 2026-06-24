@@ -34,15 +34,10 @@ const EVENT_MAP: Record<string, string[]> = {
   'tool_lead_capture':      [],
   'calc_unlocked':          [],
   'quiz_complete':          [],
-  'loyalty_register':       ['CompleteRegistration'],
-  'loyalty_proof_submitted':['SubmitApplication'],
-  'pro_checkout_click':     ['InitiateCheckout'],
   'platform_checkout_click':['InitiateCheckout'],
-  'loyalty_checkout_click': ['InitiateCheckout'],
   'copy_coupon':            ['CopyCode'],
   'search':                 ['Search'],
   'purchase':               ['Purchase'],
-  'pro_purchase':           ['Purchase'],
   'affiliate_purchase':     ['Purchase'],
   'newsletter_subscribe':   ['Subscribe'],
 };
@@ -52,9 +47,9 @@ const EVENT_MAP: Record<string, string[]> = {
 // Custom comerciais (firm_redirect etc.) sem mapping vão como custom event (nome cru) p/ Custom Conversion.
 const CAPI_ALLOW = new Set([
   'page_view','firm_detail_open','platform_detail_open','coupon_copy','copy_coupon',
-  'checkout_click','loyalty_checkout_click','platform_checkout_click','pro_checkout_click',
-  'tool_lead_capture','purchase','pro_purchase','affiliate_purchase','newsletter_subscribe',
-  'user_signup','loyalty_register','user_login','search',
+  'checkout_click','platform_checkout_click',
+  'tool_lead_capture','purchase','affiliate_purchase','newsletter_subscribe',
+  'user_signup','user_login','search',
   'firm_redirect','offer_card_click','lp_explore_site','user_reactivated','platform_select','platform_click',
 ]);
 
