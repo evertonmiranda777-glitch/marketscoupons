@@ -409,6 +409,7 @@ function track(event, params={}) {
         firm_id: params.firm_id || params.firm_name || null,
         coupon_code: params.coupon_code || params.coupon || null,
         event_id: eid,
+        fbp: (function(){try{return _getFbAttribution().fbp||null}catch(_){return null}})(),
         fbclid: MC_ATTR.fbclid || null,
         gclid: MC_ATTR.gclid || null,
         ttclid: MC_ATTR.ttclid || null,

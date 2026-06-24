@@ -104,6 +104,7 @@ serve(async (req) => {
         url: bestClick?.page_url || bestClick?.landing_page || "https://www.marketscoupons.com/coupons",
       };
       if (bestClick?.fbclid) ev.fbc = `fb.1.${new Date(bestClick.ts).getTime()}.${bestClick.fbclid}`;
+      if (bestClick?.fbp) ev.fbp = bestClick.fbp;  // #2: cookie _fbp gravado no clique
       if (bestClick?.user_id) ev.external_id = bestClick.user_id;
       else if (bestClick?.anon_id) ev.external_id = bestClick.anon_id;
       if (bestClick?.email) ev.em = bestClick.email;
@@ -113,8 +114,9 @@ serve(async (req) => {
       const r = await fetch(FB_CAPI_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // ip: "" -> facebook-capi NÃO manda o IP da edge (1 IP compartilhado = diag #4 da Meta)
-        body: JSON.stringify({ events: [ev], ua: bestClick?.user_agent || "", ip: "" }),
+        // #3: manda o IP REAL do clique (capturado pelo facebook-capi no clique). Se não tiver,
+        // "" -> facebook-capi omite (nunca o IP compartilhado da edge, que era o diag #4 da Meta).
+        body: JSON.stringify({ events: [ev], ua: bestClick?.user_agent || "", ip: bestClick?.ip || "" }),
       });
       capiResp = await r.json().catch(() => null);
       // "OK" honesto: só conta se a Meta REALMENTE recebeu (sent>0 + events_received),

@@ -176,6 +176,17 @@ Deno.serve(async (req: Request) => {
     if (!CAPI_ALLOW.has(ev.event)) continue;  // só eventos comerciais no CAPI (corta ruído)
     const fbNames = EVENT_MAP[ev.event] || [ev.event];
 
+    // #3: captura o IP real do clique (o browser não lê o próprio IP) na linha de
+    // coupon_clicks pelo event_id. A sale-instant-attrib reenvia esse IP no Purchase.
+    // Fire-and-forget: NUNCA bloqueia o envio pra Meta. Só nos eventos de clique.
+    if ((ev.event === 'coupon_copy' || ev.event === 'checkout_click') && ev.event_id && clientIp && sk) {
+      fetch(`${SUPA_URL}/rest/v1/coupon_clicks?event_id=eq.${encodeURIComponent(ev.event_id)}&ip=is.null`, {
+        method: 'PATCH',
+        headers: { apikey: sk, Authorization: `Bearer ${sk}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ ip: clientIp }),
+      }).catch(() => {});
+    }
+
     // Lookup profile pra esse user (cached)
     const profile = ev.external_id ? await getProfile(ev.external_id) : null;
 

@@ -1296,7 +1296,7 @@ function trackEvent(event, params={}){
         headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer '+SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
         body: JSON.stringify({
           ts: new Date().toISOString(), anon_id: anonId, firm_id: params.firm_id, coupon_code: params.coupon_code,
-          event_id: eid, fbclid: utm.fbclid, utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
+          event_id: eid, fbp: fbp||null, fbclid: utm.fbclid, utm_source: utm.utm_source, utm_medium: utm.utm_medium, utm_campaign: utm.utm_campaign,
           utm_term: utm.utm_term, utm_content: utm.utm_content,
           page_url: location.href, landing_page: location.pathname, referrer: document.referrer || null,
           country: (_lpGeo&&_lpGeo.geo_country)||null, region: (_lpGeo&&_lpGeo.geo_region)||null, city: (_lpGeo&&_lpGeo.geo_city)||null,
