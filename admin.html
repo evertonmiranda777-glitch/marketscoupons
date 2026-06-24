@@ -1750,6 +1750,13 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       </div>
 
       <div class="sec-hdr" style="margin-top:24px;">
+        <div class="sec-title" style="font-size:14px;">Ranking de Vendas por Local + Horário</div>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Países rankeados por nº de vendas reais. Clique num país pra abrir Estados → Cidades. Cada país mostra comissão US$ + R$ e o <b style="color:var(--gold);">melhor horário no fuso do alvo</b>, é esse que você joga no agendamento do Meta (que usa "fuso do visualizador"). O BRT fica só como referência. Geo desde 22/05/2026; vendas anteriores ficam sem geo.</div>
+      <div id="fin-geo-nota" style="font-size:11px;color:var(--gold);margin:-4px 0 10px;"></div>
+      <div id="fin-geo-tree"></div>
+
+      <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">ROAS Real por Campanha</div>
         <div class="sec-actions">
           <button class="btn-secondary" onclick="runAttributionMatcher(this)">Rodar Matcher</button>
@@ -1759,13 +1766,6 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <div class="chart-card" style="padding:0;overflow:hidden;">
         <div class="data-table-wrap"><table class="data-table" id="fin-roas-real"></table></div>
       </div>
-
-      <div class="sec-hdr" style="margin-top:24px;">
-        <div class="sec-title" style="font-size:14px;">Ranking de Vendas por Local + Horário</div>
-      </div>
-      <div style="font-size:11px;color:var(--t3);margin:-8px 0 8px;">Países rankeados por nº de vendas reais. Clique num país pra abrir Estados → Cidades. Cada país mostra comissão US$ + R$ e o <b style="color:var(--gold);">melhor horário no fuso do alvo</b>, é esse que você joga no agendamento do Meta (que usa "fuso do visualizador"). O BRT fica só como referência. Geo desde 22/05/2026; vendas anteriores ficam sem geo.</div>
-      <div id="fin-geo-nota" style="font-size:11px;color:var(--gold);margin:-4px 0 10px;"></div>
-      <div id="fin-geo-tree"></div>
 
       <div class="sec-hdr" style="margin-top:24px;">
         <div class="sec-title" style="font-size:14px;">Ranking de Criativos (por venda real)</div>
