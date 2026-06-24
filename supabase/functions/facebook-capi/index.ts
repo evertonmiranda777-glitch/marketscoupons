@@ -225,8 +225,14 @@ Deno.serve(async (req: Request) => {
     customData.content_type = ev.content_type || 'product';
     if (ev.content_name) customData.content_name = ev.content_name;
     if (ev.content_category) customData.content_category = ev.content_category;
-    customData.value = ev.value || 0;
-    customData.currency = ev.currency || 'USD';
+    // value/currency SÓ quando há valor real (>0). Evento sem valor (PageView, etc.)
+    // NÃO manda value:0 + currency , a Meta acusa "Lead sem moeda válida" (#2) e
+    // "Leads todos com mesmo preço" (#3). Só Lead (preço plano) e Purchase (comissão) carregam.
+    const numVal = Number(ev.value);
+    if (Number.isFinite(numVal) && numVal > 0) {
+      customData.value = numVal;
+      customData.currency = (ev.currency || 'USD').toUpperCase();
+    }
     if (ev.num_items) customData.num_items = ev.num_items;
     if (ev.coupon) customData.order_id = ev.coupon;
 
