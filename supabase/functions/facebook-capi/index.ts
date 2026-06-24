@@ -37,9 +37,24 @@ const EVENT_MAP: Record<string, string[]> = {
   'loyalty_register':       ['CompleteRegistration'],
   'loyalty_proof_submitted':['SubmitApplication'],
   'pro_checkout_click':     ['InitiateCheckout'],
+  'platform_checkout_click':['InitiateCheckout'],
+  'loyalty_checkout_click': ['InitiateCheckout'],
+  'copy_coupon':            ['CopyCode'],
+  'search':                 ['Search'],
   'pro_purchase':           ['Purchase'],
   'newsletter_subscribe':   ['Subscribe'],
 };
+
+// CAPI = SÓ eventos comerciais (Meta deve receber ~17 tipos, não 60+).
+// Espelha CAPI_ALLOW do app.js. Enforce no servidor: cobre coupons.html e qualquer caller.
+// Custom comerciais (firm_redirect etc.) sem mapping vão como custom event (nome cru) p/ Custom Conversion.
+const CAPI_ALLOW = new Set([
+  'page_view','firm_detail_open','platform_detail_open','coupon_copy','copy_coupon',
+  'checkout_click','loyalty_checkout_click','platform_checkout_click','pro_checkout_click',
+  'tool_lead_capture','purchase','pro_purchase','newsletter_subscribe',
+  'user_signup','loyalty_register','user_login','search',
+  'firm_redirect','offer_card_click','lp_explore_site','user_reactivated','platform_select','platform_click',
+]);
 
 // === Normalizadores por tipo de campo (Meta CAPI spec) ===
 const norm = {
@@ -100,9 +115,23 @@ const CORS = {
   'Content-Type': 'application/json',
 };
 
+// Anti-abuso cross-site: só aceita chamadas com Origin do nosso domínio.
+// O caller legítimo é browser (app.js/coupons.html) que SEMPRE manda Origin.
+// Origin ausente (server-to-server/edge) é tolerado; Origin presente e
+// estranho é barrado, cortando spam de conversão de outros sites.
+const ALLOWED_ORIGINS = new Set([
+  'https://www.marketscoupons.com',
+  'https://marketscoupons.com',
+]);
+
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: CORS });
+  }
+
+  const origin = req.headers.get('origin') || '';
+  if (origin && !ALLOWED_ORIGINS.has(origin)) {
+    return new Response(JSON.stringify({ error: 'forbidden origin' }), { status: 403, headers: CORS });
   }
 
   const token = Deno.env.get('FB_CAPI_TOKEN');
@@ -143,6 +172,7 @@ Deno.serve(async (req: Request) => {
 
   for (const ev of events) {
     if (!ev.event) continue;
+    if (!CAPI_ALLOW.has(ev.event)) continue;  // só eventos comerciais no CAPI (corta ruído)
     const fbNames = EVENT_MAP[ev.event] || [ev.event];
 
     // Lookup profile pra esse user (cached)
