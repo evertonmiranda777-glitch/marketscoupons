@@ -31,6 +31,8 @@ Dado não visto = `null` ou `"TBD validar"` no DB. Detalhe: [memory/feedback_nun
 
 **Codewords:** "stop" / "preguiça" → para tudo, confessa o que cortou, refaz.
 
+**🛑 LEI (25/jun) , AVALIAR + AVISAR + PERGUNTAR antes de risco:** antes de QUALQUER ação que pode dar merda (query pesada/`count(*)` em tabela grande tipo `events`, infra prod, restart, deploy crítico, billing, irreversível) = (1) avaliar o risco, (2) avisar em 1 linha que pode dar merda, (3) perguntar se pode tentar e esperar OK. NUNCA risco no automático. Travei o banco (522/timeout, lead/signup caíram) rodando count na `events` sem avisar. **Analytics SEMPRE pelo GA4** (não toca no banco). Leitura leve/código/tradução seguem autônomos. Detalhe: `memory/feedback_avaliar_avisar_perguntar_antes_de_risco.md`.
+
 **REGRA DURA pós-deploy (2026-05-10):** SQL retornar OK ≠ feature funcionando. SEMPRE abrir URL renderizada via `curl -s 'site.com/path?v=$(date +%s)'` ou Playwright (`mcp__playwright__browser_navigate` + `browser_evaluate`) ANTES de declarar pronto. Bug `cover_url` faltando no SELECT seria pego em 1 curl, não foi.
 
 **REGRA Telegram (2026-05-11):** TG NÃO é canal de status de progresso. Use SOMENTE quando user explicitamente fora do PC ou em momentos críticos (alerta, falha, conclusão de job longo agendado). Default: status no chat do Claude Code.

@@ -7757,7 +7757,7 @@ const EMAIL_I18N = {
     intro: 'A <b>{firm}</b> está com <b>{discount}% de desconto{lt}</b>. Veja todos os detalhes abaixo e comece agora mesmo.',
     exclusive_coupon: 'CUPOM EXCLUSIVO',
     coupon_hint: 'Copie o cupom e cole no checkout',
-    auto_discount: 'Sem cupom · use nosso link de afiliado, confira o preço no checkout',
+    auto_discount: 'Sem cupom · desconto aplicado automático, use nosso link e confira o preço no checkout',
     account_rules: 'REGRAS DA CONTA',
     min_days: 'Dias Mínimos', eval_days: 'Período Avaliação', profit_target: 'Meta de Lucro',
     max_dd: 'Max Drawdown', dd_type: 'Tipo Drawdown', profit_split: 'Profit Split',
@@ -7782,7 +7782,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> is offering <b>{discount}% OFF{lt}</b>. See all the details below and get started now.',
     exclusive_coupon: 'EXCLUSIVE COUPON',
     coupon_hint: 'Copy the coupon and paste at checkout',
-    auto_discount: 'No coupon · use our affiliate link, confirm the price at checkout',
+    auto_discount: 'No coupon · discount applied automatically, use our link and confirm the price at checkout',
     account_rules: 'ACCOUNT RULES',
     min_days: 'Min. Days', eval_days: 'Eval Period', profit_target: 'Profit Target',
     max_dd: 'Max Drawdown', dd_type: 'Drawdown Type', profit_split: 'Profit Split',
@@ -7807,7 +7807,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> ofrece <b>{discount}% de descuento{lt}</b>. Mira todos los detalles abajo y empieza ahora.',
     exclusive_coupon: 'CUPON EXCLUSIVO',
     coupon_hint: 'Copia el cupon y pegalo en el checkout',
-    auto_discount: 'Sin cupón · usa nuestro enlace de afiliado, confirma el precio en el checkout',
+    auto_discount: 'Sin cupón · descuento aplicado automáticamente, usa nuestro enlace y confirma el precio en el checkout',
     account_rules: 'REGLAS DE CUENTA',
     min_days: 'Dias Minimos', eval_days: 'Periodo Evaluacion', profit_target: 'Meta de Ganancia',
     max_dd: 'Max Drawdown', dd_type: 'Tipo Drawdown', profit_split: 'Profit Split',
@@ -7832,7 +7832,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> propose <b>{discount}% de reduction{lt}</b>. Decouvrez tous les details ci-dessous et commencez maintenant.',
     exclusive_coupon: 'COUPON EXCLUSIF',
     coupon_hint: 'Copiez le coupon et collez-le au checkout',
-    auto_discount: 'Pas de coupon · utilisez notre lien d\'affiliation, confirmez le prix au checkout',
+    auto_discount: 'Pas de coupon · réduction appliquée automatiquement, utilisez notre lien et vérifiez le prix au checkout',
     account_rules: 'REGLES DU COMPTE',
     min_days: 'Jours Min.', eval_days: 'Periode Evaluation', profit_target: 'Objectif Profit',
     max_dd: 'Max Drawdown', dd_type: 'Type Drawdown', profit_split: 'Profit Split',
@@ -7857,7 +7857,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> bietet <b>{discount}% Rabatt{lt}</b>. Alle Details unten, jetzt starten.',
     exclusive_coupon: 'EXKLUSIVER GUTSCHEIN',
     coupon_hint: 'Gutschein kopieren und beim Checkout einfugen',
-    auto_discount: 'Kein Gutschein · nutze unseren Affiliate-Link, prufe den Preis beim Checkout',
+    auto_discount: 'Kein Gutschein · Rabatt wird automatisch angewendet, nutze unseren Link und prufe den Preis beim Checkout',
     account_rules: 'KONTOREGELN',
     min_days: 'Min. Tage', eval_days: 'Bewertungszeitraum', profit_target: 'Gewinnziel',
     max_dd: 'Max Drawdown', dd_type: 'Drawdown-Typ', profit_split: 'Profit Split',
@@ -7882,7 +7882,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> offre <b>{discount}% di sconto{lt}</b>. Tutti i dettagli qui sotto, inizia subito.',
     exclusive_coupon: 'COUPON ESCLUSIVO',
     coupon_hint: 'Copia il coupon e incollalo al checkout',
-    auto_discount: 'Nessun coupon · usa il nostro link affiliato, conferma il prezzo al checkout',
+    auto_discount: 'Nessun coupon · sconto applicato automaticamente, usa il nostro link e verifica il prezzo al checkout',
     account_rules: 'REGOLE CONTO',
     min_days: 'Giorni Min.', eval_days: 'Periodo Valutazione', profit_target: 'Obiettivo Profitto',
     max_dd: 'Max Drawdown', dd_type: 'Tipo Drawdown', profit_split: 'Profit Split',
@@ -7907,7 +7907,7 @@ const EMAIL_I18N = {
     intro: '<b>{firm}</b> تقدم <b>خصم {discount}%{lt}</b>. شاهد كل التفاصيل ادناه وابدا الان.',
     exclusive_coupon: 'كوبون حصري',
     coupon_hint: 'انسخ الكوبون والصقه عند الدفع',
-    auto_discount: 'بدون كوبون · استخدم رابط الإحالة وتأكد من السعر عند الدفع',
+    auto_discount: 'بدون كوبون · يُطبَّق الخصم تلقائيًا، استخدم رابطنا وتأكد من السعر عند الدفع',
     account_rules: 'قواعد الحساب',
     min_days: 'الحد الادنى للايام', eval_days: 'فترة التقييم', profit_target: 'هدف الربح',
     max_dd: 'Max Drawdown', dd_type: 'نوع Drawdown', profit_split: 'Profit Split',
@@ -14447,7 +14447,7 @@ function renderHeroPremium(firm, content, L) {
     } else {
       const GREEN = '#10B981';
       h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
-      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${_crLang==='pt'?'Sem cupom · use nosso link de afiliado':'No coupon · use our affiliate link'}</span></div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${_crLang==='pt'?'Sem cupom · use nosso link':'No coupon · use our link'}</span></div>`;
     }
   }
 
@@ -16068,7 +16068,7 @@ async function tgPreviewFlashPromo(){
     const discountLabel = isLifetime ? `${firm.discount}% OFF (lifetime deal!)` : `${firm.discount}% OFF`;
     const couponLine = firm.coupon
       ? `🎟 Code: <code>${firm.coupon}</code>`
-      : `🔗 No code needed, use our affiliate link`;
+      : `🔗 No code needed, discount applied via our checkout link`;
     const urgency = document.getElementById('tg-flash-urgency')?.value || '';
     const text =
       `⚡ <b>Flash Deal, ${firm.name}</b>\n\n` +

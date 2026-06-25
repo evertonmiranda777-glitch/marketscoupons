@@ -162,7 +162,7 @@ APEX (Futures), coupon MARKET, 90% OFF LIFETIME. Split 100% up to $25K then 90%.
 
 BULENOX (Futures), coupon MARKET89, 89% OFF LIFETIME. 90% split. Trailing DD AND EOD DD options. Pass in 1 day. No consistency. Platforms: Rithmic, NinjaTrader. Prices with coupon: 25K $15.95, 50K $19.25, 100K $23.65, 150K $35.75, 250K $58.85. Weekly payouts, scaling to $400K, news trading ok. Free 14-day Rithmic trial. Trustpilot 4.7 (1.6k).
 
-FTMO (Forex), no coupon (19% lifetime discount applied via affiliate link). 90% split. Fixed DD -3% daily / -10% total. Target 10%. MT4/MT5/cTrader. 1-step and 2-step challenges. Scaling to $2M. Since 2015, $500M+ paid, 3.5M clients. News trading NOT allowed. Trustpilot 4.8 (43.5k).
+FTMO (Forex), no coupon (20% lifetime discount applied automatically via our checkout link). 90% split. Fixed DD -3% daily / -10% total. Target 10%. MT4/MT5/cTrader. 1-step and 2-step challenges. Scaling to $2M. Since 2015, $500M+ paid, 3.5M clients. News trading NOT allowed. Trustpilot 4.8 (43.5k).
 
 FUNDEDNEXT (Forex + Futures), coupon FLEXJU, 40% OFF LIFETIME. 80% split. Stellar 2-Step and Futures Flex programs. MT4/MT5/cTrader/Match-Trader/Rithmic. Guaranteed 24h payout. Scaling to $4M. Trustpilot 4.5 (69.7k).
 

@@ -1589,7 +1589,7 @@ function setFirmSEO(id){
   const _faqQs = [
     {
       q: `What is the ${f.name} coupon?`,
-      a: hasCoupon ? `Use code ${f.coupon} at ${f.name} checkout to save ${f.discount}% on your evaluation account. Verified daily on MarketsCoupons.` : `${f.name} discount is automatically applied via the affiliate link on MarketsCoupons, no coupon code required.`
+      a: hasCoupon ? `Use code ${f.coupon} at ${f.name} checkout to save ${f.discount}% on your evaluation account. Verified daily on MarketsCoupons.` : `${f.name} discount is applied automatically through our checkout link on MarketsCoupons, no coupon code required.`
     },
     {
       q: `How much does ${f.name} cost?`,
