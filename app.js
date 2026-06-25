@@ -4380,7 +4380,7 @@ const CHECKOUT_FIRMS=[
      'EOD DD':[{size:'25K',capital:'$25,000',goal:'$1,500',maxDD:'$1,500',orig:'$145',disc:'$15.95',featured:false},{size:'50K',capital:'$50,000',goal:'$3,000',maxDD:'$2,500',orig:'$175',disc:'$19.25',featured:false},{size:'100K',capital:'$100,000',goal:'$6,000',maxDD:'$3,000',orig:'$215',disc:'$23.65',featured:true},{size:'150K',capital:'$150,000',goal:'$9,000',maxDD:'$4,500',orig:'$325',disc:'$35.75',featured:false},{size:'250K',capital:'$250,000',goal:'$15,000',maxDD:'$5,500',orig:'$535',disc:'$58.85',featured:false}]
    },
    buildUrl:(size,type,plat)=>'https://bulenox.com/member/aff/go/marketcoupons'},
-  {id:'ftmo',name:'FTMO',short:'FTMO',coupon:null,discount:'0%',color:'#22C55E',bg:'rgba(34,197,94,0.12)',
+  {id:'ftmo',name:'FTMO',short:'FTMO',coupon:null,discount:'20%',color:'#22C55E',bg:'rgba(34,197,94,0.12)',
    includes:['Free Trial available','Up to 90% profit split','1-Step (NEW) and 2-Step','Support in 18 languages','Scaling up to $2M','No time limit'],
    types:['1-Step Challenge','2-Step Challenge'],platforms:['MT4','MT5','cTrader','DXtrade'],
    plansByType:{
