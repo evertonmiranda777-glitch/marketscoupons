@@ -197,9 +197,9 @@ Detalhe geral: `memory/project_gtm_tracking_2026_05_20.md`.
 
 Git push **NÃO deploya sozinho** (auto-deploy quebrado nesse repo). Sempre rodar:
 ```
-CI=1 npx vercel --prod --yes --token=$VERCEL_TOKEN
+VT=$(grep '^VERCEL_TOKEN=' .env.local | sed 's/^VERCEL_TOKEN=//' | tr -d '" '); CI=1 npx vercel --prod --yes --token="$VT"
 ```
-Validar com curl `?v=$(date +%s)` antes de falar "no ar". `VERCEL_TOKEN` no `.bashrc` (expira ~2026-05-21).
+Validar com curl `?v=$(date +%s)` antes de falar "no ar". **`VERCEL_TOKEN` agora no `.env.local`** (sem expiração, gitignored, desde 24/jun) , **deploy autônomo, NÃO pedir token ao Everton toda hora.** Se der erro de auth, aí sim pedir um novo. DDL no Supabase quando o MCP cai: `POST https://api.supabase.com/v1/projects/qfwhduvutfumsaxnuofa/database/query` com `{"query":"..."}` + token `sbp_`.
 
 **Limite Vercel Hobby = 12 Serverless Functions.** Adicionar nova exige consolidar com existente.
 
