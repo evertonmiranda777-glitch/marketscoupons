@@ -14425,7 +14425,8 @@ function renderHeroPremium(firm, content, L) {
     aquafutures: 'img/Firms Logos/Aqua Future.svg',
     blueberryfutures: 'img/Firms Logos/Blueberry Futures.svg',
     alphafutures: 'img/Firms Logos/Alpha-Future.svg',
-    futureselite: 'img/Firms Logos/Futures Elite.svg'
+    futureselite: 'img/Firms Logos/Futures Elite.svg',
+    'funded-futures-family': 'img/Firms Logos/funded futures family.svg'
   };
   const logoSrc = FIRM_WORDMARK[firm.id] || firm.icon_url || '';
   h += `<div class="cr-hp-logo"><img src="${logoSrc}" alt="${escHtml(firm.name)}" onerror="this.onerror=null;this.src='${firm.icon_url||''}';this.style.maxWidth='220px';"></div>`;

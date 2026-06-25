@@ -1364,7 +1364,7 @@ function applyTranslations() {
     }
     // {n} = nº de firmas ativas, dinâmico (nunca chumbar na mão)
     if (typeof val === 'string' && val.indexOf('{n}') !== -1) {
-      val = val.replace(/\{n\}/g, (window.FIRMS && FIRMS.length) || 18);
+      val = val.replace(/\{n\}/g, (window.FIRMS && FIRMS.length) || 19);
     }
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
     else if (el.tagName === 'OPTION') el.textContent = val;
@@ -1384,7 +1384,7 @@ function applyTranslations() {
     el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
   });
   // Números fortes do home, dinâmicos (nº de firmas ativas), nunca chumbados
-  const _fc = ((window.FIRMS && FIRMS.length) || 18) + '+';
+  const _fc = ((window.FIRMS && FIRMS.length) || 19) + '+';
   document.querySelectorAll('.js-firmcount').forEach(el => { el.textContent = _fc; });
 }
 // Stat bar do home: firmas + desconto + cupons copiados (30d), tudo do banco via RPC segura.
