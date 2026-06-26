@@ -14369,7 +14369,7 @@ function updateCrPreview() {
 
   if (firm) {
     // checkout bg (tenta webp, png, jpeg)
-    bgImg.style.backgroundImage = `url('img/${firm.id}-bg.webp'),url('img/${firm.id}-bg.png'),url('img/${firm.id}-bg.jpeg')`;
+    bgImg.style.backgroundImage = `url('/img/${firm.id}-bg.webp?v=2'),url('/img/${firm.id}-bg.png?v=2'),url('/img/${firm.id}-bg.jpeg?v=2')`;
   } else {
     bgImg.style.backgroundImage = 'none';
   }
