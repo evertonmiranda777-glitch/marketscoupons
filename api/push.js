@@ -153,7 +153,7 @@ module.exports = async (req, res) => {
 
       const {
         title, body: msgBody, url, icon, image, tag, category,
-        firm, lang_filter, test_endpoint, dry_run
+        firm, lang_filter, test_endpoint, test_user_email, dry_run
       } = body || {};
       if (!title) return bad(res, 400, 'missing title');
 
@@ -166,6 +166,15 @@ module.exports = async (req, res) => {
       }
       if (lang_filter) filters.push(`lang=eq.${encodeURIComponent(lang_filter)}`);
       if (test_endpoint) filters.push(`endpoint=eq.${encodeURIComponent(test_endpoint)}`);
+      // Teste por email: resolve email -> user_id -> filtra as inscricoes desse usuario (chega em TODOS os devices dele, ex: celular)
+      if (test_user_email) {
+        const pr = await fetch(`${SB_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(test_user_email)}&select=id`, {
+          headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+        });
+        const prof = pr.ok ? await pr.json().catch(() => []) : [];
+        if (!Array.isArray(prof) || prof.length === 0) return bad(res, 404, 'email sem conta cadastrada');
+        filters.push(`user_id=eq.${prof[0].id}`);
+      }
 
       const qs = filters.join('&');
       const r = await fetch(`${SB_URL}/rest/v1/push_subscriptions?${qs}&select=id,endpoint,p256dh,auth,firms,lang`, {

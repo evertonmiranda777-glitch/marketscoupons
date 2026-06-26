@@ -1236,7 +1236,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </div>
      <div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;">
        <button class="btn-secondary" onclick="pushDryRun()">Quantos receberiam? (dry-run)</button>
-       <button class="btn-secondary" onclick="pushSendTest()" style="background:rgba(107,182,201,.15);border-color:rgba(107,182,201,.4);color:#6BB6C9;">Enviar teste só pra mim</button>
+       <button class="btn-secondary" onclick="pushSendTest()" style="background:rgba(107,182,201,.15);border-color:rgba(107,182,201,.4);color:#6BB6C9;">Enviar teste só pra mim (este device)</button>
+       <input id="push-test-email" type="email" placeholder="email pra testar no device dele" value="evertonmiranda1183@hotmail.com" style="flex:1;min-width:220px;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:12px;">
+       <button class="btn-secondary" onclick="pushSendTestEmail()" style="background:rgba(107,182,201,.15);border-color:rgba(107,182,201,.4);color:#6BB6C9;">Enviar teste pro email</button>
        <button class="btn-secondary" onclick="pushSendNow()" style="background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.35);color:var(--gold);">Enviar pra todos elegíveis</button>
      </div>
      <div id="push-send-result" style="grid-column:1/-1;font-size:12px;color:var(--t2);min-height:18px;"></div>
@@ -6965,6 +6967,27 @@ async function pushSendTest(){
   } catch (e) { out.textContent = 'Erro: ' + e.message; }
 }
 window.pushSendTest = pushSendTest;
+// Envia o push pra TODAS as inscricoes de um email (chega no celular dele mesmo deslogado, e mesmo voce disparando do desktop)
+async function pushSendTestEmail(){
+  const f = _pushReadForm();
+  if (!f.title) { toast('Título obrigatório','error'); return; }
+  const email = (document.getElementById('push-test-email').value||'').trim();
+  if (!email) { toast('Informe o email','error'); return; }
+  const out = document.getElementById('push-send-result'); out.textContent = 'Enviando pros devices de '+email+'...';
+  try {
+    const tk = await _adminBearer();
+    const r = await fetch('/api/push?action=send', {
+      method:'POST', headers:{'Content-Type':'application/json', Authorization:'Bearer '+tk},
+      body: JSON.stringify(Object.assign({}, f, { firm: undefined, test_user_email: email }))
+    });
+    const d = await r.json();
+    if (!r.ok) { out.textContent = 'Erro: ' + (d.error||r.status); return; }
+    if ((d.total||0) === 0) { out.textContent = email+' não tem inscrição ativa. Ative as notificações logado nesse email pelo menos uma vez (no celular).'; return; }
+    out.innerHTML = `Teste enviado pro <b>${email}</b> (todos os devices dele): <b>${d.sent}</b> · Falhou: ${d.failed}. Deve chegar em segundos.`;
+    toast('Push de teste enviado pro email','success');
+  } catch (e) { out.textContent = 'Erro: ' + e.message; }
+}
+window.pushSendTestEmail = pushSendTestEmail;
 // Assuntos prontos de push (EN + PT). Preenchem título/corpo/url/categoria/firma.
 // Copy premium (skill Everton, LP Design). Headline curta com gancho, corpo com 1 benefício
 // + motivo pra tocar agora. Urgência ÉTICA (sem deadline inventado, compliance CDC/Lei #0). Zero emoji.
