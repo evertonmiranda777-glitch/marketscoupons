@@ -7030,13 +7030,18 @@ function applyPushPreset(){
   document.getElementById('push-category').value = p.category || '';
   document.getElementById('push-firm').value = p.firm || '';
 }
-function populatePushFirms(){
+async function populatePushFirms(){
   const sel=document.getElementById('push-firm'); if(!sel) return;
+  let firms=_firmsCache;
+  if(!(firms&&firms.length)){
+    try{ const {data}=await db.from('cms_firms').select('id,name,active,sort_order').order('sort_order'); firms=data||[]; }catch(e){ firms=[]; }
+  }
   const cur=sel.value;
   sel.innerHTML='<option value="">Sem filtro de firma</option>';
-  (_firmsCache||[]).filter(f=>f.active!==false).slice().sort((a,b)=>(a.sort_order||999)-(b.sort_order||999)).forEach(f=>{const o=document.createElement('option');o.value=f.id;o.textContent=f.name;sel.appendChild(o);});
+  firms.filter(f=>f.active!==false).slice().sort((a,b)=>(a.sort_order||999)-(b.sort_order||999)).forEach(f=>{const o=document.createElement('option');o.value=f.id;o.textContent=f.name;sel.appendChild(o);});
   if(cur) sel.value=cur;
 }
+window.addEventListener('load', ()=>{ setTimeout(()=>{ try{ populatePushFirms(); }catch(e){} }, 1500); });
 function onPushFirmChange(){
   const id=document.getElementById('push-firm').value;
   if(id) document.getElementById('push-url').value='/'+id;
