@@ -1229,20 +1229,10 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
      </div>
      <div>
        <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Firma (opcional)</label>
-       <select id="push-firm" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
+       <select id="push-firm" onchange="onPushFirmChange()" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
          <option value="">Sem filtro de firma</option>
-         <option value="apex">Apex</option>
-         <option value="bulenox">Bulenox</option>
-         <option value="ftmo">FTMO</option>
-         <option value="fn">FundedNext</option>
-         <option value="e2t">Earn2Trade</option>
-         <option value="the5ers">The5ers</option>
-         <option value="fundingpips">FundingPips</option>
-         <option value="brightfunded">BrightFunded</option>
-         <option value="e8">E8</option>
-         <option value="cti">CTI</option>
-         <option value="tradeday">TradeDay</option>
        </select>
+       <div style="font-size:10.5px;color:var(--t3);margin-top:4px;">Escolher a firma preenche a URL pra página dela. Pra avisar TODOS de firma nova, escolha a firma (preenche a URL) e volte o filtro pra "Sem filtro".</div>
      </div>
      <div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;">
        <button class="btn-secondary" onclick="pushDryRun()">Quantos receberiam? (dry-run)</button>
@@ -7040,6 +7030,19 @@ function applyPushPreset(){
   document.getElementById('push-category').value = p.category || '';
   document.getElementById('push-firm').value = p.firm || '';
 }
+function populatePushFirms(){
+  const sel=document.getElementById('push-firm'); if(!sel) return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">Sem filtro de firma</option>';
+  (_firmsCache||[]).filter(f=>f.active!==false).slice().sort((a,b)=>(a.sort_order||999)-(b.sort_order||999)).forEach(f=>{const o=document.createElement('option');o.value=f.id;o.textContent=f.name;sel.appendChild(o);});
+  if(cur) sel.value=cur;
+}
+function onPushFirmChange(){
+  const id=document.getElementById('push-firm').value;
+  if(id) document.getElementById('push-url').value='/'+id;
+}
+window.populatePushFirms = populatePushFirms;
+window.onPushFirmChange = onPushFirmChange;
 window.applyPushPreset = applyPushPreset;
 window.loadPushCount = loadPushCount;
 window.pushDryRun = pushDryRun;
@@ -11686,6 +11689,7 @@ async function renderCmsFirms() {
 
   const firms = _firmsCache;
   renderPromoFirmsPanel();
+  if (typeof populatePushFirms === 'function') populatePushFirms();
 
   // ── Data health check, alertas de dados incompletos ──
   const issues = [];
