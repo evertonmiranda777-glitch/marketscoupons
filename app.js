@@ -390,12 +390,12 @@ function track(event, params={}) {
   };
   // Orçamento de I/O de disco: ruído de tempo/visibilidade não vai pro Supabase (nenhuma feature do admin depende, só cor no feed de eventos);
   // scroll/heatmap são amostrados a 20% (preserva o heatmap a 1/5 do custo de escrita). Funil/atribuição sempre gravam.
-  const _DROP_EV = (event==='tab_hidden'||event==='tab_visible'||event==='user_idle'||event==='engagement_time'||event==='session_end');
-  const _SAMPLE = (event==='scroll_depth'||event==='heatmap_load') ? 0.2 : 1;
+  // I/O budget (26/jun, fix 522 cronico): ruido de tempo/visibilidade + erro/quiz/bot/geo NAO vao pro Supabase (nenhuma feature do admin depende; GA4 cobre funil).
+  // page_view = rei do volume -> amostra 30% (GA4 tem a contagem real). scroll/heatmap 20%. Funil/atribuicao/comercial sempre 100%.
+  const _DROP_EV = (event==='tab_hidden'||event==='tab_visible'||event==='user_idle'||event==='engagement_time'||event==='session_end'||event==='js_error'||event==='geo_detected'||/^(quiz_|bot_)/.test(event));
+  const _SAMPLE = (event==='scroll_depth'||event==='heatmap_load') ? 0.2 : (event==='page_view' ? 0.3 : 1);
   if (!_DROP_EV && (_SAMPLE===1 || Math.random() < _SAMPLE)) {
-    try {
-      db.from('events').insert(row).then(r=>{ if(r.error){ console.warn('track insert error:', r.error.message); _trackEnqueue(row); } });
-    } catch(e) { console.warn('track error:', e); _trackEnqueue(row); }
+    _evQueue(row);
   }
 
   // 1b. coupon_clicks, atribuicao campanha→cupom pra fechar loop com venda real da firma
@@ -505,26 +505,46 @@ function track(event, params={}) {
   if (CAPI_ALLOW.has(event)) _sendCAPI(event, params, eid, ts);
 }
 
-// ─── RETRY QUEUE: events that failed to reach Supabase (network error, offline) ───
-function _trackEnqueue(row){
+// ─── BATCH + CIRCUIT BREAKER pros events do Supabase (fix 522 cronico, 26/jun) ───
+// 1 INSERT em LOTE em vez de N por evento (mata o flood de conexoes que estourava o compute -> 522).
+// Se o banco erra (down/522), RECUA com backoff exponencial em vez de martelar -> deixa ele recuperar.
+let _evBuf = [], _evTimer = null, _evBackoffUntil = 0, _evBackoffMs = 30000;
+function _evQueue(row){
+  _evBuf.push(row);
+  // conversao/atribuicao = flush na hora (nao atrasa/perde). Resto = lote.
+  const _crit = row && row.event && /coupon|checkout|sign_?up|purchase|lead|subscribe/.test(row.event);
+  if (_crit || _evBuf.length >= 25) { _evFlush(); return; }
+  if (!_evTimer) _evTimer = setTimeout(_evFlush, 15000);
+}
+async function _evFlush(){
+  if (_evTimer) { clearTimeout(_evTimer); _evTimer = null; }
+  if (!_evBuf.length) return;
+  const batch = _evBuf.splice(0);
+  if (Date.now() < _evBackoffUntil) { _evStash(batch); return; } // banco em backoff: guarda, nao tenta
   try {
-    const q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]');
-    q.push(row);
-    if(q.length > 200) q.splice(0, q.length - 200); // cap at 200
-    localStorage.setItem('mc_track_queue', JSON.stringify(q));
-  } catch(e){}
+    const { error } = await db.from('events').insert(batch);
+    if (error) { _evBackoffUntil = Date.now() + _evBackoffMs; _evBackoffMs = Math.min(_evBackoffMs*2, 600000); _evStash(batch); }
+    else { _evBackoffMs = 30000; }
+  } catch(e) { _evBackoffUntil = Date.now() + _evBackoffMs; _evBackoffMs = Math.min(_evBackoffMs*2, 600000); _evStash(batch); }
+}
+function _evStash(batch){ // localStorage pra nao perder (cap 200)
+  try { const q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]'); q.push(...batch); if(q.length>200) q.splice(0, q.length-200); localStorage.setItem('mc_track_queue', JSON.stringify(q)); } catch(e){}
 }
 async function _trackFlushQueue(){
+  if (Date.now() < _evBackoffUntil) return; // respeita o breaker
   let q=[]; try { q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]'); } catch(e){ return; }
   if(!q.length) return;
   try {
-    const { error } = await db.from('events').insert(q);
+    const { error } = await db.from('events').insert(q.slice(0,200));
     if(!error) localStorage.removeItem('mc_track_queue');
-  } catch(e){}
+    else { _evBackoffUntil = Date.now() + _evBackoffMs; }
+  } catch(e){ _evBackoffUntil = Date.now() + _evBackoffMs; }
 }
-// Flush queue on page show (back from bfcache) and on first load
+// pagehide: salva buffer (sync, sem perda). hidden: tenta enviar. pageshow/load: recupera fila.
+addEventListener('pagehide', ()=>{ if(_evBuf.length) _evStash(_evBuf.splice(0)); });
+addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') _evFlush(); });
 window.addEventListener('pageshow', _trackFlushQueue);
-setTimeout(_trackFlushQueue, 3000);
+setTimeout(_trackFlushQueue, 5000);
 // Flush on unload via sendBeacon (survives page close)
 window.addEventListener('pagehide', ()=>{
   try {
@@ -788,9 +808,7 @@ async function fetchGeo() {
     const d = await r.json();
     _geo = { geo_country: d.country||'', geo_region: d.region||'', geo_city: d.city||'', geo_timezone: d.timezone||'' };
     sessionStorage.setItem('mc_geo', JSON.stringify(_geo));
-    setTrackingGeo(_geo); // GA4 user_properties for anonymous users
-    // Store geo event in Supabase
-    db.from('events').insert({ session_id: MC_SESSION, event: 'geo_detected', params: _geo }).then(()=>{});
+    setTrackingGeo(_geo); // GA4 user_properties for anonymous users (geo vai pro GA4, nao mais pra events: fix 522)
   } catch(e) { _geo = {}; }
   return _geo;
 }
