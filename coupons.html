@@ -92,7 +92,7 @@
       "numberOfItems": 16,
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Bulenox", "url": "https://www.marketscoupons.com/bulenox" },
-        { "@type": "ListItem", "position": 2, "name": "FundedNext", "url": "https://www.marketscoupons.com/fn" },
+        { "@type": "ListItem", "position": 2, "name": "Funded Futures Family", "url": "https://www.marketscoupons.com/funded-futures-family" },
         { "@type": "ListItem", "position": 3, "name": "TradeDay", "url": "https://www.marketscoupons.com/tradeday" },
         { "@type": "ListItem", "position": 4, "name": "Earn2Trade", "url": "https://www.marketscoupons.com/e2t" }
       ]
@@ -765,42 +765,40 @@ const FIRMS = [
     rules: { pt: ['Payouts desde o Dia 1','Sem regra de consistência ao fundar','Profit split até 90%','Cupom MARKETS 50% off'], en: ['Day 1 payouts','No consistency rule when funded','Profit split up to 90%','MARKETS coupon 50% off'] }
   },
   {
-    id: 'fn', name: 'FundedNext', logo: '/img/Firms/108/fn.webp', coupon: 'FLEXJU',
-    discount: '40%', tag: 'fut', rating: '4.5', reviews: '69.7K',
-    rangeAccounts: '$6K–$200K', split: '95%',
-    url: 'https://fundednext.com/futures?fpr=everton33',
-    types: ['Stellar 2-Step', 'Flex', 'Legacy', 'Rapid', 'Bolt'],
+    id: 'funded-futures-family', name: 'Funded Futures Family', logo: '/img/Firms/funded-futures-family.png', coupon: 'MARKET',
+    discount: '80%', tag: 'fut', rating: '4.7', reviews: '1.9K',
+    rangeAccounts: '$25K–$150K', split: '90%',
+    url: 'https://app.fundedfuturesfamily.com/affiliation/?ref_code=ed5ae23f-10eb-46c6-b6d1-280369e720eb',
+    types: ['Velocity', 'Premier Plus', 'Prime', 'S2F'],
     plans: {
-      'Stellar 2-Step': [
-        {size:'$6K', orig:'$117', disc:'$59.99', target:'8% / 5%', dd:'$600 (10%) max / $300 daily', pos:'1:100'},
-        {size:'$15K', orig:'$292.50', disc:'$119.99', target:'8% / 5%', dd:'$1,500 max / $750 daily', pos:'1:100'},
-        {size:'$25K', orig:'$487.50', disc:'$199.99', target:'8% / 5%', dd:'$2,500 max / $1,250 daily', pos:'1:100'},
-        {size:'$50K', orig:'$975', disc:'$299.99', target:'8% / 5%', dd:'$5,000 max / $2,500 daily', pos:'1:100'},
-        {size:'$100K', orig:'$1,950', disc:'$549.99', target:'8% / 5%', dd:'$10,000 max / $5,000 daily', pos:'1:100', popular:true},
-        {size:'$200K', orig:'$3,900', disc:'$1,099.99', target:'8% / 5%', dd:'$20,000 max / $10,000 daily', pos:'1:100'},
+      'Velocity': [
+        {size:'$25K', orig:'$79', disc:'$16/mo', target:'$2,500', dd:'Intraday $1,250', pos:'3 minis / 30 micros', consistency:'40%', minDays:'3'},
+        {size:'$50K', orig:'$125', disc:'$25/mo', target:'$4,000', dd:'Intraday $2,250', pos:'5 minis / 50 micros', consistency:'40%', minDays:'3', popular:true},
+        {size:'$100K', orig:'$225', disc:'$45/mo', target:'$7,000', dd:'Intraday $3,250', pos:'10 minis / 100 micros', consistency:'40%', minDays:'3'},
+        {size:'$150K', orig:'$325', disc:'$65/mo', target:'$10,000', dd:'Intraday $4,750', pos:'15 minis / 150 micros', consistency:'40%', minDays:'3'},
       ],
-      'Flex': [
-        {size:'$50K', orig:'$133.99', disc:'$79.99', target:'$2,500', dd:'EOD $1,500', pos:'3 minis / 30 micros', consistency:'40%'},
-        {size:'$100K', orig:'$249.99', disc:'$149.99', target:'$5,000', dd:'EOD $2,500', pos:'5 minis / 50 micros', consistency:'40%', popular:true},
-        {size:'$150K', orig:'$483.99', disc:'$289.99', target:'$8,000', dd:'EOD $4,000', pos:'8 minis / 80 micros', consistency:'40%'},
+      'Premier Plus': [
+        {size:'$25K', orig:'$119', disc:'$72/mo', target:'$3,000', dd:'Trailing $750', pos:'3 minis / 30 micros', consistency:'40%', minDays:'1'},
+        {size:'$50K', orig:'$159', disc:'$96/mo', target:'$6,000', dd:'Trailing $1,500', pos:'5 minis / 50 micros', consistency:'40%', minDays:'1', popular:true},
+        {size:'$100K', orig:'$249', disc:'$150/mo', target:'$9,000', dd:'Trailing $2,500', pos:'10 minis / 100 micros', consistency:'40%', minDays:'1'},
+        {size:'$150K', orig:'$459', disc:'$276/mo', target:'$9,000', dd:'Trailing $4,000', pos:'15 minis / 150 micros', consistency:'40%', minDays:'1'},
       ],
-      'Legacy': [
-        {size:'$25K', orig:'$79.99', disc:'$47.99', target:'$1,250', dd:'EOD $1,000', pos:'2 minis / 20 micros', consistency:'40%', popular:true},
-        {size:'$50K', orig:'$149.99', disc:'$89.99', target:'$3,000', dd:'EOD $2,000', pos:'3 minis / 30 micros', consistency:'40%'},
-        {size:'$100K', orig:'$249.99', disc:'$149.99', target:'$6,000', dd:'EOD $3,000', pos:'5 minis / 50 micros', consistency:'40%'},
+      'Prime': [
+        {size:'$25K', orig:'$129', disc:'$91/mo', target:'$1,250', dd:'EOD $1,000', pos:'3 minis / 30 micros', minDays:'1'},
+        {size:'$50K', orig:'$179', disc:'$126/mo', target:'$3,000', dd:'EOD $2,000', pos:'5 minis / 50 micros', minDays:'1'},
+        {size:'$100K', orig:'$279', disc:'$196/mo', target:'$6,000', dd:'EOD $3,000', pos:'10 minis / 100 micros', minDays:'1', popular:true},
+        {size:'$150K', orig:'$365', disc:'$256/mo', target:'$9,000', dd:'EOD $4,500', pos:'15 minis / 150 micros', minDays:'1'},
       ],
-      'Rapid': [
-        {size:'$25K', orig:'$99.99', disc:'$59.99', target:'$1,500', dd:'EOD $1,000', pos:'2 minis / 10 micros', consistency:'40%', popular:true},
-        {size:'$50K', orig:'$199.99', disc:'$119.99', target:'$3,000', dd:'EOD $2,000', pos:'3 minis / 15 micros', consistency:'40%'},
-        {size:'$100K', orig:'$279.99', disc:'$167.99', target:'$5,000', dd:'EOD $2,500', pos:'5 minis / 25 micros', consistency:'40%'},
-      ],
-      'Bolt': [
-        {size:'$50K', orig:'$99.99', disc:'$59.99', target:'$3,000', dd:'EOD $2,000 (Daily $1,000)', pos:'3 minis / 9 micros', consistency:'40%', popular:true},
+      'S2F': [
+        {size:'$25K', orig:'$329', disc:'$329', target:'Instant', dd:'EOD $1,000', pos:'1 mini / 10 micros', consistency:'25%', minDays:'7'},
+        {size:'$50K', orig:'$469', disc:'$469', target:'Instant', dd:'EOD $2,000', pos:'5 minis / 50 micros', consistency:'25%', minDays:'7'},
+        {size:'$100K', orig:'$629', disc:'$629', target:'Instant', dd:'EOD $3,000', pos:'10 minis / 100 micros', consistency:'25%', minDays:'7'},
+        {size:'$150K', orig:'$734', disc:'$734', target:'Instant', dd:'EOD $4,500', pos:'15 minis / 150 micros', consistency:'25%', minDays:'7'},
       ]
     },
-    payouts: { pt: '24h garantido', en: '24h guaranteed', es: '24h garantizado', it: '24h garantito', fr: '24h garanti', de: '24h garantiert', ar: 'مضمون خلال 24 ساعة', id: 'Dijamin 24 jam' },
-    platforms: 'NinjaTrader · Tradovate · Quantower · Rithmic',
-    rules: { pt: ['5 modelos: Stellar, Flex, Legacy, Rapid, Bolt','Payout garantido em 24h','Profit split até 90%','Cupom FLEXJU: 40% off em Flex (primeiros 5), 32% nos demais'], en: ['5 models: Stellar, Flex, Legacy, Rapid, Bolt','24h guaranteed payout','Profit split up to 90%','FLEXJU coupon: 40% off Flex (first 5), 32% off others'] }
+    payouts: { pt: '24h após aprovação', en: '24h after approval', es: '24h tras aprobación', it: '24h dopo approvazione', fr: '24h après approbation', de: '24h nach Freigabe', ar: '24 ساعة بعد الموافقة', id: '24 jam setelah disetujui' },
+    platforms: 'WealthCharts · Tradovate',
+    rules: { pt: ['4 modelos: Velocity, Premier Plus, Prime, S2F','Payout em 24h após aprovação','Profit split 90% (1ºs $10K 100% seu)','Cupom MARKET: 80% off no Velocity'], en: ['4 models: Velocity, Premier Plus, Prime, S2F','Payout 24h after approval','90% profit split (first $10K is 100% yours)','MARKET coupon: 80% off Velocity'] }
   },
 ];
 
