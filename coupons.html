@@ -742,29 +742,6 @@ const FIRMS = [
     rules: { pt: ['Passa em 1 dia','Sem regra de consistência','News trading liberado'], en: ['Pass in 1 day','No consistency rule','News trading allowed'] }
   },
   {
-    id: 'tradeday', name: 'TradeDay', logo: '/img/Firms/108/tradeday.webp', coupon: 'MARKETS',
-    discount: '50%', tag: 'fut', rating: '4.6', reviews: '1.3K',
-    rangeAccounts: '$50K–$150K', split: '90%',
-    url: 'https://www.tradeday.com/?a_aid=marketscoupons&utm_source=marketscoupons&utm_medium=bio&utm_campaign=ig_bio_tradeday#pricing',
-    accountTypes: ['QuickPay', 'FastPass'],
-    types: ['Intraday', 'End of Day'],
-    plans: {
-      'Intraday': [
-        {size:'50K', orig:'$125', disc:'$62', target:'$3,000', dd:'Trail $2,000', pos:'5 contracts (50 micros)', resets:'$60', consistency:'30%', minDays:'5'},
-        {size:'100K', orig:'$230', disc:'$115', target:'$6,000', dd:'Trail $3,000', pos:'10 contracts (50 micros)', resets:'$110', consistency:'30%', minDays:'5', popular:true},
-        {size:'150K', orig:'$350', disc:'$175', target:'$9,000', dd:'Trail $4,500', pos:'15 contracts (50 micros)', resets:'$165', consistency:'30%', minDays:'5'},
-      ],
-      'End of Day': [
-        {size:'50K', orig:'$175', disc:'$87', target:'$3,000', dd:'EOD $2,000', pos:'5 contracts (50 micros)', resets:'$85', consistency:'30%', minDays:'5'},
-        {size:'100K', orig:'$285', disc:'$142', target:'$6,000', dd:'EOD $3,000', pos:'10 contracts (50 micros)', resets:'$135', consistency:'30%', minDays:'5', popular:true},
-        {size:'150K', orig:'$395', disc:'$197', target:'$9,000', dd:'EOD $4,500', pos:'15 contracts (50 micros)', resets:'$195', consistency:'30%', minDays:'5'},
-      ],
-    },
-    payouts: { pt: 'Dia 1', en: 'Day 1', es: 'Día 1', it: 'Giorno 1', fr: 'Jour 1', de: 'Tag 1', ar: 'اليوم الأول' },
-    platforms: 'NinjaTrader · Tradovate · TradingView · Jigsaw',
-    rules: { pt: ['Payouts desde o Dia 1','Sem regra de consistência ao fundar','Profit split até 90%','Cupom MARKETS 50% off'], en: ['Day 1 payouts','No consistency rule when funded','Profit split up to 90%','MARKETS coupon 50% off'] }
-  },
-  {
     id: 'funded-futures-family', name: 'Funded Futures Family', logo: '/img/Firms/funded-futures-family.png', coupon: 'MARKET',
     discount: '80%', tag: 'fut', rating: '4.7', reviews: '1.9K',
     rangeAccounts: '$25K–$150K', split: '90%',
@@ -800,6 +777,29 @@ const FIRMS = [
     platforms: 'WealthCharts · Tradovate',
     rules: { pt: ['4 modelos: Velocity, Premier Plus, Prime, S2F','Payout em 24h após aprovação','Profit split 90% (1ºs $10K 100% seu)','Cupom MARKET: 80% off no Velocity'], en: ['4 models: Velocity, Premier Plus, Prime, S2F','Payout 24h after approval','90% profit split (first $10K is 100% yours)','MARKET coupon: 80% off Velocity'] }
   },
+  {
+    id: 'tradeday', name: 'TradeDay', logo: '/img/Firms/108/tradeday.webp', coupon: 'MARKETS',
+    discount: '50%', tag: 'fut', rating: '4.6', reviews: '1.3K',
+    rangeAccounts: '$50K–$150K', split: '90%',
+    url: 'https://www.tradeday.com/?a_aid=marketscoupons&utm_source=marketscoupons&utm_medium=bio&utm_campaign=ig_bio_tradeday#pricing',
+    accountTypes: ['QuickPay', 'FastPass'],
+    types: ['Intraday', 'End of Day'],
+    plans: {
+      'Intraday': [
+        {size:'50K', orig:'$125', disc:'$62', target:'$3,000', dd:'Trail $2,000', pos:'5 contracts (50 micros)', resets:'$60', consistency:'30%', minDays:'5'},
+        {size:'100K', orig:'$230', disc:'$115', target:'$6,000', dd:'Trail $3,000', pos:'10 contracts (50 micros)', resets:'$110', consistency:'30%', minDays:'5', popular:true},
+        {size:'150K', orig:'$350', disc:'$175', target:'$9,000', dd:'Trail $4,500', pos:'15 contracts (50 micros)', resets:'$165', consistency:'30%', minDays:'5'},
+      ],
+      'End of Day': [
+        {size:'50K', orig:'$175', disc:'$87', target:'$3,000', dd:'EOD $2,000', pos:'5 contracts (50 micros)', resets:'$85', consistency:'30%', minDays:'5'},
+        {size:'100K', orig:'$285', disc:'$142', target:'$6,000', dd:'EOD $3,000', pos:'10 contracts (50 micros)', resets:'$135', consistency:'30%', minDays:'5', popular:true},
+        {size:'150K', orig:'$395', disc:'$197', target:'$9,000', dd:'EOD $4,500', pos:'15 contracts (50 micros)', resets:'$195', consistency:'30%', minDays:'5'},
+      ],
+    },
+    payouts: { pt: 'Dia 1', en: 'Day 1', es: 'Día 1', it: 'Giorno 1', fr: 'Jour 1', de: 'Tag 1', ar: 'اليوم الأول' },
+    platforms: 'NinjaTrader · Tradovate · TradingView · Jigsaw',
+    rules: { pt: ['Payouts desde o Dia 1','Sem regra de consistência ao fundar','Profit split até 90%','Cupom MARKETS 50% off'], en: ['Day 1 payouts','No consistency rule when funded','Profit split up to 90%','MARKETS coupon 50% off'] }
+  }
 ];
 
 // ─── i18n ───
