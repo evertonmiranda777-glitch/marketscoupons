@@ -6912,6 +6912,7 @@ async function doLogout() {
   } catch(e) {}
   // 3. Limpar estado da app
   currentUser = null;
+  window._currentUser = null;
   currentProfile = null;
   // 4. Recarregar página
   window.location.replace(window.location.origin + window.location.pathname);
@@ -6922,6 +6923,7 @@ async function loadUserSession(user) {
   if (_sessionLoading) return;
   _sessionLoading = true;
   currentUser = user;
+  window._currentUser = user;
   const { data } = await db.from('profiles').select('*').eq('id', user.id).maybeSingle();
   currentProfile = data;
   setTrackingUser(user); // Enhanced Conversions + User Properties (hashed PII, GA4 user_id)
