@@ -5,6 +5,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Allowlist: so a property GA4 do proprio site. Fecha IDOR (ler GA4 de qualquer property da service account).
+const MC_ALLOWED_GA4_PROPERTIES = new Set(["505861794"]);
+
 // Safe JSON parse: returns parsed JSON or throws with the actual response text
 // when it's not valid JSON (e.g. Google returns HTML error pages on 4xx/5xx).
 async function safeJson(res: Response, ctx: string) {
@@ -71,6 +74,7 @@ Deno.serve(async (req: Request) => {
   try {
     const { days = 30, propertyId } = await req.json().catch(() => ({ days: 30 }));
     if (!propertyId) return new Response(JSON.stringify({ error: 'propertyId required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    if (!MC_ALLOWED_GA4_PROPERTIES.has(String(propertyId))) return new Response(JSON.stringify({ error: 'property_not_allowed' }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
     const token = await getAccessToken();
     const dateRange = { startDate: `${days}daysAgo`, endDate: 'today' };
