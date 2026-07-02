@@ -8,6 +8,9 @@ const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const TG_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
 const TG_CHAT  = "1284593409";
 const FB_CAPI_URL = `${SUPABASE_URL}/functions/v1/facebook-capi`;
+// Secret compartilhado com o trigger do banco (trigger_sale_instant_attrib manda no header).
+// Impede que qualquer um chame direto e force Purchase CAPI falso / spam Telegram / reescrita de atribuicao.
+const ATTRIB_SECRET = Deno.env.get("SALE_ATTRIB_SECRET") || "";
 
 function brtDayString(iso: string): string {
   const d = new Date(new Date(iso).getTime() - 3 * 3600000);
@@ -28,6 +31,11 @@ async function tg(text: string): Promise<{ok:boolean; status:number|null; body:a
 }
 
 serve(async (req) => {
+  // Gate: se o secret esta configurado, exige X-Webhook-Secret (o trigger do banco manda).
+  // Sem secret configurado = fail-open (nunca quebra a atribuicao real por env faltando).
+  if (ATTRIB_SECRET && (req.headers.get("x-webhook-secret") || "") !== ATTRIB_SECRET) {
+    return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
+  }
   const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
   let conv_id = "";
   try {
