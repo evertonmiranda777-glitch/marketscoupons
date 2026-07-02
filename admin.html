@@ -684,6 +684,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
  <button class="nta" onclick="adminGo('email',this)">E-mail</button>
  <button class="nta" onclick="adminGo('monetizacao',this)">Monetização<span class="nav-badge" id="loyalty-badge" style="display:none;"></span></button>
  <button class="nta" onclick="adminGo('financeiro',this)">Financeiro</button>
+ <button class="nta" onclick="adminGo('impostos',this)">Impostos</button>
  </div>
  <div class="nav-right-admin">
    <button class="admin-mobile-menu-btn" onclick="document.getElementById('admin-mobile-dd').classList.toggle('open')">☰</button>
@@ -748,6 +749,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
   <button class="nta" onclick="adminGoMobile('email',this)">E-mail</button>
   <button class="nta" onclick="adminGoMobile('monetizacao',this)">Monetização<span class="nav-badge" id="loyalty-badge-m" style="display:none;"></span></button>
   <button class="nta" onclick="adminGoMobile('financeiro',this)">Financeiro</button>
+  <button class="nta" onclick="adminGoMobile('impostos',this)">Impostos</button>
   <div class="nta-sep"></div>
   <button class="nta nta-cms" onclick="adminGoMobile('firmas',this)">Firmas</button>
   <button class="nta nta-cms" onclick="adminGoMobile('conteudo',this)">Conteúdo</button>
@@ -1751,6 +1753,20 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
         </div>
         <div style="font-size:11px;color:var(--t3);margin-top:10px;">Formato aceito: CSV com colunas <code>Date, Transactions, Commission, Clicks (All), Clicks (Unique)</code> (Apex/Bulenox) ou similar. Datas em "Apr 1, 2026" ou "YYYY-MM-DD".</div>
       </div>
+    </div>
+
+    <!-- ══ IMPOSTOS (Meta Ads Brasil) ══ -->
+    <div class="admin-page" id="page-impostos">
+      <div class="sec-hdr">
+        <div class="sec-title">Impostos, Meta Ads (Brasil)</div>
+        <div class="sec-actions">
+          <button class="btn-secondary" onclick="renderImpostos()">Atualizar</button>
+        </div>
+      </div>
+      <div style="background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.25);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:12px;line-height:1.6;color:var(--t2);">
+        <b style="color:var(--gold);">Como funciona:</b> as contas de anúncio são Meta Brasil (BRL, CNPJ). Sobre cada cobrança a Meta soma <b>COFINS 7,60% + PIS 1,65% + ISS 2,90%</b> (calculados "por dentro", sobre o bruto) = <b>+13,83% sobre o spend</b>. O Ads Manager mostra só o spend líquido; aqui a gente reconstitui o imposto e o custo real que sai do cartão. Base: recibo Meta 02/07/2026 (R$384,98 → R$438,22).
+      </div>
+      <div id="imp-body"></div>
     </div>
 
     <!-- ══ TRACKING DASHBOARD ══ -->
@@ -3928,6 +3944,7 @@ function renderPage(p){
       break;
     case 'tracking':       getEvents().then(()=>renderTrackingPage()); if(!_ga4Cache) fetchGA4Geo(); break;
     case 'financeiro':     renderFinanceiro(); break;
+    case 'impostos':       renderImpostos(); break;
     case 'cms-firms':      renderCmsFirms(); break;
     case 'cms-indicators': renderCmsIndicators(); break;
     case 'cms-guides':     renderCmsGuides(); break;
@@ -3973,6 +3990,68 @@ async function fetchUSDtoBRL(){
   } catch {}
   return _fxUSDBRL.rate || 5.30;
 }
+async function renderImpostos(){
+  const body = document.getElementById('imp-body');
+  if(!body) return;
+  body.innerHTML = '<div style="color:var(--t3);font-size:12px;padding:20px;">Carregando…</div>';
+  const _localDay = iso => { const d=new Date(iso); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+  const untilDate = _localDay(new Date().toISOString());
+  const sinceDate = _localDay(new Date(Date.now()-30*86400000).toISOString());
+  let spend = [];
+  try {
+    const { data } = await db.from('ad_spend_daily').select('date,spend,currency,account_id').gte('date',sinceDate).lte('date',untilDate);
+    spend = data || [];
+  } catch(e){ body.innerHTML = '<div style="color:#EF4444;font-size:12px;padding:20px;">Erro ao carregar ad_spend_daily.</div>'; return; }
+  const fx = await fetchUSDtoBRL();
+  const toBRL = r => r.currency==='BRL' ? Number(r.spend||0) : Number(r.spend||0)*fx;
+  const netBRL = spend.reduce((a,r)=>a+toBRL(r),0);
+  // Aliquotas "por dentro" (sobre o bruto). Recibo Meta 02/07/2026. Mesmas do gross-up do Financeiro.
+  const RATE = { COFINS:0.0760, PIS:0.0165, ISS:0.0290 };
+  const totalRate = RATE.COFINS+RATE.PIS+RATE.ISS; // 0.1215
+  const gross = netBRL/(1-totalRate);
+  const cofins = gross*RATE.COFINS, pis = gross*RATE.PIS, iss = gross*RATE.ISS;
+  const totalTax = gross-netBRL;
+  const effOnNet = netBRL>0 ? (totalTax/netBRL*100) : 0;
+  const fmt = v => 'R$ '+Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const acctName = { '626436433859195':'Markets Coupons 01', '1624522978614954':'Markets Coupons I' };
+  const byAcct = {};
+  spend.forEach(r=>{ const k=String(r.account_id||'—').replace('act_',''); byAcct[k]=(byAcct[k]||0)+toBRL(r); });
+  const kpi = (label,val,sub,color)=>`<div class="stat-card"><div class="stat-label">${label}</div><div class="stat-value" style="font-size:22px;${color?'color:'+color+';':''}">${val}</div>${sub?`<div class="stat-sub" style="font-size:11px;color:var(--t3);margin-top:4px;">${sub}</div>`:''}</div>`;
+  const breakdownRows = [
+    ['COFINS', RATE.COFINS, cofins],
+    ['PIS', RATE.PIS, pis],
+    ['ISS', RATE.ISS, iss],
+  ].map(([n,r,v])=>`<tr><td>${n}</td><td>${(r*100).toFixed(2)}%</td><td style="text-align:right;">${fmt(v)}</td></tr>`).join('');
+  const acctRows = Object.entries(byAcct).sort((a,b)=>b[1]-a[1]).map(([k,net])=>{
+    const g = net/(1-totalRate); const t = g-net;
+    return `<tr><td>${acctName[k]||k}</td><td style="text-align:right;">${fmt(net)}</td><td style="text-align:right;color:#EF4444;">${fmt(t)}</td><td style="text-align:right;font-weight:700;">${fmt(g)}</td></tr>`;
+  }).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:16px;">Sem gasto no período.</td></tr>';
+  body.innerHTML = `
+    <div style="font-size:11px;color:var(--t3);margin:-6px 0 12px;">Período: últimos 30 dias (${sinceDate} → ${untilDate}) · câmbio USD→BRL ${fx.toFixed(2)}</div>
+    <div class="stats-grid" style="margin-bottom:20px;">
+      ${kpi('Spend líquido', fmt(netBRL), 'o que o Ads Manager mostra')}
+      ${kpi('Imposto total', fmt(totalTax), `+${effOnNet.toFixed(2)}% sobre o spend`, '#EF4444')}
+      ${kpi('Custo real', fmt(gross), 'spend + imposto (sai do cartão)', '#F0B429')}
+      ${kpi('Alíquota', (totalRate*100).toFixed(2)+'% do bruto', '≈ +13,83% sobre o líquido')}
+    </div>
+    <div class="sec-hdr" style="margin-top:8px;"><div class="sec-title" style="font-size:14px;">Imposto por tipo</div></div>
+    <div class="chart-card" style="padding:0;overflow:hidden;margin-bottom:20px;">
+      <div class="data-table-wrap"><table class="data-table">
+        <thead><tr><th>Imposto</th><th>Alíquota</th><th style="text-align:right;">Valor (período)</th></tr></thead>
+        <tbody>${breakdownRows}
+          <tr style="font-weight:700;border-top:2px solid var(--glass-border);"><td>Total</td><td>${(totalRate*100).toFixed(2)}%</td><td style="text-align:right;">${fmt(totalTax)}</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="sec-hdr" style="margin-top:8px;"><div class="sec-title" style="font-size:14px;">Por conta de anúncio</div></div>
+    <div class="chart-card" style="padding:0;overflow:hidden;">
+      <div class="data-table-wrap"><table class="data-table">
+        <thead><tr><th>Conta</th><th style="text-align:right;">Spend líquido</th><th style="text-align:right;">Imposto</th><th style="text-align:right;">Custo real</th></tr></thead>
+        <tbody>${acctRows}</tbody>
+      </table></div>
+    </div>`;
+}
+
 async function renderFinanceiro(){
   // Filtro global: since/until em ISO (created_at) ou YYYY-MM-DD (date)
   const sinceIso = globalDateStart || new Date(0).toISOString();
