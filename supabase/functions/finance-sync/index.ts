@@ -12,7 +12,8 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 const FIRM_WHITELIST = new Set([
-  "apex","bulenox","ftmo","tpt","fn","e2t","the5ers","fundingpips","brightfunded","e8","cti"
+  "apex","bulenox","ftmo","tpt","fn","e2t","the5ers","fundingpips","brightfunded","e8","cti",
+  "tradeday","funded-futures-family","goat","toponefutures","blueguardian","aquafutures","blueberryfutures","alphafutures","futureselite"
 ]);
 
 serve(async (req) => {
@@ -219,16 +220,31 @@ serve(async (req) => {
 
   if (leads.length) {
     const txs = leads
-      .filter(l => l && (l.order_id || l.lead))
-      .map(l => ({
-        firm_id: firm,
-        event_type: "sale",
-        transaction_id: l.order_id ? `${firm}:${l.order_id}` : null,
-        amount: Number(l.amount) || 0,
-        currency: firm === 'ftmo' ? 'EUR' : 'USD',
-        status: (l.status || 'pending').toLowerCase(),
-        raw_payload: l
-      }));
+      // aceita 3 formatos de lead: transaction_id ja pronto (scrapers novos tipo FFF 'fff:<txn>'),
+      // order_id (scrapers antigos), ou lead. Sem isso as vendas individuais do FFF eram DESCARTADAS
+      // e nunca viravam conversao real -> nunca disparavam Purchase/Telegram.
+      .filter(l => l && (l.order_id || l.lead || l.transaction_id))
+      .map(l => {
+        const txId = l.transaction_id ? String(l.transaction_id)
+          : (l.order_id ? `${firm}:${l.order_id}` : null);
+        // Purchase value = NOSSA comissao, nao o valor bruto pago pelo cliente. Se o lead trouxer
+        // commission usa ela; senao cai no amount.
+        const amt = (l.commission !== undefined && l.commission !== null && l.commission !== '')
+          ? Number(l.commission) : (Number(l.amount) || 0);
+        const row: any = {
+          firm_id: firm,
+          event_type: "sale",
+          transaction_id: txId,
+          amount: Number(amt) || 0,
+          currency: firm === 'ftmo' ? 'EUR' : 'USD',
+          status: (l.status || 'approved').toLowerCase(),
+          raw_payload: l
+        };
+        // created_at pela data da venda (pro match de clique cair na janela de 7d certa).
+        if (l.date && /^\d{4}-\d{2}-\d{2}$/.test(String(l.date))) row.created_at = `${l.date}T15:00:00Z`;
+        return row;
+      })
+      .filter(t => t.transaction_id);
 
     if (txs.length) {
       const { error } = await sb
