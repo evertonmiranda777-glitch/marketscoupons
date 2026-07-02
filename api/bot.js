@@ -31,42 +31,62 @@ async function getLivePromoBlock() {
   const now = Date.now();
   if (now - _promoCache.at < 60_000 && _promoCache.text) return _promoCache.text;
   try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/cms_firms?active=eq.true&select=short_name,name,coupon,discount,discount_type,promo_ends_at,promo_label`, {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/cms_firms?active=eq.true&select=short_name,name,coupon,discount,discount_type,promo_ends_at,promo_label,disc_note,prices`, {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
     });
     if (!r.ok) return _promoCache.text || '';
     const firms = await r.json();
     const lines = [];
+    const priceLines = [];
     for (const f of firms) {
       const name = f.short_name || f.name;
-      if (!f.coupon && !f.discount) continue;
-      const coupon = f.coupon ? ` coupon ${f.coupon}` : '';
-      const pct = f.discount ? ` ${f.discount}% OFF` : '';
-      let when = '';
-      // Lifetime tem prioridade, ignora promo_ends_at obsoleto que sobrou de promo anterior
-      if (f.discount_type === 'lifetime') {
-        when = ', LIFETIME (never expires)';
-      } else if (f.promo_ends_at) {
-        const end = Date.parse(f.promo_ends_at);
-        const diffMs = end - now;
-        if (diffMs > 0) {
-          const h = Math.floor(diffMs / 3_600_000);
-          const d = Math.floor(h / 24);
-          const hRem = h % 24;
-          const rel = d > 0 ? `${d}d ${hRem}h` : `${h}h`;
-          when = `, ENDS IN ${rel} (${new Date(end).toISOString().replace('T',' ').slice(0,16)} UTC)`;
-        } else {
-          // Promo expirou e não é lifetime, skip pra não vazar info confusa
-          continue;
+      // PROMO line (coupon/discount/expiry)
+      if (f.coupon || f.discount) {
+        let when = '', skip = false;
+        // Lifetime tem prioridade, ignora promo_ends_at obsoleto que sobrou de promo anterior
+        if (f.discount_type === 'lifetime') {
+          when = ', LIFETIME (never expires)';
+        } else if (f.promo_ends_at) {
+          const end = Date.parse(f.promo_ends_at);
+          const diffMs = end - now;
+          if (diffMs > 0) {
+            const h = Math.floor(diffMs / 3_600_000);
+            const d = Math.floor(h / 24);
+            const hRem = h % 24;
+            const rel = d > 0 ? `${d}d ${hRem}h` : `${h}h`;
+            when = `, ENDS IN ${rel} (${new Date(end).toISOString().replace('T',' ').slice(0,16)} UTC)`;
+          } else {
+            skip = true; // promo expirou e não é lifetime, não mostra na lista de promo
+          }
+        } else if (f.discount_type) {
+          when = `, ${f.discount_type}`;
         }
-      } else if (f.discount_type) {
-        when = `, ${f.discount_type}`;
+        if (!skip) {
+          const coupon = f.coupon ? ` coupon ${f.coupon}` : '';
+          const pct = f.discount ? ` ${f.discount}% OFF` : '';
+          const note = f.disc_note ? ` [${f.disc_note}]` : '';
+          lines.push(`- ${name}${coupon}${pct}${when}${f.promo_label ? ` (${f.promo_label})` : ''}${note}`);
+        }
       }
-      lines.push(`- ${name}${coupon}${pct}${when}${f.promo_label ? ` (${f.promo_label})` : ''}`);
+      // PRICE line (all accounts/plans, always), price já vem com o desconto do cupom
+      if (Array.isArray(f.prices) && f.prices.length) {
+        const accts = f.prices.map(p => {
+          const lab = p.a || p.size || p.s || '';
+          const nn = p.n || '';
+          const oo = (p.o && p.o !== p.n) ? ` (was ${p.o})` : '';
+          return `${lab} ${nn}${oo}`.trim();
+        }).filter(Boolean).join('; ');
+        if (accts) priceLines.push(`- ${name}${f.coupon ? ` (coupon ${f.coupon})` : ''}: ${accts}`);
+      }
     }
-    const text = lines.length
-      ? `\n\nACTIVE PROMOS (live data, as of ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC, TRUST THIS over any hardcoded info above):\n${lines.join('\n')}\n\nWhen user asks if a promo expires, ALWAYS check this list. If "ENDS IN Xd Xh", say it honestly. If "LIFETIME", say it doesn't expire. Never guess.`
+    const stamp = new Date().toISOString().slice(0,16).replace('T',' ');
+    const promoBlock = lines.length
+      ? `\n\nACTIVE PROMOS (live data, as of ${stamp} UTC, TRUST THIS over any hardcoded info above):\n${lines.join('\n')}\n\nWhen user asks if a promo expires, ALWAYS check this list. If "ENDS IN Xd Xh", say it honestly. If "LIFETIME", say it doesn't expire. Never guess.`
       : '';
+    const priceBlock = priceLines.length
+      ? `\n\nLIVE ACCOUNT PRICES (every firm, every account/plan/size, live from DB, the price shown ALREADY includes the coupon discount, format "size price (was original)", TRUST THIS over any hardcoded price above):\n${priceLines.join('\n')}\n\nWhen a user asks a firm's price or about a specific account size/plan, use THIS list, quote the exact size, discounted price and original. If a size isn't listed here, say you'll double-check, don't invent it.`
+      : '';
+    const text = promoBlock + priceBlock;
     _promoCache = { at: now, text };
     return text;
   } catch (e) {
@@ -193,6 +213,16 @@ BLUEBERRY FUTURES (Futures), coupon MARKET-7652C, 60% OFF. 90% split. Elite prog
 ALPHA FUTURES (Futures), coupon MARKETS026158, 25% OFF. 90% split. Elite program. Trustpilot 4.9 (4.6k).
 
 FUTURES ELITE / FE (Futures), coupon JUNE30, 30% OFF via link. 90% split. Elite program. Trustpilot 4.6 (297).
+
+FUNDED FUTURES FAMILY / FFF (Futures), coupon MARKET, 80% OFF on Velocity. 90% split (first $10K is 100%). Platforms: WealthCharts, Tradovate. Key differentiators: NO activation fee (funded account free after passing), no Daily Loss Limit on Prime, funded account available next day, payout guaranteed in 24h (avg ~2h), up to 5 accounts. 4 plans (min days differ, this matters, be exact):
+- PREMIER PLUS (EOD drawdown, monthly, 50% off with MARKET): min 1 trading day, no consistency in eval. 25K $65 (was $129), 50K $90 ($179), 100K $140 ($279), 150K $183 ($365). Targets: 25K $1,250 / 50K $3,000 / 100K $6,000 / 150K $9,000. Funded: 40% lifetime consistency, 3 payout days.
+- PRIME (two drawdown flavors, monthly, 50% off with MARKET, min 1 trading day, no consistency in eval, funded has NO consistency + 5 payout days):
+  - Prime EOD (End-of-Day drawdown): 25K $60 (was $119), 50K $80 ($159), 100K $125 ($249), 150K $230 ($459). Targets: 25K $1,500 / 50K $3,000 / 100K $6,000 / 150K $9,000. Max DD: 25K $750 / 50K $1,500 / 100K $2,500 / 150K $4,000.
+  - Prime Intraday (Intraday Trailing drawdown): 25K $45 (was $89), 50K $60 ($119), 100K $95 ($189), 150K $130 ($259). Targets same as EOD. Max DD: 25K $1,000 / 50K $2,000 / 100K $3,000 / 150K $4,500.
+- VELOCITY (Intraday Trailing drawdown, monthly, best discount 80% off): min 1 trading day, 40% consistency in eval. 25K $16 ($79), 50K $25 ($125), 100K $45 ($225), 150K $65 ($325). Targets: 25K $2,500 / 50K $4,000 / 100K $7,000 / 150K $10,000. Funded payout: 3 winning days ($200+ each), 1 day with add-on.
+- S2F STRAIGHT TO FUNDED (EOD drawdown, ONE-TIME fee not monthly, 40% off with MARKET): min 7 payout days, 25% consistency, skips the eval phase (funded directly). One-time: 25K $198 (was $329), 50K $282 ($469), 100K $378 ($629), 150K $441 ($734).
+FFF eval has NO time limit to pass (unlike Apex/Bulenox); but after passing you have 7 days to activate the funded account (KYC 24-48h, then click Activate in dashboard) or the pass expires. Funded drawdown difference (important): PRIME/PREMIER funded switch to End-of-Day drawdown WITH a buffer that locks the drawdown once you hit a profit threshold (more protection); VELOCITY funded keeps the SAME intraday trailing drawdown as the eval with NO buffer lock (more demanding, moves in real time with open profits). Velocity funded payout rules: $6,000 target per payout cycle, min 3 winning days ($200+ each), 40% lifetime consistency, max $2,250 per payout ($1,500 with the Daily Payout add-on that removes the min-days + consistency).
+Trustpilot 4.7 (1.9k).
 
 VOLUMEFILTER INDICATOR (this is a flagship offering, know it cold, mention it whenever a user asks about NinjaTrader/charting/indicators/volume analysis):
 - FREE indicator for NinjaTrader 8, no Loyalty unlock needed, anyone can grab it.
