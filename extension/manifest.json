@@ -24,6 +24,22 @@
     "https://*.citytradersimperium.com/*",
     "https://*.tradeday.com/*",
     "https://tradeday.postaffiliatepro.com/*",
+    "https://app.fundedfuturesfamily.com/*",
+    "https://*.fundedfuturesfamily.com/*",
+    "https://*.goatfundedfutures.com/*",
+    "https://goatfundedfutures.com/*",
+    "https://*.futureselite.com/*",
+    "https://futureselite.com/*",
+    "https://*.alpha-futures.com/*",
+    "https://alpha-futures.com/*",
+    "https://*.blueberryfutures.com/*",
+    "https://blueberryfutures.com/*",
+    "https://*.aquafutures.io/*",
+    "https://aquafutures.io/*",
+    "https://*.blueguardian.com/*",
+    "https://blueguardian.com/*",
+    "https://*.toponefutures.com/*",
+    "https://toponefutures.com/*",
     "https://qfwhduvutfumsaxnuofa.supabase.co/*"
   ],
   "background": { "service_worker": "background.js" },
@@ -97,6 +113,24 @@
     {
       "matches": ["https://www.tradeday.com/affiliates*", "https://tradeday.com/affiliates*", "https://*.tradeday.com/affiliates*", "https://tradeday.postaffiliatepro.com/*"],
       "js": ["config.js", "lib/csv.js", "content/tradeday.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://app.fundedfuturesfamily.com/affiliate*", "https://*.fundedfuturesfamily.com/affiliate*"],
+      "js": ["config.js", "content/fff.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://*.goatfundedfutures.com/*", "https://goatfundedfutures.com/*",
+        "https://*.futureselite.com/*", "https://futureselite.com/*",
+        "https://*.alpha-futures.com/*", "https://alpha-futures.com/*",
+        "https://*.blueberryfutures.com/*", "https://blueberryfutures.com/*",
+        "https://*.aquafutures.io/*", "https://aquafutures.io/*",
+        "https://*.blueguardian.com/*", "https://blueguardian.com/*",
+        "https://*.toponefutures.com/*", "https://toponefutures.com/*"
+      ],
+      "js": ["config.js", "content/generic-affiliate.js"],
       "run_at": "document_idle"
     }
   ],

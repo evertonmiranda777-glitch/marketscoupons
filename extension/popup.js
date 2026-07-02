@@ -10,7 +10,15 @@ const FIRMS = [
   { id:'fundingpips',  name:'FundingPips',  url:'https://app.fundingpips.com/affiliate',                   action:'sync_fundingpips' },
   { id:'e8',           name:'E8 Markets',   url:'https://e8x.e8markets.com/affiliate',                     action:'sync_e8' },
   { id:'cti',          name:'CTI',          url:'https://app.citytradersimperium.com/affiliates',          action:'sync_cti' },
-  { id:'tradeday',     name:'TradeDay',     url:'https://tradeday.postaffiliatepro.com/affiliates/panel.php#Home', action:'sync_tradeday' }
+  { id:'tradeday',     name:'TradeDay',     url:'https://tradeday.postaffiliatepro.com/affiliates/panel.php#Home', action:'sync_tradeday' },
+  { id:'fff',          name:'FFF',          url:'https://app.fundedfuturesfamily.com/affiliate/affiliate-orders/?filter=all_time', action:'sync_fff' },
+  { id:'goat',         name:'Goat',         url:'https://app.goatfundedfutures.com/affiliate', action:'sync_goat',         domain:'goatfundedfutures.com' },
+  { id:'toponefutures',name:'Top One',      url:'https://toponefutures.com/',                  action:'sync_toponefutures', domain:'toponefutures.com' },
+  { id:'blueguardian', name:'Blue Guardian',url:'https://blueguardian.com/',                   action:'sync_blueguardian',  domain:'blueguardian.com' },
+  { id:'aquafutures',  name:'Aqua',         url:'https://checkout.aquafutures.io/',            action:'sync_aquafutures',   domain:'aquafutures.io' },
+  { id:'blueberryfutures', name:'Blueberry',url:'https://portal.blueberryfutures.com/',        action:'sync_blueberryfutures', domain:'blueberryfutures.com' },
+  { id:'alphafutures', name:'Alpha',        url:'https://app.alpha-futures.com/',              action:'sync_alphafutures',  domain:'alpha-futures.com' },
+  { id:'futureselite', name:'Futures Elite',url:'https://app.futureselite.com/',               action:'sync_futureselite',  domain:'futureselite.com' }
 ];
 
 function fmtAgo(ts) {
@@ -37,7 +45,7 @@ async function render() {
         <div class="firm">${f.name}</div>
         <div class="status ${statusClass}">${fmtAgo(last)}</div>
       </div>
-      <button data-firm="${f.id}" data-url="${f.url}" data-action="${f.action}">Sync</button>
+      <button data-firm="${f.id}" data-url="${f.url}" data-action="${f.action}" data-domain="${f.domain || ''}">Sync</button>
     `;
     wrap.appendChild(row);
   });
@@ -50,10 +58,16 @@ async function onSync(e) {
   const action = btn.dataset.action;
   btn.disabled = true; btn.textContent = '...';
 
-  // Acha ou abre aba na URL do painel
+  // Acha ou abre aba na URL do painel. Match por DOMINIO base (qualquer subdominio/caminho do painel)
+  // quando a firma tem `domain`; senao match exato de host (firmas antigas).
+  const domain = btn.dataset.domain || '';
   const tabs = await chrome.tabs.query({});
   const host = new URL(url).host;
-  let tab = tabs.find(t => t.url && new URL(t.url).host === host);
+  let tab = tabs.find(t => {
+    if (!t.url) return false;
+    let h; try { h = new URL(t.url).host; } catch { return false; }
+    return domain ? (h === domain || h.endsWith('.' + domain)) : (h === host);
+  });
   if (!tab) {
     tab = await chrome.tabs.create({ url, active: true });
     btn.textContent = 'Abra painel';
