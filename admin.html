@@ -4091,6 +4091,8 @@ async function renderFinanceiro(){
   // (recibo 02/07/2026, conta BRL). Custo real = spend x 1,1383. Ajustar aqui se a alíquota mudar.
   const MC_META_TAX_MULT = 1.1383;
   const totSpendBRL = (spendCur === 'BRL' ? totSpend : totSpend * fxUSDtoBRL) * MC_META_TAX_MULT;
+  const totSpendNetBRL = totSpendBRL / MC_META_TAX_MULT; // Meta Ads liquido (sem imposto)
+  const totImpostoBRL = totSpendBRL - totSpendNetBRL;    // PIS/COFINS/ISS (+13,83%)
   const totComBRL = totCom * fxUSDtoBRL; // comissao sempre em USD na base
   const roasReal = totSpendBRL > 0 ? (totComBRL/totSpendBRL) : null;
   const cacBRL = totTx > 0 && totSpendBRL > 0 ? (totSpendBRL/totTx) : null;
@@ -4106,8 +4108,9 @@ async function renderFinanceiro(){
     </div>`;
   document.getElementById('fin-kpis').innerHTML = [
     kpiCard('Comissão', fmtUSD(totCom), `${totTx} vendas · ≈ ${fmtBRL(totComBRL)}`),
-    kpiCard('Gasto Ads', fmtBRL(totSpendBRL), `Meta +13,83% imposto (PIS/COFINS/ISS) · USD→BRL ${fxUSDtoBRL.toFixed(2)}`),
-    kpiCard('Lucro', fmtBRL(lucroBRL), lucroBRL>=0?'no azul':'no vermelho'),
+    kpiCard('Gasto Ads', fmtBRL(totSpendNetBRL), `Meta Ads líquido · USD→BRL ${fxUSDtoBRL.toFixed(2)}`),
+    kpiCard('Imposto', `<span style="color:#EF4444;">${fmtBRL(totImpostoBRL)}</span>`, 'PIS/COFINS/ISS · +13,83%'),
+    kpiCard('Lucro', fmtBRL(lucroBRL), lucroBRL>=0?'no azul (após imposto)':'no vermelho (após imposto)'),
     kpiCard('ROAS', roasReal?roasReal.toFixed(2)+'x':'—', 'Comissão/Gasto'),
     kpiCard('CAC', cacBRL?fmtBRL(cacBRL):'—', 'Custo por venda'),
     kpiCard('Cliques', totClicksAll.toLocaleString('pt-BR'), `${totClicksUniq} únicos · CVR ${convRate.toFixed(2)}%`)
