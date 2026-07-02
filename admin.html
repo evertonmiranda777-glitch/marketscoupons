@@ -1177,71 +1177,26 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        </div>
      </div>
    </div>
-   <div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-     <div style="grid-column:1/-1;display:flex;gap:8px;align-items:flex-end;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.22);border-radius:8px;padding:8px 10px;">
-       <div style="flex:1;">
-         <label style="font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">Assunto pronto</label>
-         <select id="push-preset" onchange="applyPushPreset()" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(240,180,41,.3);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
-           <option value="">— escolher assunto —</option>
-           <option value="apex_nofee">Apex, sem taxa de ativação</option>
-           <option value="apex_lasthours">Apex, 90% OFF últimas horas</option>
-           <option value="top3">Top 3 cupons da semana</option>
-           <option value="newfirm">Nova firma / cupom novo</option>
-           <option value="analysis">Análise diária no ar</option>
-           <option value="calendar">Calendário, alto impacto hoje</option>
-           <option value="gex">GEX, níveis do dia</option>
-           <option value="price_drop">Queda de preço numa firma</option>
-           <option value="coupon_expiring">Desconto pode acabar</option>
-           <option value="welcome">Boas-vindas (1º push)</option>
-           <option value="winback">Reativação (faz tempo)</option>
-           <option value="funded_payout">Conta aprovada custa menos</option>
-         </select>
-       </div>
-       <div style="width:80px;">
-         <label style="font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;font-weight:700;">Idioma</label>
-         <select id="push-preset-lang" onchange="applyPushPreset()" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(240,180,41,.3);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
-           <option value="en">EN</option>
-           <option value="pt">PT</option>
-         </select>
-       </div>
+   <div style="padding:14px;display:grid;grid-template-columns:1fr;gap:12px;">
+     <div>
+       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">1. Título *</label>
+       <input id="push-title" type="text" placeholder="O título da notificação" maxlength="60" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;">
      </div>
      <div>
-       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Título *</label>
-       <input id="push-title" type="text" placeholder="Apex 90% OFF, última hora" maxlength="60" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;">
+       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">2. Descrição</label>
+       <textarea id="push-body" rows="2" placeholder="O texto da notificação" maxlength="160" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;resize:vertical;"></textarea>
      </div>
      <div>
-       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">URL (default /)</label>
-       <input id="push-url" type="text" placeholder="/firms/apex" maxlength="200" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;">
+       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">3. Link de redirecionamento (pra onde vai ao clicar)</label>
+       <input id="push-url" type="text" placeholder="/coupons ou /funded-futures-family (default: home)" maxlength="200" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;">
      </div>
-     <div style="grid-column:1/-1;">
-       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Corpo</label>
-       <textarea id="push-body" rows="2" placeholder="Termina em 30min, cupom MARKET no checkout" maxlength="160" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:13px;margin-top:4px;resize:vertical;"></textarea>
-     </div>
-     <div>
-       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Categoria</label>
-       <select id="push-category" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
-         <option value="">Todas (sem filtro)</option>
-         <option value="promo">Promo (cat_promo)</option>
-         <option value="calendar">Calendário</option>
-         <option value="analysis">Análise diária</option>
-         <option value="gex">GEX</option>
-       </select>
-     </div>
-     <div>
-       <label style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;">Firma (opcional)</label>
-       <select id="push-firm" onchange="onPushFirmChange()" style="width:100%;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-size:13px;margin-top:4px;">
-         <option value="">Sem filtro de firma</option>
-       </select>
-       <div style="font-size:10.5px;color:var(--t3);margin-top:4px;">Escolher a firma preenche a URL pra página dela. Pra avisar TODOS de firma nova, escolha a firma (preenche a URL) e volte o filtro pra "Sem filtro".</div>
-     </div>
-     <div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;">
+     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
        <button class="btn-secondary" onclick="pushDryRun()">Quantos receberiam? (dry-run)</button>
-       <button class="btn-secondary" onclick="pushSendTest()" style="background:rgba(107,182,201,.15);border-color:rgba(107,182,201,.4);color:#6BB6C9;">Enviar teste só pra mim (este device)</button>
-       <input id="push-test-email" type="email" placeholder="email pra testar no device dele" value="evertonmiranda1183@hotmail.com" style="flex:1;min-width:220px;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:12px;">
-       <button class="btn-secondary" onclick="pushSendTestEmail()" style="background:rgba(107,182,201,.15);border-color:rgba(107,182,201,.4);color:#6BB6C9;">Enviar teste pro email</button>
+       <input id="push-test-email" type="email" value="evertonmiranda1183@hotmail.com" style="flex:1;min-width:200px;padding:8px 10px;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:8px;color:var(--t1);font-family:var(--f);font-size:12px;">
+       <button class="btn-secondary" onclick="pushSendTestEmail()" style="background:rgba(107,182,201,.15);border-color:rgba(107,182,201,.4);color:#6BB6C9;">Enviar teste pro email (o meu)</button>
        <button class="btn-secondary" onclick="pushSendNow()" style="background:rgba(240,180,41,.15);border-color:rgba(240,180,41,.35);color:var(--gold);">Enviar pra todos elegíveis</button>
      </div>
-     <div id="push-send-result" style="grid-column:1/-1;font-size:12px;color:var(--t2);min-height:18px;"></div>
+     <div id="push-send-result" style="font-size:12px;color:var(--t2);min-height:18px;"></div>
    </div>
  </div>
 
@@ -4053,7 +4008,10 @@ async function renderFinanceiro(){
   // Taxa ao vivo USD→BRL (awesomeapi, sem auth, CORS ok)
   const fxUSDtoBRL = await fetchUSDtoBRL();
   const fxBRLtoUSD = 1 / fxUSDtoBRL;
-  const totSpendBRL = spendCur === 'BRL' ? totSpend : totSpend * fxUSDtoBRL;
+  // Imposto Meta Brasil: PIS 1,65% + COFINS 7,60% + ISS 2,90% "por dentro" = +13,83% sobre o spend
+  // (recibo 02/07/2026, conta BRL). Custo real = spend x 1,1383. Ajustar aqui se a alíquota mudar.
+  const MC_META_TAX_MULT = 1.1383;
+  const totSpendBRL = (spendCur === 'BRL' ? totSpend : totSpend * fxUSDtoBRL) * MC_META_TAX_MULT;
   const totComBRL = totCom * fxUSDtoBRL; // comissao sempre em USD na base
   const roasReal = totSpendBRL > 0 ? (totComBRL/totSpendBRL) : null;
   const cacBRL = totTx > 0 && totSpendBRL > 0 ? (totSpendBRL/totTx) : null;
@@ -4069,7 +4027,7 @@ async function renderFinanceiro(){
     </div>`;
   document.getElementById('fin-kpis').innerHTML = [
     kpiCard('Comissão', fmtUSD(totCom), `${totTx} vendas · ≈ ${fmtBRL(totComBRL)}`),
-    kpiCard('Gasto Ads', fmtBRL(totSpendBRL), `Meta Ads · USD→BRL ${fxUSDtoBRL.toFixed(2)}`),
+    kpiCard('Gasto Ads', fmtBRL(totSpendBRL), `Meta +13,83% imposto (PIS/COFINS/ISS) · USD→BRL ${fxUSDtoBRL.toFixed(2)}`),
     kpiCard('Lucro', fmtBRL(lucroBRL), lucroBRL>=0?'no azul':'no vermelho'),
     kpiCard('ROAS', roasReal?roasReal.toFixed(2)+'x':'—', 'Comissão/Gasto'),
     kpiCard('CAC', cacBRL?fmtBRL(cacBRL):'—', 'Custo por venda'),
@@ -4210,7 +4168,8 @@ async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
   const rows = [...allKws].map(kw => {
     const a = byKw[kw] || { firms:[], clicks:0, leads:0, sales:0, commissionUSD:0 };
     const s = spendByKw[kw] || { spend:0, clicks:0, currency:spendCur };
-    const spendBRL = s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL;
+    const MC_META_TAX_MULT = 1.1383; // +13,83% imposto Meta Brasil (PIS/COFINS/ISS por dentro) = custo real
+    const spendBRL = (s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL) * MC_META_TAX_MULT;
     const commBRL = a.commissionUSD * fxUSDtoBRL;
     const roas = spendBRL > 0 ? (commBRL/spendBRL) : null;
     const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
@@ -4389,7 +4348,8 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
     const spendKey = isActive ? (findKeyInMap(c, spendByCamp) || c) : c;
     const a = byCamp[salesKey] || { sales:0, revenueUSD:0, confs:[] };
     const s = spendByCamp[spendKey] || { spend:0, clicks:0, impressions:0, currency:spendCur, metaPurchases:0, metaLeads:0, metaConvValue:0 };
-    const spendBRL = s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL;
+    const MC_META_TAX_MULT = 1.1383; // +13,83% imposto Meta Brasil (PIS/COFINS/ISS por dentro) = custo real
+    const spendBRL = (s.currency === 'BRL' ? s.spend : s.spend * fxUSDtoBRL) * MC_META_TAX_MULT;
     const revBRL = a.revenueUSD * fxUSDtoBRL;
     const roas = spendBRL > 0 ? (revBRL/spendBRL) : null;
     const cac = a.sales > 0 && spendBRL > 0 ? (spendBRL/a.sales) : null;
@@ -6907,8 +6867,6 @@ function _pushReadForm(){
     title: document.getElementById('push-title').value.trim(),
     body: document.getElementById('push-body').value.trim(),
     url: document.getElementById('push-url').value.trim() || '/',
-    category: document.getElementById('push-category').value || undefined,
-    firm: document.getElementById('push-firm').value || undefined,
   };
 }
 async function pushDryRun(){
@@ -6929,7 +6887,7 @@ async function pushDryRun(){
 async function pushSendNow(){
   const f = _pushReadForm();
   if (!f.title) { toast('Título obrigatório','error'); return; }
-  if (!confirm(`Enviar push "${f.title}" pra todos elegíveis?\n\nCategoria: ${f.category||'todas'} · Firma: ${f.firm||'todas'}`)) return;
+  if (!confirm(`Enviar push "${f.title}" pra TODOS os inscritos elegíveis?`)) return;
   const out = document.getElementById('push-send-result'); out.textContent = 'Enviando...';
   try {
     const tk = await _adminBearer();
@@ -7005,8 +6963,12 @@ const PUSH_PRESETS = {
     pt: { title:'Os 3 cupons que mais economizam', body:'As 3 prop firms com o maior desconto ativo da semana, a maior economia primeiro. Toque pra ver.', url:'/coupons', category:'promo', firm:'' }
   },
   newfirm: {
-    en: { title:'A new prop firm just landed', body:'A new firm just dropped with an exclusive coupon you won\'t find anywhere else. Be one of the first to grab it.', url:'/coupons', category:'promo', firm:'' },
-    pt: { title:'Entrou prop firm nova no site', body:'Uma firma nova acabou de chegar, com um cupom exclusivo que não existe em outro lugar. Seja um dos primeiros.', url:'/coupons', category:'promo', firm:'' }
+    en: { title:'New prop firm just landed', body:'A new firm just dropped with an exclusive coupon you won\'t find anywhere else. Tap to grab it before everyone does.', url:'/coupons', category:'promo', firm:'' },
+    pt: { title:'Entrou prop firm nova no site', body:'Uma firma nova acabou de chegar, com um cupom exclusivo que não existe em outro lugar. Toque e pegue antes de todo mundo.', url:'/coupons', category:'promo', firm:'' }
+  },
+  fff_launch: {
+    en: { title:'80% OFF on a brand-new prop firm', body:'Funded Futures Family just landed with the biggest discount on the site. Code MARKET at checkout, grab it before the price moves.', url:'/funded-futures-family', category:'promo', firm:'funded-futures-family' },
+    pt: { title:'80% OFF numa prop firm novinha', body:'A Funded Futures Family chegou com o maior desconto do site. Cupom MARKET no checkout, pegue antes do preço mudar.', url:'/funded-futures-family', category:'promo', firm:'funded-futures-family' }
   },
   analysis: {
     en: { title:'SPX & NDX: today\'s levels are live', body:'Key zones, gamma walls and what\'s in play before the open. A 2-minute read to start your day sharp.', url:'/analysis', category:'analysis', firm:'' },
@@ -7052,6 +7014,9 @@ function applyPushPreset(){
   document.getElementById('push-url').value = p.url;
   document.getElementById('push-category').value = p.category || '';
   document.getElementById('push-firm').value = p.firm || '';
+  // Hero grande: usa imagem do preset se tiver, senão o back da firma; cai pra vazio (texto puro).
+  document.getElementById('push-image').value = p.image || (p.firm ? '/img/Firms/'+p.firm+'.png' : '');
+  document.getElementById('push-icon').value = p.icon || (p.firm ? '/img/Firms/'+p.firm+'.png' : '');
 }
 async function populatePushFirms(){
   const sel=document.getElementById('push-firm'); if(!sel) return;
@@ -7067,7 +7032,17 @@ async function populatePushFirms(){
 window.addEventListener('load', ()=>{ setTimeout(()=>{ try{ populatePushFirms(); }catch(e){} }, 1500); });
 function onPushFirmChange(){
   const id=document.getElementById('push-firm').value;
-  if(id) document.getElementById('push-url').value='/'+id;
+  if(id){
+    document.getElementById('push-url').value='/'+id;
+    // Auto-preenche o hero da firma (mesmo back usado nos criativos). Só preenche se vazio,
+    // pra não sobrescrever uma imagem que o admin já colou de propósito.
+    // iOS notification SÓ renderiza PNG/JPEG (webp = sem imagem). Logo quadrada (PNG, ~30KB)
+    // = thumbnail à direita estilo Shopee. Arquivo leve carrega rápido no push.
+    const imgEl=document.getElementById('push-image');
+    if(imgEl && !imgEl.value.trim()) imgEl.value='/img/Firms/'+id+'.png';
+    const icoEl=document.getElementById('push-icon');
+    if(icoEl) icoEl.value='/img/Firms/'+id+'.png';
+  }
 }
 window.populatePushFirms = populatePushFirms;
 window.onPushFirmChange = onPushFirmChange;
