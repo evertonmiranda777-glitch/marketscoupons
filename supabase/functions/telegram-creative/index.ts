@@ -56,11 +56,24 @@ async function renderCreativePngWithRetry(firmId: string, format = "feed", lang 
   return { error: lastErr };
 }
 
-function buildCaption(slot: Slot, prefix?: string): string {
-  const coupon = COUPONS[slot.firmId];
+// Puxa desconto/cupom/nota AO VIVO do cms_firms (fonte unica = mesma coisa que o site e a imagem do criativo mostram). Fallback pro SCHEDULE/COUPONS hardcoded se a query falhar. Evita post do TG divergir do site (compliance).
+async function getFirmLive(firmId: string): Promise<{ discount?: number; coupon?: string | null; disc_note?: string | null } | null> {
+  try {
+    if (!SUPABASE_URL || !SERVICE_ROLE) return null;
+    const db = createClient(SUPABASE_URL, SERVICE_ROLE);
+    const { data } = await db.from("cms_firms").select("discount,coupon,disc_note").eq("id", firmId).maybeSingle();
+    return data || null;
+  } catch { return null; }
+}
+
+function buildCaption(slot: Slot, prefix?: string, live?: { discount?: number; coupon?: string | null; disc_note?: string | null } | null): string {
+  const hasLive = live && typeof live.discount === "number";
+  const off = hasLive ? live!.discount : slot.off;
+  const coupon = hasLive ? (live!.coupon ?? null) : (COUPONS[slot.firmId] ?? null);
+  const note = hasLive && live!.disc_note ? ` (${live!.disc_note})` : "";
   const lines: string[] = [];
   if (prefix) lines.push(prefix, "");
-  lines.push(`<b>${slot.name} — ${slot.off}% OFF</b>`, "");
+  lines.push(`<b>${slot.name} — ${off}% OFF${note}</b>`, "");
   if (coupon) lines.push(`Exclusive coupon: <code>${coupon}</code>`);
   else lines.push(`Discount applied automatically via the link.`);
   lines.push("", `Applied directly at checkout. Coupon verified today.`);
@@ -80,7 +93,8 @@ async function postCreative(slot: Slot, chatId: string, prefix?: string, trackFo
   const png = pngOrErr as Uint8Array;
   // Defesa: se PNG retornado for muito pequeno (<5kb), e provavelmente uma imagem preta/vazia. Aborta.
   if (png.length < 5000) return { ok: false, details: { error: "png_too_small_likely_blank", size: png.length } };
-  const caption = buildCaption(slot, prefix);
+  const live = await getFirmLive(slot.firmId);
+  const caption = buildCaption(slot, prefix, live);
   const buyUrl = `${SITE}/aff/go/${slot.firmId}`;
   const form = new FormData();
   form.append("chat_id", chatId);
@@ -98,6 +112,11 @@ async function postCreative(slot: Slot, chatId: string, prefix?: string, trackFo
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+  // Gate: exige X-MC-Secret (o cron manda). Fail-open se o secret nao estiver setado (nao quebra o agendamento).
+  const MC_TG_SECRET = Deno.env.get("MC_TG_SECRET") || "";
+  if (MC_TG_SECRET && (req.headers.get("x-mc-secret") || "") !== MC_TG_SECRET) {
+    return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { ...CORS, "Content-Type": "application/json" } });
+  }
   const url = new URL(req.url);
   const action = url.searchParams.get("action") || "post";
 
