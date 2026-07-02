@@ -660,6 +660,22 @@ async function handleSendCustom(req: Request) {
   return { sent: msgId !== null, message_id: msgId };
 }
 
+// Valida admin pelo BANCO (nao confia em user_metadata). Usado no send_custom.
+async function mcIsAdmin(req: Request): Promise<boolean> {
+  const auth = req.headers.get("authorization") || "";
+  if (!auth.startsWith("Bearer ")) return false;
+  const jwt = auth.slice(7);
+  try {
+    const u = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { Authorization: `Bearer ${jwt}`, apikey: SUPABASE_SERVICE_KEY } });
+    if (!u.ok) return false;
+    const user = await u.json();
+    if (!user?.id) return false;
+    const p = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${user.id}&select=is_admin`, { headers: { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}` } });
+    const rows = await p.json().catch(() => []);
+    return Array.isArray(rows) && rows[0]?.is_admin === true;
+  } catch { return false; }
+}
+
 // ── Main handler ────────────────────────────────────────────────────────────
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
@@ -675,9 +691,12 @@ Deno.serve(async (req: Request) => {
 
   try {
     switch (action) {
-      case "clean":
+      case "clean": {
+        const _s = Deno.env.get("MC_TG_SECRET") || "";
+        if (_s && (req.headers.get("x-mc-secret") || "") !== _s) return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
         result = await handleClean(db);
         break;
+      }
       case "coupons":
         result = await handleCoupons(db);
         break;
@@ -703,6 +722,7 @@ Deno.serve(async (req: Request) => {
         result = await handlePromoReminder(db);
         break;
       case "send_custom":
+        if (!(await mcIsAdmin(req))) return new Response(JSON.stringify({ error: "admin_only" }), { status: 403, headers: { "Content-Type": "application/json" } });
         result = await handleSendCustom(req);
         break;
       default:

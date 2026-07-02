@@ -15858,9 +15858,10 @@ function renderLiveRoomForm(){
 const TG_EDGE_URL   = 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/telegram-bot';
 /* Envia mensagem custom ao Telegram via edge function (token fica server-side, nunca no client) */
 async function tgSendCustom(text, buttonText, buttonUrl){
+  const _tk = (await db.auth.getSession())?.data?.session?.access_token || SUPABASE_ANON;
   const res = await fetch(`${TG_EDGE_URL}?action=send_custom`, {
     method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+_tk},
     body: JSON.stringify({ text, buttonText, buttonUrl })
   });
   const json = await res.json();
