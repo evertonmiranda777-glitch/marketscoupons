@@ -492,6 +492,7 @@ export default async function handler() {
 
     return new ImageResponse(tree, { width: 1080, height: 1350 });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message, stack: err.stack }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    console.error('og/gamma error:', err?.stack || err);
+    return new Response(JSON.stringify({ error: 'Internal error' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }

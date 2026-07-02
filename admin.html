@@ -4289,8 +4289,9 @@ async function fetchActiveCampaigns(){
   const now = Date.now();
   if (now - _activeCampCache.ts < 5*60*1000 && Object.keys(_activeCampCache.byName).length) return _activeCampCache.byName;
   try {
+    const _tk = (await db.auth.getSession())?.data?.session?.access_token || SUPABASE_ANON;
     const r = await fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-control?action=active', {
-      headers:{ 'Authorization':'Bearer '+SUPABASE_ANON, 'apikey':SUPABASE_ANON }
+      headers:{ 'Authorization':'Bearer '+_tk, 'apikey':SUPABASE_ANON }
     });
     const d = await r.json();
     if (!d.ok || !Array.isArray(d.campaigns)) return {};
@@ -4575,8 +4576,9 @@ async function renderRoasOrigem(sinceDate, untilDate, fxUSDtoBRL){
 
   const body = block.querySelector('.fin-roas-origem-body');
   try {
+    const _tk = (await db.auth.getSession())?.data?.session?.access_token || SUPABASE_ANON;
     const r = await fetch(`https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-control?action=breakdown&since=${sinceDate}&until=${untilDate}`, {
-      headers: { 'Authorization':'Bearer '+SUPABASE_ANON, 'apikey':SUPABASE_ANON }
+      headers: { 'Authorization':'Bearer '+_tk, 'apikey':SUPABASE_ANON }
     });
     const d = await r.json();
     if (!d.ok || !Array.isArray(d.campaigns)) {
@@ -4667,8 +4669,9 @@ async function renderRoasPlacements(sinceDate, untilDate, fxUSDtoBRL){
 
   const body = block.querySelector('.fin-roas-placements-body');
   try {
+    const _tk = (await db.auth.getSession())?.data?.session?.access_token || SUPABASE_ANON;
     const r = await fetch(`https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/meta-ads-control?action=placements&since=${sinceDate}&until=${untilDate}`, {
-      headers: { 'Authorization':'Bearer '+SUPABASE_ANON, 'apikey':SUPABASE_ANON }
+      headers: { 'Authorization':'Bearer '+_tk, 'apikey':SUPABASE_ANON }
     });
     const d = await r.json();
     if (!d.ok || !Array.isArray(d.rows)) {
