@@ -292,14 +292,10 @@ async function handleIgWebhook(req, res) {
   const PAGE_TOKEN = process.env.META_PAGE_ACCESS_TOKEN || '';
   if (!PAGE_TOKEN) return res.status(503).json({ error: 'Bot disabled (no token)' });
 
-  // LOG RAW: salva todo payload pra debug. Removo depois que o formato tiver claro.
-  try {
-    await fetch(`${SUPABASE_URL}/rest/v1/ig_webhook_raw_log`, {
-      method: 'POST',
-      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ raw_body: body, headers: { ua: req.headers['user-agent'], xhub: req.headers['x-hub-signature-256'] } })
-    });
-  } catch(e) {}
+  // TODO(sec #8): validar x-hub-signature-256 = HMAC-SHA256(rawBody, META_APP_SECRET).
+  // Exige body CRU (bytes exatos), o que requer refatorar o body-parser deste handler
+  // monolitico (Max chat/crons/Twitter/IG usam req.body parseado). Fazer como mudanca
+  // focada + testada, nao no automatico. Ate la: rate-limit 1 DM/user/24h + opt-out atenuam.
 
   // Meta envia entries. Formato pode variar (FB Page changes[] vs IG Login direct messaging[])
   const entries = Array.isArray(body.entry) ? body.entry : [];
