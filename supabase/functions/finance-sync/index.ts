@@ -16,37 +16,30 @@ const FIRM_WHITELIST = new Set([
   "tradeday","funded-futures-family","goat","toponefutures","blueguardian","aquafutures","blueberryfutures","alphafutures","futureselite"
 ]);
 
+// Gate anti-abuso: a extensao (content-script) chama daqui dos dominios dos paineis de firma.
+// Origin presente tem que casar; Origin ausente e tolerado (a extensao MV3 pode nao enviar).
+// A escrita crua so vira Purchase/Telegram via sale-instant-attrib, que exige X-Webhook-Secret.
+const ALLOWED_ORIGIN_SUFFIXES = [
+  "marketscoupons.com","apextraderfunding.com","bulenox.com","ftmo.com","takeprofittrader.com",
+  "firstpromoter.com","fundednext.com","earn2trade.com","the5ers.com","fundingpips.com",
+  "brightfunded.com","e8funding.com","e8markets.com","citytradersimperium.com","tradeday.com",
+  "postaffiliatepro.com","fundedfuturesfamily.com","goatfundedfutures.com","futureselite.com",
+  "alpha-futures.com","blueberryfutures.com","aquafutures.io","blueguardian.com","toponefutures.com"
+];
+function mcOriginAllowed(origin: string): boolean {
+  try { const h = new URL(origin).hostname.toLowerCase(); return ALLOWED_ORIGIN_SUFFIXES.some(s => h === s || h.endsWith("." + s)); }
+  catch { return false; }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
 
-  // GET debug: ?debug=today retorna conversions criadas hoje UTC pra apex+bulenox
-  if (req.method === "GET") {
-    const u = new URL(req.url);
-    if (u.searchParams.get("debug") === "today") {
-      const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
-      const today = new Date().toISOString().slice(0,10);
-      const { data, error } = await sb
-        .from("affiliate_conversions")
-        .select("firm_id, transaction_id, amount, status, created_at, raw_payload")
-        .in("firm_id", ["apex","bulenox"])
-        .gte("created_at", today + "T00:00:00Z")
-        .order("created_at", { ascending: false })
-        .limit(50);
-      return json({ ok: !error, today, count: data?.length || 0, rows: data, error: error?.message });
-    }
-    if (u.searchParams.get("debug") === "attr_schema") {
-      const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
-      const { data, error } = await sb
-        .from("coupon_attributions")
-        .select("*")
-        .order("sale_date", { ascending: false })
-        .limit(2);
-      return json({ ok: !error, count: data?.length || 0, sample: data, error: error?.message });
-    }
-    return json({ error: "method_not_allowed" }, 405);
-  }
-
+  // Debug endpoints (?debug=today / attr_schema) REMOVIDOS: vazavam transacoes reais sem auth.
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+
+  // Gate anti-abuso por Origin (ver ALLOWED_ORIGIN_SUFFIXES). Origin ausente tolerado.
+  const _origin = req.headers.get("origin");
+  if (_origin && !mcOriginAllowed(_origin)) return json({ error: "forbidden_origin" }, 403);
 
   let body: any;
   try { body = await req.json(); } catch { return json({ error: "invalid_json" }, 400); }
