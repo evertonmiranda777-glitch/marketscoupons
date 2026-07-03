@@ -13432,6 +13432,13 @@ async function renderTrackingPage(){
   const { data: events } = await q;
   const ev = events || [];
 
+  // Fonte VIVA de campanha: coupon_clicks (a `events` foi desligada por estabilidade).
+  // Cada linha = 1 clique de cupom, com utm_source/medium/campaign, cupom, firma, geo, ts.
+  let ccQ = db.from('coupon_clicks').select('ts,utm_source,utm_medium,utm_campaign,coupon_code,firm_id,anon_id,country').gte('ts', cutoff).order('ts', { ascending: false }).limit(20000);
+  if (globalDateEnd) ccQ = ccQ.lte('ts', globalDateEnd);
+  const { data: ccData } = await ccQ;
+  const cc = ccData || [];
+
   const ec = (name) => ev.filter(e => e.event === name).length;
   const ecToday = (name) => ev.filter(e => e.event === name && new Date(e.created_at).toDateString() === new Date().toDateString()).length;
 
@@ -13582,22 +13589,15 @@ async function renderTrackingPage(){
     const typeK = Object.keys(typeCounts).sort((a, b) => typeCounts[b] - typeCounts[a]).slice(0, 10);
     mkChart('chart-trk-types', 'bar', typeK, typeK.map(k => typeCounts[k]), colors);
 
-    // Sources chart
-    const srcCounts = {};
-    ev.forEach(e => {
-      const src = e.params?.utm_source || (e.event === 'page_view' ? 'Direto/Orgânico' : null);
-      if (!src) { const s2 = ev.find(x => x.session_id === e.session_id && x.params?.utm_source); srcCounts[s2?.params?.utm_source || 'Direto/Orgânico'] = (srcCounts[s2?.params?.utm_source || 'Direto/Orgânico'] || 0) + 1; return; }
-      srcCounts[src] = (srcCounts[src] || 0) + 1;
-    });
-    // Simplify: group by utm_source from events table directly
+    // Sources chart (coupon_clicks, fonte viva)
     const srcMap = {};
-    ev.forEach(e => { const s = e.utm_source || 'Direto/Orgânico'; srcMap[s] = (srcMap[s] || 0) + 1; });
+    cc.forEach(e => { const s = e.utm_source || 'Direto/Orgânico'; srcMap[s] = (srcMap[s] || 0) + 1; });
     const srcK = Object.keys(srcMap).sort((a, b) => srcMap[b] - srcMap[a]).slice(0, 8);
     mkChart('chart-trk-sources', 'doughnut', srcK, srcK.map(k => srcMap[k]), colors);
 
-    // Medium chart
+    // Medium chart (coupon_clicks)
     const medMap = {};
-    ev.forEach(e => { const m = e.utm_medium || 'none'; medMap[m] = (medMap[m] || 0) + 1; });
+    cc.forEach(e => { const m = e.utm_medium || 'none'; medMap[m] = (medMap[m] || 0) + 1; });
     const medK = Object.keys(medMap).sort((a, b) => medMap[b] - medMap[a]).slice(0, 8);
     mkChart('chart-trk-medium', 'doughnut', medK, medK.map(k => medMap[k]), colors);
   }, 100);
@@ -13640,34 +13640,26 @@ async function renderTrackingPage(){
       </tr>`;
     }).join('')}</tbody>`;
 
-  // ── TOP CAMPAIGNS ──
+  // ── TOP CAMPAIGNS (coupon_clicks: cada linha = 1 clique de cupom com utm) ──
   const campMap = {};
-  ev.filter(e => e.utm_campaign).forEach(e => {
+  cc.filter(e => e.utm_campaign).forEach(e => {
     const c = e.utm_campaign;
-    if (!campMap[c]) campMap[c] = { source: e.utm_source || '—', medium: e.utm_medium || '—', views: 0, coupons: 0, checkout: 0, leads: 0 };
-    if (e.event === 'page_view') campMap[c].views++;
-    if (e.event === 'coupon_copy') campMap[c].coupons++;
-    if (e.event === 'checkout_click') campMap[c].checkout++;
-    if (e.event === 'tool_lead_capture' || e.event === 'calc_unlocked' || e.event === 'user_signup') campMap[c].leads++;
+    if (!campMap[c]) campMap[c] = { source: e.utm_source || '—', medium: e.utm_medium || '—', clicks: 0 };
+    campMap[c].clicks++;
   });
-  const campArr = Object.entries(campMap).sort((a, b) => b[1].checkout - a[1].checkout);
+  const campArr = Object.entries(campMap).sort((a, b) => b[1].clicks - a[1].clicks);
   document.getElementById('trk-campaigns').innerHTML = campArr.length ? `
-    <thead><tr><th>Campanha</th><th>Fonte</th><th>Mídia</th><th style="text-align:center;">Views</th><th style="text-align:center;">Cupons</th><th style="text-align:center;">Checkouts</th><th style="text-align:center;">Leads</th><th style="text-align:center;">Conv.</th></tr></thead>
-    <tbody>${campArr.slice(0, 15).map(([name, d]) => {
-      const conv = d.views > 0 ? ((d.checkout / d.views) * 100).toFixed(1) + '%' : '—';
+    <thead><tr><th>Campanha</th><th>Fonte</th><th>Mídia</th><th style="text-align:center;">Cliques de Cupom</th></tr></thead>
+    <tbody>${campArr.slice(0, 20).map(([name, d]) => {
       const srcN = _normSource(d.source);
       const info = srcN ? _srcInfo(srcN) : {label:d.source,color:'var(--t2)'};
       return `<tr>
-        <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${name}"><span style="font-family:monospace;font-size:10px;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;font-weight:600;">${name}</span></td>
+        <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${name}"><span style="font-family:monospace;font-size:10px;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;font-weight:600;">${name}</span></td>
         <td><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:${info.color};font-weight:600;"><span style="width:8px;height:8px;border-radius:50%;background:${info.color};display:inline-block;"></span>${info.label}</span></td>
         <td style="font-size:11px;color:var(--t2);">${d.medium}</td>
-        <td style="text-align:center;font-weight:600;">${d.views}</td>
-        <td style="text-align:center;color:var(--gold);font-weight:600;">${d.coupons}</td>
-        <td style="text-align:center;color:#22C55E;font-weight:700;">${d.checkout}</td>
-        <td style="text-align:center;color:#3B82F6;font-weight:600;">${d.leads}</td>
-        <td style="text-align:center;font-weight:700;${d.checkout>0?'color:#22C55E;':''}">${conv}</td>
+        <td style="text-align:center;color:var(--gold);font-weight:800;">${d.clicks}</td>
       </tr>`;
-    }).join('')}</tbody>` : `<tbody><tr><td colspan="8" style="padding:32px;text-align:center;"><div style="color:var(--t3);font-size:13px;">Nenhuma campanha UTM detectada</div><div style="color:var(--t3);font-size:11px;margin-top:4px;">Use <span style="font-family:monospace;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">utm_campaign=nome</span> nos links</div></td></tr></tbody>`;
+    }).join('')}</tbody>` : `<tbody><tr><td colspan="4" style="padding:32px;text-align:center;"><div style="color:var(--t3);font-size:13px;">Nenhum clique de cupom com utm_campaign no período</div></td></tr></tbody>`;
 
   // ── HEATMAP HORÁRIOS ──
   const hourCounts = new Array(24).fill(0);
