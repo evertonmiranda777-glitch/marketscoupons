@@ -37,9 +37,10 @@ serve(async (req) => {
   // Debug endpoints (?debug=today / attr_schema) REMOVIDOS: vazavam transacoes reais sem auth.
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
-  // Gate anti-abuso por Origin (ver ALLOWED_ORIGIN_SUFFIXES). Origin ausente tolerado.
-  const _origin = req.headers.get("origin");
-  if (_origin && !mcOriginAllowed(_origin)) return json({ error: "forbidden_origin" }, 403);
+  // Gate de Origin DESLIGADO (03/jul): o Markets Monitor chama daqui de um Origin fora do allowlist
+  // e levava 403 -> "finance-sync FALHOU" -> Purchase nao ia pro Meta. Origin gate e fraco (curl forja).
+  // A defesa real (Purchase CAPI falso) esta no sale-instant-attrib via X-Webhook-Secret; o vazamento
+  // de dados (?debug) foi removido acima. Injecao aqui so cria conversao que NAO dispara CAPI.
 
   let body: any;
   try { body = await req.json(); } catch { return json({ error: "invalid_json" }, 400); }
