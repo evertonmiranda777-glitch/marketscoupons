@@ -240,12 +240,19 @@ serve(async (req) => {
       })
       .filter(t => t.transaction_id);
 
-    if (txs.length) {
+    // Dedupe por transaction_id no MESMO batch: o scraper as vezes raspa a mesma venda 2x
+    // (paginacao/linha repetida) e um dup derruba o upsert inteiro com
+    // "ON CONFLICT DO UPDATE command cannot affect row a second time" -> 0 vendas gravam, 0 notificacao.
+    const _byTx = new Map();
+    for (const t of txs) _byTx.set(t.transaction_id, t);
+    const txsUnique = [..._byTx.values()];
+
+    if (txsUnique.length) {
       const { error } = await sb
         .from("affiliate_conversions")
-        .upsert(txs, { onConflict: "firm_id,transaction_id", ignoreDuplicates: false });
+        .upsert(txsUnique, { onConflict: "firm_id,transaction_id", ignoreDuplicates: false });
       if (error) return json({ error: "upsert_leads_failed", details: error.message }, 500);
-      out.leads_saved = txs.length;
+      out.leads_saved = txsUnique.length;
     }
   }
 
