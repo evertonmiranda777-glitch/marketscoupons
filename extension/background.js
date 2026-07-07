@@ -21,15 +21,69 @@ function ensureKeepAlive() {
 chrome.runtime.onInstalled.addListener(() => {
   console.log('[MC] MarketsCoupons Sync instalada/atualizada.');
   ensureKeepAlive();
+  ensureAutoFetch();
 });
 
 chrome.runtime.onStartup.addListener(() => {
   console.log('[MC] Chrome iniciou, re-armando keep-alive.');
   ensureKeepAlive();
+  ensureAutoFetch();
 });
 
-// Toda vez que o SW carrega (cold start), garante o alarm
+// Toda vez que o SW carrega (cold start), garante os alarms
 ensureKeepAlive();
+ensureAutoFetch();
+
+// ===== Auto-fetch de firmas que so sincronizam via DOM (sem Markets Monitor) =====
+// Abre a pagina de orders numa aba de FUNDO usando a sessao ja logada do usuario,
+// deixa o content script (fff.js) raspar+sincronizar, e fecha a aba. SEM credencial:
+// reusa o cookie de sessao do proprio navegador. So abre se houver sessao ativa.
+const AUTOFETCH_ALARM = 'mc_autofetch';
+const AUTOFETCH_PERIOD_MIN = 30;
+const AUTOFETCH_TARGETS = [
+  {
+    id: 'fff',
+    cookieDomain: 'fundedfuturesfamily.com',
+    url: 'https://app.fundedfuturesfamily.com/affiliate/affiliate-orders/?filter=all_time',
+    closeAfterMs: 22000
+  }
+];
+
+function ensureAutoFetch() {
+  chrome.alarms.get(AUTOFETCH_ALARM, (existing) => {
+    if (!existing) {
+      chrome.alarms.create(AUTOFETCH_ALARM, { periodInMinutes: AUTOFETCH_PERIOD_MIN, delayInMinutes: 1 });
+      console.log('[MC] auto-fetch alarm criado (' + AUTOFETCH_PERIOD_MIN + 'min)');
+    }
+  });
+}
+
+function mcHasSession(domain) {
+  return new Promise((resolve) => {
+    try {
+      chrome.cookies.getAll({ domain }, (cookies) => {
+        resolve(Array.isArray(cookies) && cookies.length > 0);
+      });
+    } catch (e) { resolve(false); }
+  });
+}
+
+async function runAutoFetch() {
+  for (const t of AUTOFETCH_TARGETS) {
+    try {
+      const logged = await mcHasSession(t.cookieDomain);
+      if (!logged) { console.log('[MC] auto-fetch ' + t.id + ': sem sessao, pula'); continue; }
+      chrome.tabs.create({ url: t.url, active: false }, (tab) => {
+        if (!tab || !tab.id) return;
+        console.log('[MC] auto-fetch ' + t.id + ': aba de fundo aberta');
+        // Da tempo do content script rodar (document_idle + scrape + POST) e fecha.
+        setTimeout(() => {
+          try { chrome.tabs.remove(tab.id).catch(() => {}); } catch (e) { /* silent */ }
+        }, t.closeAfterMs);
+      });
+    } catch (e) { console.warn('[MC] auto-fetch erro ' + t.id + ':', e); }
+  }
+}
 
 // Listener do alarm, operação curta pra manter SW reativo
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -44,6 +98,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
         cache: 'no-store'
       }).catch(() => { /* silent */ });
     });
+  } else if (alarm.name === AUTOFETCH_ALARM) {
+    runAutoFetch();
   }
 });
 
