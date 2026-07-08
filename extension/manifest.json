@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MarketsCoupons Sync",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Sincroniza dados de afiliado das prop firms, daily aggregates + transactions individuais (matcher venda-a-venda). v0.4: auto-fetch da FFF em aba de fundo (sem abrir a mao, usa a sessao logada).",
   "permissions": ["storage", "cookies", "activeTab", "scripting", "alarms"],
   "host_permissions": [

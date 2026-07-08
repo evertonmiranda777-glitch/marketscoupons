@@ -30,9 +30,9 @@ chrome.runtime.onStartup.addListener(() => {
   ensureAutoFetch();
 });
 
-// Toda vez que o SW carrega (cold start), garante os alarms
-ensureKeepAlive();
-ensureAutoFetch();
+// (cold start: as chamadas ensureKeepAlive()/ensureAutoFetch() ficam no FIM do
+//  arquivo, depois que os const de AUTOFETCH estao inicializados, senao da
+//  "Cannot access 'AUTOFETCH_ALARM' before initialization" e o SW nem registra.)
 
 // ===== Auto-fetch de firmas que so sincronizam via DOM (sem Markets Monitor) =====
 // Abre a pagina de orders numa aba de FUNDO usando a sessao ja logada do usuario,
@@ -120,3 +120,7 @@ chrome.runtime.onConnect.addListener((port) => {
     ensureKeepAlive();
   });
 });
+
+// Cold start: agora sim, com TODOS os const/funcoes ja inicializados acima.
+ensureKeepAlive();
+ensureAutoFetch();
