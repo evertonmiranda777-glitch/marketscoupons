@@ -7205,9 +7205,17 @@ async function checkAuthSession() {
     }
   } catch(e) {
     console.warn('[Auth] Session check failed:', e.message);
-    // If stuck, nuke stored session and recreate client so signInWithPassword works
-    localStorage.removeItem('mc-user-auth');
+    // NÃO apagar mc-user-auth num timeout transitório (rede lenta/mobile deslogava
+    // usuário válido, o "desloga sozinho"). Recria o client (relê a sessão persistida)
+    // e tenta getSession 1x mais; só cai pra deslogado se a sessão realmente não existir.
     db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, _dbOpts);
+    try {
+      const { data: { session: s2 } } = await Promise.race([
+        db.auth.getSession(),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 6000))
+      ]);
+      if (s2?.user) { await loadUserSession(s2.user); return; }
+    } catch(_) { /* mantém a sessão em disco; próximo load recupera */ }
     updateAuthUI(false);
   }
   // Listen for auth changes
