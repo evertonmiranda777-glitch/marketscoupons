@@ -407,5 +407,101 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>One of the most expensive mistakes is always trading with the same size, regardless of where you are in the cycle. The correct size varies with the current safety margin. The formula that works in practice has 3 zones.</p>
 
 <h3>Green zone: margin &gt; 70% of Max Drawdown</h3>
-<p>You are comfortable. The position size is calculated by the 0.5% to 1% of balance rule (see <a href="/en/guides/position-sizing">Position Sizing guide</a>). This is the zone where you execute your complete plan, respecting
+<p>You are comfortable. The position size is calculated by the 0.5% to 1% of balance rule (see <a href="/en/guides/position-sizing">Position Sizing guide</a>). This is the zone where you execute your complete plan, respecting the routine.</p>
+
+<h3>Yellow zone: margin between 30% and 70%</h3>
+<p>You are on normal ground, but you need to reduce. Position size drops to 75% of normal. Maximum 3 trades per day. Focus on A+ setups, not A- ones. Here, discipline decides whether you return to the green zone or slide into the red one.</p>
+
+<h3>Red zone: margin &lt; 30%</h3>
+<p>Maximum alert. Size drops to 25% of normal. Maximum 2 trades per day. If you lose the first, the day is over. Trading in this zone with full size is synonymous with a reset. It's better to trade small for 5 days and get out of the red zone than to bet on one large trade to "escape".</p>
+
+<p>This simple formula, size based on margin, not based on mood, is what separates traders who last 12 months in a funded account from traders who last 12 days.</p>
+
+<hr>
+
+<h2>Drawdown across multiple accounts: how to distribute risk</h2>
+<p>Experienced Futures traders often operate 2 to 4 Apex or Bulenox accounts in parallel. The math of volume favors it: the same setup applied to 3 accounts generates 3x the potential payout per cycle. But Drawdown management needs to be adapted.</p>
+
+<h3>The never-copy-trade rule</h3>
+<p>Apex, Bulenox, and most firms prohibit <strong>copy trading</strong> between accounts. Trading the same strategy on 3 accounts at the same time, with simultaneous entries, is a contractual violation. Even if the Drawdowns are respected, the account is closed for policy violation.</p>
+
+<h3>Staggered distribution</h3>
+<p>The legitimate way is to trade each account with its own plan and entries at different times. Account A trades at the NY open, account B trades in the middle of the session, account C trades at the end. Different times and assets = independent, permitted strategies.</p>
+
+<h3>Risk concentration</h3>
+<p>Even trading staggered accounts, avoid concentrating risk on the same day. If account A lost today, reduce size on B and C. The correlation between accounts of the same trader is high even without copy, because the mind is the same. Treating each account as isolated is an illusion; treating them as correlated is reality.</p>
+
+<h3>Prioritization order</h3>
+<p>When it's necessary to reduce (bad day, bad week), the order is: first reduce the account with the smallest safety margin. Keeping the account closest to the Drawdown in defensive mode and continuing normally on the others maximizes the expected value of the group.</p>
+
+<hr>
+
+<h2>The #1 mistake that kills funded traders: increasing size after a gain</h2>
+<p>If you had to choose a single mistake responsible for the majority of blown funded accounts, it would be this: <strong>increasing position size after a sequence of gains</strong>. The mechanism is treacherous because it seems rational, "I'm winning, I'll increase the size to take advantage".</p>
+<p>The problem is statistical. A sequence of 5 consecutive wins does not increase the probability of the sixth being a win, it decreases it, because the market tends toward mean reversion. Increasing size at the peak of the streak is exactly when the next loss will be larger, and the larger loss will eat the accumulated gain plus another chunk.</p>
+<p>The consensus rule among long-lasting funded traders: <strong>never increase size before the floor locks</strong>. Before the floor, size is fixed by the safety margin rule. After the floor, gradual increase, never all at once. Tripling size after 3 wins is the fastest way to give back 2 weeks of profit in 1 trade.</p>
+<p>The countermeasure is behavioral. Define the size <strong>before opening the platform</strong>, based on the margin calculation. Do not change it in the heat of the moment. If the reading is so clear that you "want more exposure", know that it's exactly at that moment that your mind is most prone to error.</p>
+
+<hr>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Does Drawdown count floating profit?</h3>
+<p>In Trailing Intraday yes, the floating peak pushes the floor in real-time. In Trailing EOD no, only the day's closing counts. In Static, irrelevant, the floor is fixed. Confirm your account's model in the firm's documentation before trading.</p>
+
+<h3>What happens if I hit exactly the Drawdown?</h3>
+<p>The account is closed immediately, even by 1 cent of violation. Most platforms automatically close all open positions. In some firms, you also lose the activation fee paid. Reset costs US$ 80 to US$ 150 depending on the firm.</p>
+
+<h3>Can I negotiate the Drawdown with the firm?</h3>
+<p>No. The rules are programmatic and applied by the system, without human intervention. The only thing you can "negotiate" is which model to contract at the beginning (Trailing vs Static), when the firm offers both.</p>
+
+<h3>Does Drawdown also apply in a funded account?</h3>
+<p>Yes, and it usually <strong>becomes stricter</strong>. In Apex, the Trailing Intraday remains active in the Performance Account until you reach the safety net (US$ 2,600 above the initial in a 50K account). Many traders who pass the challenge break in the first week of funded by not adjusting their size to the new metric.</p>
+
+<h3>Which firm has the most generous Drawdown?</h3>
+<p>It depends on the market. In Futures, Bulenox Pro (Static) and FundingPips (Static) are the most flexible in 2026. In Forex, FTMO and The5%ers with a 10% Static Drawdown are the easiest standard. Avoid Trailing Intraday if you are a beginner.</p>
+
+<h3>Does Trailing continue after the floor?</h3>
+<p>In Apex, no, after reaching initial balance + trailing + US$ 100, the floor permanently locks at the initial balance. In other firms with trailing, the floor mechanism varies: some lock at breakeven, others lock at different values. Always confirm in the specific firm's documentation.</p>
+
+<h3>How does the Consistency Rule interact with Drawdown?</h3>
+<p>They are independent rules, but they combine in practice. Violating Drawdown closes the account; violating Consistency only blocks the payout. A trader can have a clean Drawdown and still not be able to withdraw because a very large profit day violated Consistency. See the <a href="/guides/como-passar-no-desafio">How to Pass the Challenge</a> guide for the complete mechanics.</p>
+
+<h3>What is the next thing I should read?</h3>
+<p>If you understood Drawdown and want to deepen your position sizing, read <a href="/guides/position-sizing">Position Sizing in Prop Firms</a>. If you want to understand the complete approval process, go to <a href="/guides/como-passar-no-desafio">How to Pass the Challenge</a>. If you're starting from scratch, begin with <a href="/guides/o-que-e-uma-prop-firm">What is a Prop Firm</a>.</p>
+
+<hr>
+
+<h2>Conclusion: Drawdown is the game</h2>
+<p>Almost everything in a <strong>Prop Firm</strong> is negotiable, the firm, the account size, the target, the asset, the platform. The only thing that isn't: the Drawdown. It's the absolute metric, the non-negotiable floor, the single criterion that decides whether you stay in the game or leave it. Everything else is secondary.</p>
+<p>Traders who last 12+ months in a funded account converge on one behavior: they think about Drawdown before thinking about profit. Before opening the platform, they calculate the safety margin. Before each trade, they check the distance to the floor. Before increasing size, they wait for the floor to lock. It's a boring routine, it's repetitive discipline, and it's what separates the 10% who make money in a <strong>Prop Firm</strong> from the 90% who feed the ecosystem with resets.</p>
+<p>If this guide convinces you of one thing, let it be this: <strong>positioning yourself to survive the Drawdown is the strategy</strong>. Profit is a consequence. The account that doesn't die eventually pays. The account that tries to win quickly pays for a reset. Choose the side you want to be on. Start small, choose a firm with a track record in <a href="/firms">our complete list</a>, apply a coupon at <a href="/">marketscoupons.com</a>, and trade the first 15 days with a single objective: <strong>respecting the safety margin in all trades</strong>. The target arrives. The Drawdown does not forgive.</p>
+
+<hr>
+
+<h2>Related Guides</h2>
+<ul>
+<li><a href="/guides/o-que-e-uma-prop-firm">What is a Prop Firm</a>, Model, payouts, and history of the allocated capital market</li>
+<li><a href="/guides/como-passar-no-desafio">How to Pass the Challenge</a>, The 4 pillars, daily routine, and 90%+ approval method</li>
+<li><a href="/guides/position-sizing">Position Sizing in Prop Firms</a>, Mathematical formula to size each trade</li>
+<li><a href="/guides/como-sacar-lucros">How to Withdraw Your Profits</a>, Payout, taxation, and the path to the first withdrawal</li>
+</ul>
+
+<p style="margin-top:48px;padding:20px;background:var(--abg);border:1px solid var(--abr);border-radius:12px;color:var(--t1);font-size:14px">
+<strong style="color:var(--accent)">Disclaimer:</strong> This guide is educational content. Markets Coupons does not provide financial advice, does not issue investment recommendations, and does not guarantee results in Prop Firms. Trading involves risk. Consult a professional before making any financial decision.
+</p>
+
 <div class="guide-back-cta" style="margin:40px 0 8px;display:flex;justify-content:center"><a href="/en/guides" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#E6EAF2;font-weight:600;font-size:15px;text-decoration:none;background:rgba(255,255,255,.03);transition:.2s" onmouseover="this.style.borderColor='#F0B429';this.style.color='#F0B429'" onmouseout="this.style.borderColor='rgba(255,255,255,.18)';this.style.color='#E6EAF2'">← See all guides</a></div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <a href="/">Home</a> ·
+  <a href="/guides">Guides</a> ·
+  <a href="/firms">All firms</a> ·
+  <a href="/privacy">Privacy</a> ·
+  <a href="/terms">Terms</a>
+  <p style="margin-top:12px;color:var(--t3);font-size:12px">© 2026 Markets Coupons</p>
+</footer>
+</body>
+</html>

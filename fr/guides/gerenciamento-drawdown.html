@@ -442,5 +442,68 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>S'il fallait choisir une seule erreur responsable de la plupart des comptes funded explosés, ce serait celle-ci : <strong>augmenter la taille de position après une séquence de gains</strong>. Le mécanisme est insidieux car il semble rationnel, "je réussis, je vais augmenter la taille pour en profiter".</p>
 <p>Le problème est statistique. Une séquence de 5 victoires consécutives n'augmente pas la probabilité que la sixième soit une victoire, elle diminue, car le marché tend à la réversion à la moyenne. Augmenter la taille au pic de la série est précisément le moment où la prochaine perte sera plus importante, et la perte plus importante mangera le gain accumulé et un morceau supplémentaire.</p>
 <p>La règle consensuelle parmi les traders funded durables : <strong>ne jamais augmenter la taille avant que le floor ne se bloque</strong>. Avant le floor, la taille est fixe selon la règle de marge de sécurité. Après le floor, augmentation progressive, jamais d'un coup. Tripler la taille après 3 victoires est le moyen le plus rapide de rendre le profit de 2 semaines en 1 trade.</p>
-<p>La contre-mesure est comportementale. Définissez la taille <strong>avant d'ouvrir la plateforme</strong>, en vous basant sur le calcul de la marge. Ne modifiez pas dans le feu de l'action. Si la lecture est si claire que vous "voulez plus d'exposition", sachez que c'est précisément à ce moment-là que
+<p>La contre-mesure est comportementale. Définissez la taille <strong>avant d'ouvrir la plateforme</strong>, en vous basant sur le calcul de la marge. Ne modifiez pas dans le feu de l'action. Si la lecture est si claire que vous "voulez plus d'exposition", sachez que c'est précisément à ce moment-là que la tête est la plus encline à se tromper.</p>
+
+<hr>
+
+<h2>Questions fréquentes</h2>
+
+<h3>Le Drawdown compte-t-il le profit flottant ?</h3>
+<p>En Trailing Intraday oui, le pic flottant pousse le plancher en temps réel. En Trailing EOD non, seule la clôture de la journée compte. En Statique, c'est sans importance, le plancher est fixe. Confirmez le modèle de votre compte dans la documentation de la firme avant de trader.</p>
+
+<h3>Que se passe-t-il si j'atteins exactement le Drawdown ?</h3>
+<p>Le compte est clôturé immédiatement, même pour 1 centime de violation. La plupart des plateformes ferment automatiquement toutes les positions ouvertes. Dans certaines firmes, vous perdez également l'activation fee payé. Le reset coûte 80 $ US à 150 $ US selon la firme.</p>
+
+<h3>Puis-je négocier le Drawdown avec la firme ?</h3>
+<p>Non. Les règles sont programmatiques et appliquées par le système, sans intervention humaine. La seule chose que vous pouvez "négocier" est le modèle à souscrire au départ (Trailing vs Statique), lorsque la firme propose les deux.</p>
+
+<h3>Le Drawdown s'applique-t-il aussi au compte funded ?</h3>
+<p>Oui, et normalement il <strong>devient plus strict</strong>. Chez Apex, le Trailing Intraday reste actif sur la Performance Account jusqu'à ce que vous atteigniez le safety net (2 600 $ US au-dessus de l'initial sur un compte 50K). Beaucoup de traders qui réussissent le challenge cassent lors de la première semaine de funded pour n'avoir pas ajusté la taille à la nouvelle règle.</p>
+
+<h3>Quelle firme a le Drawdown le plus généreux ?</h3>
+<p>Cela dépend du marché. En Futures, Bulenox Pro (Static) et FundingPips (Static) sont les plus flexibles en 2026. En Forex, FTMO et The5%ers avec un Static Drawdown de 10 % sont le standard le plus facile. Évitez le Trailing Intraday si vous débutez.</p>
+
+<h3>Le Trailing continue-t-il après le floor ?</h3>
+<p>Chez Apex, non, après avoir atteint le solde initial + Trailing + 100 $ US, le plancher se bloque définitivement au solde initial. Dans d'autres firmes avec Trailing, le mécanisme du floor varie : certaines se bloquent à l'équilibre, d'autres à des valeurs différentes. Confirmez toujours dans la documentation de la firme spécifique.</p>
+
+<h3>Comment la Consistency Rule interagit-elle avec le Drawdown ?</h3>
+<p>Ce sont des règles indépendantes, mais elles se combinent en pratique. Violer le Drawdown clôture le compte ; violer la Consistency bloque seulement le payout. Un trader peut avoir un Drawdown propre et ne pas parvenir à retirer parce qu'une journée de profit trop importante a violé la Consistency. Voir le guide <a href="/fr/guides/como-passar-no-desafio">Comment Réussir le Challenge</a> pour la mécanique complète.</p>
+
+<h3>Quelle est la prochaine chose à lire ?</h3>
+<p>Si vous avez compris le Drawdown et voulez approfondir la taille de position, lisez <a href="/fr/guides/position-sizing">Position Sizing dans les Prop Firms</a>. Si vous voulez comprendre le processus complet d'approbation, allez vers <a href="/fr/guides/como-passar-no-desafio">Comment Réussir le Challenge</a>. Si vous débutez de zéro, commencez par <a href="/fr/guides/o-que-e-uma-prop-firm">Qu'est-ce qu'une Prop Firm</a>.</p>
+
+<hr>
+
+<h2>Conclusion : le Drawdown est le jeu</h2>
+<p>Presque tout dans une <strong>Prop Firm</strong> est négociable, la firme, la taille du compte, l'objectif, l'actif, la plateforme. La seule chose qui ne l'est pas : le Drawdown. C'est la règle absolue, le plancher non négociable, le critère unique qui décide si vous restez dans le jeu ou en sortez. Tout le reste est accessoire.</p>
+<p>Les traders qui durent 12+ mois sur un compte funded convergent vers un comportement : ils pensent au Drawdown avant de penser au profit. Avant d'ouvrir la plateforme, ils calculent la marge de sécurité. Avant chaque opération, ils vérifient la distance au plancher. Avant d'augmenter la taille, ils attendent que le floor se bloque. C'est une routine ennuyeuse, c'est une discipline répétitive, et c'est ce qui sépare les 10 % qui gagnent de l'argent en <strong>Prop Firm</strong> des 90 % qui alimentent l'écosystème avec des resets.</p>
+<p>Si ce guide vous convainc d'une chose, que ce soit celle-ci : <strong>se positionner pour survivre au Drawdown est la stratégie</strong>. Le profit est une conséquence. Le compte qui ne meurt pas finit par payer. Le compte qui tente de gagner vite paie un reset. Choisissez le camp dans lequel vous voulez être. Commencez petit, choisissez une firme avec un historique dans <a href="/firms">notre liste complète</a>, appliquez un coupon sur <a href="/">marketscoupons.com</a> et tradez les 15 premiers jours avec un seul objectif : <strong>respecter la marge de sécurité sur toutes les opérations</strong>. L'objectif arrive. Le Drawdown ne pardonne pas.</p>
+
+<hr>
+
+<h2>Guides connexes</h2>
+<ul>
+<li><a href="/fr/guides/o-que-e-uma-prop-firm">Qu'est-ce qu'une Prop Firm</a>, Modèle, payouts et historique du marché du capital alloué</li>
+<li><a href="/fr/guides/como-passar-no-desafio">Comment Réussir le Challenge</a>, Les 4 piliers, la routine quotidienne et la méthode 90%+ d'approbation</li>
+<li><a href="/fr/guides/position-sizing">Position Sizing dans les Prop Firms</a>, Formule mathématique pour dimensionner chaque opération</li>
+<li><a href="/fr/guides/como-sacar-lucros">Comment Retirer vos Bénéfices</a>, Payout, fiscalité et le chemin du premier retrait</li>
+</ul>
+
+<p style="margin-top:48px;padding:20px;background:var(--abg);border:1px solid var(--abr);border-radius:12px;color:var(--t1);font-size:14px">
+<strong style="color:var(--accent)">Avertissement :</strong> Ce guide est un contenu éducatif. Markets Coupons ne fournit pas de conseil financier, n'émet pas de recommandations d'investissement et ne garantit pas de résultats dans les Prop Firms. Le trading comporte des risques. Consultez un professionnel avant toute décision financière.
+</p>
+
 <div class="guide-back-cta" style="margin:40px 0 8px;display:flex;justify-content:center"><a href="/fr/guides" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#E6EAF2;font-weight:600;font-size:15px;text-decoration:none;background:rgba(255,255,255,.03);transition:.2s" onmouseover="this.style.borderColor='#F0B429';this.style.color='#F0B429'" onmouseout="this.style.borderColor='rgba(255,255,255,.18)';this.style.color='#E6EAF2'">← Voir tous les guides</a></div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <a href="/">Accueil</a> ·
+  <a href="/guides">Guides</a> ·
+  <a href="/firms">Toutes les firmes</a> ·
+  <a href="/privacy">Confidentialité</a> ·
+  <a href="/terms">Conditions</a>
+  <p style="margin-top:12px;color:var(--t3);font-size:12px">© 2026 Markets Coupons</p>
+</footer>
+</body>
+</html>

@@ -408,5 +408,144 @@ footer.site-footer a:hover{color:var(--accent)}
 
 <p>I numeri sembrano esagerati, ma sono coerenti con la storia reale delle Leaderboard di Apex e FTMO. Il trader aggressivo <em>guadagna di più per operazione vincente</em>, ma perde l'intero ciclo in violazioni che azzerano il progresso. Il conservatore guadagna meno per operazione, ma accumula mesi senza rotture. In totale, il conservatore moltiplica il risultato per 3x.</p>
 
-<p>La lezione contro
+<p>La lezione contro-intuitiva: nelle <strong>Prop Firm</strong>, <strong>un sizing minore è un ROI maggiore</strong>. La matematica favorisce chi preserva i cicli, non chi massimizza per operazione.</p>
+
+<hr>
+
+<h2>Conti multipli: dimensionare senza esporsi troppo</h2>
+<p>I trader esperti di Futures solitamente operano 2 o 5 conti Apex o Bulenox in parallelo. L'attrattiva è ovvia: lo stesso setup in 3 conti genera 3x il payout potenziale per ciclo. Ma il sizing su più conti ha trappole specifiche.</p>
+
+<h3>Regola 1: la dimensione per conto non cambia</h3>
+<p>Avere 3 conti 50K non significa operare come se avessi 150K. Ogni conto ha il proprio Drawdown, il proprio Daily Loss, il proprio ciclo. La dimensione per conto rimane la stessa che opereresti se fosse l'unico conto. <strong>Mai sommare il capitale tra i conti per giustificare una dimensione maggiore in ciascuno.</strong></p>
+
+<h3>Regola 2: niente copy trade</h3>
+<p>Apex, Bulenox e la maggior parte delle aziende proibiscono il <em>copy trading</em> tra conti dello stesso trader. Operare la stessa strategia su 3 conti con ingressi simultanei è una violazione contrattuale. Anche se i Drawdown sono rispettati, tutti i conti vengono chiusi.</p>
+
+<h3>Regola 3: sfasa orari e asset</h3>
+<p>Il modo legittimo di operare più conti: conto A all'apertura di NY in ES, conto B a metà sessione in NQ, conto C alla chiusura in GC. Orari e asset diversi = strategie indipendenti, consentite. Ogni conto con sizing calcolato individualmente.</p>
+
+<h3>Regola 4: la correlazione cognitiva esiste anche senza copy</h3>
+<p>Anche operando conti sfasati, la mente è la stessa. Una brutta giornata su un conto contamina gli altri. Regola pragmatica: se il conto A ha perso oggi, riduci la dimensione del 25% nei conti B e C. La correlazione tra conti dello stesso trader è alta anche senza copy, perché l'operatore non cambia tra di essi.</p>
+
+<h3>Regola 5: ordine di prioritizzazione nella riduzione</h3>
+<p>Quando è necessario ridurre l'esposizione (giornata negativa, settimana negativa), riduci prima il conto con il margine di sicurezza minore. Mantieni i conti più ampi operando normalmente, proteggi quelli più stretti in modalità difensiva.</p>
+
+<hr>
+
+<h2>Il caso reale: da 25K a 300K scalato tramite reinvestimento</h2>
+<p>Il modo realistico di scalare in una <strong>Prop Firm</strong> non è cercare di far crescere un conto di 10 volte. È reinvestire i payout in nuovi conti, operando più conti in parallelo. La matematica favorisce la composizione di unità, non gonfiare una sola unità.</p>
+
+<p>Un percorso tipico documentato in comunità come Propverse e r/propfirms:</p>
+
+<h4>Mese 0</h4>
+<p>Il trader compra 1 conto Apex 25K con coupon (US$ 19,90 in promozione). Supera la sfida in 14 giorni. Inizia il conto funded.</p>
+
+<h4>Mesi 1 a 3</h4>
+<p>Opera il 25K funded con sizing Fase 1/2. Preleva US$ 1.800 netti nei primi 3 payout. Usa US$ 40 (US$ 19,90 × 2) per comprare altri 2 conti 25K in promozione. Ora ha 1 conto funded 25K + 2 sfide 25K in corso.</p>
+
+<h4>Mesi 4 a 6</h4>
+<p>Supera le 2 nuove. Ha 3 conti funded 25K. Preleva US$ 3.900 nel trimestre. Compra altri 2 conti 50K in promozione (US$ 24,90 × 2 = US$ 49,80). Portafoglio ora: 3 funded 25K + 2 sfide 50K.</p>
+
+<h4>Mesi 7 a 9</h4>
+<p>Supera le 2 da 50K. Portafoglio: 3 funded 25K + 2 funded 50K. Capitale totale allocato: US$ 175.000 nozionale. Preleva US$ 6.200 nel trimestre. Compra 2 conti 100K in promozione.</p>
+
+<h4>Mesi 10 a 12</h4>
+<p>Supera le due 100K. Portafoglio finale: 3×25K + 2×50K + 2×100K = <strong>US$ 375.000 nozionale</strong>. Payout trimestrale: US$ 9.000+. Reinvestimento zero nei primi 3 passaggi; dopo il mese 4 il costo dei nuovi conti è uscito dai payout, non dalla tasca.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/scale-apex-real.png" alt="Scala Apex realistica, linea temporale di 12 mesi che mostra la composizione di conti 25K + 50K + 100K fino a raggiungere US$ 375.000 nozionale"></p>
+
+<p>Il punto essenziale: il trader non ha mai avuto bisogno di aumentare il sizing per conto oltre lo standard. Ogni conto operato individualmente come se fosse l'unico. La scala è venuta dal <strong>numero di unità</strong>, non dalla <strong>dimensione dell'unità</strong>. È la differenza tra sostenibile e fragile.</p>
+
+<hr>
+
+<h2>L'effetto composto applicato al sizing di lungo termine</h2>
+<p>La matematica del reinvestimento nelle <strong>Prop Firm</strong> ha due strati composti. Il primo è la crescita del saldo all'interno di ogni conto individuale (payout che si accumula). Il secondo è la moltiplicazione del numero di conti operati. I due strati si combinano in modo non lineare.</p>
+
+<p>Esempio numerico: 10% di ROI mensile su 1 conto 50K = US$ 5.000/mese. Lo stesso 10% su 5 conti 50K operati in parallelo = US$ 25.000/mese. La differenza è moltiplicativa. Ma la seconda situazione richiede una disciplina 5x maggiore, perché i 5 Drawdown corrono in parallelo e la fatica cognitiva è reale.</p>
+
+<p>L'effetto composto funziona se, e solo se, il sizing per conto rimane conservatore. Aumentare il sizing per "approfittare della scala" rompe la logica. Ciò che scala è il numero di conti; la dimensione all'interno di ciascuno rimane fissa. Questo va contro l'intuizione della maggior parte dei trader, che vogliono "aumentare la scommessa" man mano che acquisiscono fiducia.</p>
+
+<p><img src="/img/guides-edu/gemini-pro/compound-effect.png" alt="Effetto composto, grafico che mostra come la composizione di più conti piccoli superi la crescita lineare di un conto grande in 24 mesi"></p>
+
+<blockquote>
+<p><strong>Insight pratico:</strong> il trader che moltiplica per 10 in 24 mesi non lo ha mai fatto operando il doppio in un conto. Lo ha fatto operando la stessa dimensione in 10 conti, costruiti uno alla volta con i payout reinvestiti. Crescita aritmetica della dimensione, geometrica delle unità.</p>
+</blockquote>
+
+<hr>
+
+<h2>I 3 errori fatali di sizing che uccidono i trader funded</h2>
+
+<h3>Errore 1: aumentare la dimensione dopo una perdita</h3>
+<p>L'istinto è compensare, "ho perso US$ 300, il prossimo trade lo raddoppio per recuperare in fretta". È la porta d'ingresso della Martingale, ed è il modo più rapido per violare il Drawdown. Una sequenza di 3 perdite con sizing crescente rompe il Daily Loss in un pomeriggio. La regola inversa: <strong>dopo una perdita, il prossimo trade parte con il 50% della dimensione normale</strong>, e torna al normale solo dopo 2 operazioni vincenti.</p>
+
+<h3>Errore 2: diminuire la dimensione dopo un guadagno</h3>
+<p>L'opposto dell'Errore 1 ma anch'esso comune, con radice nella paura di "restituire il profitto". I trader tagliano il sizing dopo un grande guadagno, perdono l'opportunità successiva, e il risultato netto della sequenza è minore di quanto sarebbe con un sizing consistente. Il vantaggio statistico del metodo si manifesta solo in volume; ridurre dopo un guadagno significa auto-sabotare il metodo. La regola: <strong>la dimensione dopo un guadagno è la stessa di prima del guadagno</strong>. Modificala solo in cicli, non in operazioni.</p>
+
+<h3>Errore 3: aumentare la dimensione "perché il setup è ovvio"</h3>
+<p>L'operazione sembra perfetta, la lettura è chiara, la tentazione di raddoppiare la dimensione è enorme. È esattamente il momento in cui il cervello è più calibrato per sbagliare. Un setup "ovvio" è di solito il consenso del mercato, e il consenso è ciò che si inverte. La regola: <strong>non modificare mai il sizing nel calore del momento</strong>. La dimensione è stata definita prima che la piattaforma si aprisse; non cambia fino a quando la piattaforma non si chiude.</p>
+
+<p>Questi tre errori, combinati, rappresentano la maggior parte delle violazioni del Drawdown nel 2026. Non è il metodo, non è il mercato, non è l'azienda, è il trader che modifica il sizing in risposta emotiva a risultati recenti. L'antidoto è sempre lo stesso: <strong>il sizing si decide nel protocollo, non nel trade</strong>.</p>
+
+<hr>
+
+<h2>Domande frequenti</h2>
+
+<h3>Qual è la dimensione ideale della posizione nelle Prop Firm?</h3>
+<p>Dallo 0,5% all'1% del saldo per operazione, mai più di 1/5 del margine di sicurezza attuale. In un conto Apex 50K con un margine di US$ 2.500, il rischio massimo per operazione è US$ 500. Nelle prime settimane, operare allo 0,5% (US$ 250) è più prudente. Dopo che il drawdown floor si blocca, transizione graduale all'1%.</p>
+
+<h3>Quanti contratti posso operare in un conto 50K?</h3>
+<p>Standard di sopravvivenza nel 2026: 1 mini ES/NQ o 3 a 5 micro MES/MNQ prima del floor; 2 mini o 8 a 10 micro dopo. Tecnicamente la piattaforma permette fino a 10 mini, ma operare al tetto tecnico è matematica di reset, non di sopravvivenza.</p>
+
+<h3>Posizione fissa o percentuale?</h3>
+<p>La percentuale (fixed fractional) supera la fissa nella maggior parte degli scenari perché si adatta automaticamente man mano che il saldo oscilla. La posizione fissa in valore assoluto funziona bene solo nei conti post-floor stabilizzati. Prima del floor, la percentuale è matematicamente più sicura.</p>
+
+<h3>Come calcolare il lotto in FTMO o The5%ers?</h3>
+<p>Lotto = (rischio in US$) ÷ (distanza fino al limite di perdita in pips × valore del pip). In una FTMO 100K con rischio US$ 500 e distanza 20 pips in EURUSD: 500 ÷ (20 × 10) = 2,5 mini lotti. Arrotonda a 2. Sempre per difetto.</p>
+
+<h3>Il Kelly Criterion funziona nelle Prop Firm?</h3>
+<p>Il Kelly puro rompe il conto in una singola operazione. Il Kelly frazionato (25% del Kelly pieno, o "Quarter Kelly") funziona e si avvicina al consenso pratico dallo 0,5% all'1% del saldo. Usa sempre una frazione minore di quanto suggerisce la formula per compensare il bias nella stima della probabilità.</p>
+
+<h3>Qual è la differenza tra fixed fractional e fixed ratio?</h3>
+<p>Fractional usa sempre la stessa percentuale del saldo; ratio usa un delta di profitto accumulato per rilasciare +1 unità. Fractional è reattivo e si protegge in drawdown; ratio cresce velocemente in un conto vincente ma non si riduce nelle perdite. Nelle <strong>Prop Firm</strong>, fractional è più adatto.</p>
+
+<h3>Dovrei aumentare la dimensione dopo una sequenza di guadagni?</h3>
+<p>Mai prima che il drawdown floor si blocchi. Dopo il floor, aumenti graduali del 25% per ciclo (2 settimane consistenti), mai raddoppiare in una volta. Aumentare la dimensione al picco di una sequenza è l'errore n. 1 che uccide i conti funded.</p>
+
+<h3>Qual è la prossima cosa che dovrei leggere?</h3>
+<p>Se hai capito il sizing e vuoi approfondire il rischio, torna a <a href="/it/guides/gerenciamento-drawdown">Gestione del Drawdown</a>. Se vuoi vedere come funziona il ciclo completo di approvazione, vai a <a href="/it/guides/como-passar-no-desafio">Come Superare la Sfida</a>. Se stai già pensando di prelevare il primo payout, leggi <a href="/it/guides/como-sacar-lucros">Come Prelevare i tuoi Profitti</a>.</p>
+
+<hr>
+
+<h2>Conclusione: il sizing è il metodo</h2>
+<p>Esiste un'illusione persistente tra i trader principianti secondo cui il metodo (setup, indicatore, lettura del flusso) è ciò che decide il risultato. Non lo è. Nelle <strong>Prop Firm</strong>, il metodo è condizione necessaria, ma <strong>il position sizing è condizione sufficiente</strong>. Due trader con lo stesso metodo e sizing diversi producono risultati di magnitudini diverse; due trader con metodi diversi e sizing ugualmente disciplinato tendono a convergere.</p>
+<p>La formula universale, rischio percentuale × saldo ÷ distanza fino al limite di perdita, sta su un post-it. Ma applicarla prima di ogni operazione, senza eccezioni, senza "ma oggi è diverso", senza "il setup è perfetto", è ciò che separa i trader che durano 12 mesi in un conto funded dai trader che durano 12 giorni. Il sizing è una decisione precedente all'apertura della piattaforma; ciò che accade dopo è solo esecuzione.</p>
+<p>Se questa guida ti convince di una cosa, che sia questa: <strong>il trader funded che moltiplica per 10 in 24 mesi non ha aumentato la dimensione; ha aumentato il numero di conti</strong>. Ogni conto operato come se fosse l'unico. Ogni Drawdown rispettato come se fosse fatale (lo è). Ogni sizing calcolato prima, non durante. Scegli un'azienda affidabile nella <a href="/firms">nostra lista completa</a>, applica un coupon su <a href="/">marketscoupons.com</a>, inizia con un conto 25K, opera i primi 15 giorni con un unico obiettivo: <strong>rispettare il sizing calcolato in ogni operazione, senza eccezioni</strong>. Il resto è conseguenza.</p>
+
+<hr>
+
+<h2>Guide correlate</h2>
+<ul>
+<li><a href="/it/guides/o-que-e-uma-prop-firm">Cos'è una Prop Firm</a>, Modello, payout e storia del mercato del capitale allocato</li>
+<li><a href="/it/guides/como-passar-no-desafio">Come Superare la Sfida</a>, I 4 pilastri, routine quotidiana e metodo 90%+ di approvazione</li>
+<li><a href="/it/guides/gerenciamento-drawdown">Gestione del Drawdown</a>, I 3 tipi, drawdown floor, confronto per azienda e circuit breaker personale</li>
+<li><a href="/it/guides/como-sacar-lucros">Come Prelevare i tuoi Profitti</a>, Payout, tassazione e il percorso del primo prelievo</li>
+</ul>
+
+<p style="margin-top:48px;padding:20px;background:var(--abg);border:1px solid var(--abr);border-radius:12px;color:var(--t1);font-size:14px">
+<strong style="color:var(--accent)">Avviso:</strong> Questa guida è contenuto educativo. Markets Coupons non fornisce consulenza finanziaria, non emette raccomandazioni di investimento e non garantisce risultati nelle Prop Firms. Il trading comporta rischi. Consulta un professionista prima di qualsiasi decisione finanziaria.
+</p>
+
 <div class="guide-back-cta" style="margin:40px 0 8px;display:flex;justify-content:center"><a href="/it/guides" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#E6EAF2;font-weight:600;font-size:15px;text-decoration:none;background:rgba(255,255,255,.03);transition:.2s" onmouseover="this.style.borderColor='#F0B429';this.style.color='#F0B429'" onmouseout="this.style.borderColor='rgba(255,255,255,.18)';this.style.color='#E6EAF2'">← Vedi tutte le guide</a></div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <a href="/">Inizio</a> ·
+  <a href="/guides">Guide</a> ·
+  <a href="/firms">Tutte le firme</a> ·
+  <a href="/privacy">Privacy</a> ·
+  <a href="/terms">Termini</a>
+  <p style="margin-top:12px;color:var(--t3);font-size:12px">© 2026 Markets Coupons</p>
+</footer>
+</body>
+</html>

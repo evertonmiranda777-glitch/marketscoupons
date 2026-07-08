@@ -395,5 +395,113 @@ footer.site-footer a:hover{color:var(--accent)}
 <p>Usted tiene las manos sudando, el corazón acelerado, mirando el gráfico con ira. Esto es cortisol, y el cortisol no opera el mercado. Cierre la plataforma, camine 20 minutos, vuelva mañana. Ninguna operación vale la pena perseguir en ese estado.</p>
 
 <h3>Gatillo 5: usted perdió la noción del P&L</h3>
-<p>Si usted no sabe de memoria cuánto está perdiendo o ganando hoy, dejó de operar y se convirtió
+<p>Si usted no sabe de memoria cuánto está perdiendo o ganando hoy, dejó de operar y se convirtió en apostador. La salida es literal: cierre la plataforma, tome papel, escriba el P&L operación por operación. Casi siempre el número es peor de lo que creía, y eso solo cierra el día.</p>
+
+<blockquote>
+<p><strong>Alerta:</strong> si 2 o más gatillos de los anteriores están activos al mismo tiempo, usted ya está en zona de caída. No importa lo que el gráfico esté mostrando, el problema ya no es el mercado, es su cabeza. Cierre todo. La cuenta le espera mañana; una cuenta reventada no.</p>
+</blockquote>
+
+<hr>
+
+<h2>Gestión de posición en función del Drawdown disponible</h2>
+<p>Uno de los errores más caros es operar siempre con el mismo tamaño, independientemente de dónde se encuentre en el ciclo. El tamaño correcto varía con el margen de seguridad actual. La fórmula que funciona en la práctica tiene 3 zonas.</p>
+
+<h3>Zona verde: margen &gt; 70% del Max Drawdown</h3>
+<p>Usted está cómodo. El tamaño de la posición es el calculado por la regla del 0,5% al 1% del saldo (ver <a href="/guides/position-sizing">guía de Position Sizing</a>). Esta es la zona en la que usted opera su plan completo, respetando la rutina.</p>
+
+<h3>Zona amarilla: margen entre 30% y 70%</h3>
+<p>Usted está en terreno normal, pero necesita reducir. El tamaño de la posición cae al 75% del normal. Máximo 3 operaciones al día. Enfoque en setups A+, no A-. Aquí la disciplina decide si usted vuelve a la zona verde o se desliza a la roja.</p>
+
+<h3>Zona roja: margen &lt; 30%</h3>
+<p>Alerta máxima. El tamaño cae al 25% del normal. Máximo 2 operaciones al día. Si pierde la primera, el día terminó. Operar en esta zona con tamaño completo es sinónimo de reset. Es mejor operar pequeño durante 5 días y salir de la zona roja que apostar en una operación grande para "escapar".</p>
+
+<p>Esta fórmula simple, tamaño en función del margen, no en función del humor, es lo que separa a los traders que duran 12 meses en cuenta funded de los traders que duran 12 días.</p>
+
+<hr>
+
+<h2>Drawdown en múltiples cuentas: cómo distribuir el riesgo</h2>
+<p>Los traders experimentados en Futuros suelen operar de 2 a 4 cuentas Apex o Bulenox en paralelo. La matemática del volumen favorece: el mismo setup aplicado en 3 cuentas genera 3x el payout potencial por ciclo. Pero la gestión de Drawdown debe adaptarse.</p>
+
+<h3>La regla de copy trade nunca</h3>
+<p>Apex, Bulenox y la mayoría de las firmas prohíben el <strong>copy trading</strong> entre cuentas. Operar la misma estrategia en 3 cuentas al mismo tiempo, con entradas simultáneas, es una violación contractual. Aunque los Drawdowns sean respetados, la cuenta se cierra por violación de política.</p>
+
+<h3>Distribución escalonada</h3>
+<p>La forma legítima es operar cada cuenta con un plan propio y entradas en horarios diferentes. La cuenta A opera en la apertura de NY, la cuenta B opera en medio de la sesión, la cuenta C opera al final. Horarios y activos diferentes = estrategias independientes, permitidas.</p>
+
+<h3>Concentración de riesgo</h3>
+<p>Incluso operando cuentas escalonadas, evite concentrar el riesgo en el mismo día. Si la cuenta A perdió hoy, reduzca el tamaño en las B y C. La correlación entre cuentas del mismo trader es alta incluso sin copy, porque la cabeza es la misma. Tratar cada cuenta como aislada es una ilusión; tratarla como correlacionada es la realidad.</p>
+
+<h3>Orden de priorización</h3>
+<p>Cuando sea necesario reducir (día malo, semana mala), el orden es: primero reduzca la cuenta con menor margen de seguridad. Mantener la cuenta más cercana al Drawdown en modo defensivo y continuar normalmente en las otras maximiza el valor esperado del conjunto.</p>
+
+<hr>
+
+<h2>El error nº 1 que mata a los traders funded: aumentar el tamaño después de una ganancia</h2>
+<p>Si hubiera que elegir un único error responsable de la mayoría de las cuentas funded reventadas, sería este: <strong>aumentar el tamaño de la posición después de una secuencia de ganancias</strong>. El mecanismo es traicionero porque parece racional, "estoy acertando, voy a aumentar el tamaño para aprovechar".</p>
+<p>El problema es estadístico. Una secuencia de 5 victorias seguidas no aumenta la probabilidad de que la sexta sea una victoria, la disminuye, porque el mercado tiende a la reversión a la media. Aumentar el tamaño en el pico del streak es exactamente cuando la próxima pérdida será mayor, y la pérdida mayor se comerá la ganancia acumulada y un pedazo más.</p>
+<p>La regla consensual entre los traders funded duraderos: <strong>nunca aumentar el tamaño antes de que el floor se bloquee</strong>. Antes del floor, el tamaño es fijo según la regla de margen de seguridad. Después del floor, aumento gradual, nunca de una vez. Triplicar el tamaño después de 3 victorias es el camino más rápido para devolver la ganancia de 2 semanas en 1 operación.</p>
+<p>La contramedida es conductual. Defina el tamaño <strong>antes de abrir la plataforma</strong>, basado en el cálculo del margen. No lo altere en el calor del momento. Si la lectura es tan clara que usted "quiere más exposición", sepa que es exactamente en ese momento cuando la cabeza es más propensa a equivocarse.</p>
+
+<hr>
+
+<h2>Preguntas frecuentes</h2>
+
+<h3>¿El Drawdown cuenta la ganancia flotante?</h3>
+<p>En Trailing Intraday sí, el pico flotante empuja el suelo en tiempo real. En Trailing EOD no, solo cuenta el cierre del día. En Static, es irrelevante, el suelo es fijo. Confirme el modelo de su cuenta en la documentación de la firma antes de operar.</p>
+
+<h3>¿Qué pasa si toco exactamente el Drawdown?</h3>
+<p>La cuenta se cierra inmediatamente, incluso por 1 centavo de violación. La mayoría de las plataformas cierran todas las posiciones abiertas automáticamente. En algunas firmas, usted pierde también el activation fee pagado. El reset cuesta de US$ 80 a US$ 150 dependiendo de la firma.</p>
+
+<h3>¿Puedo negociar el Drawdown con la firma?</h3>
+<p>No. Las reglas son programáticas y aplicadas por sistema, sin intervención humana. Lo único que puede "negociar" es qué modelo contratar al inicio (Trailing vs Static), cuando la firma ofrece ambos.</p>
+
+<h3>¿El Drawdown también se aplica en cuenta funded?</h3>
+<p>Sí, y normalmente <strong>se vuelve más estricto</strong>. En Apex, el Trailing Intraday continúa activo en la Performance Account hasta que usted alcanza el safety net (US$ 2.600 por encima del inicial en cuenta 50K). Muchos traders que superan el desafío se rompen en la primera semana de funded por no ajustar el tamaño a la nueva regla.</p>
+
+<h3>¿Qué firma tiene el Drawdown más generoso?</h3>
+<p>Depende del mercado. En Futuros, Bulenox Pro (Static) y FundingPips (Static) son los más flexibles en 2026. En Forex, FTMO y The5%ers con Static Drawdown del 10% son el estándar más fácil. Evite el Trailing Intraday si está empezando.</p>
+
+<h3>¿El Trailing continúa después del floor?</h3>
+<p>En Apex, no, después de alcanzar el saldo inicial + trailing + US$ 100, el suelo se bloquea permanentemente en el saldo inicial. En otras firmas con trailing, el mecanismo de floor varía: algunas se bloquean en breakeven, otras en valores diferentes. Confirme siempre en la documentación de la firma específica.</p>
+
+<h3>¿Cómo interactúa la Consistency Rule con el Drawdown?</h3>
+<p>Son reglas independientes, pero se combinan en la práctica. Violar el Drawdown cierra la cuenta; violar la Consistency solo bloquea el payout. Un trader puede tener el Drawdown limpio y aun así no conseguir retirar porque un día de ganancia muy grande violó la Consistency. Ver la guía <a href="/guides/como-passar-no-desafio">Cómo Superar el Desafío</a> para la mecánica completa.</p>
+
+<h3>¿Qué es lo próximo que debo leer?</h3>
+<p>Si entendió el Drawdown y quiere profundizar en el tamaño de posición, lea <a href="/guides/position-sizing">Position Sizing en Prop Firms</a>. Si quiere entender el proceso completo de aprobación, vaya a <a href="/guides/como-passar-no-desafio">Cómo Superar el Desafío</a>. Si está empezando desde cero, comience por <a href="/guides/o-que-e-uma-prop-firm">Qué es una Prop Firm</a>.</p>
+
+<hr>
+
+<h2>Conclusión: el Drawdown es el juego</h2>
+<p>Casi todo en una <strong>Prop Firm</strong> es negociable, la firma, el tamaño de la cuenta, el objetivo, el activo, la plataforma. Lo único que no lo es: el Drawdown. Es la regla absoluta, el suelo innegociable, el criterio único que decide si usted se queda en el juego o sale de él. Todo lo demás es accesorio.</p>
+<p>Los traders que duran más de 12 meses en cuenta funded convergen en un comportamiento: piensan en el Drawdown antes de pensar en la ganancia. Antes de abrir la plataforma, calculan el margen de seguridad. Antes de cada operación, comprueban la distancia del suelo. Antes de aumentar el tamaño, esperan a que el floor se bloquee. Es una rutina aburrida, es disciplina repetitiva, y es lo que separa al 10% que gana dinero en <strong>Prop Firm</strong> del 90% que alimenta el ecosistema con resets.</p>
+<p>Si esta guía le convence de una cosa, que sea esta: <strong>posicionarse para sobrevivir al Drawdown es la estrategia</strong>. La ganancia es una consecuencia. La cuenta que no muere eventualmente paga. La cuenta que intenta ganar rápido paga reset. Elija el lado en el que quiere estar. Empiece pequeño, elija una firma con historial en <a href="/firms">nuestra lista completa</a>, aplique un cupón en <a href="/">marketscoupons.com</a> y opere los primeros 15 días con un único objetivo: <strong>respetar el margen de seguridad en todas las operaciones</strong>. El objetivo llega. El Drawdown no perdona.</p>
+
+<hr>
+
+<h2>Guías relacionadas</h2>
+<ul>
+<li><a href="/guides/o-que-e-uma-prop-firm">Qué es una Prop Firm</a>, Modelo, payouts e historial del mercado de capital asignado</li>
+<li><a href="/guides/como-passar-no-desafio">Cómo Superar el Desafío</a>, Los 4 pilares, rutina diaria y método de aprobación 90%+</li>
+<li><a href="/guides/position-sizing">Position Sizing en Prop Firms</a>, Fórmula matemática para dimensionar cada operación</li>
+<li><a href="/guides/como-sacar-lucros">Cómo Retirar tus Ganancias</a>, Payout, tributación y el camino del primer retiro</li>
+</ul>
+
+<p style="margin-top:48px;padding:20px;background:var(--abg);border:1px solid var(--abr);border-radius:12px;color:var(--t1);font-size:14px">
+<strong style="color:var(--accent)">Aviso:</strong> Esta guía es contenido educativo. Markets Coupons no presta asesoramiento financiero, no emite recomendaciones de inversión y no garantiza resultados en Prop Firms. El trading implica riesgo. Consulte a un profesional antes de cualquier decisión financiera.
+</p>
+
 <div class="guide-back-cta" style="margin:40px 0 8px;display:flex;justify-content:center"><a href="/es/guides" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#E6EAF2;font-weight:600;font-size:15px;text-decoration:none;background:rgba(255,255,255,.03);transition:.2s" onmouseover="this.style.borderColor='#F0B429';this.style.color='#F0B429'" onmouseout="this.style.borderColor='rgba(255,255,255,.18)';this.style.color='#E6EAF2'">← Ver todas las guías</a></div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <a href="/">Inicio</a> ·
+  <a href="/guides">Guías</a> ·
+  <a href="/firms">Todas las firmas</a> ·
+  <a href="/privacy">Privacidad</a> ·
+  <a href="/terms">Términos</a>
+  <p style="margin-top:12px;color:var(--t3);font-size:12px">© 2026 Markets Coupons</p>
+</footer>
+</body>
+</html>
