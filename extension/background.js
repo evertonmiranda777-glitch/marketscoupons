@@ -45,7 +45,7 @@ const AUTOFETCH_TARGETS = [
     id: 'fff',
     cookieDomain: 'fundedfuturesfamily.com',
     url: 'https://app.fundedfuturesfamily.com/affiliate/affiliate-orders/?filter=all_time',
-    closeAfterMs: 22000
+    closeAfterMs: 40000
   }
 ];
 

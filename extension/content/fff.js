@@ -12,7 +12,7 @@ async function mcShouldFFF(firmId) {
   return new Promise(resolve => {
     chrome.storage.local.get(['mc_last_sync'], r => {
       const last = (r.mc_last_sync || {})[firmId] || 0;
-      resolve((Date.now() - last) / 3600000 >= 6);
+      resolve((Date.now() - last) / 60000 >= 30);
     });
   });
 }
@@ -27,8 +27,20 @@ async function mcMarkFFF(firmId) {
   });
 }
 
+// Espera a grid React montar (auto-fetch em aba de fundo abre a pagina "crua",
+// o document_idle dispara antes das linhas existirem). Poll ate achar linhas ou timeout.
+async function mcWaitFFFTable(maxMs = 18000, stepMs = 600) {
+  const deadline = Date.now() + maxMs;
+  while (Date.now() < deadline) {
+    const leads = mcScrapeFFFTable();
+    if (leads.length) return leads;
+    await new Promise(r => setTimeout(r, stepMs));
+  }
+  return mcScrapeFFFTable(); // ultima tentativa (pode voltar vazio)
+}
+
 async function mcSyncFFF(opts = {}) {
-  const leads = mcScrapeFFFTable();
+  const leads = await mcWaitFFFTable();
   if (!leads.length) { mcToastFFF('FFF: sem transacoes na pagina (abra affiliate-orders com filter=all_time)'); return { ok:false, error:'no_data' }; }
 
   const byDay = {};
