@@ -257,6 +257,7 @@ function mcOpenFirm(firmId, finalUrl, coupon, firmName){
   try {
     const onPageHide = () => {
       try { if (fbTimer) clearTimeout(fbTimer); if (panicTimer) clearTimeout(panicTimer); } catch(e){}
+      if (typeof MC_EVENTS_DB !== 'undefined' && !MC_EVENTS_DB) return; // events DB write OFF (fix 522)
       const elapsed = Date.now() - startTs;
       // Threshold ajustado (mobile 4G normal fica 3-5s):
       // <3s = fast · 3-12s = slow · >12s = abandoned
@@ -508,8 +509,14 @@ function track(event, params={}) {
 // ─── BATCH + CIRCUIT BREAKER pros events do Supabase (fix 522 cronico, 26/jun) ───
 // 1 INSERT em LOTE em vez de N por evento (mata o flood de conexoes que estourava o compute -> 522).
 // Se o banco erra (down/522), RECUA com backoff exponencial em vez de martelar -> deixa ele recuperar.
+// KILL-SWITCH definitivo (fix 522 cronico): escrita em `events` pelo browser = OFF.
+// Causa raiz do 522/timeout recorrente = I/O de escrita na `events` saturando o compute.
+// GA4 e a fonte de analytics do funil (CLAUDE.md). coupon_clicks (atribuicao) e CAPI seguem ON.
+// Pra religar o feed de eventos do admin: trocar pra true (so quando o compute do banco aguentar).
+const MC_EVENTS_DB = false;
 let _evBuf = [], _evTimer = null, _evBackoffUntil = 0, _evBackoffMs = 30000;
 function _evQueue(row){
+  if (!MC_EVENTS_DB) return;
   _evBuf.push(row);
   // conversao/atribuicao = flush na hora (nao atrasa/perde). Resto = lote.
   const _crit = row && row.event && /coupon|checkout|sign_?up|purchase|lead|subscribe/.test(row.event);
@@ -531,6 +538,7 @@ function _evStash(batch){ // localStorage pra nao perder (cap 200)
   try { const q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]'); q.push(...batch); if(q.length>200) q.splice(0, q.length-200); localStorage.setItem('mc_track_queue', JSON.stringify(q)); } catch(e){}
 }
 async function _trackFlushQueue(){
+  if (!MC_EVENTS_DB) { try{ localStorage.removeItem('mc_track_queue'); }catch(e){} return; }
   if (Date.now() < _evBackoffUntil) return; // respeita o breaker
   let q=[]; try { q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]'); } catch(e){ return; }
   if(!q.length) return;
@@ -547,6 +555,7 @@ window.addEventListener('pageshow', _trackFlushQueue);
 setTimeout(_trackFlushQueue, 5000);
 // Flush on unload via sendBeacon (survives page close)
 window.addEventListener('pagehide', ()=>{
+  if(!MC_EVENTS_DB) return;
   try {
     const q = JSON.parse(localStorage.getItem('mc_track_queue')||'[]');
     if(!q.length) return;
@@ -3029,16 +3038,25 @@ if(!window._promoResizeBound){
   });
 }
 
+/* FundedNext fixada em 3º (contrato GrowthNext top-3), resto mantém a ordem recebida */
+function pinFN(list){
+  const i=list.findIndex(f=>f.id==='fn');
+  if(i>-1 && i!==2){ const [fn]=list.splice(i,1); list.splice(Math.min(2,list.length),0,fn); }
+  return list;
+}
+
 /* HOME */
 function renderHome(){
   const g=document.getElementById('home-offers');if(!g)return;
   const h1=document.getElementById('hero-h1');if(h1 && _currentLang)h1.innerHTML=t('hero_titulo');
   const shd=document.getElementById('home-sec-hd');if(shd)shd.innerHTML=t('home_melhores_ofertas');
-  g.innerHTML=[...FIRMS].sort((a,b)=>b.discount-a.discount).map(f=>`
+  g.innerHTML=pinFN([...FIRMS].sort((a,b)=>b.discount-a.discount)).map(f=>`
     <div class="oc">
       <div class="oc-top" onclick="openD('${f.id}')" style="cursor:pointer;">
         <div class="oc-left">${firmIco(f,'44px','14px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</div></div></div>
-        <div><div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div></div>
+        <div>${f.discount>0
+          ? `<div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div>`
+          : `<div class="oc-disc" style="color:var(--t2);font-size:15px;line-height:1.1">${t('met_via')}</div><div class="oc-off">${t('met_nocode')}</div>`}</div>
       </div>
       ${dualRatingPill(f)}
       ${couponTypeable(f)?`<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
@@ -3080,8 +3098,10 @@ function renderFirms(list){
           </div>
         </div>
       </div>
-      <!-- Col 2: Discount -->
-      <div class="fmet"><div class="mv" style="color:var(--green);">${f.discount}%</div><div class="ml">${t('met_desc')}</div></div>
+      <!-- Col 2: Discount (firmas sem desconto/codigo = transparencia, nao "0% OFF" falso) -->
+      <div class="fmet">${f.discount>0
+        ? `<div class="mv" style="color:var(--green);">${f.discount}%</div><div class="ml">${t('met_desc')}</div>`
+        : `<div class="mv" style="color:var(--t2);font-size:12px;font-weight:700;line-height:1.2;">${t('met_via')}</div><div class="ml">${t('met_nocode')}</div>`}</div>
       <!-- Col 3: Split -->
       <div class="fmet"><div class="mv" style="color:var(--t2);font-size:12px;font-weight:600;line-height:1.25;">${f.split}</div><div class="ml">Split</div></div>
       <!-- Col 4: Rating -->
@@ -3297,6 +3317,7 @@ function applyF(){
   else if(sort==='reviews')list.sort((a,b)=>b.reviews-a.reviews);
   else if(sort==='name')list.sort((a,b)=>a.name.localeCompare(b.name));
   else list.sort((a,b)=>b.rating-a.rating);
+  pinFN(list);
   renderFirms(list);
 }
 function clearF(){
@@ -3332,11 +3353,18 @@ async function loadFirmOverlayData(id) {
     if (data) {
       if (data.bg_image) FIRM_BG[id] = data.bg_image;
       if (data.about_html || data.detail_plans) {
+        const _plansObj = data.detail_plans || FIRM_ABOUT[id]?.plans || {};
+        let _types = Array.isArray(data.detail_types) ? data.detail_types : (FIRM_ABOUT[id]?.types || []);
+        // Blindagem: só mostra tipo que tem plano de verdade (senão a pill abre vazia, sem preço).
+        // Se NENHUM tipo declarado bate com as chaves de planos (dado desalinhado, ex: alphafutures),
+        // usa as próprias chaves dos planos como tipos. Não inventa preço, só alinha o rótulo ao dado.
+        const _valid = _types.filter(tp => Array.isArray(_plansObj[tp]) && _plansObj[tp].length);
+        _types = _valid.length ? _valid : Object.keys(_plansObj);
         FIRM_ABOUT[id] = {
           about: data.about_html || FIRM_ABOUT[id]?.about || '',
           highlights: data.about_highlights || FIRM_ABOUT[id]?.highlights || [],
-          types: Array.isArray(data.detail_types) ? data.detail_types : FIRM_ABOUT[id]?.types || [],
-          plans: data.detail_plans || FIRM_ABOUT[id]?.plans || {},
+          types: _types,
+          plans: _plansObj,
           includes: Array.isArray(data.detail_includes) ? data.detail_includes : FIRM_ABOUT[id]?.includes || [],
         };
       }
@@ -3391,7 +3419,11 @@ async function openD(id){
 
   // Lazy load overlay data from Supabase, AWAIT so firms not in FIRM_ABOUT (new firms)
   // still render the full fd-overlay padrão instead of falling back to the simple drawer.
-  if (window.innerWidth >= 769 && !FIRM_ABOUT[id]) {
+  // Espera o detalhe carregar quando ainda não está em memória, em DESKTOP E MOBILE.
+  // Sem o await no mobile, firma nova (só no cms_firms, sem FIRM_ABOUT estático) abria o
+  // drawer ANTES do load async terminar -> caía no fallback (4 stats, desc no lugar da
+  // história, SEM tabela de planos/preços). Bug visto na FFF no mobile.
+  if (!FIRM_ABOUT[id]) {
     await loadFirmOverlayData(id);
   } else {
     loadFirmOverlayData(id);
@@ -3458,7 +3490,7 @@ function openFD(id, f) {
     </div>
     <div class="fd-discount">
       <div class="fd-discount-pct" style="background:linear-gradient(135deg,${f.color},#FFD97D,${f.color});-webkit-background-clip:text;filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}% OFF</div>
-      <div class="fd-discount-label">${t('fd_desconto')} ${(tf(f.dtype)||'').toUpperCase()}</div>
+      <div class="fd-discount-label">${f.disc_note ? f.disc_note : (t('fd_desconto')+' '+(tf(f.dtype)||'').toUpperCase())}</div>
     </div>
     <div class="fd-rating-block"${tpUrl?` onclick="openTpPopup('${tpUrl}')" style="cursor:pointer"`:''}>
       <div class="fd-rating-num">${f.rating}</div>
@@ -3508,6 +3540,45 @@ function openFD(id, f) {
 
   document.getElementById('fd-overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
+}
+
+// ── OFERTA ESPECIAL por firma (botão SEPARADO, temporário) ──
+// Mantém as ofertas normais intactas; adiciona 1 botão extra. Pra DESATIVAR depois: active:false (+ deploy).
+// Mesmo link de afiliado da firma (atribuição de comissão idêntica ao botão normal).
+const FIRM_SPECIALS = {
+  bulenox: { active:true, size:'25K', priceNew:'$9.95', priceOld:'$145', coupon:'MARKET25K' },
+  // Apex 1776 , $250K Legacy (promo Independence Day, acaba 7/jul). label/cta/link custom.
+  apex: { active:true, size:'$250K Legacy', label:'$250K Legacy', cta:'$250K Legacy', priceNew:'$17.76', priceOld:'$177.60', coupon:'MARKET', link:'https://apextraderfunding.com/member/aff/go/evertonmiranda#limited-time' }
+};
+function fdSpecialHtml(id, f){
+  const sp = FIRM_SPECIALS[id];
+  if(!sp || !sp.active || !f) return '';
+  const c = f.color || 'var(--gold)';
+  const hdr = sp.label || (sp.size + ' Account');
+  const cta = sp.cta || sp.size;
+  const _spDeal = ({pt:'Oferta Especial',en:'Special Deal',es:'Oferta Especial',it:'Offerta Speciale',fr:'Offre Spéciale',de:'Sonderangebot',ar:'عرض خاص',id:'Penawaran Spesial'})[_currentLang] || 'Special Deal';
+  const _spGet = ({pt:'Comprar',en:'Get',es:'Obtener',it:'Ottieni',fr:'Obtenir',de:'Holen',ar:'احصل على',id:'Dapatkan'})[_currentLang] || 'Get';
+  return `<div class="fd-special" style="margin:16px 0 6px;padding:15px 16px;border-radius:14px;background:linear-gradient(135deg,${c}16,${c}06);border:1.5px solid ${c}59;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${c},transparent)"></div>
+    <div style="display:flex;align-items:center;gap:7px;margin-bottom:9px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span style="font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:${c};">${_spDeal} · ${hdr}</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:11px;">
+      <span style="font-size:30px;font-weight:800;color:${c};line-height:1;">${sp.priceNew}</span>
+      <span style="font-size:15px;color:var(--t3);text-decoration:line-through;">${sp.priceOld}</span>
+    </div>
+    <div class="fd-cpn" style="margin-bottom:11px;"><div><div class="fd-cpn-tag">${t('fd_cupom_exclusivo')}</div><div class="fd-cpn-code">${sp.coupon}</div></div>
+      <button class="fd-cpn-copy" onclick="cpCoupon('${sp.coupon}','${id}','fd_special')">${t('firms_copiar')}</button></div>
+    <button class="fd-cta" onclick="fdGoSpecial('${id}')" style="background:linear-gradient(135deg,${c},${c}CC);">${_spGet} ${cta} · ${sp.priceNew} &#8594;</button>
+  </div>`;
+}
+function fdGoSpecial(id){
+  const f = FIRMS.find(x=>x.id===id); const sp = FIRM_SPECIALS[id]; if(!f||!sp) return;
+  const _src = window._dedicatedFirmSlug?'dedicated':'homepage';
+  track('checkout_click',{firm_id:id,firm_name:f.name,account_size:sp.size,coupon:sp.coupon,source:_src+'_special',value:_fbVal(f,sp.size),currency:'USD'});
+  registerLoyaltyClick(sp.size,'','',f.name||'');
+  mcOpenFirm(id, sp.link||f.link||'#', sp.coupon, f.name);
 }
 
 function fdRenderRight(id, f) {
@@ -3615,6 +3686,9 @@ function fdRenderRight(id, f) {
   } else {
     h += `<button class="fd-cta" onclick="fdGo('${id}')">${t('fd_comecar')} &#8594;</button>`;
   }
+
+  // Oferta especial (botão separado, ex: Bulenox 25K $9.95 / MARKET25K)
+  h += fdSpecialHtml(id, f);
 
   // Includes
   if (fa.includes?.length) {
@@ -4148,18 +4222,46 @@ function drwRenderCk(id, f) {
       <div class="fd-sizes" style="--cols:${sc}">${plans.map(p=>`<button class="fd-sz${p.s===st.size?' sel':''}${p.pop?' pop':''}"${p.pop?' data-pop-label="'+t('ach_popular')+'"':''} style="${p.s===st.size?`background:${f.color}12;border-color:${f.color}59;color:${f.color}`:''}" onclick="_fdState['${id}'].size='${p.s}';drwRenderCk('${id}')">${p.s}</button>`).join('')}</div></div>`;
   }
 
+  // Variant (Sem taxa de ativação) + Pack (5 contas) — ESTAVAM FALTANDO no drawer mobile (só existiam no desktop fdRenderRight), vazando venda cara da Apex. Espelha o desktop.
+  const _tt=(k,fb)=>{const v=t(k);return(!v||v===k)?fb:v;};
+  const packSel = st.pack==='5' ? '5' : '1';
+  const variantSel = st.variant==='nofee' ? 'nofee' : 'std';
+  const _newB = `<span style="margin-left:7px;font-size:8.5px;font-weight:800;letter-spacing:.4px;color:${f.color};background:${f.color}1A;border:1px solid ${f.color}40;padding:1px 6px;border-radius:5px;text-transform:uppercase;vertical-align:middle">${_tt('fd_badge_new','Novo')}</span>`;
+  if(firmHasNoFee(id)){
+    h+=`<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_taxa','Taxa de ativação')}${_newB}</div>
+      <div class="fd-pills" style="--cols:2">
+        <button class="fd-pill${variantSel==='std'?' sel':''}" style="${variantSel==='std'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="_fdState['${id}'].variant='std';drwRenderCk('${id}')">${_tt('fd_var_std','Standard')}</button>
+        <button class="fd-pill${variantSel==='nofee'?' sel':''}" style="${variantSel==='nofee'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="_fdState['${id}'].variant='nofee';drwRenderCk('${id}')">${_tt('fd_var_nofee','Sem taxa de ativação')}</button>
+      </div></div>`;
+  }
+  if(firmHas5Pack(id)){
+    h+=`<div class="fd-step"><div class="fd-step-label"><span class="fd-step-dot" style="background:${f.color};box-shadow:0 0 8px ${f.color}40"></span>${_tt('fd_qtd_contas','Quantidade de contas')}${_newB}</div>
+      <div class="fd-pills" style="--cols:2">
+        <button class="fd-pill${packSel==='1'?' sel':''}" style="${packSel==='1'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="_fdState['${id}'].pack='1';drwRenderCk('${id}')">${_tt('fd_pack_1','1 conta')}</button>
+        <button class="fd-pill${packSel==='5'?' sel':''}" style="${packSel==='5'?`background:${f.color}12;border-color:${f.color}4D;color:${f.color}`:''}" onclick="_fdState['${id}'].pack='5';drwRenderCk('${id}')">${_tt('fd_pack_5','5 contas')}</button>
+      </div></div>`;
+  }
+
   // Price card, getPlanPrice reads Supabase FIRMS[].prices with hardcoded fallback
   const plan=plans?.find(p=>p.s===st.size)||plans?.[0];
   if(plan){
-    const pp=getPlanPrice(id, st.type, plan.s);
+    const pp=getPlanPrice(id, st.type, plan.s, packSel, variantSel);
     const oNum=parseFloat((pp.o||'').replace(/[^0-9.]/g,''));
     const dNum=parseFloat((pp.d||'').replace(/[^0-9.]/g,''));
     const cur=(pp.d||'').match(/[€$]/)?.[0]||'$';
     const save=oNum&&dNum&&pp.o!=='—'?(oNum-dNum).toFixed(2):null;
-    h+=`<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
-      <div><div class="fd-price-size" style="font-size:20px;">${plan.s}</div><div class="fd-price-type">${st.type}</div></div>
-      <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color};font-size:24px;">${pp.d}</div>${pp.o&&pp.o!=='—'?`<div class="fd-price-old">${pp.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}</div>
+    const subLabel=`${st.type}${packSel==='5'?' · 5x':''}${variantSel==='nofee'?' · '+_tt('fd_var_nofee','Sem taxa de ativação'):''}`;
+    if(pp.unavailable || !pp.d){
+      h+=`<div class="fd-price" style="border-color:${f.color}1F">
+        <div><div class="fd-price-size" style="font-size:20px;">${plan.s}</div><div class="fd-price-type">${subLabel}</div></div>
+        <div class="fd-price-right"><div class="fd-price-new" style="color:var(--t2);font-size:14px;font-weight:700;line-height:1.25;text-align:right;">${_tt('fd_combo_na','Combinação indisponível')}</div></div>
+      </div>`;
+    } else {
+      h+=`<div class="fd-price" style="border-color:${f.color}1F"><div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,${f.color}40,transparent)"></div>
+      <div><div class="fd-price-size" style="font-size:20px;">${plan.s}</div><div class="fd-price-type">${subLabel}</div></div>
+      <div class="fd-price-right"><div class="fd-price-new" style="color:${f.color};font-size:24px;">${pp.d}</div>${pp.o&&pp.o!=='—'?`<div class="fd-price-old">${pp.o}</div>`:''} ${save?`<div class="fd-price-save">${t('fd_economia')} ${cur}${save}</div>`:''}${packSel==='5'&&pp.each?`<div class="fd-price-save" style="opacity:.85">${pp.each}/${_tt('fd_por_conta','conta')}</div>`:''}</div>
     </div>`;
+    }
   }
 
   // Promo countdown pill
@@ -6942,6 +7044,9 @@ async function loadUserSession(user) {
   _sessionLoading = true;
   currentUser = user;
   window._currentUser = user;
+  // Religa a inscrição de push (se houver) à conta: iOS PWA costuma assinar deslogado
+  // -> linha anonima -> "enviar pra mim" nao acha o aparelho. Agora linka no login.
+  try { if (window.MC_PWA && typeof window.MC_PWA.relinkPushUser === 'function') window.MC_PWA.relinkPushUser(); } catch(e) {}
   const { data } = await db.from('profiles').select('*').eq('id', user.id).maybeSingle();
   currentProfile = data;
   setTrackingUser(user); // Enhanced Conversions + User Properties (hashed PII, GA4 user_id)
@@ -7213,6 +7318,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(_gexLoaded) checkGEXGate();
     if(_pageFromPath()==='live'||location.hash==='#live') checkLoyaltyAndShowLive();
     // renderLoyaltyPage removed 2026-06-02 (loyalty desligado)
+    // Popup de sorteio: gatilho GLOBAL no load (só dispara se giveaways.active=true + show_global no DB).
+    try{ maybeShowGiveaway(null, 'global'); }catch(e){}
+    // PREVIEW: ?gw_preview=1 força o popup REAL (mesmo inativo) só pra quem tem o link. NÃO ativa pra ninguém.
+    try{
+      if(new URLSearchParams(location.search).get('gw_preview')){
+        db.from('giveaways').select('*').order('created_at',{ascending:false}).limit(1).maybeSingle()
+          .then(({data})=>{ if(data) setTimeout(()=>{ try{ showGiveaway(data,'preview'); }catch(e){} }, 600); });
+      }
+    }catch(e){}
   });
 
   // Auto-copy coupon from email link (?copy=CODE)
@@ -7232,6 +7346,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch(e){}
     // Clean URL
     history.replaceState(null, '', location.pathname + location.hash);
+  }
+
+  // ── /signup deep-link: abre o cadastro direto (automação IG / links externos) ──
+  // Uso: marketscoupons.com/signup  ou  /signup?gw=<slug-do-sorteio>
+  // ?gw= liga ao sorteio (marca pendente + abre IG após o cadastro).
+  const _signupPath = location.pathname.replace(/\/+$/,'').replace(/^\/(en|es|fr|de|it|ar|id)/,'') === '/signup';
+  if(_signupPath || _urlParams.has('signup')){
+    const _gwSlug = _urlParams.get('gw') || '';
+    // NÃO limpa a URL: o /signup fica fixo na barra (pra automação IG / compartilhar o link).
+    _authReadyPromise?.then(async ()=>{
+      let _ig='';
+      if(_gwSlug){
+        try{ sessionStorage.setItem('mc_gw_pending_signup', _gwSlug); }catch(e){}
+        try{ const gw = await loadActiveGiveaway(); if(gw && gw.instagram_url){ _ig=gw.instagram_url; sessionStorage.setItem('mc_gw_pending_ig', _ig); } }catch(e){}
+      }
+      if(currentUser && currentProfile){
+        // Já é membro: se veio do sorteio, entra direto + abre IG (o cadastro não vai re-disparar)
+        if(_gwSlug){
+          try{ await fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:currentUser.email,source:'giveaway',tags:['received-giveaway-'+_gwSlug,'giveaway-entered']})}); }catch(e){}
+          try{ localStorage.setItem('mc_gw_entered_'+_gwSlug,'1'); }catch(e){}
+          if(_ig) setTimeout(()=>{ try{ window.open(_ig,'_blank','noopener'); }catch(e){} }, 600);
+        }
+      } else {
+        if(typeof openAuthModal==='function') openAuthModal('signup');
+      }
+      try{ track('signup_deeplink_open', {gw:_gwSlug, logged_in: !!currentUser}); }catch(e){}
+    });
   }
 
   fetchGeo();
@@ -8020,10 +8161,11 @@ function gwSeenThisSession(slug){
 }
 
 async function maybeShowGiveaway(triggerFirmId, triggerType){
-  return; // Giveaway popup desativado 2026-06 (preventivo Apex affiliate compliance)
+  // Reativado 2026-06-27 (sorteio interno 3 contas Apex, sem compliance externo). Controle real = giveaways.active no DB.
   if(currentProfile && currentProfile.is_admin) return;
   const gw = await loadActiveGiveaway();
   if(!gw) return;
+  if(triggerType==='global' && !gw.show_global) return;
   if(gw.firm_id && gw.firm_id !== triggerFirmId && !gw.show_global) return;
   if(triggerType==='firm_open' && !gw.show_on_firm_open) return;
   if(triggerType==='coupon_copy' && !gw.show_on_coupon_copy) return;
@@ -8042,11 +8184,14 @@ async function maybeShowGiveaway(triggerFirmId, triggerType){
     if(sessionStorage.getItem('mc_checkout_clicked_'+gw.firm_id)) return;
   }catch(e){}
   // 3. Só mostra a partir do 2º firm_open na mesma sessão (1ª vez é "exploração", 2ª é "considerando")
-  try{
-    const opens = parseInt(sessionStorage.getItem('mc_firm_opens_'+gw.firm_id)||'0',10) + 1;
-    sessionStorage.setItem('mc_firm_opens_'+gw.firm_id, String(opens));
-    if(opens < 2) return; // primeira vez não mostra
-  }catch(e){}
+  //    SÓ vale pro gatilho firm_open. No 'global' (home/load) mostra de primeira.
+  if(triggerType==='firm_open'){
+    try{
+      const opens = parseInt(sessionStorage.getItem('mc_firm_opens_'+gw.firm_id)||'0',10) + 1;
+      sessionStorage.setItem('mc_firm_opens_'+gw.firm_id, String(opens));
+      if(opens < 2) return; // primeira vez não mostra
+    }catch(e){}
+  }
 
   setTimeout(()=>showGiveaway(gw, triggerType), gw.delay_ms||3000);
 }

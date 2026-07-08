@@ -20,7 +20,7 @@ type Slot = { firmId: string; off: number; name: string };
 const SCHEDULE: Record<string, Slot[]> = {
   "1": [{ firmId: "apex", off: 90, name: "Apex Trader Funding" }, { firmId: "bulenox", off: 89, name: "Bulenox" }, { firmId: "toponefutures", off: 60, name: "Top One Futures" }, { firmId: "aquafutures", off: 60, name: "Aqua Futures" }],
   "2": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "goat", off: 50, name: "Goat Funded Futures" }, { firmId: "tradeday", off: 50, name: "TradeDay" }, { firmId: "e2t", off: 50, name: "Earn2Trade" }],
-  "3": [{ firmId: "fn", off: 40, name: "FundedNext" }, { firmId: "blueguardian", off: 50, name: "Blue Guardian" }, { firmId: "cti", off: 30, name: "City Traders Imperium" }, { firmId: "futureselite", off: 30, name: "Futures Elite" }],
+  "3": [{ firmId: "fn", off: 47, name: "FundedNext" }, { firmId: "blueguardian", off: 50, name: "Blue Guardian" }, { firmId: "cti", off: 30, name: "City Traders Imperium" }, { firmId: "futureselite", off: 30, name: "Futures Elite" }],
   "4": [{ firmId: "brightfunded", off: 30, name: "BrightFunded" }, { firmId: "alphafutures", off: 40, name: "Alpha Futures" }, { firmId: "fundingpips", off: 20, name: "FundingPips" }, { firmId: "ftmo", off: 20, name: "FTMO" }],
   "5": [{ firmId: "e8", off: 40, name: "E8 Markets" }, { firmId: "the5ers", off: 5, name: "The5ers" }, { firmId: "apex", off: 90, name: "Apex Trader Funding" }, { firmId: "bulenox", off: 89, name: "Bulenox" }],
   "6": [{ firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }, { firmId: "bulenox", off: 89, name: "Bulenox" }, { firmId: "toponefutures", off: 60, name: "Top One Futures" }, { firmId: "aquafutures", off: 60, name: "Aqua Futures" }],
@@ -29,7 +29,7 @@ const SCHEDULE: Record<string, Slot[]> = {
 
 function slotForHour(utcHour: number): number { if (utcHour >= 11 && utcHour < 15) return 0; if (utcHour >= 15 && utcHour < 19) return 1; if (utcHour >= 19 && utcHour < 23) return 2; return 3; }
 
-const COUPONS: Record<string, string | null> = { apex: "MARKET", bulenox: "MARKET89", toponefutures: "MARKET", aquafutures: "AQUA", blueberryfutures: "MARKET-7652C", goat: "MARKET", tradeday: "MARKETS", e2t: "MARKETSCOUPONS", fn: "FLEXJU", blueguardian: "MARKET", cti: "ADHA30", futureselite: "JUNE30", brightfunded: "CLNLTPxtT4Sok0PzHaRIIQ", alphafutures: "MARKETS026158", fundingpips: "HELLO", ftmo: null, e8: "MARKET", the5ers: "MARKET", "funded-futures-family": "MARKET" };
+const COUPONS: Record<string, string | null> = { apex: "MARKET", bulenox: "MARKET89", toponefutures: "MARKET", aquafutures: "AQUA", blueberryfutures: "MARKET-7652C", goat: "MARKET", tradeday: "MARKETS", e2t: "MARKETSCOUPONS", fn: "MARKET", blueguardian: "MARKET", cti: "ADHA30", futureselite: "JUNE30", brightfunded: "CLNLTPxtT4Sok0PzHaRIIQ", alphafutures: "MARKETS026158", fundingpips: "HELLO", ftmo: null, e8: "MARKET", the5ers: "MARKET", "funded-futures-family": "MARKET" };
 
 async function renderCreativePngWithRetry(firmId: string, format = "feed", lang = "en"): Promise<Uint8Array | { error: string }> {
   if (!AUTO_TOKEN) return { error: "missing_automation_api_token" };

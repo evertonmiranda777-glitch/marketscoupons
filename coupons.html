@@ -283,6 +283,27 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
 .fr-cta{display:flex;align-items:center;justify-content:center;gap:6px;min-height:50px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:10px;padding:14px 14px;font-size:13px;font-weight:800;letter-spacing:.2px;text-align:center;animation:shimmer 3s ease infinite;box-shadow:0 4px 18px rgba(240,180,41,.18);text-decoration:none}
 .fr-cta svg{width:14px;height:14px}
 @keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+/* ── Special deal cards (Apex 1776 / Bulenox 25K) ── */
+.sp-card{background:linear-gradient(180deg,#0B1318,#07090D);border:1px solid rgba(240,180,41,.42);border-radius:14px;padding:12px 14px;position:relative;overflow:hidden}
+.sp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.sp-title{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--gold);margin-bottom:11px}
+.sp-title svg{width:14px;height:14px;flex-shrink:0}
+.sp-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:stretch}
+.sp-deal{display:flex;align-items:center;justify-content:center;gap:9px;min-width:0;background:rgba(240,180,41,.07);border:1px solid rgba(240,180,41,.3);border-radius:12px;padding:6px 10px 6px 6px}
+.sp-acc{height:38px;padding:0 12px;display:flex;align-items:center;justify-content:center;background:#10151F;border:1.5px solid rgba(255,255,255,.14);border-radius:10px;font-size:13px;font-weight:800;color:#fff;white-space:nowrap;flex-shrink:0}
+.sp-price{display:flex;flex-direction:column;line-height:1.05}
+.sp-price .new{font-size:19px;font-weight:900;color:var(--gold)}
+.sp-price .old{font-size:11px;color:var(--t3);text-decoration:line-through}
+.sp-cpn{display:flex;align-items:center;justify-content:space-between;gap:5px;background:rgba(10,20,24,.55);border:1.5px dashed rgba(240,180,41,.55);border-radius:12px;padding:6px 5px 6px 9px;min-width:0}
+.sp-cpn .code{font-size:12px;font-weight:800;letter-spacing:.2px;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sp-copy{flex-shrink:0;background:rgba(240,180,41,.12);color:var(--gold);border:1px solid rgba(240,180,41,.55);border-radius:7px;padding:7px 8px;font-size:9px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;cursor:pointer}
+.sp-buy{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:12px;font-size:14px;font-weight:800;text-decoration:none;cursor:pointer;background:linear-gradient(135deg,var(--btn),var(--btn2));color:#fff}
+@media(max-width:600px){
+  .sp-row{grid-template-columns:1fr;gap:8px}
+  .sp-deal{justify-content:space-between;padding:8px 14px}
+  .sp-deal .sp-price{align-items:flex-end}
+  .sp-buy{min-height:48px}
+}
 
 .see-all{max-width:560px;margin:24px auto 0;padding:0 12px}
 .see-all-btn{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:16px 18px;color:var(--t1);font-weight:600;font-size:14px}
@@ -746,42 +767,77 @@ const FIRMS = [
     discount: '80%', tag: 'fut', rating: '4.7', reviews: '1.9K',
     rangeAccounts: '$25K–$150K', split: '90%',
     url: 'https://app.fundedfuturesfamily.com/affiliation/?ref_code=ed5ae23f-10eb-46c6-b6d1-280369e720eb',
-    types: ['Velocity', 'Premier Plus', 'Prime EOD', 'Prime Intraday', 'S2F'],
+    types: ['Velocity', 'Premier Plus EOD', 'Premier Plus Intraday', 'Prime EOD', 'S2F'],
     plans: {
       'Velocity': [
-        {size:'$25K', orig:'$79', disc:'$16/mo', target:'$2,500', dd:'Intraday $1,250', pos:'3 minis / 30 micros', consistency:'40%', minDays:'1'},
-        {size:'$50K', orig:'$125', disc:'$25/mo', target:'$4,000', dd:'Intraday $2,250', pos:'5 minis / 50 micros', consistency:'40%', minDays:'1', popular:true},
-        {size:'$100K', orig:'$225', disc:'$45/mo', target:'$7,000', dd:'Intraday $3,250', pos:'10 minis / 100 micros', consistency:'40%', minDays:'1'},
-        {size:'$150K', orig:'$325', disc:'$65/mo', target:'$10,000', dd:'Intraday $4,750', pos:'15 minis / 150 micros', consistency:'40%', minDays:'1'},
+        {size:'$25K', orig:'$79', disc:'$16/mo', target:'$2,500', dd:'Intraday $1,250', pos:'3 minis / 30 micros', consistency:'40%', minDays:'3', popular:true},
+        {size:'$50K', orig:'$125', disc:'$25/mo', target:'$4,000', dd:'Intraday $2,250', pos:'5 minis / 50 micros', consistency:'40%', minDays:'3'},
+        {size:'$100K', orig:'$225', disc:'$45/mo', target:'$7,000', dd:'Intraday $3,250', pos:'10 minis / 100 micros', consistency:'40%', minDays:'3'},
       ],
-      'Premier Plus': [
-        {size:'$25K', orig:'$129', disc:'$65/mo', target:'$1,250', dd:'EOD $1,000', pos:'3 minis / 30 micros', minDays:'1'},
-        {size:'$50K', orig:'$179', disc:'$90/mo', target:'$3,000', dd:'EOD $2,000', pos:'5 minis / 50 micros', minDays:'1', popular:true},
-        {size:'$100K', orig:'$279', disc:'$140/mo', target:'$6,000', dd:'EOD $3,000', pos:'10 minis / 100 micros', minDays:'1'},
-        {size:'$150K', orig:'$365', disc:'$183/mo', target:'$9,000', dd:'EOD $4,500', pos:'15 minis / 150 micros', minDays:'1'},
+      'Premier Plus EOD': [
+        {size:'$25K', orig:'$119', disc:'$72/mo', target:'$1,500', dd:'EOD $750', pos:'—', minDays:'1'},
+        {size:'$50K', orig:'$159', disc:'$96/mo', target:'$3,000', dd:'EOD $1,500', pos:'—', minDays:'1', popular:true},
+        {size:'$100K', orig:'$249', disc:'$150/mo', target:'$6,000', dd:'EOD $2,500', pos:'—', minDays:'1'},
+        {size:'$150K', orig:'$459', disc:'$276/mo', target:'$9,000', dd:'EOD $4,000', pos:'—', minDays:'1'},
+      ],
+      'Premier Plus Intraday': [
+        {size:'$25K', orig:'$89', disc:'$54/mo', target:'$1,500', dd:'Intraday $1,000', pos:'—', minDays:'1'},
+        {size:'$50K', orig:'$119', disc:'$72/mo', target:'$3,000', dd:'Intraday $2,000', pos:'—', minDays:'1'},
+        {size:'$100K', orig:'$189', disc:'$114/mo', target:'$6,000', dd:'Intraday $3,000', pos:'—', minDays:'1'},
+        {size:'$150K', orig:'$259', disc:'$156/mo', target:'$9,000', dd:'Intraday $4,500', pos:'—', minDays:'1'},
       ],
       'Prime EOD': [
-        {size:'$25K', orig:'$119', disc:'$60/mo', target:'$1,500', dd:'EOD $750', pos:'3 minis / 30 micros', minDays:'1'},
-        {size:'$50K', orig:'$159', disc:'$80/mo', target:'$3,000', dd:'EOD $1,500', pos:'5 minis / 50 micros', minDays:'1'},
-        {size:'$100K', orig:'$249', disc:'$125/mo', target:'$6,000', dd:'EOD $2,500', pos:'10 minis / 100 micros', minDays:'1', popular:true},
-        {size:'$150K', orig:'$459', disc:'$230/mo', target:'$9,000', dd:'EOD $4,000', pos:'15 minis / 150 micros', minDays:'1'},
-      ],
-      'Prime Intraday': [
-        {size:'$25K', orig:'$89', disc:'$45/mo', target:'$1,500', dd:'Intraday $1,000', pos:'3 minis / 30 micros', minDays:'1'},
-        {size:'$50K', orig:'$119', disc:'$60/mo', target:'$3,000', dd:'Intraday $2,000', pos:'5 minis / 50 micros', minDays:'1'},
-        {size:'$100K', orig:'$189', disc:'$95/mo', target:'$6,000', dd:'Intraday $3,000', pos:'10 minis / 100 micros', minDays:'1'},
-        {size:'$150K', orig:'$259', disc:'$130/mo', target:'$9,000', dd:'Intraday $4,500', pos:'15 minis / 150 micros', minDays:'1'},
+        {size:'$25K', orig:'$129', disc:'$78/mo', target:'$1,250', dd:'EOD $1,000', pos:'3 minis / 30 micros', minDays:'1'},
+        {size:'$50K', orig:'$179', disc:'$108/mo', target:'$3,000', dd:'EOD $2,000', pos:'5 minis / 50 micros', minDays:'1'},
+        {size:'$100K', orig:'$279', disc:'$168/mo', target:'$6,000', dd:'EOD $3,000', pos:'10 minis / 100 micros', minDays:'1', popular:true},
+        {size:'$150K', orig:'$365', disc:'$219/mo', target:'$9,000', dd:'EOD $4,500', pos:'15 minis / 150 micros', minDays:'1'},
       ],
       'S2F': [
-        {size:'$25K', orig:'$329', disc:'$198', target:'Instant', dd:'EOD $1,000', pos:'1 mini / 10 micros', consistency:'25%', minDays:'7'},
-        {size:'$50K', orig:'$469', disc:'$282', target:'Instant', dd:'EOD $2,000', pos:'5 minis / 50 micros', consistency:'25%', minDays:'7'},
-        {size:'$100K', orig:'$629', disc:'$378', target:'Instant', dd:'EOD $3,000', pos:'10 minis / 100 micros', consistency:'25%', minDays:'7'},
-        {size:'$150K', orig:'$734', disc:'$441', target:'Instant', dd:'EOD $4,500', pos:'15 minis / 150 micros', consistency:'25%', minDays:'7'},
+        {size:'$25K', orig:'', disc:'$329', target:'Instant', dd:'EOD $1,000', pos:'1 mini / 10 micros', consistency:'25%', minDays:'7'},
+        {size:'$50K', orig:'', disc:'$469', target:'Instant', dd:'EOD $2,000', pos:'5 minis / 50 micros', consistency:'25%', minDays:'7'},
+        {size:'$100K', orig:'', disc:'$629', target:'Instant', dd:'EOD $3,000', pos:'10 minis / 100 micros', consistency:'25%', minDays:'7'},
+        {size:'$150K', orig:'', disc:'$734', target:'Instant', dd:'EOD $4,500', pos:'15 minis / 150 micros', consistency:'25%', minDays:'7'},
       ]
     },
     payouts: { pt: '24h após aprovação', en: '24h after approval', es: '24h tras aprobación', it: '24h dopo approvazione', fr: '24h après approbation', de: '24h nach Freigabe', ar: '24 ساعة بعد الموافقة', id: '24 jam setelah disetujui' },
     platforms: 'WealthCharts · Tradovate',
     rules: { pt: ['Modelos: Velocity, Premier Plus, Prime (EOD/Intraday), S2F','Payout em 24h após aprovação','Profit split 90% (1ºs $10K 100% seu)','Cupom MARKET: 80% off no Velocity'], en: ['Models: Velocity, Premier Plus, Prime (EOD/Intraday), S2F','Payout 24h after approval','90% profit split (first $10K is 100% yours)','MARKET coupon: 80% off Velocity'] }
+  },
+  {
+    id: 'fn', name: 'FundedNext', logo: '/img/Firms/108/fn.webp', coupon: 'MARKET',
+    discount: '47%', tag: 'fut', rating: '4.5', reviews: '69.7K',
+    rangeAccounts: '$6K–$200K', split: '95%',
+    url: 'https://fundednext.com/futures?fpr=everton33',
+    types: ['Futures Flex', 'Stellar 2-Step', 'Futures Legacy', 'Futures Rapid', 'Futures Bolt'],
+    plans: {
+      'Futures Flex': [
+        {size:'$50K', orig:'$133.99', disc:'$69.99', target:'—', dd:'EOD Trail $1,500', pos:'—', minDays:'—'},
+        {size:'$100K', orig:'$249.99', disc:'$129.99', target:'—', dd:'EOD Trail $2,500', pos:'—', minDays:'—', popular:true},
+        {size:'$150K', orig:'$483.99', disc:'$249.99', target:'—', dd:'EOD Trail $4,000', pos:'—', minDays:'—'},
+      ],
+      'Stellar 2-Step': [
+        {size:'$6K', orig:'$59.99', disc:'$44.99', target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
+        {size:'$15K', orig:'$119.99', disc:'$89.99', target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
+        {size:'$25K', orig:'$199.99', disc:'$149.99', target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5', popular:true},
+        {size:'$50K', orig:'$299.99', disc:'$224.99', target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
+      ],
+      'Futures Legacy': [
+        {size:'$25K', orig:'', disc:'$79.99', target:'—', dd:'EOD $1,000', pos:'—', minDays:'—'},
+        {size:'$50K', orig:'', disc:'$199.99', target:'—', dd:'EOD $2,000', pos:'—', minDays:'—'},
+        {size:'$100K', orig:'', disc:'$239.99', target:'—', dd:'EOD $3,000', pos:'—', minDays:'—'},
+      ],
+      'Futures Rapid': [
+        {size:'$25K', orig:'', disc:'$99.99', target:'—', dd:'EOD $1,000', pos:'—', minDays:'—'},
+        {size:'$50K', orig:'', disc:'$199.99', target:'—', dd:'EOD $2,000', pos:'—', minDays:'—'},
+        {size:'$100K', orig:'', disc:'$279.99', target:'—', dd:'EOD $2,500', pos:'—', minDays:'—'},
+      ],
+      'Futures Bolt': [
+        {size:'$50K', orig:'', disc:'$99.99', target:'—', dd:'EOD $2,000', pos:'—', minDays:'—'},
+      ]
+    },
+    payouts: { pt: 'Recompensa em 5 dias', en: 'Reward in 5 days', es: 'Recompensa en 5 días', it: 'Ricompensa in 5 giorni', fr: 'Récompense en 5 jours', de: 'Auszahlung in 5 Tagen', ar: 'مكافأة في 5 أيام', id: 'Hadiah dalam 5 hari' },
+    platforms: 'Tradovate · CFDs (MT5)',
+    rules: { pt: ['Futures Flex: 47% off com MARKET (5 primeiros desafios)','CFD Stellar: 25% off com MARKET','Sem mensalidade, taxa única','Profit split até 95%'], en: ['Futures Flex: 47% off with MARKET (first 5 challenges)','CFD Stellar: 25% off with MARKET','No monthly fee, one-time cost','Profit split up to 95%'] }
   },
   {
     id: 'tradeday', name: 'TradeDay', logo: '/img/Firms/108/tradeday.webp', coupon: 'MARKETS',
@@ -1401,9 +1457,61 @@ async function submitNewsletter(){
 }
 
 // ─── boot ───
+// ── Ofertas especiais (cards no topo da lista): Apex 1776 + Bulenox 25K ──
+const SPECIALS = [
+  { firm:'apex', title:'$250K Legacy', acc:'$250K', priceNew:'$17.76', priceOld:'$177.60', coupon:'MARKET', btn:'#F97316', btn2:'#c85a10', url:'https://apextraderfunding.com/member/aff/go/evertonmiranda#limited-time' },
+  { firm:'bulenox', title:'25K', acc:'25K', priceNew:'$9.95', priceOld:'$145', coupon:'MARKET25K', btn:'#4d8ff5', btn2:'#3a78d8', url:'https://bulenox.com/member/aff/go/marketcoupons' }
+];
+// i18n dos cards especiais (EU traduzo, sem Gemini)
+const SP_T = {
+  pt:{deal:'Oferta Especial',buy:'Comprar',copy:'Copiar',acc:'Conta'}, en:{deal:'Special Deal',buy:'Buy',copy:'Copy',acc:'Account'},
+  es:{deal:'Oferta Especial',buy:'Comprar',copy:'Copiar',acc:'Cuenta'}, it:{deal:'Offerta Speciale',buy:'Acquista',copy:'Copia',acc:'Account'},
+  fr:{deal:'Offre Spéciale',buy:'Acheter',copy:'Copier',acc:'Compte'}, de:{deal:'Sonderangebot',buy:'Kaufen',copy:'Kopieren',acc:'Konto'},
+  ar:{deal:'عرض خاص',buy:'شراء',copy:'نسخ',acc:'حساب'}, id:{deal:'Penawaran Spesial',buy:'Beli',copy:'Salin',acc:'Akun'}
+};
+function renderSpecials(){
+  const container = document.getElementById('firms-list');
+  if(!container) return;
+  const frag = document.createDocumentFragment();
+  const spt = SP_T[LANG] || SP_T.en;
+  SPECIALS.forEach(sp => {
+    const url = injectKeyword(sp.url, sp.firm);
+    const el = document.createElement('div');
+    el.className = 'sp-card';
+    el.style.setProperty('--btn', sp.btn);
+    el.style.setProperty('--btn2', sp.btn2);
+    el.innerHTML = `
+      <div class="sp-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>${spt.deal} · ${sp.title}</div>
+      <div class="sp-row">
+        <div class="sp-deal"><div class="sp-acc">${sp.acc}</div><div class="sp-price"><span class="new">${sp.priceNew}</span><span class="old">${sp.priceOld}</span></div></div>
+        <div class="sp-cpn"><span class="code">${sp.coupon}</span><button type="button" class="sp-copy">${spt.copy}</button></div>
+        <a class="sp-buy" href="${url}" target="_blank" rel="noopener">${spt.buy} &#8594;</a>
+      </div>`;
+    const copyBtn = el.querySelector('.sp-copy');
+    copyBtn.addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      const o = copyBtn.textContent;
+      copyToClipboard(sp.coupon).then(()=>{
+        copyBtn.textContent = T.copied || 'Copied';
+        setTimeout(()=>{ copyBtn.textContent = o; }, 1600);
+        trackEvent('coupon_copy', { firm_id: sp.firm, coupon_code: sp.coupon, value: parseFloat(sp.priceNew.replace(/[^\d.]/g,''))||0, location: 'lp_special' });
+      }).catch(()=>{});
+    });
+    el.querySelector('.sp-buy').addEventListener('click', ()=>{
+      trackEvent('checkout_click', { firm_id: sp.firm, coupon_code: sp.coupon, value: parseFloat(sp.priceNew.replace(/[^\d.]/g,''))||3.00, currency:'USD', location: 'lp_special' });
+    });
+    // insere o card especial LOGO ABAIXO do card da firma correspondente
+    const firmCard = container.querySelector('[data-firm="'+sp.firm+'"]');
+    if (firmCard) firmCard.insertAdjacentElement('afterend', el);
+    else frag.appendChild(el);
+  });
+  if (frag.childNodes.length) container.appendChild(frag); // fallback: firmas sem card na lista
+}
+
 applyStaticI18n();
 _refreshLpStats();
 renderFirms();
+renderSpecials();
 loadPromoBar();
 trackEvent('page_view', { page_name: 'lp_coupons', lang: LANG });
 

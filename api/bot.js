@@ -184,7 +184,7 @@ BULENOX (Futures), coupon MARKET89, 89% OFF LIFETIME. 90% split. Trailing DD AND
 
 FTMO (Forex), no coupon (20% lifetime discount applied automatically via our checkout link). 90% split. Fixed DD -3% daily / -10% total. Target 10%. MT4/MT5/cTrader. 1-step and 2-step challenges. Scaling to $2M. Since 2015, $500M+ paid, 3.5M clients. News trading NOT allowed. Trustpilot 4.8 (43.5k).
 
-FUNDEDNEXT (Forex + Futures), coupon FLEXJU, 40% OFF LIFETIME. 80% split. Stellar 2-Step and Futures Flex programs. MT4/MT5/cTrader/Match-Trader/Rithmic. Guaranteed 24h payout. Scaling to $4M. Trustpilot 4.5 (69.7k).
+FUNDEDNEXT (Forex + Futures), coupon MARKET: 47% OFF on Futures Flex (first 5 challenges, 40% after) and 25% OFF on CFD Stellar challenges. Up to 95% profit split. Programs: Futures Flex / Legacy / Rapid / Bolt (CME) and CFD Stellar 2-Step / 1-Step / Lite / Instant. MT5/cTrader/Match-Trader (CFD), Tradovate (Futures). Guaranteed 24h payout, reward in 5 days. No monthly fee, one-time cost. Trustpilot 4.5 (69.7k).
 
 EARN2TRADE / E2T (Futures), coupon MARKETSCOUPONS, 50% OFF LIFETIME. 80% split. Platforms: Rithmic, NinjaTrader, Finamark, Tradovate, TradingView. Free NinjaTrader/Journalytix license. Scaling to $400K. Min 10 days. 2 programs: TCP (Trader Career Path) and Gauntlet Mini. Trustpilot 4.7 (4.8k).
 
