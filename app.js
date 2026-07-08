@@ -3515,9 +3515,10 @@ function openFD(id, f) {
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_prazo')}</div><div class="fd-stat-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">News Trading</div><div class="fd-stat-val ${f.newsTrading?'g':'r'}">${f.newsTrading?t('drw_sim'):t('drw_nao')}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">Day 1 Payout</div><div class="fd-stat-val ${f.day1Payout?'g':'r'}">${f.day1Payout?t('drw_sim'):t('drw_nao')}</div></div>
-    ${id==='funded-futures-family'
-      ? `<div class="fd-stat"><div class="fd-stat-label">Activation Fee</div><div class="fd-stat-val g">$0</div></div>`
-      : `<div class="fd-stat"><div class="fd-stat-label">${t('drw_alavancagem')}</div><div class="fd-stat-val">${f.leverage||'—'}</div></div>`}
+    ${(()=>{ if(id==='funded-futures-family') return `<div class="fd-stat"><div class="fd-stat-label">Activation Fee</div><div class="fd-stat-val g">$0</div></div>`;
+      const _lev=f.leverage||''; if(/\d\s*:\s*\d/.test(_lev)) return `<div class="fd-stat"><div class="fd-stat-label">${t('drw_alavancagem')}</div><div class="fd-stat-val">${_lev}</div></div>`;
+      if(_lev){ const _acc=_lev.replace(/\s*(account|margin).*/i,'').trim(); return `<div class="fd-stat"><div class="fd-stat-label">Account Size</div><div class="fd-stat-val">${_acc||_lev}</div></div>`; }
+      return `<div class="fd-stat"><div class="fd-stat-label">${t('drw_alavancagem')}</div><div class="fd-stat-val">—</div></div>`; })()}
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_consistencia')}</div><div class="fd-stat-val ${f.consistency==='Not required'||f.consistency==='Não exige'||!f.consistency?'g':'y'}">${tf(f.consistency)||t('drw_nao_exige')}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_payout')}</div><div class="fd-stat-val b">${tf(f.payoutSpeed)||'—'}</div></div>
     <div class="fd-stat"><div class="fd-stat-label">${t('drw_max_contas')}</div><div class="fd-stat-val b">${f.maxAccounts||'—'}</div></div>
@@ -4134,9 +4135,10 @@ function openDrw(id, f, cf) {
       <div class="fd-stat"><div class="fd-stat-label">${t('drw_prazo')}</div><div class="fd-stat-val">${f.evalDays?f.evalDays+'d':t('drw_sem_limite')}</div></div>
       <div class="fd-stat"><div class="fd-stat-label">News Trading</div><div class="fd-stat-val ${f.newsTrading?'g':'r'}">${f.newsTrading?t('drw_sim'):t('drw_nao')}</div></div>
       <div class="fd-stat"><div class="fd-stat-label">Day 1 Payout</div><div class="fd-stat-val ${f.day1Payout?'g':'r'}">${f.day1Payout?t('drw_sim'):t('drw_nao')}</div></div>
-      ${id==='funded-futures-family'
-      ? `<div class="fd-stat"><div class="fd-stat-label">Activation Fee</div><div class="fd-stat-val g">$0</div></div>`
-      : `<div class="fd-stat"><div class="fd-stat-label">${t('drw_alavancagem')}</div><div class="fd-stat-val">${f.leverage||'—'}</div></div>`}
+      ${(()=>{ if(id==='funded-futures-family') return `<div class="fd-stat"><div class="fd-stat-label">Activation Fee</div><div class="fd-stat-val g">$0</div></div>`;
+      const _lev=f.leverage||''; if(/\d\s*:\s*\d/.test(_lev)) return `<div class="fd-stat"><div class="fd-stat-label">${t('drw_alavancagem')}</div><div class="fd-stat-val">${_lev}</div></div>`;
+      if(_lev){ const _acc=_lev.replace(/\s*(account|margin).*/i,'').trim(); return `<div class="fd-stat"><div class="fd-stat-label">Account Size</div><div class="fd-stat-val">${_acc||_lev}</div></div>`; }
+      return `<div class="fd-stat"><div class="fd-stat-label">${t('drw_alavancagem')}</div><div class="fd-stat-val">—</div></div>`; })()}
       <div class="fd-stat"><div class="fd-stat-label">${t('drw_consistencia')}</div><div class="fd-stat-val ${f.consistency==='Not required'||!f.consistency?'g':'y'}">${tf(f.consistency)||t('drw_nao_exige')}</div></div>
       <div class="fd-stat"><div class="fd-stat-label">${t('drw_payout')}</div><div class="fd-stat-val b">${tf(f.payoutSpeed)||'—'}</div></div>
       <div class="fd-stat"><div class="fd-stat-label">${t('drw_max_contas')}</div><div class="fd-stat-val b">${f.maxAccounts||'—'}</div></div>
