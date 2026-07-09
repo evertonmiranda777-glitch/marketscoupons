@@ -3549,7 +3549,7 @@ function openFD(id, f) {
 // Mantém as ofertas normais intactas; adiciona 1 botão extra. Pra DESATIVAR depois: active:false (+ deploy).
 // Mesmo link de afiliado da firma (atribuição de comissão idêntica ao botão normal).
 const FIRM_SPECIALS = {
-  bulenox: { active:true, size:'25K', priceNew:'$9.95', priceOld:'$145', coupon:'MARKET25K' },
+  bulenox: { active:false, size:'25K', priceNew:'$9.95', priceOld:'$145', coupon:'MARKET25K' }, // promo expirou 08/jul, desativada
   // Apex 1776 , $250K Legacy (promo Independence Day, acaba 7/jul). label/cta/link custom.
   apex: { active:true, size:'$250K Legacy', label:'$250K Legacy', cta:'$250K Legacy', priceNew:'$17.76', priceOld:'$177.60', coupon:'MARKET', link:'https://apextraderfunding.com/member/aff/go/evertonmiranda#limited-time' }
 };
