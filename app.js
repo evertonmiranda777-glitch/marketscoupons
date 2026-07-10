@@ -4614,7 +4614,7 @@ CHECKOUT_FIRMS.forEach(f=>{achActiveType[f.id]=f.types[0];achState[f.id]={};_ach
 async function loadFirmsFromSupabase() {
   try {
     const { data, error } = await db.from('cms_firms')
-      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,trustpilot_status,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,internal_rating,internal_reviews_count')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,trustpilot_status,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,disc_note,internal_rating,internal_reviews_count')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
@@ -4647,6 +4647,7 @@ async function loadFirmsFromSupabase() {
         newsTrading: f.news_trading || false,
         day1Payout: f.day1_payout || false,
         hasActivationFee: f.has_activation_fee !== false,
+        disc_note: f.disc_note || null,
         leverage: f.leverage || null,
         consistency: f.consistency || null,
         payoutSpeed: f.payout_speed || null,
