@@ -924,6 +924,8 @@ const APEX_FEE = {
   ar:'رسوم تفعيل حساب PA Intraday Trail: <span>$59</span> لأي حجم حساب',
   id:'Biaya aktivasi PA Intraday Trail: <span>$59</span> untuk semua ukuran akun'
 };
+// Promo Apex $59 acaba 21/jul 23:59 ET (EDT = UTC-4). Depois disso a faixa some sozinha.
+const APEX_FEE_ENDS = Date.parse('2026-07-21T23:59:59-04:00');
 // Números fortes do topo, puxados do banco (firmas ativas + maior desconto), nunca chumbados.
 let FIRM_N = 18, DISC_MAX = 90;
 function _refreshLpStats(){
@@ -990,7 +992,7 @@ function renderFirms() {
     card.dataset.firm = firm.id;
     card.innerHTML = `
       ${firm.id==='funded-futures-family' ? `<div class="fr-nofee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><b>${FFF_NOFEE[LANG]||FFF_NOFEE.en}</b></div>`
-        : firm.id==='apex' ? `<div class="fr-nofee" style="--rib-glow:#fb923c;--rib-shadow:rgba(251,146,60,.7);--rib-bg1:rgba(249,115,22,.16);--rib-bg2:rgba(251,146,60,.06);--rib-bd:rgba(251,146,60,.4);--rib-txt:#fff4ea"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><b>${APEX_FEE[LANG]||APEX_FEE.en}</b></div>`
+        : (firm.id==='apex' && Date.now() < APEX_FEE_ENDS) ? `<div class="fr-nofee" style="--rib-glow:#fb923c;--rib-shadow:rgba(251,146,60,.7);--rib-bg1:rgba(249,115,22,.16);--rib-bg2:rgba(251,146,60,.06);--rib-bd:rgba(251,146,60,.4);--rib-txt:#fff4ea"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><b>${APEX_FEE[LANG]||APEX_FEE.en}</b></div>`
         : ''}
       <div class="fr-header">
         <img class="fr-logo" src="${firm.logo}" alt="${firm.name}" width="54" height="54" loading="lazy" decoding="async">
