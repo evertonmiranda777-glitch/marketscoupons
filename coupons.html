@@ -228,12 +228,12 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
 }
 .fr::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(70% 50% at 80% 10%,rgba(107,182,201,.14),transparent 60%),radial-gradient(60% 45% at 15% 95%,rgba(30,77,74,.18),transparent 65%);}
 .fr > *{position:relative;z-index:1;}
-.fr-nofee{display:flex;align-items:center;gap:9px;padding:11px 14px;background:linear-gradient(90deg,rgba(46,168,143,.16),rgba(63,224,189,.06));border-bottom:1px solid rgba(63,224,189,.35);position:relative}
-.fr-nofee::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#3fe0bd,transparent);animation:frNofeeSweep 2.6s linear infinite}
+.fr-nofee{display:flex;align-items:center;gap:9px;padding:11px 14px;background:linear-gradient(90deg,var(--rib-bg1,rgba(46,168,143,.16)),var(--rib-bg2,rgba(63,224,189,.06)));border-bottom:1px solid var(--rib-bd,rgba(63,224,189,.35));position:relative}
+.fr-nofee::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--rib-glow,#3fe0bd),transparent);animation:frNofeeSweep 2.6s linear infinite}
 @keyframes frNofeeSweep{0%,100%{opacity:.35}50%{opacity:1}}
-.fr-nofee svg{color:#3fe0bd;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(63,224,189,.7))}
-.fr-nofee b{font-size:12px;font-weight:800;color:#eafff9;letter-spacing:.1px;line-height:1.25}
-.fr-nofee b span{color:#3fe0bd}
+.fr-nofee svg{color:var(--rib-glow,#3fe0bd);flex-shrink:0;filter:drop-shadow(0 0 6px var(--rib-shadow,rgba(63,224,189,.7)))}
+.fr-nofee b{font-size:12px;font-weight:800;color:var(--rib-txt,#eafff9);letter-spacing:.1px;line-height:1.25}
+.fr-nofee b span{color:var(--rib-glow,#3fe0bd)}
 .fr-tag.top{background:rgba(240,180,41,.14);color:var(--gold);border:1px solid rgba(240,180,41,.55);font-weight:800;letter-spacing:.6px}
 
 .fr-header{display:flex;align-items:center;gap:12px;padding:14px;}
@@ -913,6 +913,17 @@ const FFF_NOFEE = {
   ar:'الحساب الوحيد <span>بدون رسوم تفعيل</span>، مهما كان حجم الحساب',
   id:'Satu-satunya akun <span>TANPA BIAYA AKTIVASI</span>, berapa pun ukuran akunnya'
 };
+// Apex: promo taxa de ativação PA Intraday Trail $59 (até 21/jul). "Intraday Trail"/"PA" = termos do produto, não traduzir.
+const APEX_FEE = {
+  pt:'Taxa de ativação da PA Intraday Trail: <span>$59</span> para qualquer tamanho de conta',
+  en:'PA Intraday Trail Activation Fee: <span>$59</span> for any account size',
+  es:'Tarifa de activación de la PA Intraday Trail: <span>$59</span> para cualquier tamaño de cuenta',
+  it:"Costo di attivazione della PA Intraday Trail: <span>$59</span> per qualsiasi dimensione dell'account",
+  fr:"Frais d'activation du PA Intraday Trail : <span>$59</span> pour toute taille de compte",
+  de:'PA Intraday Trail Aktivierungsgebühr: <span>$59</span> für jede Kontogröße',
+  ar:'رسوم تفعيل حساب PA Intraday Trail: <span>$59</span> لأي حجم حساب',
+  id:'Biaya aktivasi PA Intraday Trail: <span>$59</span> untuk semua ukuran akun'
+};
 // Números fortes do topo, puxados do banco (firmas ativas + maior desconto), nunca chumbados.
 let FIRM_N = 18, DISC_MAX = 90;
 function _refreshLpStats(){
@@ -978,7 +989,9 @@ function renderFirms() {
     card.className = 'fr';
     card.dataset.firm = firm.id;
     card.innerHTML = `
-      ${firm.id==='funded-futures-family' ? `<div class="fr-nofee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><b>${FFF_NOFEE[LANG]||FFF_NOFEE.en}</b></div>` : ''}
+      ${firm.id==='funded-futures-family' ? `<div class="fr-nofee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><b>${FFF_NOFEE[LANG]||FFF_NOFEE.en}</b></div>`
+        : firm.id==='apex' ? `<div class="fr-nofee" style="--rib-glow:#fb923c;--rib-shadow:rgba(251,146,60,.7);--rib-bg1:rgba(249,115,22,.16);--rib-bg2:rgba(251,146,60,.06);--rib-bd:rgba(251,146,60,.4);--rib-txt:#fff4ea"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><b>${APEX_FEE[LANG]||APEX_FEE.en}</b></div>`
+        : ''}
       <div class="fr-header">
         <img class="fr-logo" src="${firm.logo}" alt="${firm.name}" width="54" height="54" loading="lazy" decoding="async">
         <div class="fr-info">
