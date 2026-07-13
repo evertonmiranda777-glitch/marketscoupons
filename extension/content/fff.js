@@ -25,7 +25,8 @@ async function mcShouldFFF(firmId) {
   return new Promise(resolve => {
     chrome.storage.local.get(['mc_last_sync'], r => {
       const last = (r.mc_last_sync || {})[firmId] || 0;
-      resolve((Date.now() - last) / 60000 >= 30);
+      // near-real-time: com o tab de orders aberto, re-sincroniza a cada ~2min (era 30)
+      resolve((Date.now() - last) / 60000 >= 2);
     });
   });
 }

@@ -39,7 +39,7 @@ chrome.runtime.onStartup.addListener(() => {
 // deixa o content script (fff.js) raspar+sincronizar, e fecha a aba. SEM credencial:
 // reusa o cookie de sessao do proprio navegador. So abre se houver sessao ativa.
 const AUTOFETCH_ALARM = 'mc_autofetch';
-const AUTOFETCH_PERIOD_MIN = 30;
+const AUTOFETCH_PERIOD_MIN = 10;
 const AUTOFETCH_TARGETS = [
   {
     id: 'fff',
