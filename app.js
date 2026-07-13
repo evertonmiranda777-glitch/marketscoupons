@@ -3548,11 +3548,7 @@ function openFD(id, f) {
 // ── OFERTA ESPECIAL por firma (botão SEPARADO, temporário) ──
 // Mantém as ofertas normais intactas; adiciona 1 botão extra. Pra DESATIVAR depois: active:false (+ deploy).
 // Mesmo link de afiliado da firma (atribuição de comissão idêntica ao botão normal).
-const FIRM_SPECIALS = {
-  bulenox: { active:false, size:'25K', priceNew:'$9.95', priceOld:'$145', coupon:'MARKET25K' }, // promo expirou 08/jul, desativada
-  // Apex 1776 , $250K Legacy (promo Independence Day, acaba 7/jul). label/cta/link custom.
-  apex: { active:false, size:'$250K Legacy', label:'$250K Legacy', cta:'$250K Legacy', priceNew:'$17.76', priceOld:'$177.60', coupon:'MARKET', link:'https://apextraderfunding.com/member/aff/go/evertonmiranda#limited-time' } // Legacy $250K acabou 13/jul, desativado
-};
+const FIRM_SPECIALS = {}; // sem oferta especial ativa. Mecanismo mantido p/ specials futuros.
 function fdSpecialHtml(id, f){
   const sp = FIRM_SPECIALS[id];
   if(!sp || !sp.active || !f) return '';
@@ -3690,7 +3686,7 @@ function fdRenderRight(id, f) {
     h += `<button class="fd-cta" onclick="fdGo('${id}')">${t('fd_comecar')} &#8594;</button>`;
   }
 
-  // Oferta especial (botão separado, ex: Bulenox 25K $9.95 / MARKET25K)
+  // Oferta especial (botão separado, quando houver special ativo)
   h += fdSpecialHtml(id, f);
 
   // Includes
