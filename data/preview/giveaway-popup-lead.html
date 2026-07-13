@@ -1,0 +1,93 @@
+<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sorteio 3 Apex , popup nome+email (preview p/ aprovar)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#05070b;color:#e6eaf2;font-family:Inter,system-ui,Arial,sans-serif;padding:26px 14px 70px;}
+.wrap{max-width:1000px;margin:0 auto;}
+h1{font-size:17px;margin-bottom:4px}.sub{color:#8590a3;font-size:13px;margin-bottom:26px}
+.lbl{font:700 11px 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#3DE3A8;margin:22px 0 12px}
+.stage{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;justify-content:center}
+/* ==== .g2 real (copiado do index.html) ==== */
+.g2{container-type:inline-size;position:relative;width:100%;max-width:430px;overflow:hidden;background:#0A0D14;border:1px solid rgba(61,227,168,.28);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 70px rgba(61,227,168,.10);}
+.g2-glow1{position:absolute;left:-90px;top:-70px;width:300px;height:300px;background:radial-gradient(circle,rgba(61,227,168,.18),transparent 68%);filter:blur(14px);pointer-events:none;}
+.g2-glow2{position:absolute;right:-90px;bottom:30px;width:300px;height:300px;background:radial-gradient(circle,rgba(232,182,90,.10),transparent 68%);filter:blur(14px);pointer-events:none;}
+.g2-in{position:relative;padding:20px 22px 16px;}
+.g2-x{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#cbd0d8;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6;}
+.g2-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid rgba(61,227,168,.45);border-radius:100px;font:700 10.5px 'JetBrains Mono',monospace;color:#3DE3A8;letter-spacing:.14em;text-transform:uppercase;}
+.g2-eyebrow{margin-top:13px;font:500 14px Inter,sans-serif;color:rgba(255,255,255,.6);}
+.g2-h{margin-top:2px;font:900 35px/0.98 Inter,sans-serif;letter-spacing:-.03em;color:#fff;}
+.g2-h em{font-style:normal;color:#3DE3A8;}
+.g2-sub{margin-top:9px;font:500 13.5px/1.4 Inter,sans-serif;color:rgba(255,255,255,.62);max-width:290px;}
+.g2-tix{display:flex;gap:9px;margin-top:14px;}
+.g2-tk{flex:1;position:relative;background:linear-gradient(160deg,#11161f,#0d1219);border:1px solid rgba(61,227,168,.38);border-radius:13px;padding:12px 6px 11px;text-align:center;overflow:hidden;}
+.g2-tk-l{font:700 9px 'JetBrains Mono',monospace;color:#3DE3A8;letter-spacing:.04em;}
+.g2-tk-n{margin-top:6px;font:900 23px Inter,sans-serif;letter-spacing:-.02em;color:#fff;}
+.g2-tk-c{margin-top:7px;display:inline-flex;width:19px;height:19px;border-radius:50%;background:#3DE3A8;color:#06150f;align-items:center;justify-content:center;}
+.g2-tk-c svg{width:11px;height:11px}
+.g2-max{position:absolute;right:-89px;bottom:-84px;height:340px;width:auto;z-index:4;filter:drop-shadow(0 16px 34px rgba(0,0,0,.5));pointer-events:none;}
+/* form novo */
+.g2-form{margin-top:15px;display:flex;flex-direction:column;gap:9px;position:relative;z-index:5;max-width:270px;}
+.g2-inp{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:13px 14px;color:#fff;font:500 14px Inter,sans-serif;outline:none;}
+.g2-inp::placeholder{color:rgba(255,255,255,.4);}
+.g2-cta{display:block;width:100%;max-width:270px;margin-top:4px;background:#3DE3A8;color:#06150f;border:none;border-radius:13px;padding:14px;font:800 15.5px Inter,sans-serif;cursor:pointer;box-shadow:0 16px 40px rgba(61,227,168,.28);position:relative;z-index:5;}
+.g2-ft{margin-top:11px;text-align:left;max-width:290px;font:400 11.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.4);position:relative;z-index:5;}
+.g2-ft b{color:#fff}
+/* sucesso */
+.g2-ok-ic{width:58px;height:58px;border-radius:50%;background:rgba(61,227,168,.12);border:1px solid rgba(61,227,168,.4);display:flex;align-items:center;justify-content:center;color:#3DE3A8;margin:6px 0 14px;}
+.g2-ok-ic svg{width:28px;height:28px}
+.g2-ok-h{font:900 27px Inter,sans-serif;color:#fff;letter-spacing:-.02em}
+.g2-ok-p{margin-top:10px;font:500 14px/1.5 Inter,sans-serif;color:rgba(255,255,255,.72);max-width:300px}
+.g2-ok-p b{color:#3DE3A8}
+.g2-ok-note{margin-top:14px;font:400 11.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.4)}
+.note{margin-top:26px;background:#0c131c;border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:16px 18px;font-size:13px;line-height:1.6;color:#c3d0dd;max-width:1000px}
+.note b{color:#fff}.note code{background:#05070b;padding:1px 6px;border-radius:5px;color:#3DE3A8;font-size:12px}
+</style></head><body><div class="wrap">
+<h1>Sorteio 3 contas Apex , popup nome+email (fluxo baixa fricção)</h1>
+<div class="sub">Preview fiel ao popup real (mesmo .g2 verde + Max + 3 tickets). Copy em inglês (site EN-default). Os 2 estados:</div>
+
+<div class="lbl">Estado 1 , captura (nome + email, sem sair da tela)</div>
+<div class="stage">
+<div class="g2"><div class="g2-glow1"></div><div class="g2-glow2"></div>
+  <div class="g2-in">
+    <div class="g2-x">✕</div>
+    <div class="g2-pill">★ Giveaway</div>
+    <div class="g2-eyebrow">We're giving away</div>
+    <div class="g2-h"><em>3 Apex</em> Accounts</div>
+    <div class="g2-sub">Drop your name and email to enter , we'll send the rules and your entry link right away.</div>
+    <div class="g2-tix">
+      <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+      <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+      <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+    </div>
+    <div class="g2-form">
+      <input class="g2-inp" placeholder="Your name" value="">
+      <input class="g2-inp" placeholder="Your best email" value="">
+    </div>
+    <button class="g2-cta">Enter the giveaway →</button>
+    <div class="g2-ft"><svg viewBox="0 0 24 24" fill="none" stroke="#3DE3A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Draw <b>July 20, 2026</b> · Free to enter, no purchase needed</div>
+    <img class="g2-max" src="/max-sem-fundo-inteiro.png" alt="Max">
+  </div>
+</div>
+
+<div class="g2"><div class="g2-glow1"></div><div class="g2-glow2"></div>
+  <div class="g2-in" style="min-height:360px">
+    <div class="g2-x">✕</div>
+    <div class="g2-pill">★ You're in the draw</div>
+    <div class="g2-ok-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+    <div class="g2-ok-h">You're almost in!</div>
+    <div class="g2-ok-p">We just emailed the rules and your entry link to <b>you@email.com</b>. Open it and finish your free signup <b>today</b> to lock in your spot for the 3 Apex accounts.</div>
+    <div class="g2-ok-note">Didn't get it in 2 min? Check spam/promotions.</div>
+    <img class="g2-max" src="/max-sem-fundo-inteiro.png" alt="Max">
+  </div>
+</div>
+</div>
+
+<div class="note">
+<b>Fluxo completo (o que eu construo depois do seu OK):</b><br>
+1. Usuário digita <b>nome + email</b> → clica "Enter the giveaway" → <b>envia por AJAX, sem sair da tela</b> → vira o estado de sucesso.<br>
+2. Lead salvo em <code>email_subscribers</code> com tag <code>giveaway-apex-3</code> (dá pra remarketar) + entrada registrada.<br>
+3. <b>Email automático na hora</b> (skeleton institucional Lara, verde sorteio): <b>as REGRAS do sorteio</b> + botão <b>"Finish my entry"</b> → leva pro cadastro completo (<code>/signup?gw=apex-3-accounts-2026</code>) pra valer a participação.<br>
+4. Gatilhos e trava anti-spam já existem no popup (1×/sessão, some quem já copiou cupom, etc).<br><br>
+<b>Preciso de você:</b> (a) aprovar esse visual/copy; (b) me passar (ou eu rascunho em PT pra você aprovar) <b>o texto das REGRAS</b> que vão no email; (c) confirmar a data do sorteio (<b>20/jul?</b>) e quantas contas/qual tamanho Apex.
+</div>
+</body></html>
