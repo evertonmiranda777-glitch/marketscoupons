@@ -247,7 +247,13 @@ Deno.serve(async (req: Request) => {
     if (ev.num_items) customData.num_items = ev.num_items;
     if (ev.coupon) customData.order_id = ev.coupon;
 
-    const eventTime = Math.floor(new Date(ev.ts || Date.now()).getTime() / 1000);
+    // event_time DEVE estar em [now-7d, now]. Meta rejeita futuro (subcode 2804004) e >7d.
+    // finance-sync carimba created_at como <data> 15:00:00 UTC (fixo) -> venda atribuida antes
+    // das 15h UTC vira event_time no FUTURO -> CAPI FALHOU. Cap defensivo aqui protege todo caller.
+    const _nowSec = Math.floor(Date.now() / 1000);
+    let eventTime = Math.floor(new Date(ev.ts || Date.now()).getTime() / 1000);
+    if (!Number.isFinite(eventTime) || eventTime > _nowSec) eventTime = _nowSec;
+    else if (eventTime < _nowSec - 6 * 86400) eventTime = _nowSec - 6 * 86400;
 
     for (const fbName of fbNames) {
       fbEvents.push({
