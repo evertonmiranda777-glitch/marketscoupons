@@ -8,6 +8,19 @@
   } catch (e) { console.warn('[MC] fff auto-sync erro:', e); }
 })();
 
+// SPA-aware: a FFF e React, navegacao client-side (ex: Dashboard -> Orders) NAO
+// re-injeta o content script, entao o auto-sync do load nunca via a tabela. Poll leve:
+// quando a tabela de orders aparecer na tela e o throttle (30min) permitir, sincroniza sozinho.
+// Assim basta VISITAR a pagina de orders (sem recarregar nem clicar Sync) que ela entra no banco.
+setInterval(async () => {
+  try {
+    const hasOrders = [...document.querySelectorAll('table thead th')].some(th => /date/i.test(th.textContent)) &&
+                      document.querySelector('table tbody tr');
+    if (!hasOrders) return;
+    if (await mcShouldFFF('fff')) await mcSyncFFF({ auto: true });
+  } catch (e) { /* silent */ }
+}, 10000);
+
 async function mcShouldFFF(firmId) {
   return new Promise(resolve => {
     chrome.storage.local.get(['mc_last_sync'], r => {
@@ -53,7 +66,7 @@ async function mcSyncFFF(opts = {}) {
   const rows = Object.values(byDay);
 
   const out = await mcSendFFF({ firm: 'funded-futures-family', source: 'ext_fff_v1', snapshot: null, rows, leads });
-  if (out.ok) { mcToastFFF(`FFF: ${leads.length} transacoes sincronizadas`); await mcMarkFFF('fff'); }
+  if (out.ok) { mcToastFFF(`FFF: ${leads.length} raspadas, ${out.leads_saved ?? '?'} gravadas`); await mcMarkFFF('fff'); }
   else { mcToastFFF('FFF: erro, ' + (out.error || '?')); }
   return out;
 }
