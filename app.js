@@ -3551,7 +3551,7 @@ function openFD(id, f) {
 const FIRM_SPECIALS = {
   bulenox: { active:false, size:'25K', priceNew:'$9.95', priceOld:'$145', coupon:'MARKET25K' }, // promo expirou 08/jul, desativada
   // Apex 1776 , $250K Legacy (promo Independence Day, acaba 7/jul). label/cta/link custom.
-  apex: { active:true, size:'$250K Legacy', label:'$250K Legacy', cta:'$250K Legacy', priceNew:'$17.76', priceOld:'$177.60', coupon:'MARKET', link:'https://apextraderfunding.com/member/aff/go/evertonmiranda#limited-time' }
+  apex: { active:false, size:'$250K Legacy', label:'$250K Legacy', cta:'$250K Legacy', priceNew:'$17.76', priceOld:'$177.60', coupon:'MARKET', link:'https://apextraderfunding.com/member/aff/go/evertonmiranda#limited-time' } // Legacy $250K acabou 13/jul, desativado
 };
 function fdSpecialHtml(id, f){
   const sp = FIRM_SPECIALS[id];
