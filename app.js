@@ -8224,7 +8224,7 @@ function showGiveaway(gw, trigger){
   const disclI18n = (typeof t === 'function') ? t(disclKey) : null;
   const disclText = (disclI18n && disclI18n !== disclKey) ? disclI18n : (gw.prize_disclaimer || '');
   const whatYouWin = (typeof t === 'function') ? t('gw_what_you_win') : 'What you win';
-  document.querySelector('[data-gw="disclaimer"]').innerHTML = '<strong>'+whatYouWin+':</strong> '+disclText;
+  const _disclEl = document.querySelector('[data-gw="disclaimer"]'); if(_disclEl) _disclEl.innerHTML = '<strong>'+whatYouWin+':</strong> '+disclText;
   const heroImg = document.getElementById('gw-hero');
   if(heroImg && gw.hero_image){ heroImg.src = gw.hero_image; heroImg.alt = gw.prize_label?.replace(/<[^>]+>/g,'') || 'Giveaway prize'; }
   if(gw.draw_date){
@@ -8234,18 +8234,18 @@ function showGiveaway(gw, trigger){
     document.getElementById('gw-date').textContent = d.toLocaleDateString(locale, {month:'long',day:'numeric',year:'numeric'});
   }
   const stepsEl = document.getElementById('gw-steps');
-  // Steps: tenta i18n key gw_step1..gw_step4, senão usa do DB
-  stepsEl.innerHTML = (gw.steps||[]).map((s,i)=>{
+  if(stepsEl) stepsEl.innerHTML = (gw.steps||[]).map((s,i)=>{
     const stepKey = 'gw_step' + (i+1);
     const stepI18n = (typeof t === 'function') ? t(stepKey) : null;
     const txt = (stepI18n && stepI18n !== stepKey) ? stepI18n : s.text;
     return `<li class="gw-stp"><span class="gw-stp-n">${i+1}</span><span>${txt}</span></li>`;
   }).join('');
-  const cta = document.getElementById('gw-cta');
-  if(cta){
-    const ctaI18n = (typeof t === 'function') ? t('gw_cta') : null;
-    cta.textContent = (ctaI18n && ctaI18n !== 'gw_cta') ? ctaI18n : (gw.cta_label || 'Sign up & enter the giveaway');
-  }
+  // Reset pro estado de formulário (form visível, sucesso escondido) a cada abertura
+  const _fs=document.getElementById('gw-form-state'); if(_fs) _fs.style.display='';
+  const _ok=document.getElementById('gw-ok-state'); if(_ok) _ok.style.display='none';
+  const _err=document.getElementById('gw-err'); if(_err) _err.style.display='none';
+  const _nm=document.getElementById('gw-name'); if(_nm) _nm.value='';
+  const _em=document.getElementById('gw-email'); if(_em) _em.value='';
   bd.dataset.slug = gw.slug;
   bd.dataset.instagram = gw.instagram_url || '';
   bd.classList.add('show');
@@ -8264,28 +8264,32 @@ function closeGiveaway(reason){
   try{ track('giveaway_popup_close_'+(reason||'x'), {slug, time_to_close_s:elapsed}); }catch(e){}
 }
 
-async function giveawayCtaClick(){
+async function giveawaySubmit(){
   const bd = document.getElementById('gw-bd');
-  const slug = bd?.dataset?.slug;
-  const igUrl = bd?.dataset?.instagram;
+  const slug = bd?.dataset?.slug || '';
+  const nameEl = document.getElementById('gw-name');
+  const emailEl = document.getElementById('gw-email');
+  const errEl = document.getElementById('gw-err');
+  const btn = document.getElementById('gw-cta');
+  const name = (nameEl?.value||'').trim();
+  const email = (emailEl?.value||'').trim();
+  const showErr = (m)=>{ if(errEl){ errEl.textContent=m; errEl.style.display='block'; } };
+  if(errEl) errEl.style.display='none';
+  if(name.length < 2){ showErr('Please enter your name.'); nameEl?.focus(); return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ showErr('Please enter a valid email.'); emailEl?.focus(); return; }
+  if(btn){ btn.disabled=true; btn.textContent='...'; }
   const elapsed = _gwShownAt ? Math.round((Date.now()-_gwShownAt)/1000) : 0;
-  try{ track('giveaway_popup_cta_click', {slug, time_to_click_s:elapsed}); }catch(e){}
-  if(currentUser && currentProfile){
-    // Já logado, só marca tag e abre Instagram
-    try{
-      await fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:currentUser.email,source:'giveaway',tags:['received-giveaway-'+slug,'giveaway-entered']})});
-    }catch(e){}
-    try{ localStorage.setItem('mc_gw_entered_'+slug,'1'); }catch(e){}
-    try{ track('giveaway_popup_instagram_open', {slug}); }catch(e){}
-    bd?.classList.remove('show');
-    if(igUrl) window.open(igUrl,'_blank','noopener');
-    return;
-  }
-  // Não logado, abre signup. Tag será adicionada após confirmação.
-  try{ sessionStorage.setItem('mc_gw_pending_signup', slug); }catch(e){}
-  try{ sessionStorage.setItem('mc_gw_pending_ig', igUrl||''); }catch(e){}
-  bd?.classList.remove('show');
-  if(typeof openAuthModal==='function') openAuthModal('signup');
+  try{ track('giveaway_lead_submit', {slug, time_to_submit_s:elapsed}); }catch(e){}
+  // Captura o lead (nome+email) + pede o email das regras. SEM sair da tela.
+  try{
+    await fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email, name, source:'giveaway', tags:['giveaway-lead','giveaway-lead-'+slug], giveaway_rules_slug:slug})});
+  }catch(e){}
+  try{ localStorage.setItem('mc_gw_lead_'+slug,'1'); }catch(e){}
+  const okEmail = document.getElementById('gw-ok-email'); if(okEmail) okEmail.textContent = email;
+  const fs = document.getElementById('gw-form-state'); if(fs) fs.style.display='none';
+  const ok = document.getElementById('gw-ok-state'); if(ok) ok.style.display='block';
+  if(btn){ btn.disabled=false; btn.textContent='Enter the giveaway →'; }
+  try{ track('giveaway_lead_success', {slug}); }catch(e){}
 }
 
 // ESC fecha popup
