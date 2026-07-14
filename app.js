@@ -8246,6 +8246,7 @@ function showGiveaway(gw, trigger){
   const _err=document.getElementById('gw-err'); if(_err) _err.style.display='none';
   const _nm=document.getElementById('gw-name'); if(_nm) _nm.value='';
   const _em=document.getElementById('gw-email'); if(_em) _em.value='';
+  const _ftR=bd?.querySelector('.g2-ft'); if(_ftR) _ftR.style.display='';
   bd.dataset.slug = gw.slug;
   bd.dataset.instagram = gw.instagram_url || '';
   bd.classList.add('show');
@@ -8288,8 +8289,11 @@ async function giveawaySubmit(){
   const okEmail = document.getElementById('gw-ok-email'); if(okEmail) okEmail.textContent = email;
   const fs = document.getElementById('gw-form-state'); if(fs) fs.style.display='none';
   const ok = document.getElementById('gw-ok-state'); if(ok) ok.style.display='block';
+  const ftHide = bd?.querySelector('.g2-ft'); if(ftHide) ftHide.style.display='none'; // rodape só no form
   if(btn){ btn.disabled=false; btn.textContent='Enter the giveaway →'; }
   try{ track('giveaway_lead_success', {slug}); }catch(e){}
+  // Volta pro site sozinho: fecha ~7s depois do sucesso (o X segue disponível pra fechar antes)
+  setTimeout(()=>{ const b=document.getElementById('gw-bd'); if(b && b.classList.contains('show') && ok && ok.style.display!=='none'){ try{ closeGiveaway('after_lead'); }catch(e){} } }, 7000);
 }
 
 // ESC fecha popup
