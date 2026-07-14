@@ -8293,8 +8293,8 @@ async function giveawaySubmit(){
   const ftHide = bd?.querySelector('.g2-ft'); if(ftHide) ftHide.style.display='none'; // rodape só no form
   if(btn){ btn.disabled=false; btn.textContent='Enter the giveaway →'; }
   try{ track('giveaway_lead_success', {slug}); }catch(e){}
-  // Volta pro site sozinho: fecha ~7s depois do sucesso (o X segue disponível pra fechar antes)
-  setTimeout(()=>{ const b=document.getElementById('gw-bd'); if(b && b.classList.contains('show') && ok && ok.style.display!=='none'){ try{ closeGiveaway('after_lead'); }catch(e){} } }, 7000);
+  // Flash de "enviado" e some sozinho (~2.3s), o cara volta pro site. X segue disponível.
+  setTimeout(()=>{ const b=document.getElementById('gw-bd'); if(b && b.classList.contains('show') && ok && ok.style.display!=='none'){ try{ closeGiveaway('after_lead'); }catch(e){} } }, 2300);
 }
 
 // ESC fecha popup
