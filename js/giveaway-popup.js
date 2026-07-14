@@ -8,14 +8,14 @@
   var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
 
   var S = {
-    en:{title:'Win <em>3 Apex</em> Accounts',eyebrow:"We're giving away",sub:'Drop your name and email to enter. We\'ll send the rules and your entry link right away.',ticket:'EVALUATION',name:'Your name',email:'Your best email',cta:'Enter the giveaway',okh:"You're in!",okp:'Check your email , we sent the rules and your entry link to',draw:'Draw',free:'Free to enter, no purchase needed',later:'Maybe later',errn:'Please enter your name.',erre:'Please enter a valid email.',pill:'Giveaway'},
-    pt:{title:'Ganhe <em>3 contas</em> Apex',eyebrow:'Estamos sorteando',sub:'Deixe seu nome e email pra entrar. Enviamos as regras e seu link na hora.',ticket:'AVALIAÇÃO',name:'Seu nome',email:'Seu melhor email',cta:'Entrar no sorteio',okh:'Você entrou!',okp:'Confira seu email , enviamos as regras e seu link para',draw:'Sorteio',free:'Grátis, sem compra necessária',later:'Talvez depois',errn:'Digite seu nome.',erre:'Digite um email válido.',pill:'Sorteio'},
-    es:{title:'Gana <em>3 cuentas</em> Apex',eyebrow:'Estamos sorteando',sub:'Deja tu nombre y correo para entrar. Enviamos las reglas y tu enlace al instante.',ticket:'EVALUACIÓN',name:'Tu nombre',email:'Tu mejor correo',cta:'Entrar al sorteo',okh:'¡Ya estás dentro!',okp:'Revisa tu correo , enviamos las reglas y tu enlace a',draw:'Sorteo',free:'Gratis, sin compra necesaria',later:'Quizás después',errn:'Escribe tu nombre.',erre:'Escribe un correo válido.',pill:'Sorteo'},
-    it:{title:'Vinci <em>3 account</em> Apex',eyebrow:'Stiamo regalando',sub:'Lascia nome ed email per partecipare. Ti inviamo le regole e il link subito.',ticket:'VALUTAZIONE',name:'Il tuo nome',email:'La tua email migliore',cta:'Partecipa al giveaway',okh:'Ci sei!',okp:'Controlla la tua email , abbiamo inviato le regole e il tuo link a',draw:'Estrazione',free:'Gratis, nessun acquisto necessario',later:'Forse dopo',errn:'Inserisci il tuo nome.',erre:'Inserisci un email valida.',pill:'Giveaway'},
-    fr:{title:'Gagnez <em>3 comptes</em> Apex',eyebrow:'Nous offrons',sub:'Laissez votre nom et email pour participer. On envoie les règles et votre lien tout de suite.',ticket:'ÉVALUATION',name:'Votre nom',email:'Votre meilleur email',cta:'Participer au tirage',okh:'Vous participez !',okp:'Consultez votre email , on a envoyé les règles et votre lien à',draw:'Tirage',free:'Gratuit, sans achat',later:'Plus tard',errn:'Entrez votre nom.',erre:'Entrez un email valide.',pill:'Tirage'},
-    de:{title:'Gewinne <em>3 Apex</em>-Konten',eyebrow:'Wir verlosen',sub:'Name und E-Mail eingeben, um teilzunehmen. Wir senden die Regeln und deinen Link sofort.',ticket:'EVALUATION',name:'Dein Name',email:'Deine beste E-Mail',cta:'Am Gewinnspiel teilnehmen',okh:'Du bist dabei!',okp:'Prüfe deine E-Mail , wir haben die Regeln und deinen Link gesendet an',draw:'Verlosung',free:'Kostenlos, kein Kauf nötig',later:'Vielleicht später',errn:'Bitte gib deinen Namen ein.',erre:'Bitte gib eine gültige E-Mail ein.',pill:'Gewinnspiel'},
-    ar:{title:'اربح <em>3 حسابات</em> Apex',eyebrow:'نقدّم في السحب',sub:'اترك اسمك وبريدك للمشاركة. سنرسل القواعد ورابط مشاركتك فورًا.',ticket:'تقييم',name:'اسمك',email:'أفضل بريد لك',cta:'ادخل السحب',okh:'أنت مشارك!',okp:'تحقق من بريدك , أرسلنا القواعد ورابطك إلى',draw:'السحب',free:'مجاني، بدون شراء',later:'ربما لاحقًا',errn:'من فضلك أدخل اسمك.',erre:'من فضلك أدخل بريدًا صحيحًا.',pill:'سحب'},
-    id:{title:'Menangkan <em>3 akun</em> Apex',eyebrow:'Kami membagikan',sub:'Isi nama dan email untuk ikut. Kami kirim aturan dan link kamu langsung.',ticket:'EVALUASI',name:'Nama kamu',email:'Email terbaikmu',cta:'Ikuti giveaway',okh:'Kamu ikut!',okp:'Cek emailmu , kami kirim aturan dan link kamu ke',draw:'Undian',free:'Gratis, tanpa pembelian',later:'Nanti saja',errn:'Masukkan namamu.',erre:'Masukkan email yang valid.',pill:'Giveaway'}
+    en:{pill:'Exclusive giveaway',title:'Win one of <em>3 Apex</em> accounts',sub:'Register your name and email in under 10 seconds and enter for free.',acct:'Apex Account',wins:['1st Winner','2nd Winner','3rd Winner'],b1:'3 winners',b2:'No purchase required',bres:'Result on',name:'Your name',email:'Your best email',cta:'Enter the giveaway',okh:"You're in!",okp:'Check your email , we sent the rules and your entry link to',later:'Maybe later',errn:'Please enter your name.',erre:'Please enter a valid email.'},
+    pt:{pill:'Sorteio exclusivo',title:'Ganhe uma das <em>3 contas</em> Apex',sub:'Cadastre seu nome e e-mail em menos de 10 segundos e participe gratuitamente.',acct:'Conta Apex',wins:['1º Sorteado','2º Sorteado','3º Sorteado'],b1:'3 ganhadores',b2:'Sem compra obrigatória',bres:'Resultado em',name:'Seu nome',email:'Seu melhor e-mail',cta:'Quero participar do sorteio',okh:'Você entrou!',okp:'Confira seu email , enviamos as regras e seu link para',later:'Talvez depois',errn:'Digite seu nome.',erre:'Digite um email válido.'},
+    es:{pill:'Sorteo exclusivo',title:'Gana una de las <em>3 cuentas</em> Apex',sub:'Registra tu nombre y correo en menos de 10 segundos y participa gratis.',acct:'Cuenta Apex',wins:['1er Ganador','2º Ganador','3er Ganador'],b1:'3 ganadores',b2:'Sin compra obligatoria',bres:'Resultado el',name:'Tu nombre',email:'Tu mejor correo',cta:'Quiero participar en el sorteo',okh:'¡Ya estás dentro!',okp:'Revisa tu correo , enviamos las reglas y tu enlace a',later:'Quizás después',errn:'Escribe tu nombre.',erre:'Escribe un correo válido.'},
+    it:{pill:'Giveaway esclusivo',title:'Vinci uno dei <em>3 account</em> Apex',sub:'Registra nome ed email in meno di 10 secondi e partecipa gratis.',acct:'Account Apex',wins:['1° Vincitore','2° Vincitore','3° Vincitore'],b1:'3 vincitori',b2:'Nessun acquisto obbligatorio',bres:'Risultato il',name:'Il tuo nome',email:'La tua email migliore',cta:'Voglio partecipare al giveaway',okh:'Ci sei!',okp:'Controlla la tua email , abbiamo inviato le regole e il tuo link a',later:'Forse dopo',errn:'Inserisci il tuo nome.',erre:'Inserisci un email valida.'},
+    fr:{pill:'Tirage exclusif',title:'Gagnez un des <em>3 comptes</em> Apex',sub:'Enregistrez votre nom et email en moins de 10 secondes et participez gratuitement.',acct:'Compte Apex',wins:['1er Gagnant','2e Gagnant','3e Gagnant'],b1:'3 gagnants',b2:'Sans achat obligatoire',bres:'Résultat le',name:'Votre nom',email:'Votre meilleur email',cta:'Je veux participer au tirage',okh:'Vous participez !',okp:'Consultez votre email , on a envoyé les règles et votre lien à',later:'Plus tard',errn:'Entrez votre nom.',erre:'Entrez un email valide.'},
+    de:{pill:'Exklusives Gewinnspiel',title:'Gewinne eines von <em>3 Apex</em>-Konten',sub:'Registriere Name und E-Mail in unter 10 Sekunden und nimm kostenlos teil.',acct:'Apex-Konto',wins:['1. Gewinner','2. Gewinner','3. Gewinner'],b1:'3 Gewinner',b2:'Kein Kauf erforderlich',bres:'Ergebnis am',name:'Dein Name',email:'Deine beste E-Mail',cta:'Am Gewinnspiel teilnehmen',okh:'Du bist dabei!',okp:'Prüfe deine E-Mail , wir haben die Regeln und deinen Link gesendet an',later:'Vielleicht später',errn:'Bitte gib deinen Namen ein.',erre:'Bitte gib eine gültige E-Mail ein.'},
+    ar:{pill:'سحب حصري',title:'اربح واحدًا من <em>3 حسابات</em> Apex',sub:'سجّل اسمك وبريدك في أقل من 10 ثوانٍ وشارك مجانًا.',acct:'حساب Apex',wins:['الفائز الأول','الفائز الثاني','الفائز الثالث'],b1:'3 فائزين',b2:'بدون شراء إلزامي',bres:'النتيجة في',name:'اسمك',email:'أفضل بريد لك',cta:'أريد المشاركة في السحب',okh:'أنت مشارك!',okp:'تحقق من بريدك , أرسلنا القواعد ورابطك إلى',later:'ربما لاحقًا',errn:'من فضلك أدخل اسمك.',erre:'من فضلك أدخل بريدًا صحيحًا.'},
+    id:{pill:'Giveaway eksklusif',title:'Menangkan salah satu dari <em>3 akun</em> Apex',sub:'Daftarkan nama dan email kamu dalam kurang dari 10 detik dan ikut gratis.',acct:'Akun Apex',wins:['Pemenang 1','Pemenang 2','Pemenang 3'],b1:'3 pemenang',b2:'Tanpa pembelian wajib',bres:'Hasil pada',name:'Nama kamu',email:'Email terbaikmu',cta:'Ikut giveaway sekarang',okh:'Kamu ikut!',okp:'Cek emailmu , kami kirim aturan dan link kamu ke',later:'Nanti saja',errn:'Masukkan namamu.',erre:'Masukkan email yang valid.'}
   };
   function lang(){
     var l = window._currentLang || (document.documentElement.getAttribute('lang')||'').slice(0,2);
@@ -25,45 +25,60 @@
   }
   function esc(s){ return String(s||'').replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];}); }
 
+  var TROPHY='<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>';
+  var GIFT='<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>';
+  var CHK='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#3DE3A8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
   var CSS = '\
   #mcgw-bd{position:fixed;inset:0;background:rgba(5,7,11,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:99998;display:none;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;opacity:0;transition:opacity .25s ease}\
   #mcgw-bd.show{display:flex;opacity:1}\
-  .g2w{position:relative;width:100%;max-width:430px;margin:auto;overflow:hidden;background:#0A0D14;border:1px solid rgba(61,227,168,.28);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 70px rgba(61,227,168,.10)}\
+  .g2w{position:relative;width:100%;max-width:432px;margin:auto;overflow:hidden;background:#0A0D14;border:1px solid rgba(61,227,168,.28);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 70px rgba(61,227,168,.10)}\
+  .g2w::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:150%;height:80%;background:radial-gradient(ellipse at center,rgba(61,227,168,.16),transparent 62%);pointer-events:none}\
   .g2w-in{position:relative;padding:20px 22px 16px}\
   .g2w-x{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#cbd0d8;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6;font-size:15px}\
-  .g2w-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid rgba(61,227,168,.45);border-radius:100px;font:700 10.5px monospace;color:#3DE3A8;letter-spacing:.14em;text-transform:uppercase}\
-  .g2w-eyebrow{margin-top:13px;font:500 14px Inter,sans-serif;color:rgba(255,255,255,.6)}\
-  .g2w-h{margin-top:2px;font:900 35px/0.98 Inter,sans-serif;letter-spacing:-.03em;color:#fff}\
+  .g2w-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border:1px solid rgba(61,227,168,.45);border-radius:100px;font:700 10.5px monospace;color:#3DE3A8;letter-spacing:.14em;text-transform:uppercase}\
+  .g2w-h{margin-top:13px;font:900 30px/1.02 Inter,sans-serif;letter-spacing:-.03em;color:#fff}\
   .g2w-h em{font-style:normal;color:#3DE3A8}\
-  .g2w-sub{margin-top:9px;font:500 13.5px/1.4 Inter,sans-serif;color:rgba(255,255,255,.62)}\
-  .g2w-tix{display:flex;gap:9px;margin-top:14px}\
-  .g2w-tk{flex:1;background:linear-gradient(160deg,#11161f,#0d1219);border:1px solid rgba(61,227,168,.38);border-radius:13px;padding:12px 6px 11px;text-align:center}\
-  .g2w-tk-l{font:700 9px monospace;color:#3DE3A8;letter-spacing:.04em}\
-  .g2w-tk-n{margin-top:6px;font:900 23px Inter,sans-serif;color:#fff}\
-  .g2w-tk-c{margin-top:7px;display:inline-flex;width:19px;height:19px;border-radius:50%;background:#3DE3A8;color:#06150f;align-items:center;justify-content:center;font-size:11px}\
+  .g2w-sub{margin-top:9px;font:500 13.5px/1.45 Inter,sans-serif;color:rgba(255,255,255,.64)}\
+  .g2w-tix{display:flex;gap:9px;margin-top:16px}\
+  .g2w-tk{flex:1;background:linear-gradient(165deg,#12171f,#0c1017);border:1px solid rgba(61,227,168,.30);border-radius:14px;padding:13px 6px 12px;text-align:center}\
+  .g2w-tk-ic{color:#F0B429;display:flex;justify-content:center;margin-bottom:5px;filter:drop-shadow(0 2px 8px rgba(240,180,41,.35))}\
+  .g2w-tk-n{font:800 12.5px Inter,sans-serif;color:#fff;letter-spacing:-.01em}\
+  .g2w-tk-s{margin-top:2px;font:600 10px Inter,sans-serif;color:rgba(255,255,255,.5)}\
+  .g2w-bl{margin-top:14px;display:flex;flex-direction:column;gap:8px}\
+  .g2w-b{display:flex;align-items:center;gap:9px;font:600 13px Inter,sans-serif;color:rgba(255,255,255,.82)}\
+  .g2w-b svg{flex:none}\
+  .g2w-b b{color:#fff}\
   .g2w-form{margin-top:16px;display:flex;flex-direction:column;gap:9px}\
   .g2w-inp{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:13px 14px;color:#fff;font:500 14px Inter,sans-serif;outline:none;box-sizing:border-box}\
   .g2w-inp:focus{border-color:#3DE3A8}\
   .g2w-inp::placeholder{color:rgba(255,255,255,.4)}\
   .g2w-err{margin-top:8px;color:#ff6b6b;font:600 12px Inter,sans-serif}\
   .g2w-cta{display:block;width:100%;margin-top:12px;background:#3DE3A8;color:#06150f;border:none;border-radius:13px;padding:14px;font:800 15.5px Inter,sans-serif;cursor:pointer;box-shadow:0 16px 40px rgba(61,227,168,.28)}\
-  .g2w-ft{margin-top:11px;text-align:center;font:400 11.5px monospace;color:rgba(255,255,255,.4)}\
-  .g2w-ft b{color:#fff}\
-  .g2w-ft button{background:none;border:none;color:rgba(255,255,255,.55);text-decoration:underline;cursor:pointer;font-size:11.5px;font-family:inherit;margin-top:6px}\
+  .g2w-cta:hover{background:#4dedb5}\
+  .g2w-ft{margin-top:11px;text-align:center}\
+  .g2w-ft button{background:none;border:none;color:rgba(255,255,255,.5);text-decoration:underline;cursor:pointer;font:400 11.5px Inter,sans-serif}\
   .g2w-ok-ic{width:58px;height:58px;border-radius:50%;background:rgba(61,227,168,.12);border:1px solid rgba(61,227,168,.4);display:flex;align-items:center;justify-content:center;color:#3DE3A8;margin:6px 0 14px}\
   .g2w-ok-h{font:900 27px Inter,sans-serif;color:#fff}\
   .g2w-ok-p{margin-top:10px;font:500 14px/1.5 Inter,sans-serif;color:rgba(255,255,255,.72)}\
   .g2w-ok-p b{color:#3DE3A8}';
 
   var slug='', shownAt=0;
-  function build(t, isRtl){
+  function build(t, isRtl, drawStr){
+    var cards = t.wins.map(function(w,i){
+      return '<div class="g2w-tk"><div class="g2w-tk-ic">'+TROPHY+'</div><div class="g2w-tk-n">'+esc(w)+'</div><div class="g2w-tk-s">'+esc(t.acct)+'</div></div>';
+    }).join('');
+    var bres = drawStr ? '<div class="g2w-b">'+CHK+'<span>'+esc(t.bres)+' <b>'+esc(drawStr)+'</b></span></div>' : '';
     return '<div class="g2w"'+(isRtl?' dir="rtl"':'')+'><div class="g2w-in">\
       <button class="g2w-x" aria-label="Close" data-gw-close>&#10005;</button>\
-      <div class="g2w-pill">&#9733; '+esc(t.pill)+'</div>\
-      <div class="g2w-eyebrow">'+esc(t.eyebrow)+'</div>\
+      <div class="g2w-pill">'+GIFT+' '+esc(t.pill)+'</div>\
       <div class="g2w-h">'+t.title+'</div>\
       <div class="g2w-sub">'+esc(t.sub)+'</div>\
-      <div class="g2w-tix">'+[0,0,0].map(function(){return '<div class="g2w-tk"><div class="g2w-tk-l">'+esc(t.ticket)+'</div><div class="g2w-tk-n">Apex</div><div class="g2w-tk-c">&#10003;</div></div>';}).join('')+'</div>\
+      <div class="g2w-tix">'+cards+'</div>\
+      <div class="g2w-bl">\
+        <div class="g2w-b">'+CHK+'<span><b>'+esc(t.b1)+'</b></span></div>\
+        <div class="g2w-b">'+CHK+'<span>'+esc(t.b2)+'</span></div>\
+        '+bres+'</div>\
       <div id="gw-fs"><div class="g2w-form">\
         <input id="gw-nm" class="g2w-inp" placeholder="'+esc(t.name)+'" autocomplete="name">\
         <input id="gw-em" class="g2w-inp" type="email" placeholder="'+esc(t.email)+'" autocomplete="email">\
@@ -72,7 +87,7 @@
       <div id="gw-ok" style="display:none"><div class="g2w-ok-ic"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>\
         <div class="g2w-ok-h">'+esc(t.okh)+'</div>\
         <div class="g2w-ok-p">'+esc(t.okp)+' <b id="gw-ok-em"></b>.</div></div>\
-      <div class="g2w-ft" id="gw-ft"><span id="gw-draw"></span><br><button data-gw-close>'+esc(t.later)+'</button></div>\
+      <div class="g2w-ft" id="gw-ft"><button data-gw-close>'+esc(t.later)+'</button></div>\
     </div></div>';
   }
   function fmtDate(d, l){ try{ var map={pt:'pt-BR',en:'en-US',es:'es-ES',fr:'fr-FR',it:'it-IT',de:'de-DE',ar:'ar-SA',id:'id-ID'}; return new Date(d+'T12:00:00').toLocaleDateString(map[l]||'en-US',{month:'long',day:'numeric',year:'numeric'}); }catch(e){ return d; } }
@@ -98,12 +113,9 @@
     var l=lang(), t=S[l];
     var host=document.getElementById('mcgw-bd');
     if(!host){ host=document.createElement('div'); host.id='mcgw-bd'; document.body.appendChild(host); }
-    host.setAttribute('onclick','');
-    host.innerHTML = build(t, l==='ar');
+    var drawStr = (gw&&gw.draw_date) ? fmtDate(gw.draw_date,l) : '';
+    host.innerHTML = build(t, l==='ar', drawStr);
     host.onclick=function(ev){ if(ev.target===host) close('outside'); };
-    // título por sorteio (se o DB tiver prize_label, respeita; senão o localizado)
-    var draw=document.getElementById('gw-draw');
-    if(draw) draw.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" style="vertical-align:-2px;margin-right:4px" fill="none" stroke="#3DE3A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'+esc(t.draw)+' <b style="color:#fff">'+(gw&&gw.draw_date?fmtDate(gw.draw_date,l):'')+'</b> &middot; '+esc(t.free);
     document.querySelectorAll('[data-gw-close]').forEach(function(b){ b.onclick=function(){ close('x'); }; });
     document.getElementById('gw-submit').onclick=submit;
     slug=(gw&&gw.slug)||'apex-3-accounts-2026';
