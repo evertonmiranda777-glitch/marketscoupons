@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Preview , Sorteio 3 Apex</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:radial-gradient(1200px 600px at 50% -10%,#0e1a16,#05070b 60%);font-family:Inter,system-ui,sans-serif;color:#fff;display:flex;flex-direction:column;align-items:center;padding:22px 14px 60px}
+  .pv-top{width:100%;max-width:620px;text-align:center;margin-bottom:18px}
+  .pv-top h1{margin:0 0 4px;font:800 18px Inter,sans-serif;letter-spacing:-.01em}
+  .pv-top p{margin:0;font:500 13px Inter,sans-serif;color:rgba(255,255,255,.5)}
+  .pv-langs{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:14px}
+  .pv-langs button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#cbd0d8;border-radius:100px;padding:7px 14px;font:700 12px Inter,sans-serif;cursor:pointer;transition:.15s}
+  .pv-langs button.on{background:#3DE3A8;border-color:#3DE3A8;color:#06150f}
+  .pv-stage{position:relative;width:100%;max-width:432px;margin-top:8px}
+
+  /* --- popup real (copia fiel do modulo) --- */
+  .g2w{position:relative;width:100%;overflow:hidden;background:#0A0D14;border:1px solid rgba(61,227,168,.28);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 70px rgba(61,227,168,.10)}
+  .g2w::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:150%;height:80%;background:radial-gradient(ellipse at center,rgba(61,227,168,.16),transparent 62%);pointer-events:none}
+  .g2w-in{position:relative;padding:20px 22px 16px}
+  .g2w-x{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#cbd0d8;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:6;font-size:15px}
+  .g2w-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border:1px solid rgba(61,227,168,.45);border-radius:100px;font:700 10.5px monospace;color:#3DE3A8;letter-spacing:.14em;text-transform:uppercase}
+  .g2w-h{margin-top:13px;font:900 30px/1.02 Inter,sans-serif;letter-spacing:-.03em;color:#fff}
+  .g2w-h em{font-style:normal;color:#3DE3A8}
+  .g2w-sub{margin-top:9px;font:500 13.5px/1.45 Inter,sans-serif;color:rgba(255,255,255,.64)}
+  .g2w-tix{display:flex;gap:9px;margin-top:16px}
+  .g2w-tk{flex:1;background:linear-gradient(165deg,#12171f,#0c1017);border:1px solid rgba(61,227,168,.30);border-radius:14px;padding:13px 6px 12px;text-align:center}
+  .g2w-tk-ic{color:#F0B429;display:flex;justify-content:center;margin-bottom:5px;filter:drop-shadow(0 2px 8px rgba(240,180,41,.35))}
+  .g2w-tk-n{font:800 12.5px Inter,sans-serif;color:#fff;letter-spacing:-.01em}
+  .g2w-tk-s{margin-top:2px;font:600 10px Inter,sans-serif;color:rgba(255,255,255,.5)}
+  .g2w-bl{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+  .g2w-b{display:flex;align-items:center;gap:9px;font:600 13px Inter,sans-serif;color:rgba(255,255,255,.82)}
+  .g2w-b svg{flex:none}
+  .g2w-b b{color:#fff}
+  .g2w-form{margin-top:16px;display:flex;flex-direction:column;gap:9px}
+  .g2w-inp{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:13px 14px;color:#fff;font:500 14px Inter,sans-serif;outline:none}
+  .g2w-inp::placeholder{color:rgba(255,255,255,.4)}
+  .g2w-cta{display:block;width:100%;margin-top:12px;background:#3DE3A8;color:#06150f;border:none;border-radius:13px;padding:14px;font:800 15.5px Inter,sans-serif;cursor:pointer;box-shadow:0 16px 40px rgba(61,227,168,.28)}
+  .g2w-ft{margin-top:11px;text-align:center}
+  .g2w-ft button{background:none;border:none;color:rgba(255,255,255,.5);text-decoration:underline;cursor:pointer;font:400 11.5px Inter,sans-serif}
+  [dir=rtl] .g2w-tk-c,[dir=rtl]{text-align:right}
+</style>
+</head>
+<body>
+  <div class="pv-top">
+    <h1>Preview , popup do Sorteio (3 Apex)</h1>
+    <p>Como aparece no site e na /coupons. Toque num idioma pra trocar.</p>
+    <div class="pv-langs" id="langs"></div>
+  </div>
+  <div class="pv-stage" id="stage"></div>
+
+<script>
+var S = {
+  en:{pill:'Exclusive giveaway',title:'Win one of <em>3 Apex</em> accounts',sub:'Register your name and email in under 10 seconds and enter for free.',acct:'Apex Account',wins:['1st Winner','2nd Winner','3rd Winner'],b1:'3 winners',b2:'No purchase required',bres:'Result on',name:'Your name',email:'Your best email',cta:'Enter the giveaway',later:'Maybe later',date:'July 20, 2026'},
+  pt:{pill:'Sorteio exclusivo',title:'Ganhe uma das <em>3 contas</em> Apex',sub:'Cadastre seu nome e e-mail em menos de 10 segundos e participe gratuitamente.',acct:'Conta Apex',wins:['1º Sorteado','2º Sorteado','3º Sorteado'],b1:'3 ganhadores',b2:'Sem compra obrigatória',bres:'Resultado em',name:'Seu nome',email:'Seu melhor e-mail',cta:'Quero participar do sorteio',later:'Talvez depois',date:'20 de julho de 2026'},
+  es:{pill:'Sorteo exclusivo',title:'Gana una de las <em>3 cuentas</em> Apex',sub:'Registra tu nombre y correo en menos de 10 segundos y participa gratis.',acct:'Cuenta Apex',wins:['1er Ganador','2º Ganador','3er Ganador'],b1:'3 ganadores',b2:'Sin compra obligatoria',bres:'Resultado el',name:'Tu nombre',email:'Tu mejor correo',cta:'Quiero participar en el sorteo',later:'Quizás después',date:'20 de julio de 2026'},
+  it:{pill:'Giveaway esclusivo',title:'Vinci uno dei <em>3 account</em> Apex',sub:'Registra nome ed email in meno di 10 secondi e partecipa gratis.',acct:'Account Apex',wins:['1° Vincitore','2° Vincitore','3° Vincitore'],b1:'3 vincitori',b2:'Nessun acquisto obbligatorio',bres:'Risultato il',name:'Il tuo nome',email:'La tua email migliore',cta:'Voglio partecipare al giveaway',later:'Forse dopo',date:'20 luglio 2026'},
+  fr:{pill:'Tirage exclusif',title:'Gagnez un des <em>3 comptes</em> Apex',sub:'Enregistrez votre nom et email en moins de 10 secondes et participez gratuitement.',acct:'Compte Apex',wins:['1er Gagnant','2e Gagnant','3e Gagnant'],b1:'3 gagnants',b2:'Sans achat obligatoire',bres:'Résultat le',name:'Votre nom',email:'Votre meilleur email',cta:'Je veux participer au tirage',later:'Plus tard',date:'20 juillet 2026'},
+  de:{pill:'Exklusives Gewinnspiel',title:'Gewinne eines von <em>3 Apex</em>-Konten',sub:'Registriere Name und E-Mail in unter 10 Sekunden und nimm kostenlos teil.',acct:'Apex-Konto',wins:['1. Gewinner','2. Gewinner','3. Gewinner'],b1:'3 Gewinner',b2:'Kein Kauf erforderlich',bres:'Ergebnis am',name:'Dein Name',email:'Deine beste E-Mail',cta:'Am Gewinnspiel teilnehmen',later:'Vielleicht später',date:'20. Juli 2026'},
+  ar:{pill:'سحب حصري',title:'اربح واحدًا من <em>3 حسابات</em> Apex',sub:'سجّل اسمك وبريدك في أقل من 10 ثوانٍ وشارك مجانًا.',acct:'حساب Apex',wins:['الفائز الأول','الفائز الثاني','الفائز الثالث'],b1:'3 فائزين',b2:'بدون شراء إلزامي',bres:'النتيجة في',name:'اسمك',email:'أفضل بريد لك',cta:'أريد المشاركة في السحب',later:'ربما لاحقًا',date:'20 يوليو 2026'},
+  id:{pill:'Giveaway eksklusif',title:'Menangkan salah satu dari <em>3 akun</em> Apex',sub:'Daftarkan nama dan email kamu dalam kurang dari 10 detik dan ikut gratis.',acct:'Akun Apex',wins:['Pemenang 1','Pemenang 2','Pemenang 3'],b1:'3 pemenang',b2:'Tanpa pembelian wajib',bres:'Hasil pada',name:'Nama kamu',email:'Email terbaikmu',cta:'Ikut giveaway sekarang',later:'Nanti saja',date:'20 Juli 2026'}
+};
+var TROPHY='<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>';
+var GIFT='<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>';
+var CHK='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#3DE3A8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+function esc(s){return String(s||'').replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});}
+function render(l){
+  var t=S[l], rtl=(l==='ar');
+  var cards=t.wins.map(function(w){return '<div class="g2w-tk"><div class="g2w-tk-ic">'+TROPHY+'</div><div class="g2w-tk-n">'+esc(w)+'</div><div class="g2w-tk-s">'+esc(t.acct)+'</div></div>';}).join('');
+  document.getElementById('stage').innerHTML='<div class="g2w"'+(rtl?' dir="rtl"':'')+'><div class="g2w-in">\
+    <button class="g2w-x">&#10005;</button>\
+    <div class="g2w-pill">'+GIFT+' '+esc(t.pill)+'</div>\
+    <div class="g2w-h">'+t.title+'</div>\
+    <div class="g2w-sub">'+esc(t.sub)+'</div>\
+    <div class="g2w-tix">'+cards+'</div>\
+    <div class="g2w-bl">\
+      <div class="g2w-b">'+CHK+'<span><b>'+esc(t.b1)+'</b></span></div>\
+      <div class="g2w-b">'+CHK+'<span>'+esc(t.b2)+'</span></div>\
+      <div class="g2w-b">'+CHK+'<span>'+esc(t.bres)+' <b>'+esc(t.date)+'</b></span></div></div>\
+    <div class="g2w-form">\
+      <input class="g2w-inp" placeholder="'+esc(t.name)+'">\
+      <input class="g2w-inp" placeholder="'+esc(t.email)+'"></div>\
+    <button class="g2w-cta">'+esc(t.cta)+' &#8594;</button>\
+    <div class="g2w-ft"><button>'+esc(t.later)+'</button></div>\
+  </div></div>';
+  document.querySelectorAll('#langs button').forEach(function(b){b.classList.toggle('on',b.dataset.l===l);});
+  document.documentElement.setAttribute('lang',l); document.documentElement.setAttribute('dir',rtl?'rtl':'ltr');
+}
+var names={en:'EN',pt:'PT',es:'ES',it:'IT',fr:'FR',de:'DE',ar:'AR',id:'ID'};
+document.getElementById('langs').innerHTML=Object.keys(names).map(function(l){return '<button data-l="'+l+'">'+names[l]+'</button>';}).join('');
+document.querySelectorAll('#langs button').forEach(function(b){b.onclick=function(){render(b.dataset.l);};});
+render('pt');
+</script>
+</body>
+</html>
