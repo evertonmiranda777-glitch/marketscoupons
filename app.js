@@ -3401,7 +3401,7 @@ function _abPickDefaultSize(planList){
 async function openD(id){
   const f=FIRMS.find(x=>x.id===id);if(!f)return;
   window._fdOriginPage=_currentPage;
-  try{ maybeShowGiveaway(id, 'firm_open'); }catch(e){}
+  /* sorteio: gatilho agora no módulo js/giveaway-popup.js */
   document.querySelectorAll('.fr').forEach(r=>r.classList.toggle('active',r.dataset.id===id));
   const cf = CHECKOUT_FIRMS.find(x=>x.id===id);
   if (!_drwState[id]) {
@@ -7329,15 +7329,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(_gexLoaded) checkGEXGate();
     if(_pageFromPath()==='live'||location.hash==='#live') checkLoyaltyAndShowLive();
     // renderLoyaltyPage removed 2026-06-02 (loyalty desligado)
-    // Popup de sorteio: gatilho GLOBAL no load (só dispara se giveaways.active=true + show_global no DB).
-    try{ maybeShowGiveaway(null, 'global'); }catch(e){}
-    // PREVIEW: ?gw_preview=1 força o popup REAL (mesmo inativo) só pra quem tem o link. NÃO ativa pra ninguém.
-    try{
-      if(new URLSearchParams(location.search).get('gw_preview')){
-        db.from('giveaways').select('*').order('created_at',{ascending:false}).limit(1).maybeSingle()
-          .then(({data})=>{ if(data) setTimeout(()=>{ try{ showGiveaway(data,'preview'); }catch(e){} }, 600); });
-      }
-    }catch(e){}
+    // Popup de sorteio: agora é um módulo único (js/giveaway-popup.js) carregado no
+    // site E no /coupons, 8 idiomas. Ele cuida do gatilho, ?gw_preview e submit.
   });
 
   // Auto-copy coupon from email link (?copy=CODE)
