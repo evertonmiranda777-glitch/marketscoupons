@@ -415,6 +415,58 @@ async function handleAdminExport(req, res) {
   return res.status(200).send(csv);
 }
 
+// ===== Sorteio 3 contas Apex: email das regras (multilíngue, EU traduzo) =====
+const GW_MAIL = {
+  en:{subj:"You're in the 3 Apex accounts giveaway, 1 step left",pre:"Finish your free signup to lock in your spot.",hi:"Hi",intro:"You're in the giveaway for <b>3 Apex accounts</b>, and the winner picks the account size. To lock in your spot and be eligible, just:",s1:"Sign up free on the site",s2:"Follow @marketscoupons on Instagram",s3:"Share this email with your friends. The more you share, the higher your chances of winning.",done:"That's it, you're in the draw!",draw:"Draw on July 20, 2026. Free to enter, no purchase needed.",cta1:"Finish my signup",cta2:"Follow on Instagram",pill:"GIVEAWAY",h1:"You're almost in!"},
+  pt:{subj:"Você entrou no sorteio de 3 contas Apex, falta 1 passo",pre:"Termine seu cadastro grátis pra garantir sua vaga.",hi:"Olá",intro:"Você está no sorteio de <b>3 contas Apex</b>, e o ganhador escolhe o tamanho da conta. Pra garantir sua vaga e ficar elegível, é só:",s1:"Cadastre-se grátis no site",s2:"Siga @marketscoupons no Instagram",s3:"Compartilhe este email com seus amigos. Quanto mais você compartilhar, maiores suas chances de ganhar.",done:"Pronto! Você já está participando do sorteio.",draw:"Sorteio em 20 de julho de 2026. Grátis, sem compra necessária.",cta1:"Terminar meu cadastro",cta2:"Seguir no Instagram",pill:"SORTEIO",h1:"Você está quase dentro!"},
+  es:{subj:"Estás en el sorteo de 3 cuentas Apex, falta 1 paso",pre:"Termina tu registro gratis para asegurar tu lugar.",hi:"Hola",intro:"Estás en el sorteo de <b>3 cuentas Apex</b>, y el ganador elige el tamaño de la cuenta. Para asegurar tu lugar y ser elegible, solo:",s1:"Regístrate gratis en el sitio",s2:"Sigue a @marketscoupons en Instagram",s3:"Comparte este correo con tus amigos. Cuanto más compartas, mayores tus posibilidades de ganar.",done:"¡Listo! Ya estás participando en el sorteo.",draw:"Sorteo el 20 de julio de 2026. Gratis, sin compra necesaria.",cta1:"Terminar mi registro",cta2:"Seguir en Instagram",pill:"SORTEO",h1:"¡Ya casi estás dentro!"},
+  it:{subj:"Sei nel giveaway di 3 account Apex, manca 1 passo",pre:"Completa la registrazione gratuita per assicurarti il posto.",hi:"Ciao",intro:"Sei nel giveaway di <b>3 account Apex</b>, e il vincitore sceglie la dimensione dell'account. Per assicurarti il posto ed essere idoneo, basta:",s1:"Registrati gratis sul sito",s2:"Segui @marketscoupons su Instagram",s3:"Condividi questa email con i tuoi amici. Più condividi, più aumentano le tue possibilità di vincere.",done:"Fatto! Sei nel sorteggio.",draw:"Estrazione il 20 luglio 2026. Gratis, nessun acquisto necessario.",cta1:"Completa la registrazione",cta2:"Segui su Instagram",pill:"GIVEAWAY",h1:"Ci sei quasi!"},
+  fr:{subj:"Vous participez au tirage de 3 comptes Apex, 1 étape restante",pre:"Terminez votre inscription gratuite pour réserver votre place.",hi:"Bonjour",intro:"Vous participez au tirage pour <b>3 comptes Apex</b>, et le gagnant choisit la taille du compte. Pour réserver votre place et être éligible, il suffit de :",s1:"Inscrivez-vous gratuitement sur le site",s2:"Suivez @marketscoupons sur Instagram",s3:"Partagez cet email avec vos amis. Plus vous partagez, plus vos chances de gagner augmentent.",done:"C'est fait, vous participez au tirage !",draw:"Tirage le 20 juillet 2026. Gratuit, sans achat.",cta1:"Terminer mon inscription",cta2:"Suivre sur Instagram",pill:"TIRAGE",h1:"Vous y êtes presque !"},
+  de:{subj:"Du bist beim Gewinnspiel um 3 Apex-Konten dabei, 1 Schritt fehlt",pre:"Schließe deine kostenlose Anmeldung ab, um deinen Platz zu sichern.",hi:"Hallo",intro:"Du bist beim Gewinnspiel um <b>3 Apex-Konten</b> dabei, und der Gewinner wählt die Kontogröße. Um deinen Platz zu sichern und teilnahmeberechtigt zu sein:",s1:"Melde dich kostenlos auf der Seite an",s2:"Folge @marketscoupons auf Instagram",s3:"Teile diese E-Mail mit deinen Freunden. Je mehr du teilst, desto höher deine Gewinnchancen.",done:"Fertig! Du bist bei der Verlosung dabei.",draw:"Verlosung am 20. Juli 2026. Kostenlos, kein Kauf nötig.",cta1:"Anmeldung abschließen",cta2:"Auf Instagram folgen",pill:"GEWINNSPIEL",h1:"Fast geschafft!"},
+  ar:{subj:"أنت في سحب 3 حسابات Apex، خطوة واحدة متبقية",pre:"أكمل تسجيلك المجاني لتأمين مكانك.",hi:"مرحبًا",intro:"أنت في السحب على <b>3 حسابات Apex</b>، والفائز يختار حجم الحساب. لتأمين مكانك والتأهل، فقط:",s1:"سجّل مجانًا في الموقع",s2:"تابع @marketscoupons على Instagram",s3:"شارك هذا البريد مع أصدقائك. كلما شاركت أكثر، زادت فرصك في الفوز.",done:"تم! أنت الآن في السحب.",draw:"السحب في 20 يوليو 2026. مجاني، بدون شراء.",cta1:"إكمال تسجيلي",cta2:"متابعة على Instagram",pill:"سحب",h1:"أوشكت على الدخول!"},
+  id:{subj:"Kamu ikut giveaway 3 akun Apex, tinggal 1 langkah",pre:"Selesaikan pendaftaran gratis untuk mengamankan tempatmu.",hi:"Halo",intro:"Kamu ikut giveaway <b>3 akun Apex</b>, dan pemenang memilih ukuran akun. Untuk mengamankan tempat dan memenuhi syarat, cukup:",s1:"Daftar gratis di situs",s2:"Ikuti @marketscoupons di Instagram",s3:"Bagikan email ini ke temanmu. Makin banyak berbagi, makin besar peluang menang.",done:"Selesai! Kamu sudah ikut undian.",draw:"Undian pada 20 Juli 2026. Gratis, tanpa pembelian.",cta1:"Selesaikan pendaftaran",cta2:"Ikuti di Instagram",pill:"GIVEAWAY",h1:"Hampir masuk!"}
+};
+function buildGiveawayRulesHtml(name, lang, signupUrl, igUrl){
+  const c = GW_MAIL[lang] || GW_MAIL.en;
+  const rtl = lang==='ar' ? ' dir="rtl"' : '';
+  const hi = name ? `${c.hi}, ${name}!` : `${c.hi}!`;
+  const step = (n,txt)=>`<tr><td style="padding:6px 0;color:#1a2130;font-size:15px"><b style="color:#0a9d6e">${n}.</b> ${txt}</td></tr>`;
+  return `<!doctype html><html${rtl}><head><meta charset="utf-8"></head><body style="margin:0;background:#0a0d14;font-family:Inter,Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0d14"><tr><td align="center" style="padding:24px 12px">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#0f1620;border-radius:16px;overflow:hidden;border:1px solid rgba(61,227,168,.22)">
+    <tr><td style="background:#ffffff;padding:16px 24px"><span style="font-weight:900;font-size:18px;color:#0a0d14">Markets<span style="color:#ff8c00">Coupons</span></span></td></tr>
+    <tr><td style="height:3px;background:#3DE3A8;line-height:3px;font-size:0">&nbsp;</td></tr>
+    <tr><td style="background:#111111;padding:30px 24px;text-align:center">
+      <span style="display:inline-block;padding:6px 14px;border:1px solid rgba(61,227,168,.5);border-radius:100px;color:#3DE3A8;font-family:monospace;font-weight:700;font-size:11px;letter-spacing:.12em">&#9733; ${c.pill}</span>
+      <h1 style="margin:14px 0 0;color:#ffffff;font-size:30px;font-weight:900">${c.h1}</h1>
+    </td></tr>
+    <tr><td style="background:#ffffff;padding:26px 24px;color:#1a2130;font-size:15px;line-height:1.6">
+      <p style="margin:0 0 14px;font-weight:700">${hi}</p>
+      <p style="margin:0 0 16px">${c.intro}</p>
+      <table width="100%" cellpadding="0" cellspacing="0">${step(1,c.s1)}</table>
+      <a href="${signupUrl}" style="display:block;text-align:center;background:#3DE3A8;color:#06150f;font-weight:800;padding:14px;border-radius:11px;text-decoration:none;margin:10px 0 14px">${c.cta1} &#8594;</a>
+      <table width="100%" cellpadding="0" cellspacing="0">${step(2,c.s2)}</table>
+      <a href="${igUrl}" style="display:block;text-align:center;background:#ffffff;color:#1a2130;border:1px solid #d0d5dd;font-weight:700;padding:12px;border-radius:11px;text-decoration:none;margin:10px 0 14px">${c.cta2}</a>
+      <table width="100%" cellpadding="0" cellspacing="0">${step(3,c.s3)}</table>
+      <p style="margin:18px 0 0;font-weight:800;color:#0a9d6e;font-size:16px">${c.done}</p>
+      <p style="margin:14px 0 0;color:#667085;font-size:13px">${c.draw}</p>
+      <p style="margin:22px 0 0;color:#1a2130">, Lara &middot; Markets Coupons</p>
+    </td></tr>
+    <tr><td style="background:#0f1620;padding:16px 24px;color:#8590a3;font-size:11px;text-align:center">&copy; 2026 Markets Coupons</td></tr>
+  </table></td></tr></table></body></html>`;
+}
+async function sendGiveawayRulesEmail(email, name, lang, slug){
+  const L = ['pt','en','es','it','fr','de','ar','id'].includes(lang)?lang:'en';
+  const c = GW_MAIL[L] || GW_MAIL.en;
+  const signupUrl = `https://www.marketscoupons.com/signup?gw=${encodeURIComponent(slug||'apex-3-accounts-2026')}`;
+  const igUrl = 'https://www.instagram.com/marketscoupons/';
+  const html = buildGiveawayRulesHtml(name, L, signupUrl, igUrl);
+  const BREVO_KEY = process.env.BREVO_API_KEY, RESEND_KEY = process.env.RESEND_API_KEY;
+  if (BREVO_KEY){ try{ const r=await fetch('https://api.brevo.com/v3/smtp/email',{method:'POST',headers:{'accept':'application/json','content-type':'application/json','api-key':BREVO_KEY},body:JSON.stringify({sender:{name:'Lara | Markets Coupons',email:'lara@marketscoupons.com'},to:[{email,name:name||'Trader'}],subject:c.subj,htmlContent:html,tags:['giveaway-rules',`lang-${L}`]})}); if(r.ok) return true; }catch(e){} }
+  if (RESEND_KEY){ try{ const r=await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${RESEND_KEY}`},body:JSON.stringify({from:'Lara | Markets Coupons <lara@marketscoupons.com>',to:[email],subject:c.subj,html})}); if(r.ok) return true; }catch(e){} }
+  return false;
+}
+
 // Captura genérica de lead (sem enviar email). Usada por /operational e outras LPs.
 async function handleSubscribe(req, res) {
   let body = req.body;
@@ -447,6 +499,11 @@ async function handleSubscribe(req, res) {
     if (!r.ok && r.status !== 409) {
       console.error('[subscribe] upsert failed', r.status, await r.text().catch(() => ''));
       return res.status(500).json({ ok: false, error: 'save_failed' });
+    }
+    // Sorteio: dispara o email das regras (multilíngue). Só pra lead de sorteio.
+    if (source === 'giveaway' || body.giveaway_rules_slug) {
+      const gwSent = await sendGiveawayRulesEmail(email, String(body.name || '').trim().slice(0, 60), lang, String(body.giveaway_rules_slug || ''));
+      return res.status(200).json({ ok: true, gw_email: gwSent });
     }
     return res.status(200).json({ ok: true });
   } catch (e) {

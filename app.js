@@ -8282,7 +8282,7 @@ async function giveawaySubmit(){
   try{ track('giveaway_lead_submit', {slug, time_to_submit_s:elapsed}); }catch(e){}
   // Captura o lead (nome+email) + pede o email das regras. SEM sair da tela.
   try{
-    await fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email, name, source:'giveaway', tags:['giveaway-lead','giveaway-lead-'+slug], giveaway_rules_slug:slug})});
+    await fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email, name, source:'giveaway', lang:(_currentLang||'en'), tags:['giveaway-lead','giveaway-lead-'+slug], giveaway_rules_slug:slug})});
   }catch(e){}
   try{ localStorage.setItem('mc_gw_lead_'+slug,'1'); }catch(e){}
   const okEmail = document.getElementById('gw-ok-email'); if(okEmail) okEmail.textContent = email;
