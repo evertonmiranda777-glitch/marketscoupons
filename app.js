@@ -8281,9 +8281,10 @@ async function giveawaySubmit(){
   if(btn){ btn.disabled=true; btn.textContent='...'; }
   const elapsed = _gwShownAt ? Math.round((Date.now()-_gwShownAt)/1000) : 0;
   try{ track('giveaway_lead_submit', {slug, time_to_submit_s:elapsed}); }catch(e){}
-  // Captura o lead (nome+email) + pede o email das regras. SEM sair da tela.
+  // Captura o lead + dispara o email das regras em SEGUNDO PLANO (fire-and-forget).
+  // NÃO espera a resposta: o sucesso aparece na hora, o email chega em seguida.
   try{
-    await fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email, name, source:'giveaway', lang:(_currentLang||'en'), tags:['giveaway-lead','giveaway-lead-'+slug], giveaway_rules_slug:slug})});
+    fetch('/api/leads/volumefilter?action=subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email, name, source:'giveaway', lang:(_currentLang||'en'), tags:['giveaway-lead','giveaway-lead-'+slug], giveaway_rules_slug:slug})}).catch(()=>{});
   }catch(e){}
   try{ localStorage.setItem('mc_gw_lead_'+slug,'1'); }catch(e){}
   const okEmail = document.getElementById('gw-ok-email'); if(okEmail) okEmail.textContent = email;
