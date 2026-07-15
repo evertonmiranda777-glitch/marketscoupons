@@ -126,6 +126,16 @@
   function closedRecently(sl){ try{ var c=parseInt(localStorage.getItem('mc_gw_closed_'+sl)||'0',10); return c && (Date.now()-c) < 7*864e5; }catch(e){ return false; } }
   function enteredLead(sl){ try{ return localStorage.getItem('mc_gw_lead_'+sl)==='1'; }catch(e){ return false; } }
 
+  // Na home existe o banner de cookies (#ck-banner). Não empilhar: só abrir o
+  // sorteio depois que a pessoa aceitar/recusar cookies. /coupons não tem banner.
+  function cookiePending(){
+    if(!document.getElementById('ck-banner')) return false;
+    try{ return !localStorage.getItem('mc-cookies-consent'); }catch(e){ return false; }
+  }
+  function whenReady(delay, cb){
+    if(!cookiePending()){ setTimeout(cb, delay); return; }
+    var iv=setInterval(function(){ if(!cookiePending()){ clearInterval(iv); setTimeout(cb, 1200); } }, 500);
+  }
   function init(){
     var isPreview=false; try{ isPreview=new URLSearchParams(location.search).get('gw_preview')==='1'; }catch(e){}
     // admin não vê (evita poluir)
@@ -138,7 +148,8 @@
           if(!gw.active) return;
           if(seen(gw.slug) || closedRecently(gw.slug) || enteredLead(gw.slug)) return;
         }
-        setTimeout(function(){ show(gw); }, isPreview?300:(gw.delay_ms||3000));
+        if(isPreview){ setTimeout(function(){ show(gw); }, 300); }
+        else { whenReady(gw.delay_ms||3000, function(){ show(gw); }); }
       }).catch(function(){});
     // Esc fecha
     document.addEventListener('keydown', function(e){ if(e.key==='Escape') close('esc'); });
