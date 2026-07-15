@@ -110,6 +110,9 @@
     setTimeout(function(){ close('after_lead'); }, 2300);
   }
   function show(gw){
+    // se o modal de cadastro/login estiver aberto, NÃO cobrir com o sorteio
+    try{ var af=document.getElementById('auth-signup-form'), lf=document.getElementById('auth-login-form');
+      if((af&&af.offsetParent!==null)||(lf&&lf.offsetParent!==null)) return; }catch(e){}
     var l=lang(), t=S[l];
     var host=document.getElementById('mcgw-bd');
     if(!host){ host=document.createElement('div'); host.id='mcgw-bd'; document.body.appendChild(host); }
@@ -137,7 +140,10 @@
     var iv=setInterval(function(){ if(!cookiePending()){ clearInterval(iv); setTimeout(cb, 1200); } }, 500);
   }
   function init(){
-    var isPreview=false; try{ isPreview=new URLSearchParams(location.search).get('gw_preview')==='1'; }catch(e){}
+    var isPreview=false, sp=null; try{ sp=new URLSearchParams(location.search); isPreview=sp.get('gw_preview')==='1'; }catch(e){}
+    // NÃO abrir por cima do fluxo de cadastro/login: deep-link do sorteio (/signup?gw=),
+    // ?signup=1 ou ?login=1. Quem já veio pra se cadastrar não pode levar o popup em cima do form.
+    try{ if(sp && !isPreview && (sp.get('signup')==='1' || sp.get('login')==='1' || sp.get('gw'))) return; }catch(e){}
     // admin não vê (evita poluir)
     if(window.currentProfile && window.currentProfile.is_admin && !isPreview) return;
     fetch(SB+'/rest/v1/giveaways?select=*&order=created_at.desc&limit=1',{headers:{apikey:ANON,Authorization:'Bearer '+ANON}})
