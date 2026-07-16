@@ -6297,6 +6297,10 @@ function initSignupForm() {
 /* ══════════════════════════════════════════════════════════════════════════
    B.6, Complete Profile + Nickname (modal CP + nickname OAuth)
    ══════════════════════════════════════════════════════════════════════════ */
+// FALLBACK APENAS. A lista real vem do cms_firms (FIRMS) via firmSlugs()/firmLabel().
+// LEI "nunca chumbar contagem de firma": esta lista chumbada tinha 11 e o site ja tem 19
+// -> as 8 firmas novas (Blue Guardian, Top One, Aqua, Blueberry, Alpha, Futures Elite,
+// Goat, FFF) sumiam do perfil E eram descartadas no save (filtro do FIRM_SLUGS).
 const FIRM_SLUGS = ['apex','brightfunded','bulenox','cti','e2t','e8','fn','ftmo','fundingpips','the5ers','tradeday'];
 const FIRM_LABELS = {
   apex:'Apex Trader Funding', brightfunded:'BrightFunded', bulenox:'Bulenox',
@@ -6304,13 +6308,31 @@ const FIRM_LABELS = {
   fn:'FundedNext', ftmo:'FTMO', fundingpips:'Funding Pips',
   the5ers:'The5ers', tradeday:'TradeDay',
 };
+// Fonte viva: cms_firms. So cai no chumbado se FIRMS ainda nao carregou.
+function firmSlugs() {
+  try {
+    if (typeof FIRMS !== 'undefined' && Array.isArray(FIRMS) && FIRMS.length) {
+      return FIRMS.filter(f => f && f.id).map(f => f.id);
+    }
+  } catch(e) {}
+  return FIRM_SLUGS;
+}
+function firmLabel(id) {
+  try {
+    if (typeof FIRMS !== 'undefined' && Array.isArray(FIRMS)) {
+      const f = FIRMS.find(x => x && x.id === id);
+      if (f) return f.name || f.short_name || FIRM_LABELS[id] || id;
+    }
+  } catch(e) {}
+  return FIRM_LABELS[id] || id;
+}
 
 function renderFirmPillsInto(containerId, selected) {
   const wrap = document.getElementById(containerId);
   if (!wrap) return;
   const sel = new Set(Array.isArray(selected) ? selected : []);
-  wrap.innerHTML = FIRM_SLUGS.map(s =>
-    `<button type="button" class="firm-pill${sel.has(s)?' selected':''}" data-firm="${s}">${FIRM_LABELS[s]}</button>`
+  wrap.innerHTML = firmSlugs().map(s =>
+    `<button type="button" class="firm-pill${sel.has(s)?' selected':''}" data-firm="${s}">${firmLabel(s)}</button>`
   ).join('');
   wrap.querySelectorAll('.firm-pill').forEach(p => {
     p.addEventListener('click', (e) => { e.preventDefault(); p.classList.toggle('selected'); });
@@ -6765,10 +6787,25 @@ let _authSlide = 0;
 const _authLoginBgs = ['/img/auth-bg-1.webp','/img/auth-bg-4.webp','/img/auth-bg-3.webp','/img/auth-bg-2.webp'];
 const _authSignupBgs = ['/img/auth-bg-5.webp','/img/auth-bg-6.webp','/img/auth-bg-7.webp','/img/auth-bg-8.webp','/img/auth-bg-5.webp'];
 
+// URL de onde o modal foi aberto, pra restaurar quando fechar
+let _authPrevUrl = null;
+
 function openAuthModal(type) {
   closeAuthModals();
   removePreviewBanner();
   _authGroup = type === 'signup' ? 'signup' : 'login';
+  // ORDEM DO EVERTON (16/jul): clicar "Sign up" TEM que por /signup na barra.
+  // Antes o modal so abria por cima da pagina atual -> a URL ficava /panel, /coupons etc.
+  // Guarda a URL anterior pra devolver no fechar (nao quebra o voltar do navegador).
+  if (_authGroup === 'signup') {
+    try {
+      const _here = location.pathname + location.search;
+      if (!/\/signup\/?$/.test(location.pathname)) {
+        _authPrevUrl = _here;
+        history.pushState({ authModal: 'signup' }, '', '/signup');
+      }
+    } catch(e) {}
+  }
   document.getElementById('login-overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
   // Show correct form
@@ -6794,6 +6831,11 @@ function rebuildAuthDots() {
   }
 }
 function closeAuthModals() {
+  // Se o modal pos /signup na barra, devolve a URL de onde a pessoa veio
+  if (_authPrevUrl) {
+    try { if (/\/signup\/?$/.test(location.pathname)) history.replaceState({}, '', _authPrevUrl); } catch(e) {}
+    _authPrevUrl = null;
+  }
   document.getElementById('login-overlay').classList.remove('show');
   document.body.style.overflow = '';
   stopAuthCarousel();
@@ -7049,8 +7091,10 @@ async function doLogout() {
   currentUser = null;
   window._currentUser = null;
   currentProfile = null;
-  // 4. Recarregar página
-  window.location.replace(window.location.origin + window.location.pathname);
+  // 4. Voltar pra HOME (nao recarregar a mesma pagina).
+  // BUG (16/jul): fazia replace(origin + pathname) -> deslogar estando no /panel devolvia
+  // o proprio /panel deslogado, com o painel de perfil renderizado vazio.
+  window.location.replace(window.location.origin + '/');
 }
 
 let _sessionLoading = false;
@@ -7196,7 +7240,8 @@ async function saveProfile() {
   const fullName  = `${first} ${last}`.trim() || (currentProfile && currentProfile.full_name) || '';
 
   // B.6, firmas favoritas (sanitizadas vs whitelist)
-  const favFirms = getSelectedFirmsFrom('up-edit-firm-pills').filter(f => FIRM_SLUGS.includes(f));
+  // valida contra a lista VIVA (o chumbado descartava as 8 firmas novas em silencio)
+  const favFirms = getSelectedFirmsFrom('up-edit-firm-pills').filter(f => firmSlugs().includes(f));
 
   const updates = {
     first_name: first    || null,
