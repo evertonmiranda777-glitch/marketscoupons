@@ -7076,6 +7076,21 @@ async function loadUserSession(user) {
   try{ window.dispatchEvent(new CustomEvent('mc:user-loaded')); }catch(e){}
 }
 
+// Bridge p/ modulos externos (js/onboarding.js etc). Getters, nao referencias:
+// `db` e RECRIADO no retry de sessao, entao window.db ficaria velho e as queries
+// falhariam calado. currentProfile nao existe no window (e let de escopo do app.js).
+window.MC_AUTH = {
+  getDb:      function(){ return db; },
+  getUser:    function(){ return currentUser; },
+  getProfile: function(){ return currentProfile; },
+  // FIRMS e carregado async do cms_firms: getter garante a lista ja populada
+  getFirms:   function(){ try { return (typeof FIRMS !== 'undefined' && Array.isArray(FIRMS)) ? FIRMS : []; } catch(e) { return []; } }
+};
+// Onboarding progressivo: o modulo decide sozinho se aparece (verificado + nunca completou/pulou)
+window.addEventListener('mc:user-loaded', function(){
+  try{ if (window.mcOnboarding && typeof window.mcOnboarding.maybeShow === 'function') window.mcOnboarding.maybeShow(); }catch(e){}
+});
+
 function updateAuthUI(loggedIn) {
   document.getElementById('auth-btns-out').style.display = loggedIn ? 'none' : 'flex';
   document.getElementById('auth-btns-in').style.display  = loggedIn ? '' : 'none';
