@@ -144,7 +144,16 @@ const MC_ATTR = (()=>{
   const fbclid = p.get('fbclid') || '';
   const gclid = p.get('gclid') || '';
   const ttclid = p.get('ttclid') || '';
-  const hasNew = fbclid || gclid || ttclid || p.get('utm_campaign') || p.get('utm_source');
+  // 🚨 PWA (fix 16/jul): manifest.json tem start_url "/?utm_source=pwa&utm_medium=homescreen".
+  // Abrir o app pelo icone NAO e uma nova origem de trafego - e o MESMO usuario voltando.
+  // Se "pwa" contar como hasNew, o bloco abaixo SOBRESCREVE o mc_attribution salvo e APAGA
+  // o fbclid/campanha do first-touch: quem veio de um anuncio Meta e instalou o app passava
+  // a ser atribuido a "pwa", e o sub_id que vai pro painel da firma (cascata utm_term >
+  // utm_campaign > fbclid > utm_source) chegava como "pwa" em vez do nome da campanha.
+  // O utm_source=pwa continua indo pro GA4 normalmente (util pra medir trafego do app).
+  const _utmSrc = p.get('utm_source') || '';
+  const _isPwaLaunch = _utmSrc === 'pwa';
+  const hasNew = fbclid || gclid || ttclid || p.get('utm_campaign') || (_utmSrc && !_isPwaLaunch);
   let stored = null;
   try { stored = JSON.parse(localStorage.getItem('mc_attribution') || 'null'); } catch(_) {}
   const now = Date.now();
