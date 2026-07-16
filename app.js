@@ -6888,34 +6888,39 @@ async function doAuthLogin() {
   track('user_login', { method: 'email' });
 }
 
-async function doAuthSignup() {
-  const first    = document.getElementById('auth-signup-first')?.value.trim() || '';
-  const last     = document.getElementById('auth-signup-last')?.value.trim() || '';
-  const nickname = document.getElementById('auth-signup-nickname')?.value.trim() || '';
-  const email    = document.getElementById('auth-signup-email').value.trim();
-  const pass     = document.getElementById('auth-signup-pass').value;
-  const phone    = document.getElementById('auth-signup-phone')?.value.trim() || '';
-  _saveIdentity(email, phone);
-  const birthday = document.getElementById('auth-signup-birthday')?.value || '';
-  const country  = document.getElementById('auth-signup-country')?.value || '';
-  const zip      = document.getElementById('auth-signup-zip')?.value.trim() || '';
-  const address  = document.getElementById('auth-signup-address')?.value.trim() || '';
-  const city     = document.getElementById('auth-signup-city')?.value.trim() || '';
-  const state    = document.getElementById('auth-signup-state')?.value.trim() || '';
-  const terms    = document.getElementById('auth-signup-terms')?.checked;
+// Versao do termo aceito no cadastro (grava no profile p/ LGPD/GDPR)
+const CONSENT_VERSION = '2026-07-16';
 
-  // Hard-required
-  if (!first || !last || !nickname || !email || !pass) return showAuthError('signup-error', t('auth_campos_obrigatorios')||'Preencha todos os campos obrigatórios');
+async function doAuthSignup() {
+  // Cadastro em 3 campos: Full Name + Email + Senha. Todo o resto (telefone, pais,
+  // endereco, nascimento) virou onboarding opcional OU e auto-detectado aqui.
+  const fullNameRaw = document.getElementById('auth-signup-fullname')?.value.trim() || '';
+  const email     = document.getElementById('auth-signup-email').value.trim();
+  const pass      = document.getElementById('auth-signup-pass').value;
+  const terms     = document.getElementById('auth-signup-terms')?.checked;
+  const marketing = !!document.getElementById('auth-signup-marketing')?.checked;
+  _saveIdentity(email, '');
+
+  // Hard-required: so nome + email + senha + termos
+  if (!fullNameRaw || !email || !pass) return showAuthError('signup-error', t('auth_campos_obrigatorios')||'Preencha todos os campos obrigatórios');
   if (pass.length < 6) return showAuthError('signup-error', t('auth_senha_minimo'));
   if (!terms) return showAuthError('signup-error', t('auth_aceite_termos')||'Aceite os termos para continuar');
 
-  // Soft-required: birthday se preenchido tem que ser adulto
-  if (birthday && !validateBirthdayAdult(birthday)) return showAuthError('signup-error', t('auth_idade_minima')||'Você deve ter 18 anos ou mais');
+  // Split do Full Name (1 campo -> first/last, como o resto do sistema espera)
+  const _np   = fullNameRaw.split(/\s+/).filter(Boolean);
+  const first = _np[0] || '';
+  const last  = _np.slice(1).join(' ');
+  // Nickname nao e mais pedido: deriva do nome/email (sistema legado espera ter um)
+  const nickname = (first || (email.split('@')[0] || 'trader')).toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,20) || 'trader';
 
-  // ZIP validation por país (se preenchido)
-  if (zip && country && ZIP_RE[country]) {
-    if (!ZIP_RE[country].test(zip)) return showAuthError('signup-error', t('auth_cep_invalido')||'CEP/ZIP inválido para o país selecionado');
-  }
+  // Auto-deteccao SILENCIOSA (nada e perguntado ao usuario)
+  const country  = (_geo && _geo.geo_country) ? String(_geo.geo_country).toUpperCase() : '';
+  const city     = (_geo && _geo.geo_city)   || '';
+  const state    = (_geo && _geo.geo_region) || '';
+  const locale   = (window._currentLang || document.documentElement.getAttribute('lang') || 'en').slice(0,2);
+  let timezone = '';
+  try { timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e) {}
+  const birthday = '', zip = '', address = '', phone = '';
 
   const btn = document.getElementById('signup-btn');
   btn.disabled = true; btn.textContent = t('auth_validando_email')||'Validating email...';
@@ -6964,6 +6969,13 @@ async function doAuthSignup() {
         country,
         zip,
         terms_accepted: 'true',
+        // Auto-detectados no submit (o trigger handle_new_user copia p/ profiles)
+        locale,
+        timezone,
+        phone_e164: phoneE164,
+        consent_version: CONSENT_VERSION,
+        consent_country: country,
+        marketing_consent: marketing ? 'true' : 'false',
       }
     }
   });
