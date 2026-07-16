@@ -924,8 +924,10 @@ const APEX_FEE = {
   ar:'عرض خاطف: حساب 50K Intraday بدون رسوم تفعيل مقابل <span>$49</span> ALL-IN (فردي أو 5-Pack)',
   id:'FLASH DROP: akun 50K Intraday tanpa biaya aktivasi hanya <span>$49</span> ALL-IN (satuan atau 5-Pack)'
 };
-// Flash Drop Apex $49 (50K Intraday No-Fee) acaba 21/jul 23:59 ET (EDT = UTC-4). Depois a faixa some sozinha.
-const APEX_FEE_ENDS = Date.parse('2026-07-21T23:59:59-04:00');
+// 🚨 DESLIGADO 16/jul: a Apex subiu os precos na noite de 15/jul e o Flash Drop MORREU antes
+// do prazo (50K Intraday No-Fee voltou de $49 pra $79). Anunciar $49 = preco falso = compliance.
+// A faixa e o texto acima ficam prontos pro PROXIMO flash drop: basta pos uma data futura aqui.
+const APEX_FEE_ENDS = 0;
 // Números fortes do topo, puxados do banco (firmas ativas + maior desconto), nunca chumbados.
 let FIRM_N = 18, DISC_MAX = 90;
 function _refreshLpStats(){
