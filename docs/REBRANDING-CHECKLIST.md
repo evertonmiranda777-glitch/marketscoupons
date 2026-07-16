@@ -299,9 +299,36 @@ Você não precisa fazer nada disto. Está aqui pra você saber o que **não** r
 
 ---
 
-# O QUE PRECISO SABER ANTES DE VOCÊ COMEÇAR
+# DECISÕES DO DONO (já respondidas , não perguntar de novo)
 
-1. **É só visual ou é produto novo?** Mesma estrutura com cara/nome/paleta novos, ou telas e fluxos diferentes? Isso muda tudo.
-2. **O nome e a marca novos** , quais são? (o logo atual é hexágono + M dourado; paleta dark, gold `#F0B429`, fonte Inter).
-3. **Vai manter as 27 telas** ou é pra cortar? Se cortar, quais , essa decisão é do dono, não sua.
-4. **O `/apex`** , o dono desenhou aquele checkout. Confirma com ele antes de encostar.
+## 1. É SÓ VISUAL
+Protótipo navegável da cara nova, **mesma estrutura e mesmos fluxos**. Não mude fluxo, não invente tela, não "melhore" jornada.
+*Motivo: o cadastro acabou de ser refeito (12 campos → 3) e está em medição. Mexer no fluxo agora destrói a linha de base e o dono nunca saberá se o conserto funcionou.*
+
+## 2. MANTÉM AS 27 TELAS , mas a ordem de construção é por tráfego real
+
+Medido no GA4, últimos 30 dias:
+
+| Tela | % das visualizações |
+|---|---|
+| Home | 24,7% |
+| Catálogo `/firms` | 17,6% |
+| Páginas de firma (19 somadas) | **48,4%** |
+| **Subtotal** | **~90,7%** |
+| As 9 ferramentas **somadas** (análise, gamma, indicadores, plataformas, quiz, comparar, heatmap, calculadora, calendário) | **4,8%** |
+
+**90% do esforço de design vai pra Home + catálogo + detalhe da firma + checkout.** As 9 ferramentas são 4,8% do tráfego (`/calendar` teve 9 visualizações em 30 dias) , construa por último, reaproveitando o design system.
+
+**Ordem:** design system → Home → catálogo → detalhe da firma (com o seletor de 4 dimensões da Apex) → checkout → auth/cadastro → painel → resto.
+
+## 3. MESMA MARCA
+**"Markets Coupons"**, logo hexágono + M dourado, paleta dark + gold `#F0B429`, fonte Inter, **mascote raposa** (ver prints). É rebranding **visual**, não troca de marca.
+
+*Motivo: os cupons negociados **são** a marca (`MARKET`, `MARKETS`, `MARKETSCOUPONS`, `MARKET89`, `MARKET-7652C`, `MARKETS026158`). Trocar o nome obrigaria a renegociar o código com 15 firmas, uma a uma, com risco de ficar sem cupom no meio.*
+
+## 4. `/apex` , NÃO ENCOSTAR
+É o checkout que o dono desenhou pessoalmente, nos mínimos detalhes. Fora do escopo.
+
+---
+
+**Pode começar pela Home + design system.** Qualquer coisa que não estiver escrita aqui: **pergunte, não suponha.**
