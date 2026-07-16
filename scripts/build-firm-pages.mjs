@@ -29,7 +29,9 @@ const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const PROJECT_REF = 'qfwhduvutfumsaxnuofa';
 if (!SR && !SBP) { console.error('SUPABASE_ACCESS_TOKEN ou SUPABASE_SERVICE_ROLE obrigatorio'); process.exit(1); }
 
-const LANGS = ['en', 'pt', 'es', 'it', 'fr', 'de', 'ar', 'id'];
+// ATENCAO: este site NAO tem /pt/ (PT = root + i18n no cliente). Gerar 'pt' cria pagina
+// orfa E hreflang apontando p/ 404. Rotas de idioma reais: (en|es|fr|de|it|ar|id).
+const LANGS = ['en', 'es', 'it', 'fr', 'de', 'ar', 'id'];
 const RTL = new Set(['ar']);
 const HREFLANG = { en: 'en', pt: 'pt-BR', es: 'es', it: 'it', fr: 'fr', de: 'de', ar: 'ar', id: 'id' };
 const LOCALE = { en: 'en-US', pt: 'pt-BR', es: 'es-ES', it: 'it-IT', fr: 'fr-FR', de: 'de-DE', ar: 'ar', id: 'id-ID' };
@@ -468,6 +470,13 @@ async function main() {
       fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(path.join(dir, `${f.id}.html`), html);
       n++;
+      // /en/{id}-coupon tambem e roteado: mesmo conteudo, canonical ja aponta p/ a raiz
+      if (lang === 'en') {
+        const enDir = path.join(ROOT, 'en', 'seo');
+        fs.mkdirSync(enDir, { recursive: true });
+        fs.writeFileSync(path.join(enDir, `${f.id}.html`), html);
+        n++;
+      }
     }
     console.log(`  ok ${f.id} (${LANGS.length} langs)`);
   }
