@@ -9,3 +9,4 @@ Object.assign(window.I18N.pt, {"ind_em_breve_texto":"Estamos desenvolvendo indic
 
 Object.assign(window.I18N.pt,{"signup_full_name": "Nome completo", "signup_marketing_label": "Quero receber cupons e ofertas exclusivas por e-mail", "auth_conta_criada": "Conta criada ✓"});
 Object.assign(window.I18N.pt,{"cem_code_label": "Digite seu código de 6 dígitos", "cem_verify": "Verificar", "cem_verifying": "Verificando...", "cem_verified": "E-mail verificado ✓", "cem_code_wrong": "Código incorreto.", "cem_code_expired": "Código expirado. Peça um novo.", "cem_code_toomany": "Muitas tentativas. Peça um novo código.", "cem_code_incomplete": "Digite os 6 dígitos.", "cem_code_notfound": "Conta não encontrada.", "cem_code_err": "Erro de conexão. Tente de novo."});
+Object.assign(window.I18N.pt,{"signup_marketing_label": "Quero receber cupons e ofertas exclusivas por e-mail (+1 bilhete no sorteio)"});

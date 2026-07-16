@@ -6818,7 +6818,13 @@ function openAuthModal(type) {
   const sf = document.getElementById('auth-signup-form');
   if (lf) lf.style.display = _authGroup === 'login' ? '' : 'none';
   if (sf) sf.style.display = _authGroup === 'signup' ? '' : 'none';
-  if (_authGroup === 'signup') { try { initSignupForm(); } catch(e) {} }
+  if (_authGroup === 'signup') {
+    try { initSignupForm(); } catch(e) {}
+    // Opcao "C": pre-marca o consentimento de marketing SO onde a lei permite.
+    // _geo pode nao ter chegado ainda -> re-aplica quando chegar.
+    try { applyMarketingDefault(); } catch(e) {}
+    try { fetchGeo().then(() => { try { applyMarketingDefault(); } catch(e) {} }); } catch(e) {}
+  }
   rebuildAuthDots();
   goAuthSlide(0);
   startAuthCarousel();
@@ -6938,6 +6944,36 @@ async function doAuthLogin() {
 // Versao do termo aceito no cadastro (grava no profile p/ LGPD/GDPR)
 const CONSENT_VERSION = '2026-07-16';
 
+// ── Consentimento de marketing por regiao (decisao do Everton 16/jul, opcao "C") ──
+// Onde a lei exige ACAO AFIRMATIVA, a caixa fica DESMARCADA. Onde nao exige, vem pre-marcada.
+//  - UE/EEA/UK/CH: GDPR art.7 + recital 32 -> pre-marcado NAO e consentimento valido.
+//  - IN: DPDP Act 2023 -> exige "clear affirmative action" (75% do trafego! nao pre-marcar).
+//  - BR: LGPD art.5 XII -> consentimento "inequivoco" = zona cinza, tratamos como restrito.
+// O resto (EUA/Canada/LATAM/etc, regime de opt-out) pode vir pre-marcado.
+const CONSENT_STRICT_COUNTRIES = new Set([
+  // UE/EEA
+  'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU',
+  'MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO',
+  'GB', // UK GDPR
+  'CH', // nLPD/FADP
+  'IN', // DPDP 2023
+  'BR', // LGPD
+]);
+function marketingPrechecked(country) {
+  const c = String(country || '').toUpperCase();
+  if (!c) return false;                       // sem geo = nao arrisca
+  return !CONSENT_STRICT_COUNTRIES.has(c);
+}
+// Aplica no form de cadastro (chamado quando o modal abre)
+function applyMarketingDefault() {
+  const box = document.getElementById('auth-signup-marketing');
+  if (!box || box.dataset.touched === '1') return;   // se o usuario mexeu, respeita
+  const country = (typeof _geo !== 'undefined' && _geo && _geo.geo_country)
+    ? String(_geo.geo_country).toUpperCase() : '';
+  box.checked = marketingPrechecked(country);
+  box.addEventListener('change', () => { box.dataset.touched = '1'; }, { once: true });
+}
+
 async function doAuthSignup() {
   // Cadastro em 3 campos: Full Name + Email + Senha. Todo o resto (telefone, pais,
   // endereco, nascimento) virou onboarding opcional OU e auto-detectado aqui.
@@ -7031,6 +7067,19 @@ async function doAuthSignup() {
   // confirmação 2x/3x. Botão fica disabled; o fluxo abaixo fecha o modal ou mostra "confira seu email".
   if (error) { btn.disabled = false; btn.textContent = t('auth_btn_criar'); return showAuthError('signup-error', error.message); }
   btn.textContent = t('auth_conta_criada') || 'Conta criada ✓';
+
+  // Marcou "quero receber ofertas" = +1 bilhete no sorteio ativo.
+  // E INCENTIVO, nao condicao: quem recusa se cadastra igual -> consentimento segue livre
+  // (valido em GDPR/DPDP/LGPD). E o que move a India, onde pre-marcar nao e permitido.
+  if (marketing && data?.user) {
+    try {
+      db.from('giveaway_tickets').insert({
+        user_id: data.user.id, giveaway_slug: 'apex-3-accounts-2026',
+        task: 'marketing_optin', tickets: 1,
+      }).then(()=>{}, ()=>{});
+      track('marketing_optin', { at:'signup' });
+    } catch(e) {}
+  }
 
   // Auto-cadastra na lista (via endpoint server-side, RLS bloqueia insert anon/unauth direto)
   try {

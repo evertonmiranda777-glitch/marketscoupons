@@ -9,3 +9,4 @@ Object.assign(window.I18N.en, {"ind_em_breve_texto":"We're developing exclusive 
 
 Object.assign(window.I18N.en,{"signup_full_name": "Full name", "signup_marketing_label": "I want to receive exclusive coupons and offers by email", "auth_conta_criada": "Account created ✓"});
 Object.assign(window.I18N.en,{"cem_code_label": "Enter your 6-digit code", "cem_verify": "Verify", "cem_verifying": "Verifying...", "cem_verified": "Email verified ✓", "cem_code_wrong": "Wrong code.", "cem_code_expired": "Code expired. Request a new one.", "cem_code_toomany": "Too many attempts. Request a new code.", "cem_code_incomplete": "Enter the 6 digits.", "cem_code_notfound": "Account not found.", "cem_code_err": "Connection error. Try again."});
+Object.assign(window.I18N.en,{"signup_marketing_label": "I want to receive exclusive coupons and offers by email (+1 giveaway entry)"});

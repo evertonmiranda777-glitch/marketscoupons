@@ -9,3 +9,4 @@ Object.assign(window.I18N.id, {"ind_em_breve_texto":"Kami sedang mengembangkan i
 
 Object.assign(window.I18N.id,{"signup_full_name": "Nama lengkap", "signup_marketing_label": "Saya ingin menerima kupon dan penawaran eksklusif lewat email", "auth_conta_criada": "Akun dibuat ✓"});
 Object.assign(window.I18N.id,{"cem_code_label": "Masukkan kode 6 digit kamu", "cem_verify": "Verifikasi", "cem_verifying": "Memverifikasi...", "cem_verified": "Email terverifikasi ✓", "cem_code_wrong": "Kode salah.", "cem_code_expired": "Kode kedaluwarsa. Minta yang baru.", "cem_code_toomany": "Terlalu banyak percobaan. Minta kode baru.", "cem_code_incomplete": "Masukkan 6 digitnya.", "cem_code_notfound": "Akun tidak ditemukan.", "cem_code_err": "Kesalahan koneksi. Coba lagi."});
+Object.assign(window.I18N.id,{"signup_marketing_label": "Saya ingin menerima kupon dan penawaran eksklusif lewat email (+1 tiket giveaway)"});
