@@ -2669,6 +2669,14 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 .cem-title{font-size:22px;font-weight:700;margin:0 0 12px;color:var(--t1);letter-spacing:-.3px;}
 .cem-body{font-size:15px;line-height:1.5;color:var(--t2);margin:0 0 16px;}
 .cem-email-display{background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:10px;padding:11px 14px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;color:var(--t1);margin-bottom:20px;word-break:break-all;}
+.cem-code-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1.6px;margin-bottom:10px;}
+.cem-code-boxes{display:flex;gap:8px;justify-content:center;margin-bottom:10px;direction:ltr;}
+.cem-code-box{width:44px;height:54px;text-align:center;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:23px;font-weight:800;background:rgba(13,20,28,.78);border:1px solid rgba(107,182,201,.22);border-radius:10px;color:var(--t1);outline:none;transition:border-color .15s,box-shadow .15s;padding:0;}
+.cem-code-box:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,180,41,.14);}
+.cem-code-box.filled{border-color:rgba(240,180,41,.5);}
+.cem-code-err{color:#ff6b6b;font-size:12.5px;font-weight:600;margin-bottom:10px;}
+.cem-code-ok{color:#3DE3A8;font-size:13px;font-weight:700;margin-bottom:10px;}
+@media(max-width:420px){.cem-code-box{width:40px;height:50px;font-size:20px;}.cem-code-boxes{gap:6px;}}
 .cem-btn-primary{width:100%;padding:14px;background:linear-gradient(90deg,#c8941a,var(--gold),#f5d060,var(--gold),#c8941a);background-size:200% 100%;color:#030507;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .3s,box-shadow .3s;margin-bottom:8px;font-family:inherit;box-shadow:0 4px 20px rgba(240,180,41,.25);animation:authShimmer 3s ease infinite;position:relative;}
 .cem-btn-primary::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent 50%);pointer-events:none;}
 .cem-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(240,180,41,.35);}
@@ -4406,6 +4414,20 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     <h2 class="cem-title" id="cem-title"></h2>
     <p class="cem-body" id="cem-body"></p>
     <div class="cem-email-display" id="cem-email-display"></div>
+    <div id="cem-code-wrap">
+      <div class="cem-code-label" id="cem-code-label"></div>
+      <div class="cem-code-boxes" id="cem-code-boxes">
+        <input class="cem-code-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="one-time-code" aria-label="1">
+        <input class="cem-code-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="2">
+        <input class="cem-code-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="3">
+        <input class="cem-code-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="4">
+        <input class="cem-code-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="5">
+        <input class="cem-code-box" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="6">
+      </div>
+      <div class="cem-code-err" id="cem-code-err" style="display:none;"></div>
+      <div class="cem-code-ok" id="cem-code-ok" style="display:none;"></div>
+      <button class="cem-btn-primary" id="cem-verify-btn" onclick="cemVerifyCode()"></button>
+    </div>
     <button class="cem-btn-primary" id="cem-resend-btn" onclick="resendConfirmEmail()"></button>
     <div class="cem-rate-limit" id="cem-rate-limit" style="display:none;"></div>
     <button class="cem-btn-ghost" onclick="closeConfirmEmailModal()" id="cem-close-text"></button>

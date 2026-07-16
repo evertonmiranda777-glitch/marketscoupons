@@ -8048,6 +8048,77 @@ async function subscribeNewsletter(e){
 let _cemRateInterval = null;
 let _cemPendingEmail = null;
 
+// ═══ Verificacao por codigo de 6 digitos (caminho principal; o link do email segue valendo) ═══
+function _cemBoxes(){ return Array.from(document.querySelectorAll('#cem-code-boxes .cem-code-box')); }
+
+function cemCodeInit(){
+  const boxes = _cemBoxes(); if(!boxes.length) return;
+  boxes.forEach((b,i)=>{
+    b.value=''; b.classList.remove('filled');
+    b.oninput = ()=>{
+      b.value = (b.value||'').replace(/\D/g,'').slice(0,1);
+      b.classList.toggle('filled', !!b.value);
+      if(b.value && i < boxes.length-1) boxes[i+1].focus();
+      // 6 preenchidos = verifica sozinho (sem obrigar a clicar)
+      if(boxes.every(x=>x.value)) cemVerifyCode();
+    };
+    b.onkeydown = (e)=>{
+      if(e.key==='Backspace' && !b.value && i>0){ boxes[i-1].focus(); boxes[i-1].value=''; boxes[i-1].classList.remove('filled'); }
+      if(e.key==='Enter') cemVerifyCode();
+      if(e.key==='ArrowLeft' && i>0) boxes[i-1].focus();
+      if(e.key==='ArrowRight' && i<boxes.length-1) boxes[i+1].focus();
+    };
+    // Colar o codigo inteiro em qualquer box distribui nos 6
+    b.onpaste = (e)=>{
+      e.preventDefault();
+      const digits = ((e.clipboardData||window.clipboardData).getData('text')||'').replace(/\D/g,'').slice(0,6);
+      if(!digits) return;
+      boxes.forEach((x,j)=>{ x.value = digits[j]||''; x.classList.toggle('filled', !!x.value); });
+      (boxes[Math.min(digits.length,5)]||boxes[5]).focus();
+      if(digits.length===6) cemVerifyCode();
+    };
+  });
+  const err=document.getElementById('cem-code-err'); if(err) err.style.display='none';
+  const ok=document.getElementById('cem-code-ok'); if(ok) ok.style.display='none';
+  setTimeout(()=>{ try{ boxes[0].focus(); }catch(e){} }, 120);
+}
+
+async function cemVerifyCode(){
+  const boxes = _cemBoxes();
+  const code  = boxes.map(b=>b.value||'').join('');
+  const err   = document.getElementById('cem-code-err');
+  const okEl  = document.getElementById('cem-code-ok');
+  const btn   = document.getElementById('cem-verify-btn');
+  const email = _cemPendingEmail || currentUser?.email || currentProfile?.email || '';
+  const fail = (msg)=>{ if(err){ err.textContent=msg; err.style.display='block'; } if(btn){ btn.disabled=false; btn.textContent=t('cem_verify')||'Verify'; } };
+  if(code.length!==6) return fail(t('cem_code_incomplete')||'Enter the 6 digits.');
+  if(!email) return fail('Email not found.');
+  if(_cemVerifying) return; _cemVerifying = true;
+  if(err) err.style.display='none';
+  if(btn){ btn.disabled=true; btn.textContent=t('cem_verifying')||'Verifying...'; }
+  try{
+    const r = await fetch('/api/welcome-email',{ method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'verify_code', email, code }) });
+    const d = await r.json().catch(()=>({}));
+    _cemVerifying = false;
+    if(d && d.ok){
+      if(okEl){ okEl.textContent = t('cem_verified')||'Email verified ✓'; okEl.style.display='block'; }
+      if(btn) btn.style.display='none';
+      try{ track('email_verified', { method:'code' }); }catch(e){}
+      // magic link = auto-login; sem ele, so recarrega a sessao
+      setTimeout(()=>{ if(d.redirect){ window.location.href = d.redirect; } else { window.location.reload(); } }, 900);
+      return;
+    }
+    const e = (d && d.error) || 'wrong_code';
+    if(e==='too_many_attempts') return fail(t('cem_code_toomany')||'Too many attempts. Request a new code.');
+    if(e==='expired')           return fail(t('cem_code_expired')||'Code expired. Request a new one.');
+    if(e==='not_found')         return fail(t('cem_code_notfound')||'Account not found.');
+    const left = (d && typeof d.attempts_left==='number') ? ` (${d.attempts_left})` : '';
+    return fail((t('cem_code_wrong')||'Wrong code.') + left);
+  }catch(ex){ _cemVerifying=false; return fail(t('cem_code_err')||'Connection error. Try again.'); }
+}
+let _cemVerifying = false;
+
 function showConfirmEmailModal(state){
   state = state || 'pending';
   const email = _cemPendingEmail || currentUser?.email || currentProfile?.email || '';
@@ -8066,6 +8137,12 @@ function showConfirmEmailModal(state){
   btn.disabled = false;
   document.getElementById('cem-rate-limit').style.display = 'none';
   document.getElementById('cem-close-text').textContent = t('cem_close');
+  // Codigo de 6 digitos: label + botao + wiring (auto-avanco, colar, Enter)
+  const _lbl = document.getElementById('cem-code-label');
+  if(_lbl) _lbl.textContent = t('cem_code_label') || 'Enter your 6-digit code';
+  const _vb = document.getElementById('cem-verify-btn');
+  if(_vb){ _vb.textContent = t('cem_verify') || 'Verify'; _vb.disabled = false; _vb.style.display = ''; }
+  cemCodeInit();
   ov.style.display = 'flex';
   document.body.style.overflow = 'hidden';
   try{ sessionStorage.setItem('confirm_modal_shown','1'); }catch(e){}
