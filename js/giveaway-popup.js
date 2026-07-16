@@ -110,6 +110,11 @@
     setTimeout(function(){ close('after_lead'); }, 2300);
   }
   function show(gw){
+    // ⚠️ CHECAR AQUI, nao so no init(): no load a sessao AINDA NAO carregou, entao
+    // getUser() era null e o popup abria pra membro logado (bug pego no teste 16/jul).
+    // Na hora de MOSTRAR a sessao ja existe.
+    try{ var _pv=false; try{ _pv=new URLSearchParams(location.search).get('gw_preview')==='1'; }catch(e2){}
+      if(!_pv && window.MC_AUTH && window.MC_AUTH.getUser()) return; }catch(e){}
     // se o modal de cadastro/login estiver aberto, NÃO cobrir com o sorteio
     try{ var af=document.getElementById('auth-signup-form'), lf=document.getElementById('auth-login-form');
       if((af&&af.offsetParent!==null)||(lf&&lf.offsetParent!==null)) return; }catch(e){}

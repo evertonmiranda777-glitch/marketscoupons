@@ -4664,6 +4664,11 @@ async function loadFirmsFromSupabase() {
       // Overlay data (about_html, detail_plans, bg_image) loaded lazily via loadFirmOverlayData()
     });
 
+    // FIRMS terminou de carregar do cms_firms: avisa quem depende da lista VIVA.
+    // Sem isso, quem renderiza antes (ex: pills de firma favorita no painel) fica com o
+    // fallback chumbado de 11 firmas em vez das 19. Bug real pego no teste de 16/jul.
+    try { window.dispatchEvent(new CustomEvent('mc:firms-loaded', { detail: { count: FIRMS.length } })); } catch(e) {}
+
     // Sync non-price CHECKOUT_FIRMS fields (discount label, coupon, platforms)
     // Prices are NOT synced in-place anymore, getPlanPrice() reads from FIRMS[].prices
     // on each render, avoiding race conditions and stale-overwrite bugs.
@@ -7133,6 +7138,16 @@ window.MC_AUTH = {
 // Onboarding progressivo: o modulo decide sozinho se aparece (verificado + nunca completou/pulou)
 window.addEventListener('mc:user-loaded', function(){
   try{ if (window.mcOnboarding && typeof window.mcOnboarding.maybeShow === 'function') window.mcOnboarding.maybeShow(); }catch(e){}
+});
+// FIRMS chega DEPOIS do perfil (fetch async): re-renderiza o que depende da lista viva.
+// Sem isso o painel congela com as 11 chumbadas do fallback.
+window.addEventListener('mc:firms-loaded', function(){
+  try{
+    if (currentProfile && document.getElementById('up-edit-firm-pills')) {
+      renderFirmPillsInto('up-edit-firm-pills', currentProfile.favorite_firms || []);
+      renderPanelDashboard();
+    }
+  }catch(e){}
 });
 
 function updateAuthUI(loggedIn) {
