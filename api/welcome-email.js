@@ -204,19 +204,32 @@ async function markReceived(email) {
 
 // ═══ B.3.1, Email confirmation helpers ═══
 
+// Codigo de 6 digitos (crypto-safe, sem zero a esquerda perdido).
+function generate6DigitCode() {
+  return String(crypto.randomInt(100000, 1000000));
+}
+
+// Gera token UUID (link) E codigo de 6 digitos (digitavel). Os dois valem:
+// o codigo e o caminho principal (mobile), o link continua como fallback.
 async function generateConfirmToken(email) {
   if (!SK) return null;
   const token = crypto.randomUUID();
+  const code  = generate6DigitCode();
   const expires = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
   try {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email)}`, {
       method: 'PATCH',
       headers: { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
-      body: JSON.stringify({ email_verification_token: token, email_verification_expires_at: expires }),
+      body: JSON.stringify({
+        email_verification_token: token,
+        email_verification_code: code,
+        email_verification_expires_at: expires,
+        email_verification_attempts: 0,
+      }),
     });
     if (!r.ok) return null;
     const rows = await r.json();
-    return rows && rows[0] ? token : null;
+    return rows && rows[0] ? { token, code } : null;
   } catch { return null; }
 }
 
@@ -263,16 +276,16 @@ async function generateSupabaseMagicLink(email) {
 }
 
 const CONFIRM_T = {
-  pt: { pill:'Confirmação', tagline:'as melhores ofertas para traders', greeting:'Olá', body_p:'Recebemos seu cadastro no Markets Coupons. Pra ativar sua conta e liberar acesso ao programa de fidelidade, sorteios e seu perfil completo, é só clicar no botão abaixo:', signature_role:'Equipe Markets Coupons', headline:'Confirme seu email pra liberar seu acesso completo', subtitle:'Você se cadastrou no Markets Coupons. Confirme seu email pra acessar o programa de fidelidade, sorteios e perfil completo.', cta:'Confirmar email', fallback:'Ou copie e cole no navegador:', not_you:'Se você não criou essa conta, ignore este email.', expires:'Este link expira em 24 horas.' },
-  en: { pill:'Verification', tagline:'the best deals for traders', greeting:'Hi', body_p:'We received your sign-up at Markets Coupons. To activate your account and unlock the loyalty program, giveaways, and your full profile, just click the button below:', signature_role:'Markets Coupons Team', headline:'Confirm your email to unlock full access', subtitle:'You signed up at Markets Coupons. Confirm your email to access the loyalty program, giveaways, and profile.', cta:'Confirm email', fallback:'Or copy and paste in your browser:', not_you:'If you didn\'t create this account, ignore this email.', expires:'This link expires in 24 hours.' },
-  es: { pill:'Verificación', tagline:'las mejores ofertas para traders', greeting:'Hola', body_p:'Recibimos tu registro en Markets Coupons. Para activar tu cuenta y desbloquear el programa de fidelidad, sorteos y tu perfil completo, haz clic en el botón:', signature_role:'Equipo Markets Coupons', headline:'Confirma tu email para desbloquear el acceso completo', subtitle:'Te registraste en Markets Coupons. Confirma tu email para acceder al programa de fidelidad, sorteos y perfil.', cta:'Confirmar email', fallback:'O copia y pega en tu navegador:', not_you:'Si no creaste esta cuenta, ignora este email.', expires:'Este enlace expira en 24 horas.' },
-  fr: { pill:'Vérification', tagline:'les meilleures offres pour traders', greeting:'Salut', body_p:'Nous avons reçu votre inscription à Markets Coupons. Pour activer votre compte et débloquer le programme de fidélité, tirages et votre profil complet, cliquez sur le bouton :', signature_role:'Équipe Markets Coupons', headline:'Confirmez votre email pour un accès complet', subtitle:'Vous vous êtes inscrit chez Markets Coupons. Confirmez pour accéder au programme de fidélité, tirages et profil.', cta:'Confirmer email', fallback:'Ou copiez-collez dans votre navigateur :', not_you:'Si vous n\'avez pas créé ce compte, ignorez cet email.', expires:'Ce lien expire dans 24 heures.' },
-  de: { pill:'Bestätigung', tagline:'die besten angebote für trader', greeting:'Hallo', body_p:'Wir haben deine Registrierung bei Markets Coupons erhalten. Um dein Konto zu aktivieren und das Treueprogramm, Gewinnspiele und dein vollständiges Profil freizuschalten, klicke auf den Button:', signature_role:'Markets Coupons Team', headline:'Bestätigen Sie Ihre E-Mail für vollen Zugriff', subtitle:'Sie haben sich bei Markets Coupons registriert. Bestätigen Sie für Treueprogramm, Gewinnspiele und Profil.', cta:'E-Mail bestätigen', fallback:'Oder kopieren Sie in Ihren Browser:', not_you:'Wenn Sie dieses Konto nicht erstellt haben, ignorieren Sie diese E-Mail.', expires:'Dieser Link läuft in 24 Stunden ab.' },
-  it: { pill:'Conferma', tagline:'le migliori offerte per trader', greeting:'Ciao', body_p:'Abbiamo ricevuto la tua registrazione su Markets Coupons. Per attivare il tuo account e sbloccare il programma fedeltà, concorsi e il tuo profilo completo, clicca sul pulsante:', signature_role:'Team Markets Coupons', headline:'Conferma la tua email per accesso completo', subtitle:'Ti sei registrato a Markets Coupons. Conferma per accedere al programma fedeltà, concorsi e profilo.', cta:'Conferma email', fallback:'O copia e incolla nel browser:', not_you:'Se non hai creato questo account, ignora questa email.', expires:'Questo link scade in 24 ore.' },
-  ar: { pill:'تأكيد', tagline:'أفضل العروض للمتداولين', greeting:'مرحباً', body_p:'استلمنا تسجيلك في Markets Coupons. لتفعيل حسابك وفتح برنامج الولاء والسحوبات وملفك الكامل، انقر على الزر أدناه:', signature_role:'فريق Markets Coupons', headline:'أكد بريدك الإلكتروني لفتح الوصول الكامل', subtitle:'لقد سجلت في Markets Coupons. أكد بريدك للوصول إلى برنامج الولاء والسحوبات والملف.', cta:'تأكيد البريد', fallback:'أو انسخ والصق في المتصفح:', not_you:'إذا لم تنشئ هذا الحساب، تجاهل هذا البريد.', expires:'تنتهي صلاحية هذا الرابط خلال 24 ساعة.' },
+  pt: { codeLabel:'Seu código de verificação', codeHint:'Digite este código no site para ativar sua conta. Expira em 24 horas.', pill:'Confirmação', tagline:'as melhores ofertas para traders', greeting:'Olá', body_p:'Recebemos seu cadastro no Markets Coupons. Pra ativar sua conta e liberar acesso ao programa de fidelidade, sorteios e seu perfil completo, é só clicar no botão abaixo:', signature_role:'Equipe Markets Coupons', headline:'Confirme seu email pra liberar seu acesso completo', subtitle:'Você se cadastrou no Markets Coupons. Confirme seu email pra acessar o programa de fidelidade, sorteios e perfil completo.', cta:'Confirmar email', fallback:'Ou copie e cole no navegador:', not_you:'Se você não criou essa conta, ignore este email.', expires:'Este link expira em 24 horas.' },
+  en: { codeLabel:'Your verification code', codeHint:'Enter this code on the site to activate your account. It expires in 24 hours.', pill:'Verification', tagline:'the best deals for traders', greeting:'Hi', body_p:'We received your sign-up at Markets Coupons. To activate your account and unlock the loyalty program, giveaways, and your full profile, just click the button below:', signature_role:'Markets Coupons Team', headline:'Confirm your email to unlock full access', subtitle:'You signed up at Markets Coupons. Confirm your email to access the loyalty program, giveaways, and profile.', cta:'Confirm email', fallback:'Or copy and paste in your browser:', not_you:'If you didn\'t create this account, ignore this email.', expires:'This link expires in 24 hours.' },
+  es: { codeLabel:'Tu código de verificación', codeHint:'Introduce este código en el sitio para activar tu cuenta. Caduca en 24 horas.', pill:'Verificación', tagline:'las mejores ofertas para traders', greeting:'Hola', body_p:'Recibimos tu registro en Markets Coupons. Para activar tu cuenta y desbloquear el programa de fidelidad, sorteos y tu perfil completo, haz clic en el botón:', signature_role:'Equipo Markets Coupons', headline:'Confirma tu email para desbloquear el acceso completo', subtitle:'Te registraste en Markets Coupons. Confirma tu email para acceder al programa de fidelidad, sorteos y perfil.', cta:'Confirmar email', fallback:'O copia y pega en tu navegador:', not_you:'Si no creaste esta cuenta, ignora este email.', expires:'Este enlace expira en 24 horas.' },
+  fr: { codeLabel:'Votre code de vérification', codeHint:'Saisissez ce code sur le site pour activer votre compte. Il expire dans 24 heures.', pill:'Vérification', tagline:'les meilleures offres pour traders', greeting:'Salut', body_p:'Nous avons reçu votre inscription à Markets Coupons. Pour activer votre compte et débloquer le programme de fidélité, tirages et votre profil complet, cliquez sur le bouton :', signature_role:'Équipe Markets Coupons', headline:'Confirmez votre email pour un accès complet', subtitle:'Vous vous êtes inscrit chez Markets Coupons. Confirmez pour accéder au programme de fidélité, tirages et profil.', cta:'Confirmer email', fallback:'Ou copiez-collez dans votre navigateur :', not_you:'Si vous n\'avez pas créé ce compte, ignorez cet email.', expires:'Ce lien expire dans 24 heures.' },
+  de: { codeLabel:'Ihr Bestätigungscode', codeHint:'Geben Sie diesen Code auf der Website ein, um Ihr Konto zu aktivieren. Gültig für 24 Stunden.', pill:'Bestätigung', tagline:'die besten angebote für trader', greeting:'Hallo', body_p:'Wir haben deine Registrierung bei Markets Coupons erhalten. Um dein Konto zu aktivieren und das Treueprogramm, Gewinnspiele und dein vollständiges Profil freizuschalten, klicke auf den Button:', signature_role:'Markets Coupons Team', headline:'Bestätigen Sie Ihre E-Mail für vollen Zugriff', subtitle:'Sie haben sich bei Markets Coupons registriert. Bestätigen Sie für Treueprogramm, Gewinnspiele und Profil.', cta:'E-Mail bestätigen', fallback:'Oder kopieren Sie in Ihren Browser:', not_you:'Wenn Sie dieses Konto nicht erstellt haben, ignorieren Sie diese E-Mail.', expires:'Dieser Link läuft in 24 Stunden ab.' },
+  it: { codeLabel:'Il tuo codice di verifica', codeHint:'Inserisci questo codice sul sito per attivare il tuo account. Scade tra 24 ore.', pill:'Conferma', tagline:'le migliori offerte per trader', greeting:'Ciao', body_p:'Abbiamo ricevuto la tua registrazione su Markets Coupons. Per attivare il tuo account e sbloccare il programma fedeltà, concorsi e il tuo profilo completo, clicca sul pulsante:', signature_role:'Team Markets Coupons', headline:'Conferma la tua email per accesso completo', subtitle:'Ti sei registrato a Markets Coupons. Conferma per accedere al programma fedeltà, concorsi e profilo.', cta:'Conferma email', fallback:'O copia e incolla nel browser:', not_you:'Se non hai creato questo account, ignora questa email.', expires:'Questo link scade in 24 ore.' },
+  ar: { codeLabel:'رمز التحقق الخاص بك', codeHint:'أدخل هذا الرمز في الموقع لتفعيل حسابك. تنتهي صلاحيته خلال 24 ساعة.', pill:'تأكيد', tagline:'أفضل العروض للمتداولين', greeting:'مرحباً', body_p:'استلمنا تسجيلك في Markets Coupons. لتفعيل حسابك وفتح برنامج الولاء والسحوبات وملفك الكامل، انقر على الزر أدناه:', signature_role:'فريق Markets Coupons', headline:'أكد بريدك الإلكتروني لفتح الوصول الكامل', subtitle:'لقد سجلت في Markets Coupons. أكد بريدك للوصول إلى برنامج الولاء والسحوبات والملف.', cta:'تأكيد البريد', fallback:'أو انسخ والصق في المتصفح:', not_you:'إذا لم تنشئ هذا الحساب، تجاهل هذا البريد.', expires:'تنتهي صلاحية هذا الرابط خلال 24 ساعة.' },
 };
 
-function buildConfirmHtml(lang, name, link) {
+function buildConfirmHtml(lang, name, link, code) {
   const L = CONFIRM_T[lang] || CONFIRM_T.en;
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
   const F = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
@@ -309,6 +322,13 @@ function buildConfirmHtml(lang, name, link) {
     <h1 style="font-family:${F};font-size:34px;font-weight:800;color:#fff;line-height:1.15;letter-spacing:-1.2px;margin:0 0 16px;">${L.headline}</h1>
     <p style="font-family:${F};font-size:15px;color:#888;line-height:1.6;max-width:480px;margin:0;">${L.subtitle}</p>
   </td></tr></table>
+</td></tr>
+
+<!-- CODIGO DE 6 DIGITOS (caminho principal, mobile-first) -->
+<tr><td bgcolor="#ffffff" style="background-color:#ffffff;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;padding:34px 40px 6px;text-align:center;font-family:${F};">
+  <div style="font-family:${F};font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;">${L.codeLabel}</div>
+  <div style="font-family:'SF Mono',Consolas,monospace;font-size:42px;font-weight:800;letter-spacing:10px;color:#111111;line-height:1.1;">${code || ''}</div>
+  <div style="font-family:${F};font-size:12px;color:#999;line-height:1.6;margin-top:14px;max-width:420px;margin-left:auto;margin-right:auto;">${L.codeHint}</div>
 </td></tr>
 
 <!-- Linha separadora azul #1976D2 -->
@@ -367,14 +387,22 @@ function buildConfirmHtml(lang, name, link) {
 </td></tr></table></body></html>`;
 }
 
-async function sendConfirmEmail(email, name, lang, token) {
+async function sendConfirmEmail(email, name, lang, tok) {
+  // tok = { token, code }. O codigo e o caminho principal; o link continua como fallback.
+  const token = (tok && tok.token) || tok || '';
+  const code  = (tok && tok.code) || '';
   const link = `${APP_URL}/email-confirm?token=${encodeURIComponent(token)}`;
-  const html = buildConfirmHtml(lang, name, link);
+  const html = buildConfirmHtml(lang, name, link, code);
+  // Codigo NO ASSUNTO: o usuario le pela notificacao do celular, sem abrir o email.
   const subjects = {
-    pt:'Confirme seu email, Markets Coupons', en:'Confirm your email, Markets Coupons',
-    es:'Confirma tu email, Markets Coupons', fr:'Confirmez votre email, Markets Coupons',
-    de:'Bestätigen Sie Ihre E-Mail, Markets Coupons', it:'Conferma la tua email, Markets Coupons',
-    ar:'أكد بريدك الإلكتروني, Markets Coupons',
+    pt:`${code} é seu código de verificação, Markets Coupons`,
+    en:`${code} is your verification code, Markets Coupons`,
+    es:`${code} es tu código de verificación, Markets Coupons`,
+    fr:`${code} est votre code de vérification, Markets Coupons`,
+    de:`${code} ist Ihr Bestätigungscode, Markets Coupons`,
+    it:`${code} è il tuo codice di verifica, Markets Coupons`,
+    ar:`${code} هو رمز التحقق الخاص بك, Markets Coupons`,
+    id:`${code} adalah kode verifikasi Anda, Markets Coupons`,
   };
   const subject = subjects[lang] || subjects.en;
   const BREVO_KEY = process.env.BREVO_API_KEY;
@@ -442,6 +470,59 @@ async function handleSendConfirm(req, res, body) {
   }).catch(()=>{});
 
   return res.status(result.ok ? 200 : 500).json({ ok:result.ok, provider:result.provider, email });
+}
+
+// ═══ Verificacao por CODIGO de 6 digitos (caminho principal, mobile) ═══
+// O link (handleConfirmGet) continua valido em paralelo, como fallback.
+async function handleVerifyCode(req, res, body) {
+  const email = String((body && body.email) || '').trim().toLowerCase();
+  const code  = String((body && body.code) || '').replace(/\D/g, '');
+  if (!email || code.length !== 6) return res.status(400).json({ ok: false, error: 'invalid_input' });
+  if (!SK) return res.status(500).json({ ok: false, error: 'server_misconfig' });
+
+  const H = { apikey: SK, Authorization: `Bearer ${SK}`, 'Content-Type': 'application/json' };
+  const nowIso = new Date().toISOString();
+  const MAX_ATTEMPTS = 6; // 6 digitos sem trava = 1M combinacoes chutaveis
+
+  try {
+    const chk = await fetch(`${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email)}&select=email_verified,email_verification_attempts,email_verification_expires_at`, { headers: H });
+    const rows0 = chk.ok ? await chk.json() : [];
+    const row = rows0 && rows0[0];
+    if (!row) return res.status(400).json({ ok: false, error: 'not_found' });
+    if (row.email_verified) return res.status(200).json({ ok: true, already: true });
+    if ((row.email_verification_attempts || 0) >= MAX_ATTEMPTS) return res.status(429).json({ ok: false, error: 'too_many_attempts' });
+    if (row.email_verification_expires_at && new Date(row.email_verification_expires_at) < new Date()) {
+      return res.status(400).json({ ok: false, error: 'expired' });
+    }
+
+    // UPDATE atomico: so passa se o codigo bate AND nao expirou AND ainda nao verificado
+    const upd = await fetch(`${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email)}&email_verification_code=eq.${encodeURIComponent(code)}&email_verification_expires_at=gt.${encodeURIComponent(nowIso)}&email_verified=eq.false`, {
+      method: 'PATCH',
+      headers: { ...H, Prefer: 'return=representation' },
+      body: JSON.stringify({
+        email_verified: true,
+        email_verification_token: null,
+        email_verification_code: null,
+        email_verification_expires_at: null,
+      }),
+    });
+    const rows = upd.ok ? await upd.json() : [];
+    if (!rows || !rows[0]) {
+      // codigo errado: incrementa tentativa (trava em MAX_ATTEMPTS)
+      await fetch(`${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email)}`, {
+        method: 'PATCH', headers: H,
+        body: JSON.stringify({ email_verification_attempts: (row.email_verification_attempts || 0) + 1 }),
+      }).catch(() => {});
+      return res.status(400).json({ ok: false, error: 'wrong_code', attempts_left: Math.max(0, MAX_ATTEMPTS - ((row.email_verification_attempts || 0) + 1)) });
+    }
+
+    // Verificado: devolve magic link p/ auto-login (mesmo comportamento do clique no link)
+    const magic = await generateSupabaseMagicLink(email);
+    return res.status(200).json({ ok: true, redirect: magic || null });
+  } catch (e) {
+    console.warn('[verify-code] error:', e.message);
+    return res.status(500).json({ ok: false, error: 'server_error' });
+  }
 }
 
 async function handleConfirmGet(req, res) {
@@ -542,6 +623,11 @@ module.exports = async (req, res) => {
   // ─── B.3.1 POST handler: send_confirm (fluxo do proprio usuario no signup, fica aberto) ───
   if (req.body && req.body.action === 'send_confirm') {
     return handleSendConfirm(req, res, req.body);
+  }
+
+  // ─── Verificacao por codigo de 6 digitos (fluxo do proprio usuario, rate-limited acima) ───
+  if (req.body && req.body.action === 'verify_code') {
+    return handleVerifyCode(req, res, req.body);
   }
 
   // Envio de WELCOME (formato {record} do trigger SQL OU {email} do catchup) exige auth:
