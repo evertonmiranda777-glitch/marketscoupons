@@ -286,7 +286,11 @@
       '<div class="onb-ok-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+
       '<div class="onb-h" style="margin-bottom:6px">'+esc(t.done)+'</div>'+
       '<div class="onb-d" style="margin-bottom:0">'+esc(t.doneB)+'</div></div></div>';
-    setTimeout(close, 1800);
+    setTimeout(function(){
+      close();
+      // Acabou de engajar: e a hora de oferecer chance extra no sorteio (se houver um ativo)
+      try{ if(window.mcTickets && typeof window.mcTickets.open==='function') setTimeout(function(){ window.mcTickets.open(); }, 500); }catch(e){}
+    }, 1800);
   }
 
   function close(){
