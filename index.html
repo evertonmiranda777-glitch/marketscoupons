@@ -693,6 +693,29 @@ img{max-width:100%;}
 .up-card h3{font-size:14px;font-weight:700;margin-bottom:16px;color:var(--gold);}
 .up-card .auth-field{margin-bottom:12px;}
 .up-card .auth-btn{margin-top:12px;}
+.up-dash{max-width:1100px;margin:0 auto 18px;padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:860px){.up-dash{grid-template-columns:1fr;}}
+.up-dcard{background:var(--card);border:1px solid var(--b1);border-radius:16px;padding:20px;}
+.up-dcard h3{font-size:14px;font-weight:800;color:var(--t1);margin:0 0 14px;letter-spacing:-.01em;}
+.up-tix-top{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(61,227,168,.13),rgba(61,227,168,.03));border:1px solid rgba(61,227,168,.28);border-radius:13px;padding:14px 16px;margin-bottom:14px;}
+.up-tix-n{font-size:34px;font-weight:900;color:#3DE3A8;line-height:1;}
+.up-tix-l{font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1.3px;}
+.up-tix-bar{flex:1;}
+.up-tix-track{height:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-top:6px;}
+.up-tix-fill{height:100%;background:linear-gradient(90deg,#2bb887,#3DE3A8);border-radius:99px;transition:width .4s ease;}
+.up-tix-prog{font-size:11px;color:var(--t3);font-weight:700;}
+.up-task{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:11px;margin-bottom:7px;}
+.up-task.on{border-color:rgba(61,227,168,.32);background:rgba(61,227,168,.06);}
+.up-task-n{flex:1;font-size:13px;font-weight:600;color:var(--t1);}
+.up-task-p{font-size:10.5px;font-weight:800;color:var(--gold);background:rgba(240,180,41,.12);border-radius:99px;padding:3px 8px;}
+.up-task-b{background:var(--gold);border:none;color:#0d141c;border-radius:8px;padding:7px 13px;font-size:11.5px;font-weight:800;cursor:pointer;font-family:inherit;}
+.up-task-ok{color:#3DE3A8;font-size:11.5px;font-weight:800;}
+.up-prof-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--b1);font-size:13px;}
+.up-prof-row:last-child{border-bottom:none;}
+.up-prof-k{color:var(--t3);font-weight:600;}
+.up-prof-v{color:var(--t1);font-weight:700;text-align:right;}
+.up-prof-v.empty{color:var(--t3);font-weight:500;font-style:italic;}
+.up-dash-cta{display:block;width:100%;margin-top:12px;background:none;border:1px solid rgba(240,180,41,.4);color:var(--gold);border-radius:10px;padding:10px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;}
 .up-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
 .up-stat{background:var(--card2);border-radius:8px;padding:14px;text-align:center;}
 .up-stat .v{font-size:22px;font-weight:800;color:var(--gold);}
@@ -3367,6 +3390,25 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
   <div class="up-name" id="up-name"></div>
   <div class="up-email" id="up-email"></div>
  </div>
+ <div class="up-dash">
+  <div class="up-dcard">
+   <h3 id="up-tix-title">Sorteio, suas chances</h3>
+   <div class="up-tix-top">
+    <div><div class="up-tix-n" id="up-tix-count">0</div><div class="up-tix-l" id="up-tix-label">bilhetes</div></div>
+    <div class="up-tix-bar">
+     <div class="up-tix-prog" id="up-tix-prog">0/5</div>
+     <div class="up-tix-track"><div class="up-tix-fill" id="up-tix-fill" style="width:0%"></div></div>
+    </div>
+   </div>
+   <div id="up-tasks"></div>
+  </div>
+  <div class="up-dcard">
+   <h3 id="up-prof-title">Seu perfil de trader</h3>
+   <div id="up-prof-summary"></div>
+   <button class="up-dash-cta" id="up-prof-edit" onclick="if(window.mcOnboarding)window.mcOnboarding.open()">Completar / editar perfil</button>
+  </div>
+ </div>
+
  <div class="up-grid">
   <div class="up-card">
    <h3 data-i18n="painel_dados_pessoais">Dados Pessoais</h3>
@@ -3446,7 +3488,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
     <div class="up-stat"><div class="v" id="up-st-clicks">0</div><div class="l" data-i18n="painel_cliques">Cliques</div></div>
     <div class="up-stat"><div class="v" id="up-st-coupons">0</div><div class="l" data-i18n="painel_cupons">Cupons</div></div>
    </div>
-   <p style="font-size:12px;color:var(--t3);text-align:center;" data-i18n="painel_em_breve">Em breve: histórico de cupons usados, firmas favoritas e mais.</p>
+   <p style="font-size:12px;color:var(--t3);text-align:center;" id="up-st-note"></p>
   </div>
  </div>
 
@@ -4536,7 +4578,7 @@ body:has(.bot-win.open) .bot-fab{display:none !important;}
 
 <!-- JAVASCRIPT -->
 <script src="/tracking.js" defer></script>
-<script src="/js/giveaway-popup.js?v=20260715b" defer></script>
+<script src="/js/giveaway-popup.js?v=20260716e" defer></script>
 <script src="/js/onboarding.js?v=20260716c" defer></script>
 <script src="/js/tickets.js?v=20260716a" defer></script>
 </body>

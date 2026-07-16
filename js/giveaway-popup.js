@@ -123,9 +123,12 @@
     document.getElementById('gw-submit').onclick=submit;
     slug=(gw&&gw.slug)||'apex-3-accounts-2026';
     host.classList.add('show'); shownAt=Date.now();
-    try{ sessionStorage.setItem('mc_gw_seen_'+slug,'1'); }catch(e){}
+    try{ localStorage.setItem('mc_gw_seen_'+slug,'1'); }catch(e){}
   }
-  function seen(sl){ try{ return sessionStorage.getItem('mc_gw_seen_'+sl)==='1'; }catch(e){ return false; } }
+  // REGRA DO EVERTON (16/jul): aparece UMA VEZ e nunca mais, igual o banner de cookies.
+  // Era sessionStorage -> apagava ao fechar a aba e o visitante recorrente tomava o popup
+  // toda visita = perde venda. Agora localStorage: viu uma vez, acabou.
+  function seen(sl){ try{ return localStorage.getItem('mc_gw_seen_'+sl)==='1'; }catch(e){ return false; } }
   function closedRecently(sl){ try{ var c=parseInt(localStorage.getItem('mc_gw_closed_'+sl)||'0',10); return c && (Date.now()-c) < 7*864e5; }catch(e){ return false; } }
   function enteredLead(sl){ try{ return localStorage.getItem('mc_gw_lead_'+sl)==='1'; }catch(e){ return false; } }
 
@@ -144,6 +147,10 @@
     // NÃO abrir por cima do fluxo de cadastro/login: deep-link do sorteio (/signup?gw=),
     // ?signup=1 ou ?login=1. Quem já veio pra se cadastrar não pode levar o popup em cima do form.
     try{ if(sp && !isPreview && (sp.get('signup')==='1' || sp.get('login')==='1' || sp.get('gw'))) return; }catch(e){}
+    // Quem JA E MEMBRO nao vê: o popup existe pra capturar nome+email de quem nao tem
+    // conta. Logado ja deu os dois -> popup so atrapalha (e cobria o painel).
+    // Ele entra no sorteio pelas TAREFAS do painel, nao por aqui.
+    try{ if(!isPreview && window.MC_AUTH && window.MC_AUTH.getUser()) return; }catch(e){}
     // admin não vê (evita poluir)
     if(window.currentProfile && window.currentProfile.is_admin && !isPreview) return;
     fetch(SB+'/rest/v1/giveaways?select=*&order=created_at.desc&limit=1',{headers:{apikey:ANON,Authorization:'Bearer '+ANON}})

@@ -7179,8 +7179,122 @@ function updateAuthUI(loggedIn) {
     _setVal('up-edit-state',    currentProfile.state);
     // B.6, render pills firmas favoritas pré-selecionadas
     renderFirmPillsInto('up-edit-firm-pills', currentProfile.favorite_firms || []);
+    // Dashboard do painel (bilhetes + tarefas + perfil de trader + resumo real)
+    try { renderPanelDashboard(); } catch(e) { console.warn('[painel] dash', e); }
     // renderPainelLoyalty() removido 2026-06-06, loyalty desligado, ref orfa virou Sentry alert
   }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Dashboard do painel , modelo do concorrente (Prop Firm Match) adaptado ao que
+   o Everton TEM: bilhete do sorteio no lugar de loyalty points (extinto em jun),
+   tarefas com barra de progresso, perfil de trader e Resumo com dado REAL
+   (coupon_clicks), nao mais "em breve".
+   ══════════════════════════════════════════════════════════════════════════ */
+const PANEL_TASKS = [
+  { k:'complete_profile', n:1 },
+  { k:'follow_instagram', n:1, url:'https://www.instagram.com/marketscoupons/' },
+  { k:'join_telegram',    n:1, url:'https://t.me/marketscoupons' },
+  { k:'write_review',     n:2, page:'firms' },
+  { k:'refer_friend',     n:2 },
+];
+const PANEL_T = {
+  en:{tix:'Giveaway, your entries',entries:'entries',prof:'Your trader profile',edit:'Complete / edit profile',
+      k:{complete_profile:'Complete your profile',follow_instagram:'Follow us on Instagram',join_telegram:'Join our Telegram',write_review:'Write a review',refer_friend:'Invite a friend'},
+      go:'Go',done:'Done',copied:'Link copied!',
+      p:{country:'Country',experience:'Trading for',instruments:'Trades',challenges:'Challenges taken',firms:'Favorite firms',heard:'Found us via'},empty:'not set',
+      note:'Your coupon copies on this account. Updated live.'},
+  pt:{tix:'Sorteio, suas chances',entries:'bilhetes',prof:'Seu perfil de trader',edit:'Completar / editar perfil',
+      k:{complete_profile:'Complete seu perfil',follow_instagram:'Siga no Instagram',join_telegram:'Entre no Telegram',write_review:'Escreva uma review',refer_friend:'Convide um amigo'},
+      go:'Ir',done:'Feito',copied:'Link copiado!',
+      p:{country:'País',experience:'Opera há',instruments:'Opera',challenges:'Challenges feitos',firms:'Firmas favoritas',heard:'Nos conheceu por'},empty:'não informado',
+      note:'Seus cupons copiados nesta conta. Atualizado ao vivo.'},
+};
+function _pt(){ const l=(window._currentLang||'en').toLowerCase(); return PANEL_T[l]||PANEL_T.en; }
+
+async function renderPanelDashboard(){
+  if(!currentUser || !currentProfile) return;
+  const T = _pt();
+  const slug = 'apex-3-accounts-2026';
+  const $ = (id)=>document.getElementById(id);
+  if($('up-tix-title')) $('up-tix-title').textContent = T.tix;
+  if($('up-tix-label')) $('up-tix-label').textContent = T.entries;
+  if($('up-prof-title')) $('up-prof-title').textContent = T.prof;
+  if($('up-prof-edit'))  $('up-prof-edit').textContent  = T.edit;
+
+  // ── Bilhetes + tarefas ──
+  let mine = {};
+  try {
+    const r = await db.from('giveaway_tickets').select('task,tickets').eq('user_id', currentUser.id).eq('giveaway_slug', slug);
+    (r.data||[]).forEach(x => { mine[x.task] = x.tickets; });
+  } catch(e){}
+  // perfil completo credita sozinho
+  if(currentProfile.onboarding_completed_at && !mine.complete_profile){
+    try { await db.from('giveaway_tickets').insert({ user_id:currentUser.id, giveaway_slug:slug, task:'complete_profile', tickets:1 }); mine.complete_profile = 1; } catch(e){}
+  }
+  const total = Object.values(mine).reduce((a,b)=>a+(b||0),0);
+  const doneN = Object.keys(mine).length;
+  if($('up-tix-count')) $('up-tix-count').textContent = total;
+  if($('up-tix-prog'))  $('up-tix-prog').textContent  = doneN + '/' + PANEL_TASKS.length;
+  if($('up-tix-fill'))  $('up-tix-fill').style.width  = Math.round(doneN / PANEL_TASKS.length * 100) + '%';
+
+  const wrap = $('up-tasks');
+  if(wrap){
+    wrap.innerHTML = PANEL_TASKS.map(x => {
+      const on = !!mine[x.k];
+      return `<div class="up-task${on?' on':''}">
+        <div class="up-task-n">${T.k[x.k]}</div>
+        <div class="up-task-p">+${x.n}</div>
+        ${on ? `<span class="up-task-ok">${T.done} ✓</span>` : `<button class="up-task-b" data-k="${x.k}">${T.go}</button>`}
+      </div>`;
+    }).join('');
+    wrap.querySelectorAll('.up-task-b').forEach(b => {
+      b.onclick = async () => {
+        const k = b.dataset.k, task = PANEL_TASKS.find(x=>x.k===k);
+        if(!task) return;
+        if(k==='refer_friend'){
+          try { await navigator.clipboard.writeText(location.origin + '/signup?gw=' + slug); b.textContent = T.copied; } catch(e){}
+        } else if(k==='complete_profile'){
+          if(!currentProfile.onboarding_completed_at){ if(window.mcOnboarding) window.mcOnboarding.open(); return; }
+        } else if(task.page){ go(task.page); return; }
+        else if(task.url){ try { window.open(task.url,'_blank','noopener'); } catch(e){} }
+        b.disabled = true;
+        try { await db.from('giveaway_tickets').insert({ user_id:currentUser.id, giveaway_slug:slug, task:k, tickets:task.n }); } catch(e){}
+        try { track('giveaway_task_done', { task:k, tickets:task.n, slug, src:'panel' }); } catch(e){}
+        renderPanelDashboard();
+      };
+    });
+  }
+
+  // ── Perfil de trader (o que o onboarding coletou e o painel nao mostrava) ──
+  const box = $('up-prof-summary');
+  if(box){
+    const p = currentProfile;
+    const favNames = (p.favorite_firms||[]).map(id => firmLabel(id)).join(', ');
+    const rows = [
+      [T.p.country,     p.country || ''],
+      [T.p.experience,  p.trading_experience || ''],
+      [T.p.instruments, (p.instruments||[]).join(', ')],
+      [T.p.challenges,  p.challenges_taken || ''],
+      [T.p.firms,       favNames],
+      [T.p.heard,       p.how_heard || ''],
+    ];
+    box.innerHTML = rows.map(([k,v]) =>
+      `<div class="up-prof-row"><span class="up-prof-k">${k}</span><span class="up-prof-v${v?'':' empty'}">${v || T.empty}</span></div>`
+    ).join('');
+  }
+
+  // ── Resumo REAL (era "em breve"; o dado existe em coupon_clicks) ──
+  try {
+    const { count: clicks } = await db.from('coupon_clicks').select('id', { count:'exact', head:true }).eq('user_id', currentUser.id);
+    const r2 = await db.from('coupon_clicks').select('firm_id').eq('user_id', currentUser.id).limit(500);
+    const firmsN = new Set((r2.data||[]).map(x=>x.firm_id).filter(Boolean)).size;
+    const set = (id,v)=>{ const el=$(id); if(el) el.textContent = v; };
+    set('up-st-visits', firmsN);   // firmas distintas em que clicou
+    set('up-st-clicks', clicks||0);
+    set('up-st-coupons', clicks||0);
+    const note = $('up-st-note'); if(note) note.textContent = T.note;
+  } catch(e){}
 }
 
 async function changePassword() {
