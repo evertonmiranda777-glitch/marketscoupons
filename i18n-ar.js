@@ -10,3 +10,5 @@ Object.assign(window.I18N.ar, {"ind_em_breve_texto":"نُطوّر مؤشرات �
 Object.assign(window.I18N.ar,{"signup_full_name": "الاسم الكامل", "signup_marketing_label": "أريد تلقي كوبونات وعروض حصرية عبر البريد الإلكتروني", "auth_conta_criada": "تم إنشاء الحساب ✓"});
 Object.assign(window.I18N.ar,{"cem_code_label": "أدخل رمزك المكوّن من 6 أرقام", "cem_verify": "تحقق", "cem_verifying": "جارٍ التحقق...", "cem_verified": "تم التحقق من البريد ✓", "cem_code_wrong": "رمز غير صحيح.", "cem_code_expired": "انتهت صلاحية الرمز. اطلب رمزًا جديدًا.", "cem_code_toomany": "محاولات كثيرة. اطلب رمزًا جديدًا.", "cem_code_incomplete": "أدخل الأرقام الستة.", "cem_code_notfound": "لم يتم العثور على الحساب.", "cem_code_err": "خطأ في الاتصال. حاول مرة أخرى."});
 Object.assign(window.I18N.ar,{"signup_marketing_label": "أريد تلقي كوبونات وعروض حصرية عبر البريد الإلكتروني (+فرصة إضافية في السحب)"});
+
+Object.assign(window.I18N.ar,{"aw_dia": "يوم", "aw_dias": "أيام", "aw_todas": "كل الشركات، حسب التقييم"});

@@ -3209,27 +3209,40 @@ async function initFavs() {
   applyF();
 }
 
+// Awards 100% DATA-DRIVEN (16/jul): o vencedor de cada categoria e CALCULADO ao vivo
+// sobre FIRMS (cms_firms), nunca chumbado. Firma nova entra no cms_firms -> compete
+// sozinha em todas as categorias E aparece na lista completa. Ninguem "define" o melhor,
+// o dado define. Se um numero muda no banco, o premio muda junto.
 function renderAwards(){
   const el=document.getElementById('awards-grid');
   if(!el)return;
+  if(!Array.isArray(FIRMS)||!FIRMS.length){ el.innerHTML=''; return; } // FIRMS async: re-renderiza no mc:firms-loaded
   const _asvg=(d,c='var(--gold)')=>`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  // Helpers de metrica (defensivos: valor nao lido = null = firma nao compete naquela categoria)
+  const _num=v=>{ const n=parseFloat(String(v==null?'':v).replace(/[^0-9.]/g,'')); return isNaN(n)?null:n; };
+  const _rating =f=> (f.trustpilot&&f.trustpilot.score)?f.trustpilot.score:(parseFloat(f.rating)||0);
+  const _reviews=f=> (f.trustpilot&&f.trustpilot.reviews)?f.trustpilot.reviews:(parseInt(f.reviews)||0);
+  const _split  =f=> _num(f.split);
+  const _minDays=f=>{ const d=parseInt(f.minDays); return d>0?d:null; };
+  const _scaling=f=>{ const m=String(f.scaling||'').match(/([\d.]+)\s*([MK])?/i); if(!m)return null; let n=parseFloat(m[1]); if(/m/i.test(m[2]||''))n*=1e6; else if(/k/i.test(m[2]||''))n*=1e3; return isNaN(n)?null:n; };
+  const _minEntry=f=>{ if(!Array.isArray(f.prices))return null; let mn=null; f.prices.forEach(p=>{ const n=_num(p.n); if(n!=null&&n>0&&(mn==null||n<mn))mn=n; }); return mn; };
+  const _fmtK=n=> n>=1000 ? Math.floor(n/1000)+'K+' : (''+n);
+  // Escolhe o melhor da lista por uma metrica (max ou min), ignorando quem nao tem o dado
+  const _best=(metric,dir)=>{ let win=null,wv=null; FIRMS.forEach(f=>{ const v=metric(f); if(v==null)return; if(win==null||(dir==='max'?v>wv:v<wv)){win=f;wv=v;} }); return win; };
+
+  const TR_TROPHY=_asvg('<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>');
   const categories=[
-    {trophy:_asvg('<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>'),catKey:'aw_cat_melhor_forex',firmId:'ftmo',reasonKey:'aw_reason_ftmo_forex',value:'4.8',ribbonKey:'aw_ribbon_forex'},
-    {trophy:_asvg('<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>','#22c55e'),catKey:'aw_cat_maior_desconto',firmId:'apex',reasonKey:'aw_reason_apex_desconto',value:'90% OFF',ribbonKey:'aw_ribbon_desconto'},
-    {trophy:_asvg('<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>'),catKey:'aw_cat_melhor_split',firmId:'fn',reasonKey:'aw_reason_fn_split',value:'95% Split',ribbonKey:'aw_ribbon_split'},
-    {trophy:_asvg('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>','#60a5fa'),catKey:'aw_cat_aprovacao_rapida',firmId:'bulenox',reasonKey:'aw_reason_bulenox_rapido',value:'1 dia',ribbonKey:'aw_ribbon_rapido'},
-    {trophy:_asvg('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>','#22c55e'),catKey:'aw_cat_maior_confianca',firmId:'fn',reasonKey:'aw_reason_fn_confianca',value:'60K+',ribbonKey:'aw_ribbon_confiavel'},
-    {trophy:_asvg('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>','#a78bfa'),catKey:'aw_cat_melhor_iniciante',firmId:'ftmo',reasonKey:'aw_reason_ftmo_iniciante',value:'Free Trial',ribbonKey:'aw_ribbon_iniciante'},
-    {trophy:_asvg('<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>','#F97316'),catKey:'aw_cat_melhor_custo',firmId:'e2t',reasonKey:'aw_reason_e2t_custo',value:'$400K',ribbonKey:'aw_ribbon_custo'},
-    {trophy:_asvg('<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>'),catKey:'aw_cat_melhor_rating',firmId:'bulenox',reasonKey:'aw_reason_bulenox_rating',value:'4.8',ribbonKey:'aw_ribbon_rating'},
-    {trophy:_asvg('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>','#a78bfa'),catKey:'aw_cat_maior_scaling',firmId:'the5ers',reasonKey:'aw_reason_the5ers_scaling',value:'$4M',ribbonKey:'aw_ribbon_scaling'},
-    {trophy:_asvg('<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>','#22c55e'),catKey:'aw_cat_melhor_payout',firmId:'fundingpips',reasonKey:'aw_reason_fundingpips_payout',value:'100% Split',ribbonKey:'aw_ribbon_payout'},
-    {trophy:_asvg('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>','#F97316'),catKey:'aw_cat_payout_garantido',firmId:'brightfunded',reasonKey:'aw_reason_brightfunded_payout',value:'24h',ribbonKey:'aw_ribbon_payout24h'},
-    {trophy:_asvg('<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>','#60a5fa'),catKey:'aw_cat_mais_versatil',firmId:'e8',reasonKey:'aw_reason_e8_versatil',value:'3 mercados',ribbonKey:'aw_ribbon_versatil'},
-    {trophy:_asvg('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>','#22c55e'),catKey:'aw_cat_menor_entrada',firmId:'cti',reasonKey:'aw_reason_cti_entrada',value:'$1',ribbonKey:'aw_ribbon_entrada'},
+    {trophy:_asvg('<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>','#22c55e'),catKey:'aw_cat_maior_desconto',ribbonKey:'aw_ribbon_desconto',metric:f=>parseFloat(f.discount)||null,dir:'max',fmt:f=>(parseFloat(f.discount)||0)+'% OFF'},
+    {trophy:_asvg('<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>','#22c55e'),catKey:'aw_cat_melhor_split',ribbonKey:'aw_ribbon_split',metric:_split,dir:'max',fmt:f=>{const s=String(f.split||'');return s.includes('%')?s:s+'%';}},
+    {trophy:_asvg('<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>'),catKey:'aw_cat_melhor_rating',ribbonKey:'aw_ribbon_rating',metric:_rating,dir:'max',fmt:f=>_rating(f).toFixed(1)+'★'},
+    {trophy:_asvg('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>','#22c55e'),catKey:'aw_cat_maior_confianca',ribbonKey:'aw_ribbon_confiavel',metric:_reviews,dir:'max',fmt:f=>_fmtK(_reviews(f))},
+    {trophy:_asvg('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>','#60a5fa'),catKey:'aw_cat_aprovacao_rapida',ribbonKey:'aw_ribbon_rapido',metric:_minDays,dir:'min',fmt:f=>{const d=_minDays(f);return d+(d===1?(' '+_tt('aw_dia','day')):(' '+_tt('aw_dias','days')));}},
+    {trophy:_asvg('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>','#a78bfa'),catKey:'aw_cat_maior_scaling',ribbonKey:'aw_ribbon_scaling',metric:_scaling,dir:'max',fmt:f=>f.scaling},
+    {trophy:_asvg('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>','#F97316'),catKey:'aw_cat_menor_entrada',ribbonKey:'aw_ribbon_entrada',metric:_minEntry,dir:'min',fmt:f=>{const n=_minEntry(f);return '$'+(n%1===0?n:n.toFixed(2));}},
   ];
-  el.innerHTML=categories.map(c=>{
-    const f=FIRMS.find(x=>x.id===c.firmId);
+  const _tt=(k,fb)=>{ const v=t(k); return (!v||v===k)?fb:v; };
+  const cards=categories.map(c=>{
+    const f=_best(c.metric,c.dir);
     if(!f)return'';
     return`<div class="award-card" onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)" style="cursor:pointer;">
       <span class="award-ribbon">${t(c.ribbonKey)}</span>
@@ -3244,12 +3257,38 @@ function renderAwards(){
         ${firmIco(f,'40px','14px')}
         <div class="award-winner-info">
           <div class="award-winner-name">${f.name}</div>
-          <div class="award-winner-reason">${t(c.reasonKey)}</div>
         </div>
-        <div class="award-winner-value">${c.value}</div>
+        <div class="award-winner-value">${c.fmt(f)}</div>
       </div>
     </div>`;
   }).join('');
+
+  // Lista COMPLETA: TODAS as firmas, ranqueadas por nota (desempate por desconto). Firma nova
+  // entra sozinha aqui assim que sobe no cms_firms. Ninguem fica de fora.
+  const allTitle=_tt('aw_todas','All firms, ranked by rating');
+  const ranked=[...FIRMS].sort((a,b)=> (_rating(b)-_rating(a)) || ((parseFloat(b.discount)||0)-(parseFloat(a.discount)||0)));
+  const rows=ranked.map((f,i)=>{
+    const disc=parseFloat(f.discount)||0;
+    return`<div onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)" style="display:flex;align-items:center;gap:11px;padding:11px 14px;border-top:1px solid rgba(107,182,201,.12);cursor:pointer;">
+      <span style="width:22px;font-size:13px;font-weight:800;color:var(--t3);text-align:center;flex-shrink:0;">${i+1}</span>
+      ${firmIco(f,'34px','12px')}
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${f.name}</div>
+        <div style="font-size:11px;color:var(--t3);">${_rating(f).toFixed(1)}★ · ${_fmtK(_reviews(f))}</div>
+      </div>
+      ${disc?`<span style="font-size:12px;font-weight:800;color:var(--gold);flex-shrink:0;">${disc}% OFF</span>`:''}
+      ${f.coupon?`<span style="font-size:10.5px;font-weight:700;color:#3DE3A8;background:rgba(61,227,168,.1);border:1px solid rgba(61,227,168,.28);border-radius:6px;padding:3px 7px;flex-shrink:0;">${f.coupon}</span>`:''}
+    </div>`;
+  }).join('');
+  const fullList=`<div class="award-card" style="grid-column:1/-1;">
+    <div class="award-card-top" style="padding-bottom:6px;">
+      <div class="award-trophy">${TR_TROPHY}</div>
+      <div class="award-cat"><div class="award-cat-label">${t('aw_categoria')}</div><div class="award-cat-name">${allTitle}</div></div>
+    </div>
+    <div>${rows}</div>
+  </div>`;
+
+  el.innerHTML=cards+fullList;
 }
 function renderOffers(){
   const el=document.getElementById('offers-grid');
