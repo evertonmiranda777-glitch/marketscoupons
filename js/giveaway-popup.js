@@ -164,6 +164,10 @@
         var gw = rows && rows[0]; if(!gw) return;
         if(!isPreview){
           if(!gw.active) return;
+          // AUTO-STOP na data do sorteio (LEI 20/jul): chegou o dia do draw_date, PARA sozinho.
+          // Antes so o active=false (na mao) parava -> o popup coletava gente pra sorteio ja
+          // encerrado. Agora: dia do sorteio ou depois = nao abre mais. Vale p/ qualquer sorteio.
+          try{ if(gw.draw_date && Date.now() >= new Date(gw.draw_date+'T00:00:00').getTime()) return; }catch(e){}
           if(seen(gw.slug) || closedRecently(gw.slug) || enteredLead(gw.slug)) return;
         }
         if(isPreview){ setTimeout(function(){ show(gw); }, 300); }
