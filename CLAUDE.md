@@ -8,6 +8,20 @@
 
 ---
 
+## ⚡ LEIS 17-20/jul (sessão auditoria firmas + awards + sorteio)
+
+**🖥️ TELA RENDERIZADA > SAÍDA DE FERRAMENTA (LEI, custou 3 vezes na mesma sessão):** eu declarei coisas erradas confiando no output cru: (1) "FundedNext não está na /coupons" , meu `grep id:'fn'` não casou o formato, o print do Everton provou que estava; (2) "link do E8 quebrado" , dava HTTP **404 mas RENDERIZA a home e grava cookie `discount=MARKET`** (SPA), credita comissão; (3) "banco caiu" , status dizia `ACTIVE_HEALTHY`. **Antes de afirmar quebrado/ausente, OLHAR a tela renderizada (Playwright/print), não o status/grep.** Mesma família do "SQL OK ≠ feature ok".
+
+**🎁 SORTEIO PARA SOZINHO NA `draw_date` (LEI 20/jul):** o popup (`js/giveaway-popup.js`) agora auto-para quando `Date.now() >= draw_date` , antes só `active=false` na mão parava, e ele coletava gente pra sorteio já encerrado. Vale pra qualquer sorteio: põe a data no `giveaways.draw_date` e esquece. `active=false` continua sendo o kill-switch manual.
+
+**🏆 AWARDS 100% DATA-DRIVEN (LEI):** `renderAwards` (app.js) NÃO tem mais vencedor chumbado , 7 categorias por argmax/argmin REAL sobre `FIRMS` + lista de TODAS as firmas por nota. Firma nova no `cms_firms` entra e compete sozinha. **NUNCA voltar a chumbar firma/valor** (o antigo tinha claim FALSO: brightfunded "24h payout" que ela não tem). Superfície de dado = sempre do banco, nunca hardcode.
+
+**💰 `discount` do banco ≠ taxa que o cupom rende (LEI):** testado no checkout real da Top One, `MARKET` deu 40%/50%/$39-fixo em produtos diferentes. O campo `discount` é referência. **Ver o checkout antes de calcular preço final com o cupom** , aplicar `discount` no automático cria preço fantasma (Lei #0).
+
+**🐛 BUG RECORRENTE: preço CHEIO gravado como FINAL:** Aqua (25K mostrava $125, era $50) e TradeDay (EOD 50K $175, era $87) tinham o `n` = preço cheio. Ao auditar firma, conferir se `n` < `o`. Cliente vê o dobro e vai embora.
+
+---
+
 ## 🚨🚨🚨 LEI INVIOLÁVEL #0, NUNCA CHUTAR DADOS PÚBLICOS 🚨🚨🚨
 
 **Antes de QUALQUER UPDATE em preço/%/prazo/regra/spec de firma, abrir site oficial via Firecrawl/Playwright e VER o dado. Sem chute, sem "estimativa proporcional", sem "linear progression".**
