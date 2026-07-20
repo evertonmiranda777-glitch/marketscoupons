@@ -3289,6 +3289,14 @@ function renderAwards(){
   </div>`;
 
   el.innerHTML=cards+fullList;
+
+  // Cabecalho tambem DATA-DRIVEN (20/jul): estava chumbado "9 firmas / 210K+ / 8 categorias"
+  // enquanto o catalogo ja tinha 19 e as categorias viraram 7. Numero na tela = numero do banco.
+  const totReviews=FIRMS.reduce((s,f)=>s+_reviews(f),0);
+  const _set=(id,v)=>{ const n=document.getElementById(id); if(n)n.textContent=v; };
+  _set('aw-stat-firmas', FIRMS.length);
+  _set('aw-stat-reviews', totReviews>=1000 ? Math.floor(totReviews/1000)+'K+' : String(totReviews));
+  _set('aw-stat-cats', categories.filter(c=>_best(c.metric,c.dir)).length);
 }
 function renderOffers(){
   const el=document.getElementById('offers-grid');
