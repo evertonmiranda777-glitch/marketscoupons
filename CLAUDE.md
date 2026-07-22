@@ -8,6 +8,16 @@
 
 ---
 
+## ⚡ LEIS 20-22/jul (pente fino semanal das 19 firmas com screenshot)
+
+**🗓️ SEGUNDA = DIA DE ATUALIZAR CUPOM (trabalho MEU, não do Everton):** raspar as 19 firmas, comparar com `cms_firms`, corrigir preço, sincronizar superfícies, entregar "PRONTO PRA POSTAR". Ele passou 2 dias fazendo na mão porque eu não fazia. **Método certo: 1 agente SERIAL com `browser_take_screenshot` por firma** (`verif-<id>-*.png`). **NUNCA paralelizar Playwright** , 4 agentes num browser só sequestram a aba um do outro (contaminação real: "Aqua redireciona pra Blueberry" era aba trocada, não realidade).
+
+**🔎 CARD DE PREÇO QUE NÃO RENDERIZA EM TEXTO → JSON-LD / window config / API:** quando o `browser_evaluate` vê DOM vazio (cards em canvas/JS), o preço quase sempre está em `<script type="application/ld+json">` (schema.org Product, com preço+tamanho amarrados), em `window.<algumConfig>`, ou numa API. Salvou **CTI** (JSON-LD), **Top One** (`tofPriceMatrix`), **Aqua** (config do site). Não declarar "não dá pra ver" sem tentar esses 3.
+
+**🐛 BUG DE PREÇO cheio-como-final / deslocado , apareceu 5x/dia:** Earn2Trade cobrava o DOBRO ($150 numa conta de $75), Aqua, TradeDay, FN (Legacy/Rapid na /coupons), e **Futures Elite Instant deslocado UM TAMANHO** (150K anunciava $328 e custa $398). **Ao auditar: conferir `n` < `o`, e que o preço do tamanho N não é o do tamanho N-1.**
+
+**💰 O MESMO CUPOM RENDE % DIFERENTE POR PRODUTO (confirmado no checkout):** FN `MARKET` = 47% Flex / 50% Rapid / **10% Legacy**. Top One `MARKET` = 40% Instant / 50% Ignite / $39-fixo Access. **NUNCA anunciar o % de manchete em cima do produto onde ele rende menos** (ex: "47% OFF" no FN Legacy = falso). E `discount` do banco pode NÃO ser desconto real , se o site não mostra riscado, confirmar no checkout antes do card exibir "% OFF" (caso CTI: site sem desconto, banco `discount=30`).
+
 ## ⚡ LEIS 17-20/jul (sessão auditoria firmas + awards + sorteio)
 
 **🖥️ TELA RENDERIZADA > SAÍDA DE FERRAMENTA (LEI, custou 3 vezes na mesma sessão):** eu declarei coisas erradas confiando no output cru: (1) "FundedNext não está na /coupons" , meu `grep id:'fn'` não casou o formato, o print do Everton provou que estava; (2) "link do E8 quebrado" , dava HTTP **404 mas RENDERIZA a home e grava cookie `discount=MARKET`** (SPA), credita comissão; (3) "banco caiu" , status dizia `ACTIVE_HEALTHY`. **Antes de afirmar quebrado/ausente, OLHAR a tela renderizada (Playwright/print), não o status/grep.** Mesma família do "SQL OK ≠ feature ok".
