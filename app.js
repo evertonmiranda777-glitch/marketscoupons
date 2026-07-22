@@ -411,11 +411,14 @@ function track(event, params={}) {
   // 1b. coupon_clicks, atribuicao campanha→cupom pra fechar loop com venda real da firma
   if (event === 'copy_coupon' || event === 'coupon_copy') {
     try {
+      // 🐛 FIX 22/jul: era window.currentUser (NAO existe, currentUser e let de escopo -> sempre null,
+      // 7.571 cliques gravados anonimos). A ponte correta e window.MC_AUTH.getUser() (getter oficial).
+      const _cu = (function(){ try{ return (window.MC_AUTH && window.MC_AUTH.getUser && window.MC_AUTH.getUser()) || null; }catch(_){ return null; } })();
       const click = {
         ts: ts,
         anon_id: MC_ANON,
-        user_id: (window.currentUser && window.currentUser.id) || null,
-        email: (window.currentUser && window.currentUser.email) || null,
+        user_id: (_cu && _cu.id) || null,
+        email: (_cu && _cu.email) || null,
         firm_id: params.firm_id || params.firm_name || null,
         coupon_code: params.coupon_code || params.coupon || null,
         event_id: eid,
