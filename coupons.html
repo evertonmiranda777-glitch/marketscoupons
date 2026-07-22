@@ -990,6 +990,41 @@ function getLocalized(field) {
 }
 
 // ─── render firms ───
+const LEGACY_PLANS=[
+  {s:'25K',d:'$16.70',o:'$167'},{s:'50K',d:'$19.70',o:'$197'},{s:'100K',d:'$29.70',o:'$297',pop:1},
+  {s:'150K',d:'$49.70',o:'$497'},{s:'250K',d:'$59.70',o:'$597'},{s:'300K',d:'$69.70',o:'$697'}
+];
+const LEGACY_TXT={
+  en:{t:'Legacy Accounts',pill:'LIMITED TIME',pop:'POPULAR',cta:'View Legacy Accounts',sub:'Monthly · 90% off 1st month, 80% after · with MARKET · PA activation $125 till Aug 11'},
+  pt:{t:'Contas Legacy',pill:'TEMPO LIMITADO',pop:'POPULAR',cta:'Ver contas Legacy',sub:'Mensal · 90% off no 1º mês, 80% depois · com MARKET · ativação da PA $125 até 11/ago'},
+  es:{t:'Cuentas Legacy',pill:'TIEMPO LIMITADO',pop:'POPULAR',cta:'Ver cuentas Legacy',sub:'Mensual · 90% off el 1er mes, 80% después · con MARKET · activación PA $125 hasta 11 ago'},
+  it:{t:'Account Legacy',pill:'TEMPO LIMITATO',pop:'POPOLARE',cta:'Vedi account Legacy',sub:'Mensile · 90% off il 1º mese, 80% dopo · con MARKET · attivazione PA $125 fino all’11 ago'},
+  fr:{t:'Comptes Legacy',pill:'DURÉE LIMITÉE',pop:'POPULAIRE',cta:'Voir les comptes Legacy',sub:'Mensuel · 90% le 1er mois, 80% ensuite · avec MARKET · activation PA 125$ jusqu’au 11 août'},
+  de:{t:'Legacy-Konten',pill:'BEGRENZTE ZEIT',pop:'BELIEBT',cta:'Legacy-Konten ansehen',sub:'Monatlich · 90% im 1. Monat, danach 80% · mit MARKET · PA-Aktivierung $125 bis 11. Aug'},
+  ar:{t:'حسابات Legacy',pill:'لوقت محدود',pop:'الأكثر رواجاً',cta:'عرض حسابات Legacy',sub:'شهري · خصم 90% للشهر الأول و80% بعده · مع MARKET · تفعيل PA بـ125$ حتى 11 أغسطس'},
+  id:{t:'Akun Legacy',pill:'WAKTU TERBATAS',pop:'POPULER',cta:'Lihat Akun Legacy',sub:'Bulanan · 90% off bulan pertama, 80% setelahnya · dengan MARKET · aktivasi PA $125 s/d 11 Agu'}
+};
+function legacyBlock(firm){
+  if(firm.id!=='apex') return '';
+  const c='#F97316', X=LEGACY_TXT[LANG]||LEGACY_TXT.en;
+  const pills=LEGACY_PLANS.map(pl=>{
+    const bd=pl.pop?c:'rgba(255,255,255,.09)', bg=pl.pop?c+'14':'rgba(255,255,255,.03)';
+    return `<div style="position:relative;flex:1 1 30%;min-width:82px;background:${bg};border:1.5px solid ${bd};border-radius:11px;padding:10px 6px;text-align:center;">
+      ${pl.pop?`<span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:${c};color:#0d141c;font-size:8.5px;font-weight:800;letter-spacing:.4px;border-radius:99px;padding:2px 7px;white-space:nowrap;">${X.pop}</span>`:''}
+      <div style="font-size:13px;font-weight:800;color:#EAF1F6;">${pl.s}</div>
+      <div style="font-size:12px;font-weight:800;color:${c};margin-top:1px;">${pl.d}<span style="font-size:8.5px;color:#7d8b98;">/mo</span></div>
+      <div style="font-size:9px;color:#7d8b98;text-decoration:line-through;">${pl.o}</div></div>`;
+  }).join('');
+  return `<div class="fr-legacy" style="background:rgba(10,20,24,.55);border:1px solid ${c}44;border-radius:12px;padding:14px;margin:12px 0;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+      <b style="font-size:14px;color:#EAF1F6;">${X.t}</b>
+      <span style="font-size:9px;font-weight:800;letter-spacing:.5px;color:${c};background:${c}1A;border:1px solid ${c}55;border-radius:99px;padding:2px 8px;">${X.pill}</span></div>
+    <div style="font-size:11px;color:#7d8b98;margin-bottom:11px;">${X.sub}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">${pills}</div>
+    <a href="${getBuyUrl(firm)}" target="_blank" rel="noopener" style="display:block;width:100%;box-sizing:border-box;text-align:center;background:linear-gradient(135deg,${c},#fb923c);color:#0d141c;border-radius:11px;padding:12px;font-size:14px;font-weight:800;text-decoration:none;">${X.cta} &#8594;</a>
+  </div>`;
+}
+
 function renderFirms() {
   const container = document.getElementById('firms-list');
   FIRMS.forEach(firm => {
@@ -1062,6 +1097,7 @@ function renderFirms() {
           </div>
         </div>
       </div>
+      ${legacyBlock(firm)}
       <div class="fr-bottom">
         <div class="fr-coupon"><div class="fr-coupon-code">${firm.coupon}</div><button class="fr-coupon-copy">${T.copy}</button></div>
         <a class="fr-cta" href="${getBuyUrl(firm)}" target="_blank" rel="noopener">${T.see_plans} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
