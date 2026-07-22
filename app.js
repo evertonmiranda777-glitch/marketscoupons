@@ -3482,7 +3482,12 @@ async function openD(id){
   if (!FIRM_ABOUT[id]) {
     await loadFirmOverlayData(id);
   } else {
-    loadFirmOverlayData(id);
+    // Apex/firmas core tem FIRM_ABOUT hardcoded -> renderiza JA com ele, mas o detail_plans
+    // do banco (ex: bloco Legacy) chega DEPOIS. Ao chegar, re-renderiza a overlay se ainda
+    // estiver aberta nesta firma (openFD preserva _fdState, entao a selecao do usuario nao muda).
+    loadFirmOverlayData(id).then(() => {
+      if (_fdCurrent === id && window.innerWidth >= 769 && FIRM_ABOUT[id]) openFD(id, f);
+    });
   }
   // Desktop: fullscreen overlay premium | Mobile: drawer lateral
   if (window.innerWidth >= 769 && FIRM_ABOUT[id]) {
