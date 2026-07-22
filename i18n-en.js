@@ -12,3 +12,4 @@ Object.assign(window.I18N.en,{"cem_code_label": "Enter your 6-digit code", "cem_
 Object.assign(window.I18N.en,{"signup_marketing_label": "I want to receive exclusive coupons and offers by email (+1 giveaway entry)"});
 
 Object.assign(window.I18N.en,{"aw_dia": "day", "aw_dias": "days", "aw_todas": "All firms, ranked by rating"});
+Object.assign(window.I18N.en,{"lg_title": "Legacy Accounts", "lg_pill": "LIMITED TIME", "lg_popular": "POPULAR", "lg_cta": "View Legacy Accounts", "lg_sub": "Monthly · 90% off 1st month, 80% after · with MARKET · PA activation $125 till Aug 11"});

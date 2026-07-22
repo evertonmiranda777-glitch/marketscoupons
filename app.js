@@ -3724,6 +3724,31 @@ function fdRenderRight(id, f) {
     }
   }
 
+  // LEGACY (bloco ISOLADO aprovado v3, 22/jul): card proprio entre preco e cupom.
+  // NAO esta em detail_types de proposito -> nunca entra no seletor 4-dim.
+  // KILL-SWITCH: remover a chave 'Legacy' do detail_plans no cms_firms = o card some, zero efeito no resto.
+  if (fa.plans && Array.isArray(fa.plans.Legacy) && fa.plans.Legacy.length) {
+    const _lgPills = fa.plans.Legacy.map(p=>{
+      const _pop = p.pop || p.s==='100K';
+      const _bd = _pop ? f.color : 'rgba(255,255,255,.09)';
+      const _bg = _pop ? f.color+'14' : 'rgba(255,255,255,.03)';
+      return `<div style="position:relative;flex:1 1 30%;min-width:88px;background:${_bg};border:1.5px solid ${_bd};border-radius:11px;padding:11px 8px;text-align:center;">
+        ${_pop?`<span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:${f.color};color:#0d141c;font-size:9px;font-weight:800;letter-spacing:.5px;border-radius:99px;padding:2px 8px;white-space:nowrap;">${_tt('lg_popular','POPULAR')}</span>`:''}
+        <div style="font-size:14px;font-weight:800;color:var(--t1);">${p.s}</div>
+        <div style="font-size:12px;font-weight:800;color:${f.color};margin-top:2px;">${p.d}<span style="font-size:9px;color:var(--t3);">/mo</span></div>
+        ${p.o?`<div style="font-size:9.5px;color:var(--t3);text-decoration:line-through;">${p.o}</div>`:''}</div>`;
+    }).join('');
+    h += `<div class="fd-legacy" style="background:var(--card);border:1px solid ${f.color}44;border-radius:12px;padding:16px;margin:14px 0;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <b style="font-size:14px;color:var(--t1);">${_tt('lg_title','Legacy Accounts')}</b>
+        <span style="font-size:9px;font-weight:800;letter-spacing:.5px;color:${f.color};background:${f.color}1A;border:1px solid ${f.color}55;border-radius:99px;padding:2px 8px;">${_tt('lg_pill','LIMITED TIME')}</span>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:12px;">${_tt('lg_sub','Monthly · 90% off 1st month, 80% after · with MARKET · PA activation $125 till Aug 11')}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:13px;">${_lgPills}</div>
+      <button style="width:100%;background:linear-gradient(135deg,${f.color},#fb923c);color:#0d141c;border:none;border-radius:11px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;" onclick="fdGo('${id}')">${_tt('lg_cta','View Legacy Accounts')} &#8594;</button>
+    </div>`;
+  }
+
   // Promo countdown (if active)
   h += promoTimerPill(f);
 

@@ -12,3 +12,4 @@ Object.assign(window.I18N.id,{"cem_code_label": "Masukkan kode 6 digit kamu", "c
 Object.assign(window.I18N.id,{"signup_marketing_label": "Saya ingin menerima kupon dan penawaran eksklusif lewat email (+1 tiket giveaway)"});
 
 Object.assign(window.I18N.id,{"aw_dia": "hari", "aw_dias": "hari", "aw_todas": "Semua firm, menurut rating"});
+Object.assign(window.I18N.id,{"lg_title": "Akun Legacy", "lg_pill": "WAKTU TERBATAS", "lg_popular": "POPULER", "lg_cta": "Lihat Akun Legacy", "lg_sub": "Bulanan · 90% off bulan pertama, 80% setelahnya · dengan MARKET · aktivasi PA $125 s/d 11 Agu"});

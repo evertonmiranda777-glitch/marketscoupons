@@ -12,3 +12,4 @@ Object.assign(window.I18N.it,{"cem_code_label": "Inserisci il tuo codice a 6 cif
 Object.assign(window.I18N.it,{"signup_marketing_label": "Voglio ricevere coupon e offerte esclusive via email (+1 biglietto per il giveaway)"});
 
 Object.assign(window.I18N.it,{"aw_dia": "giorno", "aw_dias": "giorni", "aw_todas": "Tutte le firm, per valutazione"});
+Object.assign(window.I18N.it,{"lg_title": "Account Legacy", "lg_pill": "TEMPO LIMITATO", "lg_popular": "POPOLARE", "lg_cta": "Vedi account Legacy", "lg_sub": "Mensile · 90% off il 1º mese, 80% dopo · con MARKET · attivazione PA $125 fino all'11 ago"});

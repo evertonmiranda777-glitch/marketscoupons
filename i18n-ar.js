@@ -12,3 +12,4 @@ Object.assign(window.I18N.ar,{"cem_code_label": "أدخل رمزك المكوّ�
 Object.assign(window.I18N.ar,{"signup_marketing_label": "أريد تلقي كوبونات وعروض حصرية عبر البريد الإلكتروني (+فرصة إضافية في السحب)"});
 
 Object.assign(window.I18N.ar,{"aw_dia": "يوم", "aw_dias": "أيام", "aw_todas": "كل الشركات، حسب التقييم"});
+Object.assign(window.I18N.ar,{"lg_title": "حسابات Legacy", "lg_pill": "لوقت محدود", "lg_popular": "الأكثر رواجاً", "lg_cta": "عرض حسابات Legacy", "lg_sub": "شهري · خصم 90% للشهر الأول و80% بعده · مع MARKET · تفعيل PA بـ125$ حتى 11 أغسطس"});
