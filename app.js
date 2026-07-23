@@ -3104,7 +3104,7 @@ const ACTIVATION_FEE = {
   'bulenox':{fee:143, amount:'$143–$898 (Master, one-time)'},
   'toponefutures':{fee:19, amount:'$19 (Elite Daily / Access)'},
   'e2t':{fee:139, amount:'$139 (charged only on your 1st payout)'},
-  'apex':{fee:69, amount:'Standard one-time: 25K $69 / 50K $79 / 100K $99 / 150K $129 — or choose the No Activation Fee variant'},
+  'apex':{fee:69, amount:'Standard PA activation (one-time) — Intraday: 25K $69 / 50K $79 / 100K $99 / 150K $129 · EOD: 25K $99 / 50K $129 / 100K $139 / 150K $159 · Legacy $125 — or pick the No Activation Fee variant'},
   'goat':{fee:99, amount:'$99 regular, currently $0 on EOD plans (promo)'}
 };
 function activationSelo(f){
