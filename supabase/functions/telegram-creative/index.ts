@@ -29,7 +29,7 @@ const SCHEDULE: Record<string, Slot[]> = {
 
 function slotForHour(utcHour: number): number { if (utcHour >= 11 && utcHour < 15) return 0; if (utcHour >= 15 && utcHour < 19) return 1; if (utcHour >= 19 && utcHour < 23) return 2; return 3; }
 
-const COUPONS: Record<string, string | null> = { apex: "MARKET", bulenox: "MARKET89", toponefutures: "MARKET", aquafutures: "AQUA", blueberryfutures: "MARKET-7652C", goat: "MARKET", tradeday: "MARKETS", e2t: "MARKETSCOUPONS", fn: "MARKET", blueguardian: "MARKET", cti: "ADHA30", futureselite: null, brightfunded: "CLNLTPxtT4Sok0PzHaRIIQ", alphafutures: "MARKETS026158", fundingpips: null, ftmo: null, e8: "MARKET", the5ers: "MARKET", "funded-futures-family": "MARKET" };
+const COUPONS: Record<string, string | null> = { apex: "MARKET", bulenox: "MARKET89", toponefutures: "MARKET", aquafutures: "AQUA", blueberryfutures: "MARKET-7652C", goat: "MARKET", tradeday: "MARKETS", e2t: "MARKETSCOUPONS", fn: "MARKET", blueguardian: "MARKET", cti: null, futureselite: null, brightfunded: "CLNLTPxtT4Sok0PzHaRIIQ", alphafutures: "MARKETS026158", fundingpips: null, ftmo: null, e8: "MARKET", the5ers: "MARKET", "funded-futures-family": "MARKET" };
 
 async function renderCreativePngWithRetry(firmId: string, format = "feed", lang = "en"): Promise<Uint8Array | { error: string }> {
   if (!AUTO_TOKEN) return { error: "missing_automation_api_token" };
@@ -73,10 +73,13 @@ function buildCaption(slot: Slot, prefix?: string, live?: { discount?: number; c
   const note = hasLive && live!.disc_note ? ` (${live!.disc_note})` : "";
   const lines: string[] = [];
   if (prefix) lines.push(prefix, "");
-  lines.push(`<b>${slot.name} — ${off}% OFF${note}</b>`, "");
+  // Sem desconto (0/null) = firma sem promo (ex CTI): NAO escrever "0% OFF" (feio/falso), usar "Exclusive deal".
+  const headline = (typeof off === "number" && off > 0) ? `${off}% OFF` : "Exclusive deal";
+  lines.push(`<b>${slot.name} — ${headline}${note}</b>`, "");
   if (coupon) lines.push(`Exclusive coupon: <code>${coupon}</code>`);
   else lines.push(`Discount applied automatically via the link.`);
-  lines.push("", `Applied directly at checkout. Coupon verified today.`);
+  // "Coupon verified today" so faz sentido quando ha cupom.
+  lines.push("", coupon ? `Applied directly at checkout. Coupon verified today.` : `Applied directly at checkout.`);
   return lines.join("\n");
 }
 
