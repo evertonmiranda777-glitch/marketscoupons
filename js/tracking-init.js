@@ -27,7 +27,14 @@ window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
     var j = document.createElement('script');
     j.async = true;
     j.src = 'https://www.googletagmanager.com/gtm.js?id=' + GTM_ID;
-    f.parentNode.insertBefore(j, f);
+    // Robustez: se nao houver <script> no DOM (caso raro que estourava
+    // "Cannot read properties of undefined (reading 'parentNode')" no Sentry),
+    // cai pro <head>/<html> que sempre existem.
+    if (f && f.parentNode) {
+      f.parentNode.insertBefore(j, f);
+    } else {
+      (document.head || document.documentElement).appendChild(j);
+    }
     ['touchstart','scroll','click','keydown'].forEach(function(e){
       try { window.removeEventListener(e, onInteract, true); } catch(_){}
     });
