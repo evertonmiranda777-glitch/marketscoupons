@@ -127,6 +127,39 @@ const LANG_NAMES = {
   ar: 'Arabic',
 };
 
+// KB profunda por firma: guardada em cms_firms.kb (o frontend NAO seleciona essa coluna = zero egress).
+// O Max puxa SO a KB da firma que o usuario perguntou, sob demanda (Gemini Flash = 1M contexto, gratis).
+const FIRM_KB_ALIASES = {
+  apex: ['apex'], bulenox: ['bulenox'], e8: ['e8 ', 'e8 markets', 'e8futures', 'e8 futures'],
+  the5ers: ['the5ers', '5ers', '5%ers', 'the 5ers', 'five percent', '5%'],
+  fn: ['fundednext', 'funded next'], 'funded-futures-family': ['funded futures family', 'fff'],
+  tradeday: ['tradeday', 'trade day'], aquafutures: ['aqua futures', 'aquafunded', 'aqua'],
+  blueberryfutures: ['blueberry'], goat: ['goat'], e2t: ['earn2trade', 'earn 2 trade', 'e2t', 'gauntlet'],
+  blueguardian: ['blue guardian', 'blueguardian'], cti: ['city traders imperium', 'cti', 'imperium'],
+  futureselite: ['futures elite'], brightfunded: ['brightfunded', 'bright funded'],
+  alphafutures: ['alpha futures'], fundingpips: ['fundingpips', 'funding pips'],
+  ftmo: ['ftmo'], toponefutures: ['top one', 'toponefutures', 'topone'],
+};
+async function getFirmKB(userMsg) {
+  try {
+    const low = String(userMsg || '').toLowerCase();
+    const hits = [];
+    for (const id in FIRM_KB_ALIASES) {
+      if (FIRM_KB_ALIASES[id].some(function (a) { return low.indexOf(a) > -1; })) hits.push(id);
+      if (hits.length >= 2) break;
+    }
+    if (!hits.length) return '';
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/cms_firms?id=in.(${hits.join(',')})&select=id,kb`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+    });
+    if (!r.ok) return '';
+    const rows = await r.json();
+    const blocks = (rows || []).filter(function (x) { return x.kb; }).map(function (x) { return `### ${String(x.id).toUpperCase()} — DEEP KB\n${String(x.kb).slice(0, 12000)}`; });
+    if (!blocks.length) return '';
+    return `\n\nDEEP FIRM KNOWLEDGE (authoritative, pulled live from our firm database for the firm the user is asking about; trust this over the short summaries above; if a specific detail is NOT in here, say you would rather confirm than invent a number):\n\n${blocks.join('\n\n')}`;
+  } catch (e) { return ''; }
+}
+
 const BOT_SYSTEM = `You are Max, the mascot and assistant of Markets Coupons, a global prop firm coupon and comparison platform.
 
 VOICE (critical):
@@ -2029,6 +2062,9 @@ module.exports = async (req, res) => {
   if (safeGeo) systemText += `${safeName ? '' : '\n\nUSER CONTEXT:'}\n- Location (from IP): ${safeGeo}. Use only if relevant (e.g. payment methods, timezone for events). Never mention IP tracking.`;
   const promoBlock = await getLivePromoBlock();
   if (promoBlock) systemText += promoBlock;
+  const lastUserMsg = (messages.slice().reverse().find(function (m) { return m.role !== 'assistant'; }) || {}).content || '';
+  const kbBlock = await getFirmKB(lastUserMsg);
+  if (kbBlock) systemText += kbBlock;
   systemText += `\n\nRespond in ${langName}. If the user writes in a different language, switch to theirs. NEVER cut off mid-sentence, always finish your complete answer.`;
 
   const contents = messages.slice(-20).map(m => ({
