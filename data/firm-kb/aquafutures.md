@@ -1,0 +1,34 @@
+# Aqua Futures — deep KB
+
+> Fonte viva: cms_firms.kb (id=aquafutures). O Max puxa isto sob demanda.
+
+AQUAFUTURES (aquafutures.io) — deep knowledge (official site, 2026-07-23). Futures-only prop firm, Dubai UAE (Aqua Funded FZCO), founded 2023. Part of the "AquaFunds" group (sister brand aquafunded.com is Forex/CFD, separate). Futures on CME/COMEX/NYMEX/CBOT only — no stocks, options, forex or crypto. Platforms: Tradovate, NinjaTrader, DeepCharts (Volumetrica, DXFeed), TradingView.
+
+COUPON: our exclusive code is AQUA = 60% OFF (applied via our link/code). The site also runs a public "WORLDCUP" 60% promo, but push AQUA so the sale credits us. NO ACTIVATION FEE on any account. NO paid reset (fail = buy a new account). One-time fee (not a recurring card charge), except: traders with more than 3 active funded accounts pay a monthly subscription per extra account, and unclaimed 30-day giveaway accounts start charging monthly (amounts not published).
+
+MODELS: "One Step" (1-phase evaluation) has 3 types — Beginner, Standard, Flex. "Instant" (funded immediately, no eval) has 2 types — Standard, Pro. Platform (Tradovate or DeepCharts) chosen at purchase. Max 3 funded accounts active at once (extras go on hold); total capital cap $450K (3x $150K, the largest single size).
+
+PRICES (regular -> with 60% off):
+- One Step BEGINNER: 25K $125->$50 | 50K $163->$65 | 100K $312->$125 | 150K $462->$185.
+- One Step STANDARD: 25K $175->$70 | 50K $200->$80 | 100K $325->$130 | 150K $550->$220.
+- One Step FLEX (new): 50K $200->$80 | 100K $325->$130 | 150K $600->$240.
+- INSTANT STANDARD: 50K $615->$246 | 100K $765->$306.
+- INSTANT PRO: 50K $572->$229 | 100K $672->$269.
+
+ACCOUNT PARAMETERS (target / max drawdown / daily loss / max position / consistency / reward split / reward cap):
+- BEGINNER (EOD drawdown, weekly rewards): 25K target $1,500, DD $1,000, daily loss $600, 1 contract, 40% consistency, split 100% up to $15k lifetime then 90%, cap $750. 50K $3,000 / $2,500 / $1,250 / 3 / 40% / cap $1,500. 100K $6,000 / $3,500 / $2,500 / 6 / cap $3,000. 150K $9,000 / $5,000 / $3,750 / 9 / cap $4,500.
+- STANDARD (EOD, NO daily loss, rewards On-Demand, 90% fixed split): 25K target $1,250, DD $1,000, 2 contracts, no consistency in eval / 40% funded, cap $850. 50K $3,000 / $2,000 / 4 / cap $1,500. 100K $6,000 / $3,500 / 6 / cap $2,000. 150K $9,000 / $5,000 / 10 / cap $3,000.
+- FLEX (EOD, NO daily loss, On-Demand, 40% consistency in eval only, no safety-net balance target): 50K target $2,500, DD $1,500, 2 contracts, cap 50% of profit up to $1,500. 100K $5,000 / $2,500 / 4 / cap up to $2,500. 150K $7,000 / $3,500 / 6 / cap up to $3,500. Split shown as 80% (Help Center) vs 100% (site widget) — a known conflict; treat 80% as the documented rule and say you'd confirm at checkout if asked.
+- INSTANT STANDARD (EOD, weekly rewards, split 100% to $15k lifetime then 90%): 50K no target, DD $2,500 (widget says $2,000/4%), daily loss $1,250 hard breach, 3 contracts, 20% consistency. 100K DD $3,500 (widget $3,000/3%), daily loss $2,500, 6 contracts, 20%.
+- INSTANT PRO (Trailing/intraday drawdown real-time, split 100% to $15k then 90%): 50K no target, DD $2,500 (widget $2,000), NO daily loss, 3 contracts, 15% consistency. 100K DD $3,500 (widget $3,000), 6 contracts, 15%.
+Drawdown: EOD follows previous day's close (highest recorded), locks at initial + $100. Instant Pro trailing follows real-time equity, locks at initial + $100. Daily loss = hard breach (instant fail) where it exists (Beginner, Instant Standard).
+
+EVALUATION: no minimum trading days, no maximum days. Consistency formula = biggest profit day / total profit. Contract scaling only on FUNDED accounts (more contracts as profit grows). "Rapid Review Guarantee": review within 24 business hours of hitting target. Market hours Sun 22:00 UTC to Fri 20:10 UTC (auto-close at close, not a violation). 2% CME price-limit rule (can't hold within 2% of a price limit).
+
+FUNDED / PAYOUTS: first payout needs winning days (Beginner/Standard/Flex = 5; Instant = 7), a min daily profit, meeting consistency, biggest loss must not exceed biggest win, and (except Flex/Instant) a stepped % target per payout cycle (e.g. Beginner 7% first payout, 6% second, 5% from third). Payout frequency: Beginner & Instant every 7 days; Standard & Flex On-Demand. Min withdrawal $250 (Beginner/Instant) or $500 (Standard/Flex). Processed within 24 business hours (Mon-Fri 8am-4pm CT), $500 bonus if they miss the deadline (Reward Guarantee). $35 processing fee, charged only on the FIRST approved payout of each calendar month. Payouts via Riseworks (bank, crypto for under $1,000 case-by-case, local methods). Evaluation fee is REFUNDED automatically after your 4th successful profit-split payout as a funded trader (no refund for quitting or failing). Chargeback dispute = account suspended.
+
+RULES: news trading allowed but not as your only method; no trades within 2 min before/after Tier-1 news. Overnight allowed (market-hours limited). Copy trading only between your OWN accounts. Fully automated bots/EAs PROHIBITED; semi-automated allowed if you supervise. HFT capped at max 100 trades/day. Hedging prohibited (across your own accounts, between people, and mini/micro same-asset). Martingale allowed within risk rules. Scalping allowed but NO microscalping: >=50% of trades must last over 1 minute, >=50% of profit from >1-min trades, average risk/reward above 0.3RR. Swing allowed. VPN/VPS allowed EXCEPT during KYC or checkout. Multi-device and multiple accounts under one name allowed if traded independently (not copied by someone else). Paying with a card not in your own name = ban + no refund. Account sharing = termination.
+
+KYC/AML: required on the FIRST reward request (evaluation accounts KYC on pass; Instant accounts KYC only at first withdrawal). One verified profile per person. Via Veriff: photo ID (passport/national ID/driver's license) + live selfie/video + proof of address dated within 3 months. Ongoing daily document + sanctions monitoring. Min age 18. AML screening (OFAC/UN/HMT/EU sanctions, PEP, adverse media); the 3rd-party processor's decision is final.
+RESTRICTED COUNTRIES include: China, Russia, Pakistan, Indonesia, Philippines, Hong Kong, Turkey, South Africa, Ukraine, Iran, Nigeria (Nigeria can trade but must pay via crypto), and many more. Assets: equity ES/MES/NQ/MNQ/RTY/M2K/YM/MYM/EMD/NKD/MBT/MET; FX futures 6A/6B/6C/6E/6J/6S/6M/6N + micros; energy CL/MCL/QM/NG/QG/RB/HO; metals GC/MGC/SI/SIL/HG/MHG/PL/PA; grains ZC/ZW/ZS/ZM/ZL; rates ZT/ZF/ZN/ZB/UB/TN; livestock LE/HE/GF. Rewards points program: $1 spent = 1 point, redeemable for free Instant accounts.
+
