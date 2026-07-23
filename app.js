@@ -3405,31 +3405,48 @@ const _firmIdToSlug = {};
 const _overlayLoaded = {};
 async function loadFirmOverlayData(id) {
   if (_overlayLoaded[id]) return;
+  // 🟢 EGRESS (Free tier, 22/jul): cache do detalhe por firma (about_html e' HTML grande e as
+  // paginas de firma sao ~48% do trafego). Se o cache tem < 6h, popula da memoria e NAO busca.
+  try {
+    const _c = localStorage.getItem('mc_overlay_'+id);
+    if (_c) {
+      const o = JSON.parse(_c);
+      if (o && o._ts && (Date.now()-o._ts) < 6*3600*1000 && o.d) {
+        _applyOverlayData(id, o.d);
+        _overlayLoaded[id] = true;
+        return; // zero egress
+      }
+    }
+  } catch(_){}
   try {
     const { data } = await db.from('cms_firms')
       .select('id,bg_image,about_html,about_highlights,detail_types,detail_plans,detail_includes')
       .eq('id', id).maybeSingle();
     if (data) {
-      if (data.bg_image) FIRM_BG[id] = data.bg_image;
-      if (data.about_html || data.detail_plans) {
-        const _plansObj = data.detail_plans || FIRM_ABOUT[id]?.plans || {};
-        let _types = Array.isArray(data.detail_types) ? data.detail_types : (FIRM_ABOUT[id]?.types || []);
-        // Blindagem: só mostra tipo que tem plano de verdade (senão a pill abre vazia, sem preço).
-        // Se NENHUM tipo declarado bate com as chaves de planos (dado desalinhado, ex: alphafutures),
-        // usa as próprias chaves dos planos como tipos. Não inventa preço, só alinha o rótulo ao dado.
-        const _valid = _types.filter(tp => Array.isArray(_plansObj[tp]) && _plansObj[tp].length);
-        _types = _valid.length ? _valid : Object.keys(_plansObj);
-        FIRM_ABOUT[id] = {
-          about: data.about_html || FIRM_ABOUT[id]?.about || '',
-          highlights: data.about_highlights || FIRM_ABOUT[id]?.highlights || [],
-          types: _types,
-          plans: _plansObj,
-          includes: Array.isArray(data.detail_includes) ? data.detail_includes : FIRM_ABOUT[id]?.includes || [],
-        };
-      }
+      try { localStorage.setItem('mc_overlay_'+id, JSON.stringify({_ts:Date.now(), d:data})); } catch(_){}
+      _applyOverlayData(id, data);
       _overlayLoaded[id] = true;
     }
   } catch(e) { console.warn('[MC] Overlay data load failed for', id); }
+}
+// Mapeia o dado do detalhe (do banco OU do cache) pra FIRM_ABOUT/FIRM_BG. Usado pelos 2 caminhos.
+function _applyOverlayData(id, data){
+  if (!data) return;
+  if (data.bg_image) FIRM_BG[id] = data.bg_image;
+  if (data.about_html || data.detail_plans) {
+    const _plansObj = data.detail_plans || FIRM_ABOUT[id]?.plans || {};
+    let _types = Array.isArray(data.detail_types) ? data.detail_types : (FIRM_ABOUT[id]?.types || []);
+    // Blindagem: só mostra tipo que tem plano de verdade (senão a pill abre vazia, sem preço).
+    const _valid = _types.filter(tp => Array.isArray(_plansObj[tp]) && _plansObj[tp].length);
+    _types = _valid.length ? _valid : Object.keys(_plansObj);
+    FIRM_ABOUT[id] = {
+      about: data.about_html || FIRM_ABOUT[id]?.about || '',
+      highlights: data.about_highlights || FIRM_ABOUT[id]?.highlights || [],
+      types: _types,
+      plans: _plansObj,
+      includes: Array.isArray(data.detail_includes) ? data.detail_includes : FIRM_ABOUT[id]?.includes || [],
+    };
+  }
 }
 
 // ─── A/B TEST: default size na pill de planos ───
@@ -4698,8 +4715,19 @@ CHECKOUT_FIRMS.forEach(f=>{achActiveType[f.id]=f.types[0];achState[f.id]={};_ach
 /* ── SUPABASE: Load firms dynamically (overwrites hardcoded arrays) ── */
 async function loadFirmsFromSupabase() {
   try {
+    // 🟢 EGRESS (Free tier 5GB, 22/jul): cache-first. Se o cache tem < 6h, NAO busca o cms_firms
+    // do banco (antes baixava o dataset inteiro em TODA pagina de TODO visitante = a maior fonte
+    // de banda). Dado de firma muda raro; quando o Everton atualiza preco, chega em <=6h pra quem
+    // ja tem cache (e na hora pra visitante novo/aba anonima). Deploy com ?v= tambem fura o cache.
+    try {
+      const _ts = parseInt(localStorage.getItem('mc_firms_ts')||'0',10);
+      if (FIRMS.length && _ts && (Date.now()-_ts) < 6*3600*1000) {
+        try { document.dispatchEvent(new CustomEvent('mc:firms-loaded',{detail:{count:FIRMS.length,cached:true}})); } catch(_){}
+        return; // usa o cache ja carregado no boot, zero egress
+      }
+    } catch(_){}
     const { data, error } = await db.from('cms_firms')
-      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,trustpilot_status,sort_order,badge,news_trading,day1_payout,short_name,checkout_types,checkout_platforms,checkout_plans,checkout_url_template,checkout_includes,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,disc_note,internal_rating,internal_reviews_count')
+      .select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,trustpilot_status,sort_order,badge,news_trading,day1_payout,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,disc_note,internal_rating,internal_reviews_count')
       .eq('active', true)
       .order('sort_order', { ascending: true });
     if (error || !data || !data.length) {
@@ -4788,7 +4816,7 @@ async function loadFirmsFromSupabase() {
     initCmp();
 
     // Cache firms in localStorage for offline fallback
-    try { localStorage.setItem('mc_firms_cache_v13', JSON.stringify(FIRMS)); } catch(e){}
+    try { localStorage.setItem('mc_firms_cache_v13', JSON.stringify(FIRMS)); localStorage.setItem('mc_firms_ts', String(Date.now())); } catch(e){}
 
     // Retry opening firm overlay if dedicated page loaded before FIRMS arrived
     if(window._dedicatedFirmSlug && !document.getElementById('fd-overlay')?.classList.contains('show') && !document.getElementById('drw')?.classList.contains('open')){
