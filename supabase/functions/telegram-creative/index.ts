@@ -29,7 +29,7 @@ const SCHEDULE: Record<string, Slot[]> = {
 
 function slotForHour(utcHour: number): number { if (utcHour >= 11 && utcHour < 15) return 0; if (utcHour >= 15 && utcHour < 19) return 1; if (utcHour >= 19 && utcHour < 23) return 2; return 3; }
 
-const COUPONS: Record<string, string | null> = { apex: "MARKET", bulenox: "MARKET89", toponefutures: "MARKET", aquafutures: "AQUA", blueberryfutures: "MARKET-7652C", goat: "MARKET", tradeday: "MARKETS", e2t: "MARKETSCOUPONS", fn: "MARKET", blueguardian: "MARKET", cti: null, futureselite: null, brightfunded: "CLNLTPxtT4Sok0PzHaRIIQ", alphafutures: "MARKETS026158", fundingpips: null, ftmo: null, e8: "MARKET", the5ers: "MARKET", "funded-futures-family": "MARKET" };
+const COUPONS: Record<string, string | null> = { apex: "MARKET", bulenox: "MARKET89", toponefutures: "MARKET", aquafutures: "AQUA", blueberryfutures: "MARKET-7652C", goat: "MARKET", tradeday: "MARKETS", e2t: "MARKETSCOUPONS", fn: "MARKET", blueguardian: "MARKET", cti: null, futureselite: null, brightfunded: "CLNLTPxtT4Sok0PzHaRIIQ", alphafutures: "MARKETS026158", fundingpips: null, ftmo: null, e8: "E8", the5ers: "MARKET", "funded-futures-family": "MARKET" };
 
 async function renderCreativePngWithRetry(firmId: string, format = "feed", lang = "en"): Promise<Uint8Array | { error: string }> {
   if (!AUTO_TOKEN) return { error: "missing_automation_api_token" };
