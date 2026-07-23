@@ -115,6 +115,7 @@ h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;
   var clipboardOk = null;
 
   function trackGo(event, extra){
+    return; // events DB DESLIGADO (fix 522 cronico: escrita satura o compute). Religar: remover este return.
     try {
       var params = {
         firm_name: firmName,
