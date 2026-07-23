@@ -604,7 +604,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 .modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus,.fm-sec input:focus,.fm-sec select:focus,.fm-sec textarea:focus{border-color:var(--gold);}
 .modal-full{grid-column:1/-1;}
 </style>
-<script src="/js/tracking-init.js?v=20260519"></script>
+<script src="/js/tracking-init.js?v=20260722"></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJGTVX8G" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -1784,8 +1784,9 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
       <style>@keyframes goPulse{0%,100%{opacity:.4;transform:scale(.85)}50%{opacity:1;transform:scale(1.1)}}</style>
       <!-- Funil unificado -->
       <div class="chart-card" style="margin-bottom:20px;">
-        <div class="cc-hd"><div><div class="cc-title">Funil de Conversão (Supabase, Fonte Primária)</div><div class="cc-sub" id="trk-period-label">Últimos 14 dias</div></div></div>
-        <div id="trk-funnel" style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;"></div>
+        <div class="cc-hd"><div><div class="cc-title">Funil de Conversão (híbrido GA4 + coupon_clicks)</div><div class="cc-sub" id="trk-period-label">Últimos 14 dias</div></div></div>
+        <div id="trk-funnel" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;"></div>
+        <div id="trk-funnel-note" style="margin-top:12px;padding:10px 12px;background:rgba(66,133,244,.06);border:1px solid rgba(66,133,244,.18);border-radius:8px;font-size:11px;line-height:1.5;color:var(--t2);"></div>
       </div>
 
       <!-- Performance do Redirect (firm_redirect_unload), fast / slow / abandoned por firma -->
@@ -1823,7 +1824,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
       <!-- Funil por fonte -->
       <div class="chart-card" style="margin-bottom:20px;">
-        <div class="cc-hd"><div class="cc-title">Funil por Fonte de Tráfego</div></div>
+        <div class="cc-hd"><div><div class="cc-title">Funil por Fonte de Tráfego</div><div class="cc-sub">Cliques de cupom + visitantes únicos por utm_source (coupon_clicks)</div></div></div>
         <div class="data-table-wrap"><table class="data-table" id="trk-source-funnel"></table></div>
       </div>
 
@@ -1846,7 +1847,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
       <!-- Heatmap de horários -->
       <div class="chart-card" style="margin-bottom:20px;">
-        <div class="cc-hd"><div><div class="cc-title">Atividade por Horário</div><div class="cc-sub">Quando seus visitantes mais interagem</div></div></div>
+        <div class="cc-hd"><div><div class="cc-title">Atividade por Horário <span style="font-size:10px;font-weight:700;color:var(--gold);background:var(--gbg);padding:1px 6px;border-radius:4px;vertical-align:middle;">BRT</span></div><div class="cc-sub">Cliques de cupom por hora (fuso Brasília)</div></div></div>
         <div id="trk-heatmap" style="display:grid;grid-template-columns:repeat(24,1fr);gap:2px;padding:8px 0;"></div>
         <div style="display:flex;justify-content:space-between;padding:0 2px;margin-top:4px;">
           <span style="font-size:9px;color:var(--t3);">0h</span><span style="font-size:9px;color:var(--t3);">6h</span><span style="font-size:9px;color:var(--t3);">12h</span><span style="font-size:9px;color:var(--t3);">18h</span><span style="font-size:9px;color:var(--t3);">23h</span>
@@ -1915,7 +1916,7 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
 
       <!-- Top firmas por conversão -->
       <div class="chart-card" style="margin-bottom:20px;">
-        <div class="cc-hd"><div class="cc-title">Ranking de Firmas, Funil Completo</div></div>
+        <div class="cc-hd"><div><div class="cc-title">Ranking de Firmas, Funil Cliques→Venda</div><div class="cc-sub">Cliques de cupom (coupon_clicks) + vendas reais (conversões aprovadas)</div></div></div>
         <div class="data-table-wrap"><table class="data-table" id="trk-firms-rank"></table></div>
       </div>
 
@@ -6151,6 +6152,7 @@ async function fetchGA4Geo(){
 
 function renderGA4Data(d,days){
  const el=id=>document.getElementById(id);
+ if(window._renderTrkFunnel) window._renderTrkFunnel(); // atualiza o topo do funil híbrido (visitantes GA4)
  const t=d.totals||{};
  const fmt=n=>(n||0).toLocaleString('pt-BR');
  const pct=n=>((n||0)*100).toFixed(1)+'%';
@@ -12849,7 +12851,7 @@ Retorne APENAS um JSON valido com esta estrutura exata, sem markdown, sem explic
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-5',
         max_tokens: 2000,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -12970,7 +12972,7 @@ Retorne APENAS JSON válido, sem markdown, sem explicações:
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-5',
         max_tokens: 2000,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -13439,6 +13441,13 @@ async function renderTrackingPage(){
   const { data: ccData } = await ccQ;
   const cc = ccData || [];
 
+  // Vendas reais por firma (affiliate_conversions, status approved) pra fechar o funil cliques→venda.
+  // amount = comissão (não bruto), conforme finance-sync.
+  let convQ = db.from('affiliate_conversions').select('firm_id,amount,status,created_at').eq('status','approved').gte('created_at', cutoff).limit(5000);
+  if (globalDateEnd) convQ = convQ.lte('created_at', globalDateEnd);
+  const { data: convData } = await convQ;
+  const conv = convData || [];
+
   const ec = (name) => ev.filter(e => e.event === name).length;
   const ecToday = (name) => ev.filter(e => e.event === name && new Date(e.created_at).toDateString() === new Date().toDateString()).length;
 
@@ -13473,31 +13482,44 @@ async function renderTrackingPage(){
     <div class="stat-card"><div class="stat-lbl">Cliques em "Comprar"</div><div class="stat-val y">${ec('checkout_click')}</div><div class="stat-change">${ecToday('checkout_click')} hoje</div></div>
     <div class="stat-card"><div class="stat-lbl">Vendas Apex (real)</div><div class="stat-val" style="color:#22C55E;">${apexTx}</div><div class="stat-change">${apexTxToday} hoje · $${apexCommission.toFixed(2)} comissão</div></div>`;
 
-  // ── FUNNEL ──
-  const views = ec('page_view');
-  const signups = ec('user_signup');
-  const details = ec('firm_detail_open');
-  const coupons = ec('coupon_copy');
-  const checkouts = ec('checkout_click');
-  const steps = [
-    { code: 'PV', label: 'Page Views', val: views, color: 'var(--t1)' },
-    { code: 'SU', label: 'Cadastro', val: signups, color: '#A855F7' },
-    { code: 'FD', label: 'Abriu Firma', val: details, color: '#3B82F6' },
-    { code: 'CC', label: 'Copiou Cupom', val: coupons, color: 'var(--gold)' },
-    { code: 'CK', label: 'Clicou Comprar', val: checkouts, color: '#0EA5E9' },
-    { code: 'CV', label: 'Venda Apex (real)', val: apexTx, color: '#22C55E' },
-  ];
-  const maxVal = Math.max(...steps.map(s => s.val), 1);
-  document.getElementById('trk-funnel').innerHTML = steps.map((s, i) => {
-    const pct = (s.val / maxVal * 100).toFixed(0);
-    const convPrev = i > 0 && steps[i - 1].val > 0 ? ((s.val / steps[i - 1].val) * 100).toFixed(1) + '%' : '';
-    return `<div style="text-align:center;padding:16px 8px;position:relative;${i < steps.length - 1 ? 'border-right:1px solid var(--b1);' : ''}">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:6px;">${s.label}</div>
-      <div style="font-size:24px;font-weight:800;color:${s.color};">${s.val.toLocaleString('pt-BR')}</div>
-      <div style="margin:8px auto;width:60%;height:4px;background:rgba(255,255,255,.06);border-radius:2px;"><div style="height:100%;width:${pct}%;background:${s.color};border-radius:2px;"></div></div>
-      ${convPrev ? `<div style="font-size:10px;color:var(--t3);">${convPrev} conversão</div>` : '<div style="font-size:10px;color:var(--t3);">—</div>'}
-    </div>`;
-  }).join('');
+  // ── FUNNEL (híbrido GA4 + coupon_clicks + conversões) ──
+  // Cada estágio vem da fonte mais confiável: topo = GA4 (visitante deduplicado),
+  // meio = coupon_clicks (clique bruto de cupom), fundo = conversões reais aprovadas.
+  // Guarda os inputs de coupon_clicks/conv e re-renderiza quando o GA4 chegar (async).
+  window._trkFunnelInputs = {
+    ccClicks: cc.length,
+    salesTotal: conv.length,
+    commTotal: conv.reduce((s, c) => s + Number(c.amount || 0), 0),
+  };
+  window._renderTrkFunnel = function () {
+    const el = document.getElementById('trk-funnel');
+    const inp = window._trkFunnelInputs;
+    if (!el || !inp) return;
+    const ga4Users = window._ga4Cache?.totals?.users || 0;
+    const steps = [
+      { label: 'Visitantes (GA4)', val: ga4Users, color: '#4285F4', sub: ga4Users ? 'únicos, deduplicados' : 'carregar GA4 acima' },
+      { label: 'Cliques de Cupom', val: inp.ccClicks, color: 'var(--gold)', sub: 'coupon_clicks (bruto)' },
+      { label: 'Vendas', val: inp.salesTotal, color: '#22C55E', sub: '$' + inp.commTotal.toFixed(2) + ' comissão' },
+    ];
+    const maxVal = Math.max(...steps.map(s => s.val), 1);
+    el.innerHTML = steps.map((s, i) => {
+      const pct = (s.val / maxVal * 100).toFixed(0);
+      const convPrev = i > 0 && steps[i - 1].val > 0 ? ((s.val / steps[i - 1].val) * 100).toFixed(2) + '%' : '';
+      return `<div style="text-align:center;padding:16px 8px;position:relative;${i < steps.length - 1 ? 'border-right:1px solid var(--b1);' : ''}">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:6px;">${s.label}</div>
+        <div style="font-size:24px;font-weight:800;color:${s.color};">${s.val.toLocaleString('pt-BR')}</div>
+        <div style="margin:8px auto;width:60%;height:4px;background:rgba(255,255,255,.06);border-radius:2px;"><div style="height:100%;width:${pct}%;background:${s.color};border-radius:2px;"></div></div>
+        ${convPrev ? `<div style="font-size:10px;color:var(--t3);">${convPrev} do estágio anterior</div>` : `<div style="font-size:10px;color:var(--t3);">${s.sub}</div>`}
+      </div>`;
+    }).join('');
+    const noteEl = document.getElementById('trk-funnel-note');
+    if (noteEl) noteEl.innerHTML =
+      '<strong>Metodologia:</strong> este funil junta 3 fontes diferentes, então os números <strong>não batem 1:1</strong>. ' +
+      'O topo (Visitantes) vem do <strong>GA4</strong>, que conta visitante único deduplicado e usa o período do seletor do painel GA4 abaixo. ' +
+      'O meio (Cliques de Cupom) vem do <strong>coupon_clicks</strong> (clique bruto , um mesmo visitante pode clicar em vários cupons). ' +
+      'O fundo (Vendas) são <strong>conversões aprovadas atribuídas</strong>. Use cada estágio como leitura da sua própria fonte, não como razão exata entre eles.';
+  };
+  window._renderTrkFunnel();
 
   // ── REDIRECT PERFORMANCE (firm_redirect_unload) ──
   try {
@@ -13602,41 +13624,35 @@ async function renderTrackingPage(){
     mkChart('chart-trk-medium', 'doughnut', medK, medK.map(k => medMap[k]), colors);
   }, 100);
 
-  // ── SOURCE FUNNEL ──
+  // ── SOURCE FUNNEL (coupon_clicks: cliques + visitantes únicos por fonte) ──
   const srcFunnel = {};
-  ev.forEach(e => {
+  cc.forEach(e => {
     const raw = e.utm_source || '';
     const src = _normSource(raw) || 'direto';
-    if (!srcFunnel[src]) srcFunnel[src] = { views: 0, detail: 0, coupons: 0, checkout: 0, signup: 0, leads: 0 };
-    if (e.event === 'page_view') srcFunnel[src].views++;
-    if (e.event === 'firm_detail_open') srcFunnel[src].detail++;
-    if (e.event === 'coupon_copy') srcFunnel[src].coupons++;
-    if (e.event === 'checkout_click') srcFunnel[src].checkout++;
-    if (e.event === 'user_signup') srcFunnel[src].signup++;
-    if (e.event === 'tool_lead_capture' || e.event === 'calc_unlocked') srcFunnel[src].leads++;
+    if (!srcFunnel[src]) srcFunnel[src] = { clicks: 0, anons: new Set() };
+    srcFunnel[src].clicks++;
+    if (e.anon_id) srcFunnel[src].anons.add(e.anon_id);
   });
-  const srcArr = Object.entries(srcFunnel).sort((a, b) => b[1].views - a[1].views);
-  const _maxSrcViews = srcArr[0]?.[1]?.views || 1;
+  const srcArr = Object.entries(srcFunnel).map(([src, d]) => [src, { clicks: d.clicks, visitors: d.anons.size }]).sort((a, b) => b[1].clicks - a[1].clicks);
+  const _totalSrcClicks = srcArr.reduce((s, [, d]) => s + d.clicks, 0) || 1;
+  const _maxSrcClicks = srcArr[0]?.[1]?.clicks || 1;
   document.getElementById('trk-source-funnel').innerHTML = `
-    <thead><tr><th style="width:180px;">Fonte</th><th style="text-align:center;">Views</th><th style="text-align:center;">Detail</th><th style="text-align:center;">Cupom</th><th style="text-align:center;">Checkout</th><th style="text-align:center;">Cadastro</th><th style="text-align:center;">Leads</th><th style="text-align:center;">Conv.</th></tr></thead>
+    <thead><tr><th style="width:200px;">Fonte</th><th style="text-align:center;">Cliques de Cupom</th><th style="text-align:center;">Visitantes únicos</th><th style="text-align:center;">Cliques/Visitante</th><th style="text-align:center;">% dos Cliques</th></tr></thead>
     <tbody>${srcArr.slice(0, 12).map(([src, d]) => {
-      const conv = d.views > 0 ? ((d.checkout / d.views) * 100).toFixed(1) + '%' : '—';
-      const isBest = d.checkout === Math.max(...srcArr.map(s => s[1].checkout)) && d.checkout > 0;
+      const cpv = d.visitors > 0 ? (d.clicks / d.visitors).toFixed(2) : '—';
+      const share = ((d.clicks / _totalSrcClicks) * 100).toFixed(1) + '%';
       const info = src==='direto'?{label:'Direto / Orgânico',color:'var(--t2)',icon:'○',bg:'rgba(255,255,255,.06)'}:_srcInfo(src);
-      const barW = (d.views / _maxSrcViews * 100).toFixed(0);
+      const barW = (d.clicks / _maxSrcClicks * 100).toFixed(0);
       return `<tr>
         <td><div style="display:flex;align-items:center;gap:10px;">
           <div style="width:28px;height:28px;border-radius:7px;background:${info.bg};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:${info.color};flex-shrink:0;">${info.icon}</div>
           <div><div style="font-weight:700;font-size:12px;color:${info.color};">${info.label}</div>
           <div style="margin-top:2px;height:3px;width:70px;background:rgba(255,255,255,.06);border-radius:2px;"><div style="height:100%;width:${barW}%;background:${info.color};border-radius:2px;opacity:.5;"></div></div></div>
         </div></td>
-        <td style="text-align:center;font-weight:600;">${d.views}</td>
-        <td style="text-align:center;">${d.detail}</td>
-        <td style="text-align:center;color:var(--gold);font-weight:600;">${d.coupons}</td>
-        <td style="text-align:center;color:#22C55E;font-weight:700;">${d.checkout}</td>
-        <td style="text-align:center;color:#A855F7;font-weight:600;">${d.signup}</td>
-        <td style="text-align:center;color:#3B82F6;font-weight:600;">${d.leads}</td>
-        <td style="text-align:center;font-weight:700;${isBest ? 'color:#22C55E;' : ''}">${conv}</td>
+        <td style="text-align:center;color:var(--gold);font-weight:700;">${d.clicks}</td>
+        <td style="text-align:center;font-weight:600;">${d.visitors}</td>
+        <td style="text-align:center;color:var(--t2);">${cpv}</td>
+        <td style="text-align:center;font-weight:700;">${share}</td>
       </tr>`;
     }).join('')}</tbody>`;
 
@@ -13661,14 +13677,16 @@ async function renderTrackingPage(){
       </tr>`;
     }).join('')}</tbody>` : `<tbody><tr><td colspan="4" style="padding:32px;text-align:center;"><div style="color:var(--t3);font-size:13px;">Nenhum clique de cupom com utm_campaign no período</div></td></tr></tbody>`;
 
-  // ── HEATMAP HORÁRIOS ──
+  // ── HEATMAP HORÁRIOS (coupon_clicks: quando clicam no cupom) ──
+  // Fuso FIXO Brasília (America/Sao_Paulo), independente do dispositivo que abrir o admin.
   const hourCounts = new Array(24).fill(0);
-  ev.forEach(e => { const h = new Date(e.created_at).getHours(); hourCounts[h]++; });
+  const _brtHourFmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Sao_Paulo', hour: '2-digit', hour12: false });
+  cc.forEach(e => { const h = parseInt(_brtHourFmt.format(new Date(e.ts)), 10) % 24; hourCounts[h]++; });
   const maxHour = Math.max(...hourCounts, 1);
   document.getElementById('trk-heatmap').innerHTML = hourCounts.map((c, h) => {
     const intensity = c / maxHour;
     const bg = intensity > 0.7 ? '#22C55E' : intensity > 0.4 ? '#F0B429' : intensity > 0.1 ? 'rgba(240,180,41,.3)' : 'rgba(255,255,255,.06)';
-    return `<div style="text-align:center;padding:8px 2px;background:${bg};border-radius:4px;cursor:default;" title="${h}h: ${c} eventos">
+    return `<div style="text-align:center;padding:8px 2px;background:${bg};border-radius:4px;cursor:default;" title="${h}h BRT: ${c} cliques de cupom">
       <div style="font-size:9px;font-weight:700;color:${intensity > 0.4 ? '#000' : 'var(--t2)'};">${h}h</div>
       <div style="font-size:11px;font-weight:800;color:${intensity > 0.4 ? '#000' : 'var(--t1)'};">${c}</div>
     </div>`;
@@ -13747,39 +13765,44 @@ async function renderTrackingPage(){
       </tr>`;
     }).join('')}</tbody>`;
 
-  // ── FIRMS RANKING ──
+  // ── FIRMS RANKING (coupon_clicks + conversões reais) ──
+  // Funil vivo por firma: Cliques de cupom (coupon_clicks) → Vendas (affiliate_conversions approved).
+  // A `events` foi desligada, então detail-open/coupon-copy separados não existem mais;
+  // no coupon_clicks cada linha já é o clique no cupom/checkout (topo do funil de intenção).
   const firmMap = {};
-  ev.filter(e => ['firm_detail_open', 'coupon_copy', 'checkout_click'].includes(e.event)).forEach(e => {
-    const id = e.firm_id || e.params?.firm_id || '?';
-    const name = e.params?.firm_name || id;
-    if (!firmMap[id]) firmMap[id] = { name, detail: 0, coupons: 0, checkout: 0 };
-    if (e.event === 'firm_detail_open') firmMap[id].detail++;
-    if (e.event === 'coupon_copy') firmMap[id].coupons++;
-    if (e.event === 'checkout_click') firmMap[id].checkout++;
+  cc.forEach(e => {
+    const id = e.firm_id; if (!id) return;
+    if (!firmMap[id]) firmMap[id] = { id, clicks: 0, sales: 0, revenue: 0 };
+    firmMap[id].clicks++;
   });
-  const firmArr = Object.values(firmMap).sort((a, b) => b.checkout - a.checkout);
-  const _maxFirmDetail = firmArr[0]?.detail || 1;
+  conv.forEach(c => {
+    const id = c.firm_id; if (!id) return;
+    if (!firmMap[id]) firmMap[id] = { id, clicks: 0, sales: 0, revenue: 0 };
+    firmMap[id].sales++;
+    firmMap[id].revenue += Number(c.amount || 0);
+  });
+  const firmArr = Object.values(firmMap).sort((a, b) => b.clicks - a.clicks);
+  const _maxFirmClicks = firmArr[0]?.clicks || 1;
   document.getElementById('trk-firms-rank').innerHTML = `
-    <thead><tr><th style="width:40px;text-align:center;">#</th><th>Firma</th><th style="text-align:center;">Detail</th><th style="text-align:center;">Cupom</th><th style="text-align:center;">Checkout</th><th style="text-align:center;">Detail→Cupom</th><th style="text-align:center;">Cupom→Checkout</th></tr></thead>
-    <tbody>${firmArr.slice(0, 15).map((f,i) => {
-      const d2c = f.detail > 0 ? ((f.coupons / f.detail) * 100).toFixed(1) + '%' : '—';
-      const c2k = f.coupons > 0 ? ((f.checkout / f.coupons) * 100).toFixed(1) + '%' : '—';
+    <thead><tr><th style="width:40px;text-align:center;">#</th><th>Firma</th><th style="text-align:center;">Cliques de Cupom</th><th style="text-align:center;">Vendas</th><th style="text-align:center;">Cliques→Venda</th><th style="text-align:center;">Comissão</th></tr></thead>
+    <tbody>${firmArr.slice(0, 18).map((f,i) => {
+      const cvr = f.clicks > 0 ? ((f.sales / f.clicks) * 100).toFixed(1) + '%' : '—';
       const rankColor = i===0?'var(--gold)':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--t3)';
-      const fc = (_firmsCache||[]).find(x=>x.id===f.name||x.name===f.name);
+      const fc = (_firmsCache||[]).find(x=>x.id===f.id);
       const fColor = fc?.color||'var(--t2)';
-      const barW = (f.detail / _maxFirmDetail * 100).toFixed(0);
+      const fName = fc?.name || f.id;
+      const barW = (f.clicks / _maxFirmClicks * 100).toFixed(0);
       return `<tr>
         <td style="text-align:center;font-weight:700;color:${rankColor};font-size:14px;">${i+1}</td>
         <td><div style="display:flex;align-items:center;gap:8px;">
-          <div style="width:26px;height:26px;border-radius:6px;background:${fColor}20;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${fColor};flex-shrink:0;">${(fc?.icon||f.name.charAt(0)).toUpperCase()}</div>
-          <div><div style="font-weight:700;font-size:12px;">${fc?.name||f.name}</div>
+          <div style="width:26px;height:26px;border-radius:6px;background:${fColor}20;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${fColor};flex-shrink:0;">${(fName.charAt(0)).toUpperCase()}</div>
+          <div><div style="font-weight:700;font-size:12px;">${fName}</div>
           <div style="margin-top:2px;height:2px;width:60px;background:rgba(255,255,255,.06);border-radius:2px;"><div style="height:100%;width:${barW}%;background:${fColor};border-radius:2px;opacity:.5;"></div></div></div>
         </div></td>
-        <td style="text-align:center;font-weight:600;">${f.detail}</td>
-        <td style="text-align:center;color:var(--gold);font-weight:600;">${f.coupons}</td>
-        <td style="text-align:center;color:#22C55E;font-weight:700;">${f.checkout}</td>
-        <td style="text-align:center;font-weight:600;color:${parseFloat(d2c)>30?'#22C55E':'var(--t2)'};">${d2c}</td>
-        <td style="text-align:center;font-weight:600;color:${parseFloat(c2k)>50?'#22C55E':'var(--t2)'};">${c2k}</td>
+        <td style="text-align:center;font-weight:600;color:var(--gold);">${f.clicks}</td>
+        <td style="text-align:center;color:#22C55E;font-weight:700;">${f.sales||'—'}</td>
+        <td style="text-align:center;font-weight:600;color:${parseFloat(cvr)>10?'#22C55E':'var(--t2)'};">${cvr}</td>
+        <td style="text-align:center;font-weight:600;color:var(--t2);">${f.revenue>0?'$'+f.revenue.toFixed(2):'—'}</td>
       </tr>`;
     }).join('')}</tbody>`;
 
