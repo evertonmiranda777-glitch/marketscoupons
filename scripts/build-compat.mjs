@@ -11,7 +11,7 @@ const babel = require('@babel/core');
 // TODOS os .js servidos ao browser (o script pula sozinho os que ja estao limpos).
 // Cobrir tudo = qualquer arquivo que ganhar ?. no futuro e convertido sem eu lembrar.
 const FILES = [
-  'app.js', 'tracking.js',
+  'app.js', 'tracking.js', 'js/polyfills.js',
   'js/pwa-register.js', 'js/reviews.js', 'js/tracking-init.js',
   'js/giveaway-popup.js', 'js/onboarding.js', 'js/tickets.js',
   'js/lang-dd-fix.js', 'js/og-lang.js', 'js/page-boot.js', 'js/promo-topbar-fit.js',

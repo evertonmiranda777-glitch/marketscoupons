@@ -1260,7 +1260,7 @@ function mcRatingBadge(f) {
 /* NAV */
 // Page ID → clean URL slug mapping
 const PAGE_SLUGS = { home: '', firms: 'firms', plataformas: 'platforms', indicators: 'indicators', compare: 'compare', calendar: 'calendar', heatmap: 'heatmap', analise: 'analysis', gamma: 'gamma', guides: 'guides', blog: 'blog', live: 'live', quiz: 'quiz', awards: 'awards', painel: 'panel', 'pro-success': 'pro-success', calc: 'calculator', privacy: 'privacy', terms: 'terms', app: 'app', faq: 'faq' };
-const SLUG_PAGES = Object.fromEntries(Object.entries(PAGE_SLUGS).map(([k, v]) => [v, k]));
+const SLUG_PAGES = Object.entries(PAGE_SLUGS).reduce(function(o, kv){ o[kv[1]] = kv[0]; return o; }, {});
 function _pageUrl(page) {const s = PAGE_SLUGS[page];return s ? '/' + s : '/';}
 function _pageFromPath() {const p = location.pathname.replace(/^\/(en|es|fr|de|it|ar)\//, '/').replace(/^\//, '').replace(/\/$/, '');return SLUG_PAGES[p] || '';}
 function go(page, skipPush) {
@@ -1562,7 +1562,7 @@ function setFirmSEO(id) {var _f$trustpilot, _f$prices, _f$trustpilot$reviews, _f
   const hasCoupon = f.coupon && f.coupon.length <= 16 && f.discount > 0;
   const minPrice = f.prices && f.prices[0] ? f.prices[0].n : '';
   const vars = { '{name}': f.name, '{discount}': f.discount, '{coupon}': f.coupon || '', '{minPrice}': minPrice, '{rating}': f.rating, '{reviews}': f.reviews, '{split}': f.split };
-  function fill(tpl) {let s = tpl;for (const [k, v] of Object.entries(vars)) s = s.replaceAll(k, v);return s;}
+  function fill(tpl) {let s = tpl;for (const [k, v] of Object.entries(vars)) s = s.split(k).join(v);return s;}
   const title = fill(hasCoupon ? seo.title : seo.titleNoCoupon);
   const desc = fill(hasCoupon ? seo.desc : seo.descNoCoupon);
   const og = fill(hasCoupon ? seo.og : seo.descNoCoupon);
