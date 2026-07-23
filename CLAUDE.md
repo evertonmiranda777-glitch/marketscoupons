@@ -275,10 +275,12 @@ Detalhe geral: `memory/project_gtm_tracking_2026_05_20.md`.
 
 ## Deploy
 
-Git push **NÃO deploya sozinho** (auto-deploy quebrado nesse repo). Sempre rodar:
+Git push **NÃO deploya sozinho** (auto-deploy quebrado nesse repo). Sempre rodar (o `build-compat` vem PRIMEIRO, obrigatório):
 ```
-VT=$(grep '^VERCEL_TOKEN=' .env.local | sed 's/^VERCEL_TOKEN=//' | tr -d '" '); CI=1 npx vercel --prod --yes --token="$VT"
+node scripts/build-compat.mjs && VT=$(grep '^VERCEL_TOKEN=' .env.local | sed 's/^VERCEL_TOKEN=//' | tr -d '" '); CI=1 npx vercel --prod --yes --token="$VT"
 ```
+
+🚨 **REGRA COMPAT ES2019 (LEI 23/jul, custou site em branco):** o público é **Android velho + in-app do Instagram (Índia)** com WebView congelado pré-2020 que **NÃO entende `?.`/`??`** , uma única ocorrência faz o browser **abortar o app.js INTEIRO = página branca** (anúncio pago cai no vazio). `scripts/build-compat.mjs` transpila `app.js`+`js/reviews.js`+`js/pwa-register.js` pra ES2019 via Babel (preserva comentários, idempotente). **RODAR SEMPRE antes do deploy** (está no comando acima). "Funciona no meu navegador" ≠ funciona no WebView velho , só quebra lá, onde nem eu nem o Everton olhamos. **Ao escrever JS novo em arquivo servido, pode usar `?.` à vontade** , o build lowering resolve; só nunca deployar sem rodar o build.
 Validar com curl `?v=$(date +%s)` antes de falar "no ar". **`VERCEL_TOKEN` agora no `.env.local`** (sem expiração, gitignored, desde 24/jun) , **deploy autônomo, NÃO pedir token ao Everton toda hora.** Se der erro de auth, aí sim pedir um novo. DDL no Supabase quando o MCP cai: `POST https://api.supabase.com/v1/projects/qfwhduvutfumsaxnuofa/database/query` com `{"query":"..."}` + token `sbp_`.
 
 **Limite Vercel Hobby = 12 Serverless Functions.** Adicionar nova exige consolidar com existente.

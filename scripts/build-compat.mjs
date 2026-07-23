@@ -8,7 +8,14 @@ import fs from 'fs';
 const require = createRequire(import.meta.url);
 const babel = require('@babel/core');
 
-const FILES = ['app.js', 'js/pwa-register.js', 'js/reviews.js'];
+// TODOS os .js servidos ao browser (o script pula sozinho os que ja estao limpos).
+// Cobrir tudo = qualquer arquivo que ganhar ?. no futuro e convertido sem eu lembrar.
+const FILES = [
+  'app.js', 'tracking.js',
+  'js/pwa-register.js', 'js/reviews.js', 'js/tracking-init.js',
+  'js/giveaway-popup.js', 'js/onboarding.js', 'js/tickets.js',
+  'js/lang-dd-fix.js', 'js/og-lang.js', 'js/page-boot.js', 'js/promo-topbar-fit.js',
+];
 const plugins = [
   '@babel/plugin-transform-optional-chaining',
   '@babel/plugin-transform-nullish-coalescing-operator',
