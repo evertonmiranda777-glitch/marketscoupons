@@ -13,3 +13,4 @@ Object.assign(window.I18N.es,{"signup_marketing_label": "Quiero recibir cupones 
 
 Object.assign(window.I18N.es,{"aw_dia": "día", "aw_dias": "días", "aw_todas": "Todas las firmas, por valoración"});
 Object.assign(window.I18N.es,{"lg_title": "Cuentas Legacy", "lg_pill": "TIEMPO LIMITADO", "lg_popular": "POPULAR", "lg_cta": "Ver cuentas Legacy", "lg_sub": "Mensual · 90% off el 1er mes, 80% después · con MARKET · activación PA $125 hasta 11 ago"});
+Object.assign(window.I18N.es,{actv_no_fee:'Sin Cuota de Activación'});

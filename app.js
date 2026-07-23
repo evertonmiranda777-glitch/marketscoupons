@@ -1453,7 +1453,7 @@ function _loadLangChunk(lang){
   if (window.I18N && window.I18N[lang]) return Promise.resolve();
   return new Promise((resolve)=>{
     var s=document.createElement('script');
-    s.src='/i18n-'+lang+'.js?v=20260521';
+    s.src='/i18n-'+lang+'.js?v=20260723';
     s.onload=resolve; s.onerror=()=>resolve();
     document.head.appendChild(s);
   });
@@ -3091,6 +3091,28 @@ const BADGE_KEY_MAP = {
 };
 function getBadgeLabel(label){ return t(BADGE_KEY_MAP[label]) || label; }
 
+// TAXA DE ATIVACAO por firma (dado VERIFICADO no site oficial, Lei #0 - nunca chutar).
+// fee===0 => selo verde "No Activation Fee". fee>0 => cobra (amount = texto exato p/ o detalhe).
+// Firma AUSENTE do mapa = ainda nao verificada => sem selo e sem claim (nao inventa).
+const ACTIVATION_FEE = {
+  // SEM taxa de ativacao (verificado no site oficial 23/jul c/ screenshot) - recebem o selo:
+  'fn':{fee:0}, 'funded-futures-family':{fee:0}, 'tradeday':{fee:0}, 'aquafutures':{fee:0},
+  'blueberryfutures':{fee:0}, 'futureselite':{fee:0}, 'e8':{fee:0}, 'alphafutures':{fee:0},
+  'fundingpips':{fee:0}, 'ftmo':{fee:0}, 'brightfunded':{fee:0}, 'blueguardian':{fee:0},
+  'cti':{fee:0}, 'the5ers':{fee:0},
+  // COBRAM ativacao (nao recebem selo; amount aparece no detalhe):
+  'bulenox':{fee:143, amount:'$143–$898 (Master, one-time)'},
+  'toponefutures':{fee:19, amount:'$19 (Elite Daily / Access)'},
+  'e2t':{fee:139, amount:'$139 (charged only on your 1st payout)'},
+  'apex':{fee:69, amount:'Standard one-time: 25K $69 / 50K $79 / 100K $99 / 150K $129 — or choose the No Activation Fee variant'},
+  'goat':{fee:99, amount:'$99 regular, currently $0 on EOD plans (promo)'}
+};
+function activationSelo(f){
+  const a = ACTIVATION_FEE[f.id];
+  if(a && a.fee===0) return `<span class="fr-tag" style="background:rgba(34,197,94,.12);color:#22c55e;font-weight:700;">✓ ${t('actv_no_fee')}</span>`;
+  return '';
+}
+
 function renderFirms(list){
   const el=document.getElementById('firms-list');document.getElementById('cnt').textContent=list.length;
   if(!list.length){el.innerHTML=`<div style="padding:60px;text-align:center;color:var(--t2);">${t('firms_nenhuma_encontrada')}</div>`;return;}
@@ -3107,6 +3129,7 @@ function renderFirms(list){
           <div class="fr-tags">
             <span class="fr-tag" style="background:${f.bg};color:${f.color};">${f.type==='Futuros'?t('firm_type_futuros'):f.type==='Forex'?t('firm_type_forex'):f.type}</span>
             ${f.badge?`<span class="fr-tag" style="background:${f.badge.bg};color:${f.badge.color};">${getBadgeLabel(f.badge.label)}</span>`:''}
+            ${activationSelo(f)}
           </div>
         </div>
       </div>
