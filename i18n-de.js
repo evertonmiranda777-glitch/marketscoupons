@@ -13,4 +13,4 @@ Object.assign(window.I18N.de,{"signup_marketing_label": "Ich möchte exklusive G
 
 Object.assign(window.I18N.de,{"aw_dia": "Tag", "aw_dias": "Tage", "aw_todas": "Alle Firmen, nach Bewertung"});
 Object.assign(window.I18N.de,{"lg_title": "Legacy-Konten", "lg_pill": "BEGRENZTE ZEIT", "lg_popular": "BELIEBT", "lg_cta": "Legacy-Konten ansehen", "lg_sub": "Monatlich · 90% im 1. Monat, danach 80% · mit MARKET · PA-Aktivierung $125 bis 11. Aug"});
-Object.assign(window.I18N.de,{actv_no_fee:'Keine Aktivierungsgebühr'});
+Object.assign(window.I18N.de,{actv_no_fee:'Keine Aktivierungsgebühr',actv_nofee_plan:'Plan ohne Gebühr verfügbar'});

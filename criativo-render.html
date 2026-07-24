@@ -83,6 +83,10 @@ const CR_LABELS = {
   pt: { exclusive_coupon:'CUPOM EXCLUSIVO', use_coupon:'USE O CUPOM NO CHECKOUT', off:'OFF', futuros:'FUTUROS', forex:'FOREX' },
   en: { exclusive_coupon:'EXCLUSIVE COUPON', use_coupon:'USE THE COUPON AT CHECKOUT', off:'OFF', futuros:'FUTURES', forex:'FOREX' }
 };
+// Firmas SEM taxa de ativacao (espelha ACTIVATION_FEE do app.js, verificado no site oficial 23/jul).
+// Selo no criativo puxa dessa lista. Se mudar aqui, mudar no app.js tambem.
+const CR_NOFEE = new Set(['fn','funded-futures-family','tradeday','aquafutures','blueberryfutures','futureselite','e8','alphafutures','fundingpips','ftmo','brightfunded','blueguardian','cti','the5ers']);
+const CR_NOFEE_PLAN = new Set(['apex']); // cobra ativacao MAS oferece plano sem taxa — selo ambar honesto (Lei #0)
 
 function renderHeroPremium(firm, content, L) {
   const color = firm.color || '#F0B429';
@@ -131,6 +135,16 @@ function renderHeroPremium(firm, content, L) {
   if (crChk() && firm.discount) {
     h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 3px 8px rgba(0,0,0,.3));"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">OFF</span></div>`;
     h += `<div class="cr-hp-dtype" style="color:${color};">${escHtml(dtypeLabel)}</div>`;
+  }
+  // Selo de taxa de ativacao: verde = firma 100% sem taxa; ambar = Apex (cobra mas tem plano sem taxa).
+  if (crChk()) {
+    if (CR_NOFEE.has(firm.id)) {
+      const _nf = _crLang==='pt' ? 'SEM TAXA DE ATIVAÇÃO' : 'NO ACTIVATION FEE';
+      h += `<div class="cr-hp-nofee" style="display:inline-block;margin:10px auto 2px;padding:9px 26px;border-radius:999px;background:rgba(16,185,129,.16);border:1.6px solid rgba(16,185,129,.75);color:#10B981;font-size:27px;font-weight:800;letter-spacing:.5px;white-space:nowrap;">✓ ${_nf}</div>`;
+    } else if (CR_NOFEE_PLAN.has(firm.id)) {
+      const _nfp = _crLang==='pt' ? 'TEM PLANO SEM TAXA DE ATIVAÇÃO' : 'NO-FEE PLAN AVAILABLE';
+      h += `<div class="cr-hp-nofee" style="display:inline-block;margin:10px auto 2px;padding:9px 26px;border-radius:999px;background:rgba(240,180,41,.16);border:1.6px solid rgba(240,180,41,.75);color:#F0B429;font-size:27px;font-weight:800;letter-spacing:.5px;white-space:nowrap;">${_nfp}</div>`;
+    }
   }
   if (crChk()) {
     if (coupon) {

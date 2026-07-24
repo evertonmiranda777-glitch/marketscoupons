@@ -3065,7 +3065,7 @@ function renderHome() {
   g.innerHTML = pinFN([...FIRMS].sort((a, b) => b.discount - a.discount)).map((f) => `
     <div class="oc">
       <div class="oc-top" onclick="openD('${f.id}')" style="cursor:pointer;">
-        <div class="oc-left">${firmIco(f, '44px', '14px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type === 'Futuros' ? t('firm_type_futuros') : f.type === 'Forex' ? t('firm_type_forex') : f.type}</div></div></div>
+        <div class="oc-left">${firmIco(f, '44px', '14px')}<div><div class="oc-name">${f.name}</div><div class="oc-type">${f.type === 'Futuros' ? t('firm_type_futuros') : f.type === 'Forex' ? t('firm_type_forex') : f.type}</div>${activationSelo(f) ? `<div style="margin-top:5px;">${activationSelo(f)}</div>` : ''}</div></div>
         <div>${f.discount > 0 ?
   `<div class="oc-disc" style="color:${f.color};filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}%</div><div class="oc-off">off ${tf(f.dtype)}</div>` :
   `<div class="oc-disc" style="color:var(--t2);font-size:15px;line-height:1.1">${t('met_via')}</div><div class="oc-off">${t('met_nocode')}</div>`}</div>
@@ -3104,12 +3104,15 @@ const ACTIVATION_FEE = {
   'bulenox': { fee: 143, amount: '$143–$898 (Master, one-time)' },
   'toponefutures': { fee: 19, amount: '$19 (Elite Daily / Access)' },
   'e2t': { fee: 139, amount: '$139 (charged only on your 1st payout)' },
-  'apex': { fee: 69, amount: 'Standard PA activation (one-time) — Intraday: 25K $69 / 50K $79 / 100K $99 / 150K $129 · EOD: 25K $99 / 50K $129 / 100K $139 / 150K $159 · Legacy $125 — or pick the No Activation Fee variant' },
+  'apex': { fee: 69, hasNoFeeOption: true, amount: 'Standard PA activation (one-time) — Intraday: 25K $69 / 50K $79 / 100K $99 / 150K $129 · EOD: 25K $99 / 50K $129 / 100K $139 / 150K $159 · Legacy $125 — or pick the No Activation Fee variant' },
   'goat': { fee: 99, amount: '$99 regular, currently $0 on EOD plans (promo)' }
 };
 function activationSelo(f) {
   const a = ACTIVATION_FEE[f.id];
+  // Verde = firma 100% sem taxa (afirmacao forte, so as 14 verificadas).
   if (a && a.fee === 0) return `<span class="fr-tag" style="background:rgba(34,197,94,.12);color:#22c55e;font-weight:700;">✓ ${t('actv_no_fee')}</span>`;
+  // Ambar = firma que COBRA mas OFERECE plano sem taxa (Apex). Honesto: nao afirma que a firma toda e' sem taxa (Lei #0).
+  if (a && a.hasNoFeeOption) return `<span class="fr-tag" style="background:rgba(240,180,41,.12);color:#F0B429;font-weight:700;">${t('actv_nofee_plan')}</span>`;
   return '';
 }
 
