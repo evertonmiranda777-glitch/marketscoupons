@@ -86,7 +86,7 @@ const CR_LABELS = {
 // Firmas SEM taxa de ativacao (espelha ACTIVATION_FEE do app.js, verificado no site oficial 23/jul).
 // Selo no criativo puxa dessa lista. Se mudar aqui, mudar no app.js tambem.
 const CR_NOFEE = new Set(['fn','funded-futures-family','tradeday','aquafutures','blueberryfutures','futureselite','e8','alphafutures','fundingpips','ftmo','brightfunded','blueguardian','cti','the5ers']);
-const CR_NOFEE_PLAN = new Set(['apex']); // cobra ativacao MAS oferece plano sem taxa — selo ambar honesto (Lei #0)
+const CR_NOFEE_PLAN = new Set(['apex','toponefutures']); // cobra ativacao MAS oferece plano sem taxa (Apex No-Fee variant; TopOne Elite Daily $0) — selo ambar honesto (Lei #0)
 
 function renderHeroPremium(firm, content, L) {
   const color = firm.color || '#F0B429';
