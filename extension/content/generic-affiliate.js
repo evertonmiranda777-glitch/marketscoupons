@@ -44,7 +44,7 @@ function mcGShould(firmId) {
   return new Promise(resolve => {
     chrome.storage.local.get(['mc_last_sync'], r => {
       const last = (r.mc_last_sync || {})[firmId] || 0;
-      resolve((Date.now() - last) / 3600000 >= 6);
+      resolve((Date.now() - last) / 60000 >= 30);
     });
   });
 }
@@ -60,8 +60,17 @@ function mcGMark(firmId) {
 }
 
 async function mcGSync(firmId, opts = {}) {
-  const leads = mcGScrapeTable();
-  if (!leads.length) { mcGToast(`${firmId}: sem transações na página (abra o histórico de orders/vendas do painel de afiliado)`); return { ok:false, error:'no_data' }; }
+  const rawLeads = mcGScrapeTable();
+  if (!rawLeads.length) { mcGToast(`${firmId}: sem transações na página (abra o histórico de orders/vendas do painel de afiliado)`); return { ok:false, error:'no_data' }; }
+
+  // Dedup por transaction_id: alguns painéis (Blue Guardian) renderizam a tabela 2x
+  // (desktop+mobile) -> sem isso a contagem/comissão diária dobra.
+  const _seen = new Set();
+  const leads = rawLeads.filter(l => {
+    if (!l.transaction_id) return true;
+    if (_seen.has(l.transaction_id)) return false;
+    _seen.add(l.transaction_id); return true;
+  });
 
   const byDay = {};
   leads.forEach(l => {
@@ -72,9 +81,17 @@ async function mcGSync(firmId, opts = {}) {
   });
   const rows = Object.values(byDay);
 
-  const out = await mcGSend({ firm: firmId, source: 'ext_generic_v1', snapshot: null, rows, leads });
+  const payload = { firm: firmId, source: 'ext_generic_v1', snapshot: null, rows, leads };
+  let out = await mcGSend(payload);
+  // Retry unico em falha transitoria (5xx/timeout/rede): Free tier tem pool de conexao menor,
+  // o upsert pode dar statement timeout e voltar upsert_failed. Uma re-tentativa mata o blip.
+  if (!out.ok && (out.status >= 500 || out.status === 0 || out.status === 429)) {
+    await new Promise(r => setTimeout(r, 1500));
+    out = await mcGSend(payload);
+  }
   if (out.ok) { mcGToast(`${firmId}: ${leads.length} transações sincronizadas`); await mcGMark(firmId); }
-  else { mcGToast(`${firmId}: erro, ` + (out.error || '?')); }
+  // Mostra o motivo REAL (details do banco), nao so "upsert_failed" — senao a gente fica cego.
+  else { mcGToast(`${firmId}: erro, ` + (out.error || '?') + (out.details ? ' — ' + out.details : '') + (out.status ? ' [' + out.status + ']' : '')); }
   return out;
 }
 
@@ -87,6 +104,8 @@ function mcGScrapeTable() {
     const hasDate = head.some(h => h.includes('date') || h.includes('data') || h.includes('created') || h.includes('time'));
     const hasValue = head.some(h => h.includes('commission') || h.includes('comiss') || h.includes('earning') || h.includes('payout') || h.includes('amount') || h.includes('total') || h.includes('valor') || h.includes('reward'));
     if (!hasDate || !hasValue) return;
+    // pula tabela de PAYOUT/saque (tem "Payout Method") — não é tabela de vendas
+    if (head.some(h => h.includes('method'))) return;
     const iDate = head.findIndex(h => h.includes('date') || h.includes('data') || h.includes('created') || h.includes('time'));
     // "Commission" EXATO ($) — NÃO "Commission Type" (texto tipo "Purchase")
     const iComExact = head.findIndex(h => h === 'commission');
@@ -95,7 +114,8 @@ function mcGScrapeTable() {
     // valor da venda: "Final Amount" (o que o cliente pagou) > amount > total
     const iFinal = head.findIndex(h => h.includes('final'));
     const iAmt = iFinal !== -1 ? iFinal : head.findIndex(h => h.includes('amount') || h.includes('valor') || h.includes('total'));
-    const iTxn = head.findIndex(h => h.includes('transaction') || h.includes('order') || h.includes('id'));
+    // ID da venda: transaction/order/reference/id (Blue Guardian usa "Reference")
+    const iTxn = head.findIndex(h => h.includes('transaction') || h.includes('order') || h.includes('reference') || h === 'id' || h.endsWith(' id'));
     const iStatus = head.findIndex(h => h.includes('status'));
     t.querySelectorAll('tbody tr, [role="row"]').forEach(tr => {
       const cells = [...tr.querySelectorAll('td, [role="cell"], [role="gridcell"]')].map(x => x.textContent.trim());
@@ -104,7 +124,8 @@ function mcGScrapeTable() {
       if (iStatus >= 0 && /cancel|refund|void|reject|declin|fail/i.test(cells[iStatus] || '')) return;
       const d = mcGParseDate(cells[iDate]);
       if (!d) return;
-      const commission = iCom >= 0 ? mcGNum(cells[iCom]) : 0;
+      // sem coluna "Commission" explícita: o "Amount" do painel É a comissão (ex: Blue Guardian)
+      const commission = iCom >= 0 ? mcGNum(cells[iCom]) : (iAmt >= 0 ? mcGNum(cells[iAmt]) : 0);
       const amount = iAmt >= 0 ? mcGNum(cells[iAmt]) : commission;
       const txn = iTxn >= 0 ? (cells[iTxn] || '').split('#')[0].trim() : '';
       const firm = mcGenericFirmId();
@@ -140,9 +161,9 @@ async function mcGSend(payload) {
       body: JSON.stringify(payload)
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { ok:false, error: data.error || data.message || ('HTTP ' + res.status) };
+    if (!res.ok) return { ok:false, error: data.error || data.message || ('HTTP ' + res.status), details: data.details || '', status: res.status };
     return { ok:true, ...data };
-  } catch (e) { return { ok:false, error: e.message }; }
+  } catch (e) { return { ok:false, error: e.message, status: 0 }; }
 }
 
 function mcGToast(msg) {
