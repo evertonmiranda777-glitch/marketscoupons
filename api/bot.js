@@ -154,7 +154,7 @@ async function getFirmKB(userMsg) {
     });
     if (!r.ok) return '';
     const rows = await r.json();
-    const blocks = (rows || []).filter(function (x) { return x.kb; }).map(function (x) { return `### ${String(x.id).toUpperCase()} — DEEP KB\n${String(x.kb).slice(0, 12000)}`; });
+    const blocks = (rows || []).filter(function (x) { return x.kb; }).map(function (x) { return `### ${String(x.id).toUpperCase()} — DEEP KB\n${String(x.kb).slice(0, 60000)}`; });
     if (!blocks.length) return '';
     return `\n\nDEEP FIRM KNOWLEDGE (authoritative, pulled live from our firm database for the firm the user is asking about; trust this over the short summaries above; if a specific detail is NOT in here, say you would rather confirm than invent a number):\n\n${blocks.join('\n\n')}`;
   } catch (e) { return ''; }
