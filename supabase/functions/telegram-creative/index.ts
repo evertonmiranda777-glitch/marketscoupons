@@ -1,4 +1,6 @@
-// telegram-creative v13 — retry 3x + caption EN. (off sync: alpha 40, ftmo 20, e8 40, blueguardian 50)
+// telegram-creative v14 — retry 3x + caption EN. Legenda+imagem puxam discount/coupon LIVE do cms_firms.
+// SCHEDULE.off e COUPONS = SO fallback (usados se getFirmLive falhar). Fallback sincronizado com o banco
+// 2026-07-24: alpha 40, cti 0 (sem cupom), ftmo 19, fundingpips 20. Nao deixar fallback velho.
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
@@ -20,8 +22,8 @@ type Slot = { firmId: string; off: number; name: string };
 const SCHEDULE: Record<string, Slot[]> = {
   "1": [{ firmId: "apex", off: 90, name: "Apex Trader Funding" }, { firmId: "bulenox", off: 89, name: "Bulenox" }, { firmId: "toponefutures", off: 60, name: "Top One Futures" }, { firmId: "aquafutures", off: 60, name: "Aqua Futures" }],
   "2": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "goat", off: 50, name: "Goat Funded Futures" }, { firmId: "tradeday", off: 50, name: "TradeDay" }, { firmId: "e2t", off: 50, name: "Earn2Trade" }],
-  "3": [{ firmId: "fn", off: 47, name: "FundedNext" }, { firmId: "blueguardian", off: 40, name: "Blue Guardian" }, { firmId: "cti", off: 30, name: "City Traders Imperium" }, { firmId: "futureselite", off: 30, name: "Futures Elite" }],
-  "4": [{ firmId: "brightfunded", off: 30, name: "BrightFunded" }, { firmId: "alphafutures", off: 25, name: "Alpha Futures" }, { firmId: "fundingpips", off: 20, name: "FundingPips" }, { firmId: "ftmo", off: 20, name: "FTMO" }],
+  "3": [{ firmId: "fn", off: 47, name: "FundedNext" }, { firmId: "blueguardian", off: 40, name: "Blue Guardian" }, { firmId: "cti", off: 0, name: "City Traders Imperium" }, { firmId: "futureselite", off: 30, name: "Futures Elite" }],
+  "4": [{ firmId: "brightfunded", off: 30, name: "BrightFunded" }, { firmId: "alphafutures", off: 40, name: "Alpha Futures" }, { firmId: "fundingpips", off: 20, name: "FundingPips" }, { firmId: "ftmo", off: 19, name: "FTMO" }],
   "5": [{ firmId: "e8", off: 40, name: "E8 Markets" }, { firmId: "the5ers", off: 5, name: "The5ers" }, { firmId: "apex", off: 90, name: "Apex Trader Funding" }, { firmId: "bulenox", off: 89, name: "Bulenox" }],
   "6": [{ firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }, { firmId: "bulenox", off: 89, name: "Bulenox" }, { firmId: "toponefutures", off: 60, name: "Top One Futures" }, { firmId: "aquafutures", off: 60, name: "Aqua Futures" }],
   "0": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "goat", off: 50, name: "Goat Funded Futures" }, { firmId: "tradeday", off: 50, name: "TradeDay" }, { firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }],
