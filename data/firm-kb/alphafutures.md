@@ -4,7 +4,7 @@
 
 ALPHA FUTURES (alpha-futures.com) — deep knowledge (official site + help center, 2026-07-23). Futures-only prop firm, UK (Alpha Futures Limited, England; part of "Alpha Group" with Alpha Capital Group + ACG Markets). Founded Q3 2023. Simulated environment (virtual funds; performance fees from Alpha's own proprietary trading on the trader's "Analysis"). Futures on CME/CBOT/NYMEX/COMEX. Platforms: AlphaTrader (own), WealthCharts, Quantower, Deepcharts. Languages EN/ES/DE/IT/FR/AR. Payment: card + crypto. KYC via Veriff. Min age 18. Trustpilot 4.9 (17k+), $70M+ paid.
 
-COUPON: our exclusive code is MARKETS026158 (~25%, credits our commission). ⚠️ The site ALSO runs a public ALPHA40 = 40% off ALL plans — so right now the public code is a BIGGER discount than ours; if a user asks, be honest that ALPHA40 gives 40% but our MARKETS026158 is our exclusive (this is an open pricing decision for the business). NO ACTIVATION FEE currently on any account (the $149 Advanced activation fee was removed 2026-07-08; Zero always $0; Direct is a one-time price).
+COUPON: our exclusive code is MARKETS026158 = 40% OFF all plans (same 40% as the public ALPHA40 banner, but MARKETS026158 is ours and credits our commission). Always push MARKETS026158. NO ACTIVATION FEE currently on any account (the $149 Advanced activation fee was removed 2026-07-08; Zero always $0; Direct is a one-time price).
 
 === 3 ACTIVE ACCOUNT TYPES (Zero, Advanced, Direct; Standard retired 2026-05-01) ===
 Profit target / max loss / daily loss / max position by size:
