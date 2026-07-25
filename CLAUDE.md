@@ -8,6 +8,14 @@
 
 ---
 
+## ⚡ LEIS 25/jul (selo No-Fee em todo lugar + pente fino de preços)
+
+**🏷️ SELO "NO ACTIVATION FEE" — 3 arquivos que se espelham:** fonte = `ACTIVATION_FEE` map em `app.js` (~3097): `fee:0`=firma 100% sem taxa (**selo verde**, 14 firmas); `fee>0 + hasNoFeeOption:true`=cobra MAS tem plano sem taxa (**selo âmbar** "tem plano sem taxa", só **Apex** e **Top One**). `activationSelo(f)` renderiza; i18n `actv_no_fee`+`actv_nofee_plan` nos 8 `i18n-<lang>.js`. Aparece em: aba Firms + home (app.js `renderFirms`/`renderHome`), **/coupons** (faixa `.fr-nofee`, hoje FFF/FundedNext/TradeDay), **criativo-render** (`CR_NOFEE`/`CR_NOFEE_PLAN`). ⚠️ **`CR_NOFEE` espelha o `ACTIVATION_FEE` — mudou num, muda no outro.** NUNCA selo verde numa firma que cobra em algum plano (Lei #0). Detalhe: [[project_sessao_2026_07_25]].
+
+**🔬 PENTE FINO DE PREÇO = TRIAGEM (segunda):** cruzar TUDO contra as KBs (`data/firm-kb/`). Método: pra cada firma comparar `discount` declarado × **implicado** (`1 − n/o`) em cada linha de `prices`; **DIVERGE** se declarado cair fora da faixa (±6%); flag **`n≥o`** (preço cheio como final). ⚠️ **DOIS armazéns por firma que divergem:** `prices` {a,n,o} (cards/criativo) **e** `detail_plans` {tipo:[{s,d,o,pop}]} (fd-overlay). **Reconstruir os DOIS do KB.** `n=o` que **subestima** (preço cheio, desconto real menor/promo) = HONESTO, deixa; só corrigir quando MENTE (mostra desconto maior que o real, ou preço menor que o cobrado). Achados 25/jul: **Alpha estava a 25% (é 40%)** e **Blue Guardian a 40% (é 35% — erro MEU, revertido)** → corrigidos, verificados no site. **The5ers "5% OFF" subestima (Summer ~70%) — decisão do Everton pendente.**
+
+**💲 BLUE GUARDIAN = 35% (BG35), NÃO 40%. Top One tem Elite Daily $0 + Elite Access com taxa (selo âmbar).** Detalhe: [[project_sessao_2026_07_25]] · [[reference_cupons_oficiais_markets]].
+
 ## ⚡ LEIS 24/jul (Max sabe as 19 firmas + secret key + compat ES2019)
 
 **📚 MAX = KB PROFUNDA DAS 19 FIRMAS (`cms_firms.kb`):** cada firma tem uma KB verificada (regras/drawdown/payout/consistência/taxas/países/violações/conflitos) na coluna **`cms_firms.kb`**. O `api/bot.js` (roda **Gemini 2.5 Flash grátis**, contexto 1M) detecta a firma via `FIRM_KB_ALIASES` e **injeta a KB daquela firma sob demanda** (até 60k chars). ⚠️ **O FRONTEND NÃO SELECIONA `kb` = zero egress** (só o Max, server-side). Max diz "confirmo no checkout" onde a firma esconde o dado (Lei #0), nunca inventa. **Backup 3 camadas:** banco + `data/firm-kb/<id>.md` (repo) + GitHub. **Add/atualizar firma:** PATCH `cms_firms.kb` (secret key) → re-espelha os `.md` → commit → `git push` → testa `curl POST /api/bot`. Detalhe: [[project_max_kb_system_2026_07_24]]. **Everton manda o relatório bruto; EU destilo a KB (não dumpar o bruto).**
