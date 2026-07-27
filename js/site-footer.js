@@ -80,7 +80,7 @@
     ['Blue Guardian','https://blueguardian.com/?afmc=MARKET'],
     ['Top One Futures','https://toponefutures.com/?linkId=lp_707970&sourceId=markets&tenantId=toponefutures'],
     ['Aqua Futures','https://checkout.aquafutures.io/ref/872/'],
-    ['Blueberry Futures','https://portal.blueberryfutures.com/auth/signup?ref_code=MARKET-7652C'],
+    ['Blueberry Futures','https://portal.blueberryfutures.com/auth/signup?ref_code=MARKETS-2C7C0'],
     ['Alpha Futures','https://app.alpha-futures.com/signup/Markets026158/'],
     ['Futures Elite','https://app.futureselite.com?aff=AFF5585615'],
     ['Goat Funded Futures','https://app.goatfundedfutures.com/sign-up?referral_id=MARKET']

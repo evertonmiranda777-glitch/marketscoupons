@@ -67,21 +67,23 @@ function json(obj: any, status = 200) {
   });
 }
 
-async function verifyAdmin(authHeader: string | null): Promise<{ ok: boolean; email?: string; debug?: any }> {
-  if (!authHeader || !authHeader.startsWith("Bearer ")) return { ok: false, debug: "no_auth_header" };
+async function verifyAdmin(authHeader: string | null): Promise<{ ok: boolean; email?: string }> {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) return { ok: false };
   const jwt = authHeader.slice(7);
   try {
-    // Decoda JWT payload localmente pra pegar email (sem chamar auth API)
-    const parts = jwt.split(".");
-    if (parts.length !== 3) return { ok: false, debug: "bad_jwt_shape" };
-    const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
-    const email = payload?.email || "";
-    const role = payload?.role || "";
-    const isAdminMeta = payload?.user_metadata?.is_admin || payload?.app_metadata?.role === "admin";
-    if (isAdminMeta) return { ok: true, email };
-    if (email && ADMIN_EMAILS.has(email)) return { ok: true, email };
-    return { ok: false, email, debug: { role, isAdminMeta } };
-  } catch (e) { return { ok: false, debug: String(e) }; }
+    // Valida o token no Auth (assinatura + expiracao) e pega o user real.
+    const u = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { Authorization: `Bearer ${jwt}`, apikey: SERVICE_ROLE } });
+    if (!u.ok) return { ok: false };
+    const user = await u.json();
+    if (!user?.id) return { ok: false };
+    const email = user?.email || "";
+    // is_admin vem do BANCO, nunca de user_metadata (que o proprio usuario seta no signup = privesc).
+    const p = await fetch(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${user.id}&select=is_admin`, { headers: { apikey: SERVICE_ROLE, Authorization: `Bearer ${SERVICE_ROLE}` } });
+    const rows = await p.json().catch(() => []);
+    const isAdmin = Array.isArray(rows) && rows[0]?.is_admin === true;
+    if (isAdmin || ADMIN_EMAILS.has(email)) return { ok: true, email };
+    return { ok: false, email };
+  } catch { return { ok: false }; }
 }
 
 async function listActiveCampaigns() {
@@ -277,6 +279,10 @@ async function setCampaignStatus(campaign_id: string, status: "ACTIVE" | "PAUSED
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+
+  // Todas as acoes sao admin-only (lista/gasto/orcamento de campanhas + pause/resume). Gate no banco.
+  const _adm = await verifyAdmin(req.headers.get("authorization"));
+  if (!_adm.ok) return json({ error: "admin_only" }, 403);
 
   const url = new URL(req.url);
   const action = url.searchParams.get("action") || "";

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor do Max , arraste pra posicionar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#05070b;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;padding:18px;font-family:'Inter',sans-serif;}
+  .hint{color:#3DE3A8;font:600 13px 'Inter';text-align:center;max-width:440px;line-height:1.5;}
+  .hint b{color:#fff;}
+  /* readout fixo */
+  .readout{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:99;background:#0A0D14;border:1px solid #3DE3A8;border-radius:10px;padding:10px 16px;font:700 14px 'JetBrains Mono';color:#3DE3A8;letter-spacing:.04em;box-shadow:0 8px 30px rgba(0,0,0,.6);white-space:nowrap;}
+  .readout span{color:#fff;}
+
+  /* ===== popup (mesmo CSS do site) ===== */
+  .g2{position:relative;width:100%;max-width:430px;margin:60px auto 0;overflow:hidden;background:#0A0D14;border:1px solid rgba(61,227,168,.28);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 70px rgba(61,227,168,.10);}
+  .g2::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
+  .g2-glow1{position:absolute;left:-90px;top:-70px;width:300px;height:300px;background:radial-gradient(circle,rgba(61,227,168,.18),transparent 68%);filter:blur(14px);pointer-events:none;}
+  .g2-in{position:relative;padding:20px 22px 16px;}
+  .g2-x{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#cbd0d8;display:flex;align-items:center;justify-content:center;z-index:6;}
+  .g2-x svg{width:14px;height:14px;}
+  .g2-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid rgba(61,227,168,.45);border-radius:100px;font:700 10.5px 'JetBrains Mono';color:#3DE3A8;letter-spacing:.14em;text-transform:uppercase;}
+  .g2-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:#3DE3A8;box-shadow:0 0 10px #3DE3A8;}
+  .g2-eyebrow{margin-top:13px;font:500 14px 'Inter';color:rgba(255,255,255,.6);}
+  .g2-h{margin-top:2px;font:900 35px/0.98 'Inter';letter-spacing:-.03em;color:#fff;}
+  .g2-h em{color:#3DE3A8;font-style:normal;}
+  .g2-sub{margin-top:9px;font:500 13.5px/1.4 'Inter';color:rgba(255,255,255,.62);}
+  .g2-tix{display:flex;gap:9px;margin-top:14px;}
+  .g2-tk{flex:1;position:relative;background:linear-gradient(160deg,#11161f,#0d1219);border:1px solid rgba(61,227,168,.38);border-radius:13px;padding:12px 6px 11px;text-align:center;overflow:hidden;}
+  .g2-tk::before,.g2-tk::after{content:'';position:absolute;top:50%;width:13px;height:13px;border-radius:50%;background:#0A0D14;transform:translateY(-50%);}
+  .g2-tk::before{left:-6px;}.g2-tk::after{right:-6px;}
+  .g2-tk-l{font:700 9px 'JetBrains Mono';color:#3DE3A8;}
+  .g2-tk-n{margin-top:6px;font:900 23px 'Inter';color:#fff;}
+  .g2-tk-c{margin-top:7px;display:inline-flex;width:19px;height:19px;border-radius:50%;background:#3DE3A8;color:#06150f;align-items:center;justify-content:center;}
+  .g2-tk-c svg{width:11px;height:11px;}
+  .g2-st-t{margin-top:14px;font:700 10.5px 'JetBrains Mono';color:#3DE3A8;letter-spacing:.1em;text-transform:uppercase;}
+  .g2-sts{list-style:none;margin:9px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;max-width:50%;}
+  .g2-stp{display:flex;align-items:center;gap:11px;font:600 13.5px/1.3 'Inter';color:rgba(255,255,255,.9);}
+  .g2-stp-n{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#3DE3A8;color:#06150f;font:800 13px 'Inter';display:flex;align-items:center;justify-content:center;}
+  .g2-max{position:absolute;right:0;bottom:6px;height:284px;width:auto;z-index:4;filter:drop-shadow(0 16px 34px rgba(0,0,0,.5));cursor:grab;}
+  .g2-max:active{cursor:grabbing;}
+  .g2-cta{display:block;width:100%;margin-top:16px;background:#3DE3A8;color:#06150f;border:none;border-radius:13px;padding:14px;font:800 15.5px 'Inter';text-align:center;position:relative;z-index:5;}
+  .g2-ft{margin-top:10px;text-align:center;font:400 11.5px 'JetBrains Mono';color:rgba(255,255,255,.4);position:relative;z-index:5;}
+</style>
+</head>
+<body>
+  <div class="readout" id="readout">height: <span>284</span> · bottom: <span>6</span> · right: <span>0</span></div>
+  <div class="hint">Use os <b>botões</b> abaixo (ou arraste o Max com o mouse). Quando ficar perfeito, me mande os <b>3 números</b> do topo (ou um print).</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:460px;">
+    <button onclick="bump('H',8)" style="background:#3DE3A8;color:#06150f;border:none;border-radius:9px;padding:11px 16px;font:800 14px Inter;cursor:pointer;">Max MAIOR ＋</button>
+    <button onclick="bump('H',-8)" style="background:#1b2230;color:#fff;border:1px solid #3DE3A8;border-radius:9px;padding:11px 16px;font:800 14px Inter;cursor:pointer;">Max menor －</button>
+  </div>
+  <div style="display:flex;gap:6px;justify-content:center;">
+    <button onclick="bump('B',6)" style="background:#1b2230;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:10px 14px;font:700 16px Inter;cursor:pointer;">↑ sobe</button>
+    <button onclick="bump('B',-6)" style="background:#1b2230;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:10px 14px;font:700 16px Inter;cursor:pointer;">↓ desce</button>
+    <button onclick="bump('R',6)" style="background:#1b2230;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:10px 14px;font:700 16px Inter;cursor:pointer;">← esquerda</button>
+    <button onclick="bump('R',-6)" style="background:#1b2230;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:10px 14px;font:700 16px Inter;cursor:pointer;">→ direita</button>
+  </div>
+
+  <div class="g2">
+    <div class="g2-glow1"></div>
+    <button class="g2-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="g2-in">
+      <div class="g2-pill">★ Giveaway</div>
+      <div class="g2-eyebrow">We're giving away</div>
+      <div class="g2-h">Win <em>3 Apex Accounts</em></div>
+      <div class="g2-sub">Start trading prop firm capital, free to enter.</div>
+      <div class="g2-tix">
+        <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+        <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+        <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+      </div>
+      <div class="g2-st-t">// How to enter</div>
+      <ul class="g2-sts">
+        <li class="g2-stp"><span class="g2-stp-n">1</span><span>Sign up free on the site</span></li>
+        <li class="g2-stp"><span class="g2-stp-n">2</span><span>Follow @marketscoupons on Instagram</span></li>
+        <li class="g2-stp"><span class="g2-stp-n">3</span><span>Done, you're in the draw</span></li>
+      </ul>
+      <img class="g2-max" id="max" src="https://www.marketscoupons.com/max-sem-fundo-inteiro.png" alt="Max" draggable="false">
+      <button class="g2-cta">Sign up &amp; enter the giveaway</button>
+      <div class="g2-ft">Draw <b style="color:#fff">July 20, 2026</b> · Free to enter</div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var max = document.getElementById('max');
+  var card = document.querySelector('.g2');
+  var ro = document.getElementById('readout');
+  var H = 284, B = 6, R = 0;
+  function apply(){
+    max.style.height = H + 'px';
+    max.style.bottom = B + 'px';
+    max.style.right = R + 'px';
+    ro.innerHTML = 'height: <span>'+Math.round(H)+'</span> · bottom: <span>'+Math.round(B)+'</span> · right: <span>'+Math.round(R)+'</span>';
+  }
+  apply();
+  window.bump = function(which, delta){
+    if(which==='H') H = Math.max(120, Math.min(460, H + delta));
+    if(which==='B') B = B + delta;
+    if(which==='R') R = R + delta;
+    apply();
+  };
+  var drag = null;
+  max.addEventListener('mousedown', function(e){
+    e.preventDefault();
+    drag = { x:e.clientX, y:e.clientY, B:B, R:R };
+  });
+  window.addEventListener('mousemove', function(e){
+    if(!drag) return;
+    // mover: arrastar pra baixo = bottom menor; arrastar pra direita = right menor
+    B = drag.B - (e.clientY - drag.y);
+    R = drag.R - (e.clientX - drag.x);
+    apply();
+  });
+  window.addEventListener('mouseup', function(){ drag = null; });
+  max.addEventListener('wheel', function(e){
+    e.preventDefault();
+    H = Math.max(120, Math.min(460, H + (e.deltaY < 0 ? 6 : -6)));
+    apply();
+  }, {passive:false});
+  // touch (celular)
+  max.addEventListener('touchstart', function(e){
+    var t=e.touches[0]; drag={x:t.clientX,y:t.clientY,B:B,R:R};
+  }, {passive:true});
+  window.addEventListener('touchmove', function(e){
+    if(!drag) return; var t=e.touches[0];
+    B = drag.B - (t.clientY - drag.y);
+    R = drag.R - (t.clientX - drag.x);
+    apply();
+  }, {passive:true});
+  window.addEventListener('touchend', function(){ drag=null; });
+})();
+</script>
+</body>
+</html>

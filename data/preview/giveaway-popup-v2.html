@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giveaway Popup v2 , preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#05070b;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-family:'Inter',sans-serif;}
+
+  /* ===== popup card , design da story do Everton ===== */
+  .g2{position:relative;width:100%;max-width:440px;max-height:94vh;overflow-y:auto;background:#0A0D14;border:1px solid rgba(61,227,168,.28);border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 70px rgba(61,227,168,.10);}
+  /* grid + glows de fundo */
+  .g2::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:34px 34px;pointer-events:none;border-radius:22px;}
+  .g2-glow1{position:absolute;left:-120px;top:-90px;width:380px;height:380px;background:radial-gradient(circle,rgba(61,227,168,.18),transparent 68%);filter:blur(14px);pointer-events:none;}
+  .g2-glow2{position:absolute;right:-130px;bottom:40px;width:380px;height:380px;background:radial-gradient(circle,rgba(232,182,90,.10),transparent 68%);filter:blur(14px);pointer-events:none;}
+  .g2-in{position:relative;padding:26px 24px 22px;}
+
+  .g2-x{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#cbd0d8;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;}
+  .g2-x svg{width:15px;height:15px;}
+
+  .g2-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border:1px solid rgba(61,227,168,.45);border-radius:100px;font:700 11px 'JetBrains Mono';color:#3DE3A8;letter-spacing:.14em;text-transform:uppercase;}
+  .g2-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:#3DE3A8;box-shadow:0 0 10px #3DE3A8;}
+
+  .g2-eyebrow{margin-top:18px;font:500 15px 'Inter';color:rgba(255,255,255,.6);}
+  .g2-h{margin-top:2px;font:900 42px/0.98 'Inter';letter-spacing:-.03em;color:#fff;}
+  .g2-h em{color:#3DE3A8;font-style:normal;}
+  .g2-sub{margin-top:12px;font:500 14px/1.45 'Inter';color:rgba(255,255,255,.62);}
+
+  /* tickets */
+  .g2-tix{display:flex;gap:10px;margin-top:20px;}
+  .g2-tk{flex:1;position:relative;background:linear-gradient(160deg,#11161f,#0d1219);border:1px solid rgba(61,227,168,.38);border-radius:14px;padding:18px 8px 16px;text-align:center;overflow:hidden;}
+  .g2-tk::before,.g2-tk::after{content:'';position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#0A0D14;transform:translateY(-50%);}
+  .g2-tk::before{left:-7px;}.g2-tk::after{right:-7px;}
+  .g2-tk-l{font:700 9px 'JetBrains Mono';color:#3DE3A8;letter-spacing:.04em;}
+  .g2-tk-n{margin-top:8px;font:900 26px 'Inter';letter-spacing:-.02em;color:#fff;}
+  .g2-tk-c{margin-top:9px;display:inline-flex;width:20px;height:20px;border-radius:50%;background:#3DE3A8;color:#06150f;align-items:center;justify-content:center;}
+  .g2-tk-c svg{width:12px;height:12px;}
+
+  /* draw date */
+  .g2-dl{margin-top:18px;display:flex;align-items:center;gap:10px;background:rgba(61,227,168,.07);border:1px solid rgba(61,227,168,.22);border-radius:11px;padding:11px 14px;font-size:13px;}
+  .g2-dl svg{width:18px;height:18px;color:#3DE3A8;flex-shrink:0;}
+  .g2-dl-l{color:#8590a3;font-weight:600;}
+  .g2-dl-v{color:#fff;font-weight:800;margin-left:auto;}
+
+  /* steps */
+  .g2-st-t{margin-top:20px;font:700 11px 'JetBrains Mono';color:#3DE3A8;letter-spacing:.1em;text-transform:uppercase;}
+  .g2-sts{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:13px;max-width:52%;}
+  /* Max mascote corpo inteiro , direita, pés visíveis acima do CTA */
+  .g2-max{position:absolute;right:-14px;bottom:86px;height:248px;width:auto;z-index:4;filter:drop-shadow(0 16px 34px rgba(0,0,0,.5));pointer-events:none;}
+  .g2-stp{display:flex;align-items:center;gap:13px;font:600 14px/1.35 'Inter';color:rgba(255,255,255,.9);}
+  .g2-stp b{color:#fff;}
+  .g2-stp-n{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:#3DE3A8;color:#06150f;font:800 14px 'Inter';display:flex;align-items:center;justify-content:center;}
+
+  /* cta */
+  .g2-cta{display:block;width:100%;margin-top:22px;background:#3DE3A8;color:#06150f;border:none;border-radius:14px;padding:16px;font:800 16px 'Inter';cursor:pointer;box-shadow:0 16px 40px rgba(61,227,168,.28);transition:.2s;}
+  .g2-cta:hover{transform:translateY(-2px);box-shadow:0 20px 48px rgba(61,227,168,.4);}
+  .g2-ft{margin-top:14px;text-align:center;font:400 12px 'JetBrains Mono';color:rgba(255,255,255,.4);}
+  .g2-ft button{background:none;border:none;color:rgba(255,255,255,.55);text-decoration:underline;cursor:pointer;font-size:12px;font-family:inherit;margin-top:6px;display:inline-block;}
+</style>
+</head>
+<body>
+  <div class="g2">
+    <div class="g2-glow1"></div><div class="g2-glow2"></div>
+    <button class="g2-x"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="g2-in">
+      <div class="g2-pill">★ Giveaway</div>
+      <div class="g2-eyebrow">We're giving away</div>
+      <div class="g2-h">3 Apex <em>Accounts</em></div>
+      <div class="g2-sub">Start trading prop firm capital without paying out of pocket.</div>
+
+      <div class="g2-tix">
+        <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+        <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+        <div class="g2-tk"><div class="g2-tk-l">EVALUATION</div><div class="g2-tk-n">Apex</div><div class="g2-tk-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>
+      </div>
+
+      <div class="g2-dl">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="g2-dl-l">Draw date</span><span class="g2-dl-v">July 20, 2026</span>
+      </div>
+
+      <div class="g2-st-t">// How to enter</div>
+      <ul class="g2-sts">
+        <li class="g2-stp"><span class="g2-stp-n">1</span><span>Sign up free on the site</span></li>
+        <li class="g2-stp"><span class="g2-stp-n">2</span><span>Follow <b>@marketscoupons</b> on Instagram</span></li>
+        <li class="g2-stp"><span class="g2-stp-n">3</span><span>Done, you're in the draw</span></li>
+      </ul>
+
+      <img class="g2-max" src="/max-sem-fundo-inteiro.png" alt="Max">
+      <button class="g2-cta">Sign up &amp; enter the giveaway</button>
+      <div class="g2-ft">Free to enter · No purchase required<br><button>Maybe later</button></div>
+    </div>
+  </div>
+</body>
+</html>

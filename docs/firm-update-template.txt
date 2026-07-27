@@ -1,0 +1,73 @@
+========================================================================
+  TEMPLATE DE ATUALIZAÇÃO DE FIRMA — MarketsCoupons
+  (Preencha no navegador olhando o site OFICIAL da firma. Confirme CADA
+   preço e o cupom no CHECKOUT real antes de enviar. Não invente número.)
+========================================================================
+
+REGRAS PARA QUEM PREENCHE:
+- CUPOM = sempre o cupom MARKETS que paga comissão (ex: MARKET, MARKET89,
+  MARKET25K...). NUNCA o cupom público da firma (FREEDOM, BOGO, SAVENOW,
+  FFF, JLFLEX...) — esse não paga comissão. Se a firma NÃO tem cupom
+  Markets, escreva "SEM CUPOM (só link)".
+- PREÇO: escreva o preço COM o cupom aplicado (visto no checkout) E o
+  preço cheio. Se um plano/tamanho NÃO existe, não invente — apague a linha.
+- Se um plano NÃO tem desconto agora, escreva o preço cheio nos dois campos
+  e marque "sem desconto".
+- Data de hoje da coleta: __/__/____
+
+------------------------------------------------------------------------
+CABEÇALHO
+------------------------------------------------------------------------
+FIRMA (nome):
+ID (no site, ex: apex, bulenox, funded-futures-family):
+TIPO: futures  |  cfd
+CUPOM MARKETS:
+DESCONTO HEADLINE (o % grande do card, ex: 90%):
+LINK DE AFILIADO (URL completa que seta o tracking/cookie):
+RATING (ex: 4.7):
+REVIEWS (ex: 1.9K):
+PROFIT SPLIT (ex: 90%):
+FAIXA DE CONTAS (ex: $25K–$150K):
+PLATAFORMAS (ex: WealthCharts · Tradovate):
+
+------------------------------------------------------------------------
+PLANOS  (repita o bloco "TIPO" quantas vezes precisar — 1 por modelo)
+------------------------------------------------------------------------
+TIPO:
+  Cobrança: mensal (/mo)  |  taxa única
+  Drawdown: (ex: Intraday trailing  |  EOD)
+  Min dias p/ passar:
+  Consistência na avaliação: (ex: 40%  |  nenhuma)
+  Desconto deste tipo com o cupom: (ex: 80%  |  40%  |  sem desconto)
+  TAMANHOS (uma linha por tamanho que EXISTE):
+    TAMANHO | PREÇO CHEIO | PREÇO C/ CUPOM | META | DRAWDOWN | CONTRATOS | RESET | ATIVAÇÃO | POPULAR?
+    (ex) 25K | $79 | $16/mo | $2,500 | Intraday $1,250 | 3 minis/30 micros | $70 | $0 | popular
+    50K | ...
+    100K | ...
+
+TIPO:
+  Cobrança:
+  Drawdown:
+  Min dias p/ passar:
+  Consistência na avaliação:
+  Desconto deste tipo com o cupom:
+  TAMANHOS:
+    ...
+
+------------------------------------------------------------------------
+REGRAS / DIFERENCIAIS  (bullets curtos, o que vende a firma)
+------------------------------------------------------------------------
+-
+-
+-
+
+------------------------------------------------------------------------
+PROMO / OBSERVAÇÕES
+------------------------------------------------------------------------
+- Deadline da promo (se houver):
+- Notas (ex: cupom só vale em tal tamanho, oferta especial separada, etc):
+
+========================================================================
+  FIM — envia isso pro Claude Code que ele atualiza cms_firms + LP +
+  Max (bot) + telegram numa tacada só, verbatim.
+========================================================================

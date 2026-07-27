@@ -4,6 +4,7 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 const SUPABASE_URL=Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ANTHROPIC_API_KEY=Deno.env.get("ANTHROPIC_API_KEY")!;
+const GEMINI_API_KEY=Deno.env.get("GEMINI_API_KEY")!;
 const TWELVEDATA_API_KEY=Deno.env.get("TWELVEDATA_API_KEY")!;
 const db=createClient(SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY);
 const LANGS=["pt","en","es"];
@@ -321,16 +322,22 @@ CAMPOS NUMERICOS OBRIGATORIOS (alem do JSON de texto): extraia os numeros exatos
 JSON puro (sem markdown, sem code blocks):
 {"bias":"bullish|bearish|neutral","confidence":1-5,"market_phase":{"pt":"..","en":"..","es":".."},"support_1":"num","support_2":"num","resistance_1":"num","resistance_2":"num","bull_trigger":num,"bull_target_1":num,"bull_target_2":num,"bull_stop":num,"bull_probability":num,"bear_trigger":num,"bear_target_1":num,"bear_target_2":num,"bear_stop":num,"bear_probability":num,"attention_zone":{"pt":"..","en":"..","es":".."},"context":{"pt":"..","en":"..","es":".."},"volume_analysis":{"pt":"..","en":"..","es":".."},"indicators_summary":{"pt":"..","en":"..","es":".."},"scenario_bull":{"pt":"..","en":"..","es":".."},"scenario_bear":{"pt":"..","en":"..","es":".."},"news_impact":{"pt":"..","en":"..","es":".."},"events":{"pt":"..","en":"..","es":".."},"vix_context":{"pt":"..","en":"..","es":".."}}`;
 
-    console.log("Claude:"+A.ticker+"@"+last.toFixed(0)+" mult="+mult.toFixed(4)+(gexBlock?" +GEX":""));
-    var r=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",headers:{"Content-Type":"application/json","x-api-key":ANTHROPIC_API_KEY,"anthropic-version":"2023-06-01"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:6000,messages:[{role:"user",content:prompt}]}),
+    console.log("Gemini:"+A.ticker+"@"+last.toFixed(0)+" mult="+mult.toFixed(4)+(gexBlock?" +GEX":""));
+    // Motor GRATUITO: Gemini 2.5 Flash via AI Studio (generativelanguage, ~250 req/dia free).
+    // JSON mode (responseMimeType) garante saida JSON pura; thinkingBudget:0 evita gastar tokens em raciocinio.
+    var r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="+GEMINI_API_KEY,{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        contents:[{role:"user",parts:[{text:prompt}]}],
+        generationConfig:{responseMimeType:"application/json",maxOutputTokens:8192,temperature:0.7,thinkingConfig:{thinkingBudget:0}}
+      }),
     });
     var data=await r.json();
-    if(data.error)throw new Error(data.error.message);
-    var txt=data.content?.[0]?.text||"";
-    if(!txt)throw new Error("empty response");
-    if(data.stop_reason==="max_tokens")throw new Error("truncated (max_tokens)");
+    if(data.error)throw new Error(data.error.message||JSON.stringify(data.error).slice(0,200));
+    var cand=data.candidates?.[0];
+    var txt=(cand?.content?.parts||[]).map((p:any)=>p.text||"").join("")||"";
+    if(cand?.finishReason==="MAX_TOKENS"&&!txt)throw new Error("truncated (max_tokens)");
+    if(!txt)throw new Error("empty; finish="+(cand?.finishReason)+" "+JSON.stringify(data).slice(0,200));
     var analysis=JSON.parse(txt.replace(/```json/g,"").replace(/```/g,"").trim());
 
     function eo(v:any):any{if(v==null)return null;if(typeof v==="string"){var o:any={};LANGS.forEach(l=>o[l]=v);return o;}return v;}
