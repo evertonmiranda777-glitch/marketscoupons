@@ -22,7 +22,7 @@
 
 **🔑 SECRET KEY ESCREVE NO BANCO + DDL VIA MGMT API:** `SUPABASE_SERVICE_ROLE_KEY` no `.env.local` agora é uma **"Secret key" `sb_secret_`** (Supabase renomeou; conta marketscoupons) → **escrevo em `cms_firms` via REST PATCH** (apikey+Bearer). E o **`POST api.supabase.com/v1/projects/<ref>/database/query` FAZ DDL com o token `sbp_`** (`alter table add column`) — o "sempre 403" era da conta velha. **Não dependo mais do MCP** (que segue sem acesso, só vê a org "Everton" antiga). Detalhe: [[project_sessao_2026_07_24]].
 
-**🚨 CORREÇÕES DE CUPOM (durar):** Alpha Futures = **MARKETS026158 40%** (não 25%, memória velha corrigida; público ALPHA40 também 40%). **FTMO / FundingPips / CTI = SEM cupom** (FTMO discount=19 "Best Value" auto; FundingPips via link; CTI challenges sem código, só PRO8 15% no Direct). **FFF = MARKET varia por plano** (Velocity ~80%, Premier/Prime ~40%→30%, S2F nada — nunca anunciar 80% fora do Velocity). Detalhe: [[reference_cupons_oficiais_markets]].
+**🚨 CORREÇÕES DE CUPOM (durar):** Alpha Futures = **MARKETS026158 40%** (não 25%, memória velha corrigida; público ALPHA40 também 40%). **FTMO / FundingPips = SEM cupom** (FTMO discount=19 "Best Value" auto; FundingPips via link). **CTI = INFINITY8 20% OFF em todos os programas EXCETO Instant Fund Pro** (confirmado pela própria CTI 27/jul; PRO8 morreu, não anunciar). **FFF = MARKET varia por plano** (Velocity ~80%, Premier/Prime ~40%→30%, S2F nada — nunca anunciar 80% fora do Velocity). Detalhe: [[reference_cupons_oficiais_markets]].
 
 ## ⚡ LEIS 22-23/jul (Supabase Free + egress + atribuição + Legacy)
 
