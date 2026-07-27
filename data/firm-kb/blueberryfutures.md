@@ -4,7 +4,7 @@
 
 BLUEBERRY FUTURES (blueberryfutures.com) — deep knowledge (official site, 2026-07-23). Futures-only prop firm, Cayman Islands (BBEducation Incorporated), part of the Blueberry group (Blueberry Funded/Markets/Partners). Simulated evaluation until funded. Futures on CME/CBOT/NYMEX/COMEX only — no stocks/options/forex/crypto/CFD. NOT registered with SEC or CFTC. Platform: BlackArrow (by Nelogica) only — desktop/web/mobile, 100+ indicators, built-in Risk Manager. Languages: EN/Hindi/Japanese/Spanish.
 
-COUPON: our exclusive code is MARKETS-2C7C0 = 60% OFF (the site also runs a public FUTURES60 60% promo — push OUR code so the sale credits us). NO ACTIVATION FEE on any account. Profit split up to 90%. Consistency rule applies ONLY once funded (none during evaluation). 30 days to complete the challenge. Level-1 data free; Level-2/DOM is a $61/month optional add-on. Payment to BUY: credit/debit card only (Visa/MC/Amex/Discover) — NO crypto/PayPal/wire for purchase.
+COUPON: our exclusive code is MARKET-7652C = 60% OFF (the site also runs a public FUTURES60 60% promo — push OUR code so the sale credits us). NO ACTIVATION FEE on any account. Profit split up to 90%. Consistency rule applies ONLY once funded (none during evaluation). 30 days to complete the challenge. Level-1 data free; Level-2/DOM is a $61/month optional add-on. Payment to BUY: credit/debit card only (Visa/MC/Amex/Discover) — NO crypto/PayPal/wire for purchase.
 
 TWO CHALLENGE TYPES, 4 sizes each:
 - ASCENT = End-of-Day (EOD) drawdown, needs 2 min trading days to pass. Prices (regular -> 60% off): 25K $139->$55.60 | 50K $245->$98 | 100K $368->$147.21 | 150K $607->$242.80.

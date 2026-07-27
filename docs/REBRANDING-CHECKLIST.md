@@ -199,7 +199,7 @@ O site tem cupons negociados. As firmas também publicam cupons públicos (SAVEN
 apex MARKET · bulenox MARKET89 (oferta exclusiva de 89%, NÃO usar os $50OFF/$60OFF públicos)
 fn MARKET · e2t MARKETSCOUPONS · the5ers MARKET · e8 MARKET · tradeday MARKETS
 blueguardian MARKET · toponefutures MARKET · aquafutures AQUA
-blueberryfutures MARKETS-2C7C0 · funded-futures-family MARKET
+blueberryfutures MARKET-7652C · funded-futures-family MARKET
 alphafutures MARKETS026158 · goat MARKET
 brightfunded CLNLTPxtT4Sok0PzHaRIIQ  ← é oficial, parece lixo mas NÃO é. Nunca trocar.
 ftmo (sem cupom, comissão via link)
@@ -324,7 +324,7 @@ Medido no GA4, últimos 30 dias:
 ## 3. MESMA MARCA
 **"Markets Coupons"**, logo hexágono + M dourado, paleta dark + gold `#F0B429`, fonte Inter, **mascote raposa** (ver prints). É rebranding **visual**, não troca de marca.
 
-*Motivo: os cupons negociados **são** a marca (`MARKET`, `MARKETS`, `MARKETSCOUPONS`, `MARKET89`, `MARKETS-2C7C0`, `MARKETS026158`). Trocar o nome obrigaria a renegociar o código com 15 firmas, uma a uma, com risco de ficar sem cupom no meio.*
+*Motivo: os cupons negociados **são** a marca (`MARKET`, `MARKETS`, `MARKETSCOUPONS`, `MARKET89`, `MARKET-7652C`, `MARKETS026158`). Trocar o nome obrigaria a renegociar o código com 15 firmas, uma a uma, com risco de ficar sem cupom no meio.*
 
 ## 4. `/apex` , NÃO ENCOSTAR
 É o checkout que o dono desenhou pessoalmente, nos mínimos detalhes. Fora do escopo.
