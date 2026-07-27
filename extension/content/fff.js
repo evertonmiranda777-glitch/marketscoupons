@@ -41,21 +41,70 @@ async function mcMarkFFF(firmId) {
   });
 }
 
-// Espera a grid React montar (auto-fetch em aba de fundo abre a pagina "crua",
-// o document_idle dispara antes das linhas existirem). Poll ate achar linhas ou timeout.
-async function mcWaitFFFTable(maxMs = 18000, stepMs = 600) {
+// Espera a grid React montar E rola a tabela ate o fim pra capturar TODAS as linhas.
+// A tabela de orders da FFF pagina/virtualiza: sem rolar, so as linhas visiveis entravam
+// no banco (era isso que perdia ~4 orders de 79). Agora rola sozinha, sem depender de clique.
+async function mcWaitFFFTable(maxMs = 20000, stepMs = 600) {
   const deadline = Date.now() + maxMs;
   while (Date.now() < deadline) {
-    const leads = mcScrapeFFFTable();
-    if (leads.length) return leads;
+    if (mcFFFParseVisible().length) break;   // espera a 1a linha renderizar
     await new Promise(r => setTimeout(r, stepMs));
   }
-  return mcScrapeFFFTable(); // ultima tentativa (pode voltar vazio)
+  return await mcFFFCollectAll();            // rola + acumula todas as linhas unicas
+}
+
+// Lista elementos rolaveis: a janela + o ancestral rolavel da tabela de orders.
+function mcFFFScrollers() {
+  const set = new Set();
+  set.add(document.scrollingElement || document.documentElement);
+  document.querySelectorAll('table, [role="table"], [role="grid"]').forEach(t => {
+    let el = t;
+    for (let d = 0; d < 8 && el; d++) {
+      const cs = getComputedStyle(el);
+      if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 10) { set.add(el); break; }
+      el = el.parentElement;
+    }
+  });
+  return [...set];
+}
+
+// Rola de cima a baixo acumulando linhas unicas por assinatura. Cobre lazy-load (linhas
+// adicionadas ao rolar) E virtualizacao (linhas trocadas ao rolar). Restaura o scroll no fim
+// pra nao atrapalhar quem esta olhando a pagina.
+async function mcFFFCollectAll(maxSteps = 80) {
+  const scrollers = mcFFFScrollers();
+  const saved = scrollers.map(el => el.scrollTop);
+  const byKey = new Map();
+  const collect = () => { for (const r of mcFFFParseVisible()) byKey.set(r._sig, r); };
+  // comeca do topo pra nao perder as primeiras
+  scrollers.forEach(el => { el.scrollTop = 0; });
+  await new Promise(r => setTimeout(r, 250));
+  collect();
+  let stable = 0, last = 0;
+  for (let i = 0; i < maxSteps; i++) {
+    let moved = false;
+    for (const el of scrollers) {
+      const before = el.scrollTop;
+      el.scrollTop = Math.min(el.scrollHeight, el.scrollTop + Math.max(300, el.clientHeight - 80));
+      if (el.scrollTop > before + 2) moved = true;
+    }
+    await new Promise(r => setTimeout(r, 320));
+    collect();
+    if (byKey.size === last) stable++; else { stable = 0; last = byKey.size; }
+    if (!moved && stable >= 3) break; // no fundo e parou de crescer
+  }
+  // restaura posicao original
+  scrollers.forEach((el, i) => { el.scrollTop = saved[i]; });
+  return [...byKey.values()];
 }
 
 async function mcSyncFFF(opts = {}) {
   const leads = await mcWaitFFFTable();
   if (!leads.length) { mcToastFFF('FFF: sem transacoes na pagina (abra affiliate-orders com filter=all_time)'); return { ok:false, error:'no_data' }; }
+
+  // Da id ESTAVEL a orders sem coluna "transaction" (senao a finance-sync as descarta =
+  // order perdida). Usa a assinatura da linha -> mesma order gera sempre a mesma id (upsert, sem dup).
+  leads.forEach(l => { if (!l.transaction_id) l.transaction_id = 'fff:' + l._sig; });
 
   const byDay = {};
   leads.forEach(l => {
@@ -72,9 +121,9 @@ async function mcSyncFFF(opts = {}) {
   return out;
 }
 
-// Parser adaptativo: acha qualquer tabela/grid com coluna de DATA + coluna de VALOR (comissao/amount).
-// Cobre <table> classico E grids React (role="table"/"row"/"cell").
-function mcScrapeFFFTable() {
+// Parseia as linhas ATUALMENTE renderizadas (uma passada). mcFFFCollectAll chama varias
+// vezes enquanto rola, acumulando por _sig. Cobre <table> classico E grids React.
+function mcFFFParseVisible() {
   const out = [];
   document.querySelectorAll('table, [role="table"], [role="grid"]').forEach(t => {
     const head = [...t.querySelectorAll('thead th, [role="columnheader"]')].map(x => x.textContent.trim().toLowerCase());
@@ -103,7 +152,11 @@ function mcScrapeFFFTable() {
       const commission = iCom >= 0 ? mcFFFNum(cells[iCom]) : 0;
       const amount = iAmt >= 0 ? mcFFFNum(cells[iAmt]) : commission;
       const txn = iTxn >= 0 ? (cells[iTxn] || '').split('#')[0].trim() : '';
-      out.push({ date: d, commission, amount, transaction_id: txn ? ('fff:' + txn) : undefined });
+      // assinatura unica da linha (dedup no acumulo do scroll): txn se houver, senao
+      // data+valor+texto da linha inteira -> orders distintas NAO colapsam mesmo sem coluna de id.
+      const rowText = cells.join('|').slice(0, 90);
+      const _sig = txn ? ('t:' + txn) : ('r:' + d + '|' + commission + '|' + amount + '|' + rowText);
+      out.push({ date: d, commission, amount, transaction_id: txn ? ('fff:' + txn) : undefined, _sig });
     });
   });
   return out;
