@@ -14,7 +14,7 @@
 
 **🔬 PENTE FINO DE PREÇO = TRIAGEM (segunda):** cruzar TUDO contra as KBs (`data/firm-kb/`). Método: pra cada firma comparar `discount` declarado × **implicado** (`1 − n/o`) em cada linha de `prices`; **DIVERGE** se declarado cair fora da faixa (±6%); flag **`n≥o`** (preço cheio como final). ⚠️ **DOIS armazéns por firma que divergem:** `prices` {a,n,o} (cards/criativo) **e** `detail_plans` {tipo:[{s,d,o,pop}]} (fd-overlay). **Reconstruir os DOIS do KB.** `n=o` que **subestima** (preço cheio, desconto real menor/promo) = HONESTO, deixa; só corrigir quando MENTE (mostra desconto maior que o real, ou preço menor que o cobrado). Achados 25/jul: **Alpha estava a 25% (é 40%)** e **Blue Guardian a 40% (é 35% — erro MEU, revertido)** → corrigidos, verificados no site. **The5ers "5% OFF" subestima (Summer ~70%) — decisão do Everton pendente.**
 
-**💲 BLUE GUARDIAN = 35% (BG35), NÃO 40%. Top One tem Elite Daily $0 + Elite Access com taxa (selo âmbar).** Detalhe: [[project_sessao_2026_07_25]] · [[reference_cupons_oficiais_markets]].
+**💲 BLUE GUARDIAN = 25% (BG25 — era BG35 35%, mudou; MARKET testado no checkout 27/jul dá exatos 25%). Top One tem Elite Daily $0 + Elite Access com taxa (selo âmbar).** Detalhe: [[project_sessao_2026_07_25]] · [[reference_cupons_oficiais_markets]].
 
 ## ⚡ LEIS 24/jul (Max sabe as 19 firmas + secret key + compat ES2019)
 
