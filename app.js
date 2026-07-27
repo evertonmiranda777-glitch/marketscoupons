@@ -3103,11 +3103,11 @@ const ACTIVATION_FEE = {
   'fundingpips': { fee: 0 }, 'ftmo': { fee: 0 }, 'brightfunded': { fee: 0 }, 'blueguardian': { fee: 0 },
   'cti': { fee: 0 }, 'the5ers': { fee: 0 },
   // COBRAM ativacao (nao recebem selo; amount aparece no detalhe):
-  'bulenox': { fee: 143, amount: '$143–$898 (Master, one-time)' },
+  'bulenox': { fee: 143, amount: 'Master activation (one-time, after you pass) — 25K $143 · 50K $148 · 100K $248 · 150K $498 · 250K $898' },
   'toponefutures': { fee: 139, hasNoFeeOption: true, amount: 'Elite Daily: $0 activation · Elite Access: $139–$359 one-time (ACCESS promo 2 for $19 each)' },
   'e2t': { fee: 139, amount: '$139 (charged only on your 1st payout)' },
   'apex': { fee: 69, hasNoFeeOption: true, amount: 'Standard PA activation (one-time) — Intraday: 25K $69 / 50K $79 / 100K $99 / 150K $129 · EOD: 25K $99 / 50K $129 / 100K $139 / 150K $159 · Legacy $125 — or pick the No Activation Fee variant' },
-  'goat': { fee: 99, amount: '$99 regular, currently $0 on EOD plans (promo)' }
+  'goat': { fee: 99, hasNoFeeOption: true, amount: '$99 one-time — but $0 on EOD plans (site: "Available with EOD Plans. Pass your challenge and Pay $0 Activation Fees")' }
 };
 function activationSelo(f) {
   const a = ACTIVATION_FEE[f.id];
