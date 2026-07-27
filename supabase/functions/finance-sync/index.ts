@@ -81,6 +81,13 @@ serve(async (req) => {
       }));
 
     if (normalized.length) {
+      // FFF REPLACE: a raspagem da FFF e' parcial (a tabela pagina, mostra ~25 sem filtro), entao
+      // a extensao ja RECONCILIOU o total com o painel oficial ("Grand Total Commission") e manda
+      // fff_replace:true. Aqui apagamos TUDO da FFF antes de inserir o lote reconciliado, senao os
+      // dias antigos de scrapes parciais somam por cima e o total infla/desfaz. So p/ FFF + reconciliado.
+      if (body.fff_replace === true && firm === "funded-futures-family") {
+        await sb.from("affiliate_daily_stats").delete().eq("firm_id", firm);
+      }
       const { error, count } = await sb
         .from("affiliate_daily_stats")
         .upsert(normalized, { onConflict: "firm_id,date", count: "exact" });

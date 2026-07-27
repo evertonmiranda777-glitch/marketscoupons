@@ -116,23 +116,26 @@ async function mcSyncFFF(opts = {}) {
   const rows = Object.values(byDay);
 
   // RECONCILIA com o total OFICIAL do painel FFF ("Total Purchase/Grand Total Commission" +
-  // "Total Orders") = numero ESTAVEL. A soma linha-a-linha e' furada (a tabela pagina/virtualiza,
-  // cada scrape pega um subconjunto diferente). Se o oficial vier maior, joga a diferenca no dia
-  // mais recente. GUARD: so aceita gap plausivel (<= 60% acima do somado) pra NUNCA confundir com
-  // "Total Sales" (que e' ~10x a comissao) e inflar tudo.
+  // "Total Orders") = numero ESTAVEL. A raspagem linha-a-linha e' furada (a tabela pagina/mostra
+  // so ~25 sem filtro), entao NAO da pra confiar na soma das linhas. Se o total oficial vier,
+  // joga a diferenca no dia mais recente e marca fff_replace (a finance-sync substitui TUDO da FFF,
+  // senao o acumulo parcial infla). O rotulo "...Commission" NUNCA casa "Total Sales", entao confio
+  // no valor (sanidade so >0 e <100k). Sem o guard de proporcao velho, que matava com poucas linhas.
+  let fffReplace = false;
   try {
     const sm = mcFFFScrapeSummary();
     const curC = rows.reduce((a, r) => a + (Number(r.commission) || 0), 0);
     const curT = rows.reduce((a, r) => a + (Number(r.transactions) || 0), 0);
-    if (sm.total != null && sm.total > curC + 0.01 && sm.total <= curC * 1.6 + 60) {
+    if (sm.total != null && sm.total > 0 && sm.total < 100000 && sm.total > curC + 0.01) {
       let tgt = rows.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
       if (!tgt) { tgt = { date: new Date().toISOString().slice(0, 10), transactions: 0, commission: 0, granularity: 'day' }; rows.push(tgt); }
       tgt.commission = Math.round((Number(tgt.commission || 0) + (sm.total - curC)) * 100) / 100;
       if (sm.orders && sm.orders > curT) tgt.transactions = Number(tgt.transactions || 0) + (sm.orders - curT);
+      fffReplace = true; // reconciliou com o oficial -> pode substituir tudo com seguranca
     }
   } catch (_) {}
 
-  const out = await mcSendFFF({ firm: 'funded-futures-family', source: 'ext_fff_v1', snapshot: null, rows, leads });
+  const out = await mcSendFFF({ firm: 'funded-futures-family', source: 'ext_fff_v1', snapshot: null, rows, leads, fff_replace: fffReplace });
   if (out.ok) { mcToastFFF(`FFF: ${leads.length} raspadas, ${out.leads_saved ?? '?'} gravadas`); await mcMarkFFF('fff'); }
   else { mcToastFFF('FFF: erro, ' + (out.error || '?')); }
   return out;
@@ -187,7 +190,7 @@ function mcFFFScrapeSummary() {
       .filter(e => labelRe.test((e.textContent || '').trim()) && (e.textContent || '').length < 70);
     for (const el of leaves) {
       let p = el;
-      for (let d = 0; d < 5 && p; d++) {           // sobe do rotulo ate o cartao e pega o valor
+      for (let d = 0; d < 3 && p; d++) {           // sobe do rotulo ate o cartao (pouco, p/ nao pegar cartao vizinho)
         const m = (p.textContent || '').match(valRe);
         if (m) return m[1];
         p = p.parentElement;
