@@ -115,6 +115,23 @@ async function mcSyncFFF(opts = {}) {
   });
   const rows = Object.values(byDay);
 
+  // RECONCILIA com o total OFICIAL do painel FFF ("Total Purchase/Grand Total Commission" +
+  // "Total Orders") = numero ESTAVEL. A soma linha-a-linha e' furada (a tabela pagina/virtualiza,
+  // cada scrape pega um subconjunto diferente). Se o oficial vier maior, joga a diferenca no dia
+  // mais recente. GUARD: so aceita gap plausivel (<= 60% acima do somado) pra NUNCA confundir com
+  // "Total Sales" (que e' ~10x a comissao) e inflar tudo.
+  try {
+    const sm = mcFFFScrapeSummary();
+    const curC = rows.reduce((a, r) => a + (Number(r.commission) || 0), 0);
+    const curT = rows.reduce((a, r) => a + (Number(r.transactions) || 0), 0);
+    if (sm.total != null && sm.total > curC + 0.01 && sm.total <= curC * 1.6 + 60) {
+      let tgt = rows.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
+      if (!tgt) { tgt = { date: new Date().toISOString().slice(0, 10), transactions: 0, commission: 0, granularity: 'day' }; rows.push(tgt); }
+      tgt.commission = Math.round((Number(tgt.commission || 0) + (sm.total - curC)) * 100) / 100;
+      if (sm.orders && sm.orders > curT) tgt.transactions = Number(tgt.transactions || 0) + (sm.orders - curT);
+    }
+  } catch (_) {}
+
   const out = await mcSendFFF({ firm: 'funded-futures-family', source: 'ext_fff_v1', snapshot: null, rows, leads });
   if (out.ok) { mcToastFFF(`FFF: ${leads.length} raspadas, ${out.leads_saved ?? '?'} gravadas`); await mcMarkFFF('fff'); }
   else { mcToastFFF('FFF: erro, ' + (out.error || '?')); }
@@ -160,6 +177,30 @@ function mcFFFParseVisible() {
     });
   });
   return out;
+}
+
+// Le o total OFICIAL do resumo da FFF (cartoes "Total Purchase Commission" / "Grand Total
+// Commission" e "Total Orders"). Numeros estaveis, imunes a paginacao/virtualizacao da tabela.
+function mcFFFScrapeSummary() {
+  const cardVal = (labelRe, valRe) => {
+    const leaves = [...document.querySelectorAll('div,span,p,h1,h2,h3,h4,label')]
+      .filter(e => labelRe.test((e.textContent || '').trim()) && (e.textContent || '').length < 70);
+    for (const el of leaves) {
+      let p = el;
+      for (let d = 0; d < 5 && p; d++) {           // sobe do rotulo ate o cartao e pega o valor
+        const m = (p.textContent || '').match(valRe);
+        if (m) return m[1];
+        p = p.parentElement;
+      }
+    }
+    return null;
+  };
+  const c = cardVal(/(grand total|total purchase)\s+commission/i, /\$\s*([\d,]+\.\d{2})/);
+  const o = cardVal(/total orders/i, /total orders\D*(\d{1,5})/i);
+  return {
+    total: c ? parseFloat(c.replace(/,/g, '')) : null,
+    orders: o ? parseInt(o, 10) : null
+  };
 }
 
 function mcFFFNum(s) {
