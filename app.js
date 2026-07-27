@@ -3598,8 +3598,13 @@ function openFD(id, f) {var _f$platforms2, _f$trustpilot2, _f$trustpilot3, _f$tr
       <div><div class="fd-name">${f.name}</div><div class="fd-type">${f.type === 'Futuros' ? t('firm_type_futuros') : f.type === 'Forex' ? t('firm_type_forex') : f.type}</div></div>
     </div>
     <div class="fd-discount">
+      ${f.discount > 0 ? `
       <div class="fd-discount-pct" style="background:linear-gradient(135deg,${f.color},#FFD97D,${f.color});-webkit-background-clip:text;filter:drop-shadow(0 4px 24px ${f.color}40)">${f.discount}% OFF</div>
-      <div class="fd-discount-label">${f.disc_note ? f.disc_note : t('fd_desconto') + ' ' + (tf(f.dtype) || '').toUpperCase()}</div>
+      <div class="fd-discount-label">${f.disc_note ? f.disc_note : t('fd_desconto') + ' ' + (tf(f.dtype) || '').toUpperCase()}</div>` : `
+      <!-- Firma SEM desconto (ex CTI): NUNCA "0% OFF" nem claim de desconto (Lei #0 / regra 30-jun).
+           Mesma transparencia do card: "Via link / No code". -->
+      <div class="fd-discount-pct" style="background:linear-gradient(135deg,${f.color},#FFD97D,${f.color});-webkit-background-clip:text;font-size:26px;">${t('met_via')}</div>
+      <div class="fd-discount-label">${f.disc_note ? f.disc_note : t('met_nocode')}</div>`}
     </div>
     <div class="fd-rating-block"${tpUrl ? ` onclick="openTpPopup('${tpUrl}')" style="cursor:pointer"` : ''}>
       <div class="fd-rating-num">${f.rating}</div>
