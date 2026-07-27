@@ -1462,7 +1462,7 @@ async function loadPromoBar(){
       // Se explicitamente desligado no admin, esconde igual o site
       if (enabled === 'false') return;
     }
-    const url = SB_URL+'/rest/v1/cms_firms?select=id,name,short_name,promo_ends_at&id=in.(apex,bulenox)&active=eq.true';
+    const url = SB_URL+'/rest/v1/cms_firms?select=id,name,short_name,promo_ends_at&id=in.(apex,bulenox,funded-futures-family)&active=eq.true';
     const res = await fetch(url, { headers: { apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY } });
     if (!res.ok) return;
     const rows = await res.json();

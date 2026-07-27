@@ -3007,7 +3007,9 @@ function renderPromoTopbar() {var _siteSettings2;
     bar.style.display = 'none';bar.innerHTML = '';
     document.body.classList.remove('has-promo-topbar');
     document.documentElement.style.removeProperty('--promo-h');
-    try {localStorage.setItem('mc_promo_off', '1');} catch (_) {}
+    // NAO gravar mc_promo_off aqui: nao existe botao de fechar do usuario, entao esconder por
+    // "sem promo ativa" (ou FIRMS ainda carregando) NAO deve suprimir a barra no proximo load.
+    // Era isso que fazia a barra "sumir pra sempre" mesmo com promo ativa depois.
   };
   // Master toggle via site_settings
   const enabled = typeof _siteSettings !== 'undefined' && ((_siteSettings2 = _siteSettings) === null || _siteSettings2 === void 0 ? void 0 : _siteSettings2.promo_topbar_enabled) !== undefined ? _siteSettings.promo_topbar_enabled === 'true' : true;
