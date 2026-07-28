@@ -705,6 +705,34 @@ Deno.serve(async (req: Request) => {
 
   try {
     switch (action) {
+      // Diagnostico SOMENTE-LEITURA das permissoes do grupo. Nao altera nada.
+      // Existe porque "restringi os membros" no app do Telegram nao mostra numa
+      // tela so o que ficou de fato liberado — e uma permissao esquecida (poll,
+      // midia, mudar info) e justamente por onde entra o abuso.
+      case "chat_info": {
+        const _s2 = Deno.env.get("MC_TG_SECRET") || "";
+        if (_s2 && (req.headers.get("x-mc-secret") || "") !== _s2) {
+          return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
+        }
+        const r = await fetch(tgApi("getChat"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: CHAT_ID }),
+        });
+        const d = await r.json();
+        result = {
+          chat_id: CHAT_ID,
+          title: d?.result?.title,
+          type: d?.result?.type,
+          is_forum: d?.result?.is_forum ?? false,
+          membros_podem: d?.result?.permissions ?? null,
+          slow_mode_delay: d?.result?.slow_mode_delay ?? null,
+          join_by_request: d?.result?.join_by_request ?? null,
+          raw_ok: d?.ok === true,
+        };
+        break;
+      }
+
       case "clean": {
         const _s = Deno.env.get("MC_TG_SECRET") || "";
         if (_s && (req.headers.get("x-mc-secret") || "") !== _s) return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
