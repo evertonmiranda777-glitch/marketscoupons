@@ -14589,7 +14589,12 @@ function renderHeroPremium(firm, content, L) {
   // criativo saia COM selo no Telegram e SEM selo na aba Criativos. Mexeu num,
   // mexe no outro (renderHeroPremium esta duplicado nos dois arquivos).
   // verde = firma 100% sem taxa | ambar = cobra mas tem plano sem taxa
-  if (crChk()) {
+  // SEM crChk() aqui: no admin crChk(id) le um CHECKBOX pelo id, e crChk() sem
+  // argumento devolve undefined -> o bloco NUNCA rodava. Foi assim que o selo ficou
+  // no codigo do admin e mesmo assim nao aparecia na aba Criativos.
+  // O selo nao tem checkbox proprio nas "INFORMACOES VISIVEIS", entao renderiza sempre,
+  // igual ao criativo-render (onde crChk() e literalmente `return true`).
+  {
     if (CR_NOFEE.has(firm.id)) {
       const _nf = _crLang==='pt' ? 'SEM TAXA DE ATIVAÇÃO' : 'NO ACTIVATION FEE';
       h += `<div class="cr-hp-nofee" style="display:inline-block;margin:10px auto 2px;padding:9px 26px;border-radius:999px;background:rgba(16,185,129,.16);border:1.6px solid rgba(16,185,129,.75);color:#10B981;font-size:27px;font-weight:800;letter-spacing:.5px;white-space:nowrap;">✓ ${_nf}</div>`;
