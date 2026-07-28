@@ -14516,6 +14516,13 @@ function updateCrPreview() {
   return renderHeroPremium(firm, content, L);
 }
 
+// ESPELHO de criativo-render.html — mexeu num, mexe no outro.
+// verde = firma 100% sem taxa de ativacao | ambar = cobra mas tem plano sem taxa.
+// The5ers e AMBAR (28/07): o Bootcamp 3-Step cobra "Remaining Fee Upon Success"
+// na aprovacao. Selo verde em firma que cobra em ALGUM plano = propaganda enganosa.
+const CR_NOFEE = new Set(['fn','funded-futures-family','tradeday','aquafutures','blueberryfutures','futureselite','e8','alphafutures','fundingpips','ftmo','brightfunded','blueguardian','cti']);
+const CR_NOFEE_PLAN = new Set(['apex','toponefutures','goat','the5ers']);
+
 function renderHeroPremium(firm, content, L) {
   const color = firm.color || '#F0B429';
   const dtype = (firm.discount_type || firm.dtype || 'lifetime');
@@ -14576,6 +14583,20 @@ function renderHeroPremium(firm, content, L) {
   if (crChk('cr-show-discount') && firm.discount) {
     h += `<div class="cr-hp-disc" style="filter:drop-shadow(0 3px 8px rgba(0,0,0,.3));"><span style="color:${color};">${firm.discount}%</span><span class="off" style="background:linear-gradient(100deg, ${color} 0%, #F5E3C4 60%, #FFF7E3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;">OFF</span></div>`;
     h += `<div class="cr-hp-dtype" style="color:${color};">${escHtml(dtypeLabel)}</div>`;
+  }
+  // Selo de taxa de ativacao — ESPELHO do criativo-render.html.
+  // 28/07: o selo existia so la; esta copia do admin nao tinha, entao o mesmo
+  // criativo saia COM selo no Telegram e SEM selo na aba Criativos. Mexeu num,
+  // mexe no outro (renderHeroPremium esta duplicado nos dois arquivos).
+  // verde = firma 100% sem taxa | ambar = cobra mas tem plano sem taxa
+  if (crChk()) {
+    if (CR_NOFEE.has(firm.id)) {
+      const _nf = _crLang==='pt' ? 'SEM TAXA DE ATIVAÇÃO' : 'NO ACTIVATION FEE';
+      h += `<div class="cr-hp-nofee" style="display:inline-block;margin:10px auto 2px;padding:9px 26px;border-radius:999px;background:rgba(16,185,129,.16);border:1.6px solid rgba(16,185,129,.75);color:#10B981;font-size:27px;font-weight:800;letter-spacing:.5px;white-space:nowrap;">✓ ${_nf}</div>`;
+    } else if (CR_NOFEE_PLAN.has(firm.id)) {
+      const _nfp = _crLang==='pt' ? 'TEM PLANO SEM TAXA DE ATIVAÇÃO' : 'NO-FEE PLAN AVAILABLE';
+      h += `<div class="cr-hp-nofee" style="display:inline-block;margin:10px auto 2px;padding:9px 26px;border-radius:999px;background:rgba(240,180,41,.16);border:1.6px solid rgba(240,180,41,.75);color:#F0B429;font-size:27px;font-weight:800;letter-spacing:.5px;white-space:nowrap;">${_nfp}</div>`;
+    }
   }
 
   // Coupon (ou banner auto-apply pra firmas sem cupom: FTMO, The5ers, etc)
