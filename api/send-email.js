@@ -149,6 +149,7 @@ module.exports = async (req, res) => {
       try {
         const lib = require('../lib/email-render.js');
         renderInstHtml = lib.renderInstHtml;
+        if (lib.primeAff) { try { await lib.primeAff(); } catch (_) {} }  // links de afiliado da tabela `firms`
         INST_TEMPLATES = lib.INST_TEMPLATES;
       } catch (e) {
         return res.status(500).json({ error: 'render_lib_missing', detail: e.message });

@@ -1,0 +1,154 @@
+[
+ {
+  "slug": "alphafutures",
+  "nome": "Alpha Futures",
+  "url": "https://app.alpha-futures.com/signup/Markets026158/",
+  "param": "path",
+  "val": "Markets026158",
+  "coupon": "MARKETS026158"
+ },
+ {
+  "slug": "apex",
+  "nome": "Apex Trader Funding",
+  "url": "https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644",
+  "param": "path",
+  "val": "evertonmiranda",
+  "coupon": "MARKET"
+ },
+ {
+  "slug": "aquafutures",
+  "nome": "Aqua Futures",
+  "url": "https://www.aquafunded.com/?afmc=h5d",
+  "param": "afmc",
+  "val": "h5d",
+  "coupon": "h5d"
+ },
+ {
+  "slug": "blueberryfutures",
+  "nome": "Blueberry Futures",
+  "url": "https://portal.blueberryfutures.com/auth/signup?ref_code=MARKET-7652C",
+  "param": "ref_code",
+  "val": "MARKET-7652C",
+  "coupon": "MARKET-7652C"
+ },
+ {
+  "slug": "blueguardian",
+  "nome": "Blue Guardian",
+  "url": "https://checkout.blueguardian.com/?afmc=MARKET",
+  "param": "afmc",
+  "val": "MARKET",
+  "coupon": "MARKET"
+ },
+ {
+  "slug": "brightfunded",
+  "nome": "BrightFunded",
+  "url": "https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ",
+  "param": "path",
+  "val": "CLNLTPxtT4Sok0PzHaRIIQ",
+  "coupon": null
+ },
+ {
+  "slug": "bulenox",
+  "nome": "Bulenox",
+  "url": "https://bulenox.com/member/aff/go/marketcoupons",
+  "param": "path",
+  "val": "marketcoupons",
+  "coupon": "MARKET89"
+ },
+ {
+  "slug": "cti",
+  "nome": "City Traders Imperium",
+  "url": "https://app.citytradersimperium.com/user-auth/register?referral_code=1331c5&utm_source=client&utm_medium=referral&utm_id=1331c5",
+  "param": "referral_code",
+  "val": "1331c5",
+  "coupon": "INFINITY8"
+ },
+ {
+  "slug": "e2t",
+  "nome": "Earn2Trade",
+  "url": "https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14",
+  "param": "a_pid",
+  "val": "marketscoupons",
+  "coupon": "MARKETSCOUPONS"
+ },
+ {
+  "slug": "e8",
+  "nome": "E8 Markets",
+  "url": "https://e8markets.com/d/MARKET",
+  "param": "path",
+  "val": "MARKET",
+  "coupon": "MARKET"
+ },
+ {
+  "slug": "fn",
+  "nome": "FundedNext",
+  "url": "https://fundednext.com/futures?fpr=everton33",
+  "param": "fpr",
+  "val": "everton33",
+  "coupon": "MARKET"
+ },
+ {
+  "slug": "ftmo",
+  "nome": "FTMO",
+  "url": "https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP",
+  "param": "affiliates",
+  "val": "eyfIptUCGgfcfaUlyrRP",
+  "coupon": null
+ },
+ {
+  "slug": "funded-futures-family",
+  "nome": "Funded Futures Family",
+  "url": "https://app.fundedfuturesfamily.com/affiliation/?ref_code=ed5ae23f-10eb-46c6-b6d1-280369e720eb",
+  "param": "ref_code",
+  "val": "ed5ae23f-10eb-46c6-b6d1-280369e720eb",
+  "coupon": "MARKET"
+ },
+ {
+  "slug": "fundingpips",
+  "nome": "Funding Pips",
+  "url": "https://app.fundingpips.com/register?referral_code=31985EAA",
+  "param": "referral_code",
+  "val": "31985EAA",
+  "coupon": "HELLO"
+ },
+ {
+  "slug": "futureselite",
+  "nome": "Futures Elite",
+  "url": "https://app.futureselite.com/auth/sign-up?aff=AFF5585615",
+  "param": "aff",
+  "val": "AFF5585615",
+  "coupon": null
+ },
+ {
+  "slug": "goat",
+  "nome": "Goat Funded Futures",
+  "url": "https://app.goatfundedfutures.com/checkout?referral_id=MARKET",
+  "param": "referral_id",
+  "val": "MARKET",
+  "coupon": "MARKET"
+ },
+ {
+  "slug": "the5ers",
+  "nome": "The5ers",
+  "url": "https://www.the5ers.com/?afmc=19jp",
+  "param": "afmc",
+  "val": "19jp",
+  "coupon": null
+ },
+ {
+  "slug": "toponefutures",
+  "nome": "Top One Futures",
+  "url": "https://toponefutures.com/?linkId=lp_707970&sourceId=markets&tenantId=toponefutures",
+  "param": "linkId",
+  "val": "lp_707970",
+  "coupon": "MARKET"
+ },
+ {
+  "slug": "tradeday",
+  "nome": "TradeDay",
+  "url": "https://www.tradeday.com/?a_aid=marketscoupons#pricing",
+  "param": "a_aid",
+  "val": "marketscoupons",
+  "coupon": "MARKETS"
+ }
+]

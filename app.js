@@ -1200,6 +1200,9 @@ function pdVerb(planName) {const s = (planName || '').toLowerCase();if (/lifetim
 
 /* Cupom digitavel? UUID/codigo de afiliado (>16 chars, ex BrightFunded) aplica via link, NAO se digita.
    Tratado como "sem cupom" no display (cai no branch via-link/skip de cada render). O link de afiliado continua aplicando o desconto. */
+/* _affLink: unico ponto que resolve URL de afiliado no app.js.
+   Le de FIRMS (que recebe o merge da tabela `firms`). NUNCA voltar a escrever URL literal aqui. */
+function _affLink(id){ try { var f=(typeof FIRMS!=='undefined'?FIRMS:[]).find(function(x){return x.id===id;}); return (f&&f.link)||''; } catch(e){ return ''; } }
 function couponTypeable(f) {return !!(f && f.coupon && f.coupon.length <= 16);}
 /* Página /app: troca aba iPhone/Android (a função era chamada no onclick mas nunca foi definida -> Android nao abria) */
 function apPick(os) {
@@ -4625,22 +4628,22 @@ function cpCoupon(code, firmId, loc) {
 
 /* MULTI-FIRM CHECKOUT */
 const CHECKOUT_FIRMS = [
-{ id: 'apex', name: 'Apex Trader Funding', short: 'Apex', coupon: 'MARKET', discount: '90%', color: '#F97316', bg: 'rgba(249,115,22,0.12)',
+{ id: 'apex', name: 'Apex Trader Funding', short: 'Apex', coupon: null, discount: '90%', color: '#F97316', bg: 'rgba(249,115,22,0.12)',
   includes: ['No daily loss limit', 'No scaling rules', 'NinjaTrader License (Rithmic)', 'Real-time data', 'WealthCharts platform', '24/7 Support'],
   types: ['Intraday Trail', 'EOD Trail'], platforms: ['Rithmic', 'Tradovate', 'WealthCharts'],
   plansByType: {
     'Intraday Trail': [{ size: '25K', capital: '$25,000', goal: '$1,500', maxDD: '$1,500', orig: '$199', disc: '$19.90', featured: false }, { size: '50K', capital: '$50,000', goal: '$3,000', maxDD: '$2,500', orig: '$249', disc: '$24.90', featured: false }, { size: '100K', capital: '$100,000', goal: '$6,000', maxDD: '$3,000', orig: '$399', disc: '$39.90', featured: true }, { size: '150K', capital: '$150,000', goal: '$9,000', maxDD: '$4,500', orig: '$599', disc: '$59.90', featured: false }],
     'EOD Trail': [{ size: '25K', capital: '$25,000', goal: '$1,500', maxDD: '$1,500', orig: '$299', disc: '$29.90', featured: false }, { size: '50K', capital: '$50,000', goal: '$3,000', maxDD: '$2,500', orig: '$349', disc: '$34.90', featured: false }, { size: '100K', capital: '$100,000', goal: '$6,000', maxDD: '$3,000', orig: '$599', disc: '$59.90', featured: true }, { size: '150K', capital: '$150,000', goal: '$9,000', maxDD: '$4,500', orig: '$799', disc: '$79.90', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644' },
-{ id: 'bulenox', name: 'Bulenox', short: 'Bulenox', coupon: 'MARKET89', discount: '89%', color: '#3B82F6', bg: 'rgba(59,130,246,0.12)',
+  buildUrl: (size, type, plat) => _affLink('apex') },
+{ id: 'bulenox', name: 'Bulenox', short: 'Bulenox', coupon: null, discount: '89%', color: '#3B82F6', bg: 'rgba(59,130,246,0.12)',
   includes: ['Pass in 1 day', 'No consistency rule', 'News trading allowed', 'Weekly payouts', 'Scaling up to $400K', '14-day free Rithmic trial'],
   types: ['Trailing DD', 'EOD DD'], platforms: ['Rithmic', 'NinjaTrader'],
   plansByType: {
     'Trailing DD': [{ size: '25K', capital: '$25,000', goal: '$1,500', maxDD: '$1,500', orig: '$145', disc: '$15.95', featured: false }, { size: '50K', capital: '$50,000', goal: '$3,000', maxDD: '$2,500', orig: '$175', disc: '$19.25', featured: false }, { size: '100K', capital: '$100,000', goal: '$6,000', maxDD: '$3,000', orig: '$215', disc: '$23.65', featured: true }, { size: '150K', capital: '$150,000', goal: '$9,000', maxDD: '$4,500', orig: '$325', disc: '$35.75', featured: false }, { size: '250K', capital: '$250,000', goal: '$15,000', maxDD: '$5,500', orig: '$535', disc: '$58.85', featured: false }],
     'EOD DD': [{ size: '25K', capital: '$25,000', goal: '$1,500', maxDD: '$1,500', orig: '$145', disc: '$15.95', featured: false }, { size: '50K', capital: '$50,000', goal: '$3,000', maxDD: '$2,500', orig: '$175', disc: '$19.25', featured: false }, { size: '100K', capital: '$100,000', goal: '$6,000', maxDD: '$3,000', orig: '$215', disc: '$23.65', featured: true }, { size: '150K', capital: '$150,000', goal: '$9,000', maxDD: '$4,500', orig: '$325', disc: '$35.75', featured: false }, { size: '250K', capital: '$250,000', goal: '$15,000', maxDD: '$5,500', orig: '$535', disc: '$58.85', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://bulenox.com/member/aff/go/marketcoupons' },
+  buildUrl: (size, type, plat) => _affLink('bulenox') },
 { id: 'ftmo', name: 'FTMO', short: 'FTMO', coupon: null, discount: '20%', color: '#22C55E', bg: 'rgba(34,197,94,0.12)',
   includes: ['Free Trial available', 'Up to 90% profit split', '1-Step (NEW) and 2-Step', 'Support in 18 languages', 'Scaling up to $2M', 'No time limit'],
   types: ['1-Step Challenge', '2-Step Challenge'], platforms: ['MT4', 'MT5', 'cTrader', 'DXtrade'],
@@ -4648,8 +4651,8 @@ const CHECKOUT_FIRMS = [
     '1-Step Challenge': [{ size: '10K', capital: '€10,000', goal: '€1,000', maxDD: '-10%', orig: '—', disc: '€79', featured: false }, { size: '25K', capital: '€25,000', goal: '€2,500', maxDD: '-10%', orig: '—', disc: '€199', featured: false }, { size: '50K', capital: '€50,000', goal: '€5,000', maxDD: '-10%', orig: '—', disc: '€319', featured: false }, { size: '100K', capital: '€100,000', goal: '€10,000', maxDD: '-10%', orig: '—', disc: '€499', featured: true }, { size: '200K', capital: '€200,000', goal: '€20,000', maxDD: '-10%', orig: '—', disc: '€999', featured: false }],
     '2-Step Challenge': [{ size: '10K', capital: '€10,000', goal: '€1,000', maxDD: '-10%', orig: '—', disc: '€79', featured: false }, { size: '25K', capital: '€25,000', goal: '€2,500', maxDD: '-10%', orig: '—', disc: '€199', featured: false }, { size: '50K', capital: '€50,000', goal: '€5,000', maxDD: '-10%', orig: '—', disc: '€319', featured: false }, { size: '100K', capital: '€100,000', goal: '€10,000', maxDD: '-10%', orig: '—', disc: '€499', featured: true }, { size: '200K', capital: '€200,000', goal: '€20,000', maxDD: '-10%', orig: '—', disc: '€999', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP' },
-{ id: 'fn', name: 'FundedNext', short: 'FundedNext', coupon: 'FLEXJU', discount: '40%', color: '#06B6D4', bg: 'rgba(6,182,212,0.12)',
+  buildUrl: (size, type, plat) => _affLink('ftmo') },
+{ id: 'fn', name: 'FundedNext', short: 'FundedNext', coupon: null, discount: '40%', color: '#06B6D4', bg: 'rgba(6,182,212,0.12)',
   includes: ['Up to 95% profit split', '15% reward in challenge phase', 'Guaranteed 24h payout', 'No time limit', 'News trading allowed', '$288M+ total rewarded'],
   types: ['Stellar 2-Step', 'Stellar 1-Step', 'Stellar Instant', 'Bolt (Futures)', 'Rapid (Futures)', 'Legacy (Futures)'], platforms: ['MT4', 'MT5', 'cTrader', 'Match-Trader', 'Rithmic'],
   plansByType: {
@@ -4660,16 +4663,16 @@ const CHECKOUT_FIRMS = [
     'Rapid (Futures)': [{ size: '25K', capital: '$25,000', goal: '$2,000', maxDD: '-4%', orig: '$89.99', disc: '$67.49', featured: false }, { size: '50K', capital: '$50,000', goal: '$3,000', maxDD: '-4%', orig: '$159.99', disc: '$119.99', featured: true }, { size: '100K', capital: '$100,000', goal: '$6,000', maxDD: '-4%', orig: '$279.99', disc: '$209.99', featured: false }],
     'Legacy (Futures)': [{ size: '25K', capital: '$25,000', goal: '$2,000', maxDD: '-4%', orig: '$79.99', disc: '$59.99', featured: false }, { size: '50K', capital: '$50,000', goal: '$3,000', maxDD: '-4%', orig: '$149.99', disc: '$112.49', featured: true }, { size: '100K', capital: '$100,000', goal: '$6,000', maxDD: '-4%', orig: '$249.99', disc: '$187.49', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://fundednext.com/futures?fpr=everton33' },
-{ id: 'e2t', name: 'Earn2Trade', short: 'E2T', coupon: 'MARKETSCOUPONS', discount: '50%', color: '#F59E0B', bg: 'rgba(245,158,11,0.12)',
+  buildUrl: (size, type, plat) => _affLink('fn') },
+{ id: 'e2t', name: 'Earn2Trade', short: 'E2T', coupon: null, discount: '50%', color: '#F59E0B', bg: 'rgba(245,158,11,0.12)',
   includes: ['Free NinjaTrader/Finamark license', 'Free Journalytix license', 'Free reset when rebilled', 'Scaling up to $400K', 'Education catalog included'],
   types: ['Trader Career Path', 'Gauntlet Mini'], platforms: ['Rithmic', 'NinjaTrader', 'Finamark', 'Tradovate', 'TradingView'],
   plansByType: {
     'Trader Career Path': [{ size: 'TCP 25K', capital: '$25,000', goal: '$1,750', maxDD: '$1,500', orig: '$150', disc: '$60', featured: false }, { size: 'TCP 50K', capital: '$50,000', goal: '$3,000', maxDD: '$2,000', orig: '$190', disc: '$76', featured: false }, { size: 'TCP 100K', capital: '$100,000', goal: '$6,000', maxDD: '$3,500', orig: '$350', disc: '$140', featured: true }],
     'Gauntlet Mini': [{ size: 'GAU 50K', capital: '$50,000', goal: '$3,000', maxDD: '$2,000', orig: '$170', disc: '$68', featured: false }, { size: 'GAU 100K', capital: '$100,000', goal: '$6,000', maxDD: '$3,500', orig: '$315', disc: '$126', featured: true }, { size: 'GAU 150K', capital: '$150,000', goal: '$9,000', maxDD: '$4,500', orig: '$375', disc: '$150', featured: false }, { size: 'GAU 200K', capital: '$200,000', goal: '$12,000', maxDD: '$5,000', orig: '$550', disc: '$220', featured: false }]
   },
-  buildUrl: (size, type, plat) => {const m = { 'TCP 25K': 'TCP25', 'TCP 50K': 'TCP50', 'TCP 100K': 'TCP100', 'GAU 50K': 'GML50', 'GAU 100K': 'GML100', 'GAU 150K': 'GML150', 'GAU 200K': 'GML200' };const plan = m[size] || 'TCP25';const aBid = plan.startsWith('GML') ? 'fcc26bfd' : '2e8e8a14';return `https://www.earn2trade.com/purchase?plan=${plan}&a_pid=marketscoupons&a_bid=${aBid}&discount=MARKETSCOUPONS`;} },
-{ id: 'the5ers', name: 'The5ers', short: 'The5ers', coupon: 'MARKET', discount: '5%', color: '#10B981', bg: 'rgba(16,185,129,0.12)',
+  buildUrl: (size, type, plat) => {const m = { 'TCP 25K': 'TCP25', 'TCP 50K': 'TCP50', 'TCP 100K': 'TCP100', 'GAU 50K': 'GML50', 'GAU 100K': 'GML100', 'GAU 150K': 'GML150', 'GAU 200K': 'GML200' };const plan = m[size] || 'TCP25';const _e2t=(typeof FIRMS!=='undefined'&&FIRMS.find(x=>x.id==='e2t'))||{};const _ex=_e2t.extra||{};const aBid = plan.startsWith('GML') ? (_ex.a_bid_gml||'') : (_ex.a_bid_default||'');const _b=_affLink('e2t');return _b ? (_b.includes('a_bid=') ? _b.replace(/a_bid=[^&#]*/, 'a_bid='+aBid) : _b+(_b.includes('?')?'&':'?')+'a_bid='+aBid) : '';} },
+{ id: 'the5ers', name: 'The5ers', short: 'The5ers', coupon: null, discount: '5%', color: '#10B981', bg: 'rgba(16,185,129,0.12)',
   includes: ['Scale up to $4M', 'Up to 100% profit split', 'No time limit', 'Since 2016', '24/7 support', 'Multi-currency: USD/EUR/GBP'],
   types: ['Hyper Growth', 'Pro Growth', 'High Stakes', 'Bootcamp', 'Futures Basecamp', 'Futures Rebate'], platforms: ['MT5', 'TradingView', 'Rithmic'],
   plansByType: {
@@ -4680,8 +4683,8 @@ const CHECKOUT_FIRMS = [
     'Futures Basecamp': [{ size: '$25K', capital: '$25,000', goal: '$1,500', maxDD: '-4%', orig: '—', disc: '$50', featured: false }, { size: '$50K', capital: '$50,000', goal: '$3,000', maxDD: '-4%', orig: '—', disc: '$99', featured: true }],
     'Futures Rebate': [{ size: '$25K', capital: '$25,000', goal: '$1,500', maxDD: '-4%', orig: '—', disc: '$150', featured: false }, { size: '$50K', capital: '$50,000', goal: '$3,000', maxDD: '-4%', orig: '—', disc: '$299', featured: true }]
   },
-  buildUrl: (size, type, plat) => 'https://www.the5ers.com/?afmc=19jp' },
-{ id: 'fundingpips', name: 'Funding Pips', short: 'FundingPips', coupon: 'HELLO', discount: '20%', color: '#6366F1', bg: 'rgba(99,102,241,0.12)',
+  buildUrl: (size, type, plat) => _affLink('the5ers') },
+{ id: 'fundingpips', name: 'Funding Pips', short: 'FundingPips', coupon: null, discount: '20%', color: '#6366F1', bg: 'rgba(99,102,241,0.12)',
   includes: ['Up to 100% profit split', 'Weekly/Bi-weekly/On Demand payouts', 'Leverage up to 1:100', 'No time limit', 'Swap Free add-on (+10%)'],
   types: ['Zero', '1-Step', '2-Step', 'Pro'], platforms: ['MT5', 'Match-Trader', 'cTrader'],
   plansByType: {
@@ -4690,22 +4693,22 @@ const CHECKOUT_FIRMS = [
     '2-Step': [{ size: '$5K', capital: '$5,000', goal: '$400', maxDD: '-5%', orig: '$36', disc: '$28.80', featured: false }, { size: '$10K', capital: '$10,000', goal: '$800', maxDD: '-5%', orig: '$66', disc: '$52.80', featured: false }, { size: '$25K', capital: '$25,000', goal: '$2,000', maxDD: '-5%', orig: '$156', disc: '$124.80', featured: false }, { size: '$50K', capital: '$50,000', goal: '$4,000', maxDD: '-5%', orig: '$289', disc: '$231.20', featured: true }, { size: '$100K', capital: '$100,000', goal: '$8,000', maxDD: '-5%', orig: '$529', disc: '$423.20', featured: false }],
     'Pro': [{ size: '$5K', capital: '$5,000', goal: '$500', maxDD: '-3%', orig: '$29', disc: '$23.20', featured: false }, { size: '$10K', capital: '$10,000', goal: '$1,000', maxDD: '-3%', orig: '$55', disc: '$44', featured: false }, { size: '$25K', capital: '$25,000', goal: '$2,500', maxDD: '-3%', orig: '$109', disc: '$87.20', featured: false }, { size: '$50K', capital: '$50,000', goal: '$5,000', maxDD: '-3%', orig: '$219', disc: '$175.20', featured: true }, { size: '$100K', capital: '$100,000', goal: '$10,000', maxDD: '-3%', orig: '$399', disc: '$319.20', featured: false }, { size: '$200K', capital: '$200,000', goal: '$20,000', maxDD: '-3%', orig: '$798', disc: '$638.40', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://app.fundingpips.com/register?ref=31985EAA' },
-{ id: 'brightfunded', name: 'BrightFunded', short: 'BrightFunded', coupon: 'CLNLTPxtT4Sok0PzHaRIIQ', discount: '30%', color: '#00C9A7', bg: 'rgba(0,201,167,0.12)',
+  buildUrl: (size, type, plat) => _affLink('fundingpips') },
+{ id: 'brightfunded', name: 'BrightFunded', short: 'BrightFunded', coupon: null, discount: '30%', color: '#00C9A7', bg: 'rgba(0,201,167,0.12)',
   includes: ['Up to 100% profit split', 'Static drawdown', 'Guaranteed 24h payout (7-day cycle)', '15% profit in challenge phase', 'Trade2Earn loyalty program', 'Leverage 1:100', '24/7 support'],
   types: ['2-Step'], platforms: ['MT5', 'DXtrade', 'cTrader'],
   plansByType: {
     '2-Step': [{ size: '5K', capital: '€5,000', goal: '€400', maxDD: '-10%', orig: '€55', disc: '€41.25', featured: false }, { size: '10K', capital: '€10,000', goal: '€800', maxDD: '-10%', orig: '€95', disc: '€71.25', featured: false }, { size: '25K', capital: '€25,000', goal: '€2,000', maxDD: '-10%', orig: '€195', disc: '€146.25', featured: false }, { size: '50K', capital: '€50,000', goal: '€4,000', maxDD: '-10%', orig: '€295', disc: '€221.25', featured: true }, { size: '100K', capital: '€100,000', goal: '€8,000', maxDD: '-10%', orig: '€495', disc: '€371.25', featured: false }, { size: '200K', capital: '€200,000', goal: '€16,000', maxDD: '-10%', orig: '€975', disc: '€731.25', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ' },
-{ id: 'e8', name: 'E8 Markets', short: 'E8', coupon: 'MARKET', discount: '40%', color: '#FF4400', bg: 'rgba(255,68,0,0.12)',
+  buildUrl: (size, type, plat) => _affLink('brightfunded') },
+{ id: 'e8', name: 'E8 Markets', short: 'E8', coupon: null, discount: '40%', color: '#FF4400', bg: 'rgba(255,68,0,0.12)',
   includes: ['No activation fee', 'Pass in 1 day', 'Forex, Futures and Crypto', 'Configurable drawdown 4-14%', 'Split up to 100%', '$70M+ paid since 2021'],
   types: ['Signature', 'E8 One'], platforms: ['MT5', 'Match-Trader'],
   plansByType: {
     'Signature': [{ size: '$25K', capital: '$25,000', goal: '$1,500', maxDD: '-3% EOD', orig: '$110', disc: '$99', featured: false }, { size: '$50K', capital: '$50,000', goal: '$3,000', maxDD: '-3% EOD', orig: '$150', disc: '$135', featured: false }, { size: '$100K', capital: '$100,000', goal: '$6,000', maxDD: '-3% EOD', orig: '$260', disc: '$234', featured: true }, { size: '$150K', capital: '$150,000', goal: '$9,000', maxDD: '-3% EOD', orig: '$390', disc: '$351', featured: false }],
     'E8 One': [{ size: '$5K', capital: '$5,000', goal: '$450', maxDD: '-6%', orig: '$60', disc: '$54', featured: false }, { size: '$10K', capital: '$10,000', goal: '$900', maxDD: '-6%', orig: '$90', disc: '$81', featured: false }, { size: '$25K', capital: '$25,000', goal: '$2,250', maxDD: '-6%', orig: '$170', disc: '$153', featured: false }, { size: '$50K', capital: '$50,000', goal: '$4,500', maxDD: '-6%', orig: '$260', disc: '$234', featured: false }, { size: '$100K', capital: '$100,000', goal: '$9,000', maxDD: '-6%', orig: '$488', disc: '$439.20', featured: true }, { size: '$200K', capital: '$200,000', goal: '$18,000', maxDD: '-6%', orig: '$929', disc: '$836.10', featured: false }, { size: '$400K', capital: '$400,000', goal: '$36,000', maxDD: '-6%', orig: '$1,799', disc: '$1,619.10', featured: false }, { size: '$500K', capital: '$500,000', goal: '$45,000', maxDD: '-6%', orig: '$2,299', disc: '$2,069.10', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://e8markets.com/d/MARKET' },
+  buildUrl: (size, type, plat) => _affLink('e8') },
 { id: 'cti', name: 'City Traders Imperium', short: 'CTI', coupon: null, discount: '30%', color: '#0A74DA', bg: 'rgba(10,116,218,0.12)',
   includes: ['5 evaluation programs', 'Up to 100% profit share', 'CTI Academy Access', 'No time limit', '3-Step starts at $1', 'Instant funding available'],
   types: ['1-Step', '2-Step', '3-Step (Direct)', 'Instant Funding', 'Pro Trader'], platforms: ['Match-Trader'],
@@ -4716,8 +4719,8 @@ const CHECKOUT_FIRMS = [
     'Instant Funding': [{ size: '$2.5K', capital: '$2,500', goal: '—', maxDD: '-5%', orig: '$89', disc: '$62', featured: false }, { size: '$5K', capital: '$5,000', goal: '—', maxDD: '-5%', orig: '$159', disc: '$111', featured: false }, { size: '$10K', capital: '$10,000', goal: '—', maxDD: '-5%', orig: '$309', disc: '$216', featured: false }, { size: '$20K', capital: '$20,000', goal: '—', maxDD: '-5%', orig: '$559', disc: '$391', featured: true }, { size: '$40K', capital: '$40,000', goal: '—', maxDD: '-5%', orig: '$1,059', disc: '$741', featured: false }, { size: '$80K', capital: '$80,000', goal: '—', maxDD: '-5%', orig: '$1,879', disc: '$1,315', featured: false }],
     'Pro Trader': [{ size: '$5K', capital: '$5,000', goal: '—', maxDD: '-3%', orig: '$329', disc: '$263', featured: false }, { size: '$10K', capital: '$10,000', goal: '—', maxDD: '-3%', orig: '$659', disc: '$527', featured: false }, { size: '$20K', capital: '$20,000', goal: '—', maxDD: '-3%', orig: '$1,319', disc: '$1,055', featured: true }, { size: '$40K', capital: '$40,000', goal: '—', maxDD: '-3%', orig: '$2,639', disc: '$2,111', featured: false }, { size: '$80K', capital: '$80,000', goal: '—', maxDD: '-3%', orig: '$5,279', disc: '$4,223', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://app.citytradersimperium.com/user-auth/register?referral_code=1331c5&utm_source=client&utm_medium=referral&utm_id=1331c5' },
-{ id: 'tradeday', name: 'TradeDay', short: 'TradeDay', coupon: 'MARKETS', discount: '50%', color: '#0EA5E9', bg: 'rgba(14,165,233,0.12)',
+  buildUrl: (size, type, plat) => _affLink('cti') },
+{ id: 'tradeday', name: 'TradeDay', short: 'TradeDay', coupon: null, discount: '50%', color: '#0EA5E9', bg: 'rgba(14,165,233,0.12)',
   includes: ['No consistency rule', 'Day 1 payouts', 'Keep up to 95% profit split', 'No activation fee', 'Futures only (CME, CBOT, NYMEX, COMEX)', '24/7 support'],
   types: ['Intraday', 'EOD', 'Static'], platforms: ['NinjaTrader', 'Tradovate', 'TradingView', 'Jigsaw'],
   plansByType: {
@@ -4725,8 +4728,8 @@ const CHECKOUT_FIRMS = [
     'EOD': [{ size: '50K', capital: '$50,000', goal: '$3,000', maxDD: '$2,000 EOD', orig: '$175', disc: '$122.50', featured: false }, { size: '100K', capital: '$100,000', goal: '$6,000', maxDD: '$3,000 EOD', orig: '$275', disc: '$192.50', featured: true }, { size: '150K', capital: '$150,000', goal: '$9,000', maxDD: '$4,000 EOD', orig: '$375', disc: '$262.50', featured: false }],
     'Static': [{ size: '50K', capital: '$50,000', goal: '$1,500', maxDD: '$500 static', orig: '$165', disc: '$115.50', featured: false }, { size: '100K', capital: '$100,000', goal: '$2,500', maxDD: '$750 static', orig: '$250', disc: '$175', featured: true }, { size: '150K', capital: '$150,000', goal: '$3,750', maxDD: '$1,000 static', orig: '$350', disc: '$245', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://www.tradeday.com/?a_aid=marketscoupons#pricing' },
-{ id: 'goat', name: 'Goat Funded Futures', short: 'Goat', coupon: 'MARKET', discount: '50%', color: '#FFB800', bg: 'rgba(255,184,0,0.12)',
+  buildUrl: (size, type, plat) => _affLink('tradeday') },
+{ id: 'goat', name: 'Goat Funded Futures', short: 'Goat', coupon: null, discount: '50%', color: '#FFB800', bg: 'rgba(255,184,0,0.12)',
   includes: ['$0 activation fee after passing', '100% profit split first $10K', 'Payouts in 2 business days', 'No daily loss (evaluation)', 'News trading allowed', 'Up to $750K funded'],
   types: ['EOD', 'Sprint', 'Instant', 'Pro'], platforms: ['NinjaTrader', 'Tradovate', 'Quantower', 'CQG'],
   plansByType: {
@@ -4735,7 +4738,7 @@ const CHECKOUT_FIRMS = [
     'Instant': [{ size: '25K', capital: '$25,000', goal: '$1,750', maxDD: '$1,250 trail', orig: '$384', disc: '$192', featured: false }, { size: '50K', capital: '$50,000', goal: '$3,500', maxDD: '$2,500 trail', orig: '$554', disc: '$277', featured: true }, { size: '75K', capital: '$75,000', goal: '$5,250', maxDD: '$3,750 trail', orig: '$764', disc: '$382', featured: false }, { size: '100K', capital: '$100,000', goal: '$7,000', maxDD: '$5,000 trail', orig: '$978', disc: '$489', featured: false }, { size: '150K', capital: '$150,000', goal: '$10,500', maxDD: '$7,500 trail', orig: '$1,248', disc: '$624', featured: false }],
     'Pro': [{ size: '50K', capital: '$50,000', goal: '$3,000', maxDD: 'EOD', orig: '—', disc: '$95', featured: false }, { size: '100K', capital: '$100,000', goal: '$6,000', maxDD: 'EOD', orig: '—', disc: '$149', featured: true }, { size: '150K', capital: '$150,000', goal: '$9,000', maxDD: 'EOD', orig: '—', disc: '$289', featured: false }]
   },
-  buildUrl: (size, type, plat) => 'https://app.goatfundedfutures.com/sign-up?referral_id=MARKET' }];
+  buildUrl: (size, type, plat) => _affLink('goat') }];
 
 
 let achActiveFirm = 'apex';
@@ -4817,6 +4820,22 @@ async function loadFirmsFromSupabase() {
     // FIRMS terminou de carregar do cms_firms: avisa quem depende da lista VIVA.
     // Sem isso, quem renderiza antes (ex: pills de firma favorita no painel) fica com o
     // fallback chumbado de 11 firmas em vez das 19. Bug real pego no teste de 16/jul.
+    // FONTE UNICA de dado de afiliado: tabela `firms` (cupom, link, param de tracking).
+    // Sobrescreve o que veio do cms_firms/fallback. Sem isso, valor hardcoded volta a divergir.
+    try {
+      const _fa = await db.from('firms').select('slug,affiliate_url,coupon_code,coupon_description,needs_review,extra').eq('ativo', true);
+      if (_fa && _fa.data && _fa.data.length) {
+        const _m = {};_fa.data.forEach((x) => {_m[x.slug] = x;});
+        FIRMS.forEach((f) => {
+          const a = _m[f.id];
+          if (!a) return;
+          f.coupon = a.coupon_code || null;              // null = firma sem codigo (desconto no link)
+          if (a.affiliate_url) f.link = a.affiliate_url;
+          if (a.coupon_description) f.disc_note = f.disc_note || a.coupon_description;
+          if (a.extra) f.extra = a.extra;
+        });
+      }
+    } catch (_) {}
     try {window.dispatchEvent(new CustomEvent('mc:firms-loaded', { detail: { count: FIRMS.length } }));} catch (e) {}
 
     // Sync non-price CHECKOUT_FIRMS fields (discount label, coupon, platforms)

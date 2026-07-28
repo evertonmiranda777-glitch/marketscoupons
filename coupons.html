@@ -719,10 +719,10 @@ const I18N = {
 // Firm catalogue with full plan data
 const FIRMS = [
   {
-    id: 'apex', name: 'Apex Trader Funding', logo: '/img/Firms/108/apex.webp', coupon: 'MARKET',
+    id: 'apex', name: 'Apex Trader Funding', logo: '/img/Firms/108/apex.webp', coupon: null /* vem da tabela `firms` */,
     discount: '90%', tag: 'fut', rating: '4.3', reviews: '19.4K',
     rangeAccounts: '$25K–$150K', split: '100%',
-    url: 'https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644',
+    url: null, urlExtra: null /* base vem da tabela `firms` */,
     types: ['Intraday Trail', 'End of Day'],
     plans: {
       'Intraday Trail': [
@@ -743,10 +743,10 @@ const FIRMS = [
     rules: { pt: ['Até 20 contas simultâneas','100% lucro até $25K','Sem regra de consistência','News trading liberado'], en: ['Up to 20 accounts','100% profit up to $25K','No consistency rule','News trading allowed'] }
   },
   {
-    id: 'bulenox', name: 'Bulenox', logo: '/img/Firms/108/bulenox.webp', coupon: 'MARKET89',
+    id: 'bulenox', name: 'Bulenox', logo: '/img/Firms/108/bulenox.webp', coupon: null /* vem da tabela `firms` */,
     discount: '89%', tag: 'fut', rating: '4.7', reviews: '1.6K',
     rangeAccounts: '$25K–$250K', split: '90%',
-    url: 'https://bulenox.com/member/aff/go/marketcoupons?keyword=fb_ig_bio_bulenox',
+    url: null, urlExtra: 'keyword=fb_ig_bio_bulenox' /* base vem da tabela `firms` */,
     types: ['EOD DD', 'Trailing DD'],
     plans: {
       'EOD DD': [
@@ -769,10 +769,10 @@ const FIRMS = [
     rules: { pt: ['Passa em 1 dia','Sem regra de consistência','News trading liberado'], en: ['Pass in 1 day','No consistency rule','News trading allowed'] }
   },
   {
-    id: 'funded-futures-family', name: 'Funded Futures Family', logo: '/img/Firms/funded-futures-family.png', coupon: 'MARKET',
+    id: 'funded-futures-family', name: 'Funded Futures Family', logo: '/img/Firms/funded-futures-family.png', coupon: null /* vem da tabela `firms` */,
     discount: '80%', tag: 'fut', rating: '4.7', reviews: '1.9K',
     rangeAccounts: '$25K–$150K', split: '90%',
-    url: 'https://app.fundedfuturesfamily.com/affiliation/?ref_code=ed5ae23f-10eb-46c6-b6d1-280369e720eb',
+    url: null, urlExtra: null /* base vem da tabela `firms` */,
     types: ['Velocity', 'Premier Plus EOD', 'Premier Plus Intraday', 'Prime EOD', 'S2F'],
     plans: {
       'Velocity': [
@@ -810,10 +810,10 @@ const FIRMS = [
     rules: { pt: ['Modelos: Velocity, Premier Plus, Prime (EOD/Intraday), S2F','Payout em 24h após aprovação','Profit split 90% (1ºs $10K 100% seu)','Cupom MARKET: 80% off no Velocity'], en: ['Models: Velocity, Premier Plus, Prime (EOD/Intraday), S2F','Payout 24h after approval','90% profit split (first $10K is 100% yours)','MARKET coupon: 80% off Velocity'] }
   },
   {
-    id: 'fn', name: 'FundedNext', logo: '/img/Firms/108/fn.webp', coupon: 'MARKET',
+    id: 'fn', name: 'FundedNext', logo: '/img/Firms/108/fn.webp', coupon: null /* vem da tabela `firms` */,
     discount: '47%', tag: 'fut', rating: '4.5', reviews: '69.7K',
     rangeAccounts: '$6K–$200K', split: '95%',
-    url: 'https://fundednext.com/futures?fpr=everton33',
+    url: null, urlExtra: null /* base vem da tabela `firms` */,
     types: ['Futures Flex', 'Stellar 2-Step', 'Futures Legacy', 'Futures Rapid'],
     plans: {
       'Futures Flex': [
@@ -843,10 +843,10 @@ const FIRMS = [
     rules: { pt: ['Futures Flex: 47% off com MARKET (5 primeiros desafios)','CFD Stellar: 25% off com MARKET','Sem mensalidade, taxa única','Profit split até 95%'], en: ['Futures Flex: 47% off with MARKET (first 5 challenges)','CFD Stellar: 25% off with MARKET','No monthly fee, one-time cost','Profit split up to 95%'] }
   },
   {
-    id: 'tradeday', name: 'TradeDay', logo: '/img/Firms/108/tradeday.webp', coupon: 'MARKETS',
+    id: 'tradeday', name: 'TradeDay', logo: '/img/Firms/108/tradeday.webp', coupon: null /* vem da tabela `firms` */,
     discount: '50%', tag: 'fut', rating: '4.6', reviews: '1.3K',
     rangeAccounts: '$50K–$150K', split: '90%',
-    url: 'https://www.tradeday.com/?a_aid=marketscoupons&utm_source=marketscoupons&utm_medium=bio&utm_campaign=ig_bio_tradeday#pricing',
+    url: null, urlExtra: 'utm_source=marketscoupons&utm_medium=bio&utm_campaign=ig_bio_tradeday' /* base vem da tabela `firms` */,
     accountTypes: ['QuickPay', 'FastPass'],
     types: ['Intraday', 'End of Day'],
     plans: {
@@ -1589,6 +1589,32 @@ function renderSpecials(){
 
 applyStaticI18n();
 _refreshLpStats();
+// FONTE UNICA de dado de afiliado = tabela `firms`. Sobrescreve o cupom/link do array acima
+// ANTES de renderizar, pra LP nunca exibir cupom velho (incidente 27/jul: link morto da Aqua
+// e ?ref= da FundingPips ficaram meses no ar depois de corrigidos no banco).
+(function(){
+  try{
+    var req=new XMLHttpRequest();
+    req.open('GET', SB_URL+'/rest/v1/firms?select=slug,affiliate_url,coupon_code&ativo=eq.true', false);
+    req.setRequestHeader('apikey', SB_KEY); req.setRequestHeader('Authorization','Bearer '+SB_KEY);
+    req.send(null);
+    if(req.status>=200 && req.status<300){
+      var rows=JSON.parse(req.responseText)||[], m={};
+      rows.forEach(function(x){ m[x.slug]=x; });
+      FIRMS.forEach(function(f){
+        var a=m[f.id]; if(!a) return;
+        f.coupon = a.coupon_code || null;
+        if(a.affiliate_url){
+          var base=a.affiliate_url, hash='';
+          var ih=base.indexOf('#'); if(ih>=0){ hash=base.slice(ih); base=base.slice(0,ih); }
+          if(f.urlExtra){ base += (base.indexOf('?')>=0?'&':'?') + f.urlExtra; }
+          f.url = base + hash;
+          f.link = f.url;
+        }
+      });
+    }
+  }catch(e){}
+})();
 renderFirms();
 renderSpecials();
 loadPromoBar();

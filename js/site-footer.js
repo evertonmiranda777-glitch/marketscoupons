@@ -65,26 +65,11 @@
   };
   function t(k){ var o=T[k]; return o?(o[L]||o.en):k; }
 
-  var FIRMS=[
-    ['Apex Trader Funding','https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644'],
-    ['Bulenox','https://bulenox.com/member/aff/go/marketcoupons'],
-    ['FTMO','https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP'],
-    ['FundedNext','https://fundednext.com/futures?fpr=everton33'],
-    ['Earn2Trade','https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14'],
-    ['The5ers','https://www.the5ers.com/?afmc=19jp'],
-    ['Funding Pips','https://app.fundingpips.com/register?ref=31985EAA'],
-    ['BrightFunded','https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ'],
-    ['E8 Markets','https://e8markets.com/d/MARKET'],
-    ['City Traders Imperium','https://app.citytradersimperium.com/user-auth/register?referral_code=1331c5&utm_source=client&utm_medium=referral&utm_id=1331c5'],
-    ['TradeDay','https://www.tradeday.com/?a_aid=marketscoupons#pricing'],
-    ['Blue Guardian','https://blueguardian.com/?afmc=MARKET'],
-    ['Top One Futures','https://toponefutures.com/?linkId=lp_707970&sourceId=markets&tenantId=toponefutures'],
-    ['Aqua Futures','https://checkout.aquafutures.io/ref/872/'],
-    ['Blueberry Futures','https://portal.blueberryfutures.com/auth/signup?ref_code=MARKET-7652C'],
-    ['Alpha Futures','https://app.alpha-futures.com/signup/Markets026158/'],
-    ['Futures Elite','https://app.futureselite.com?aff=AFF5585615'],
-    ['Goat Funded Futures','https://app.goatfundedfutures.com/sign-up?referral_id=MARKET']
-  ];
+  // FIRMS: SEM valor hardcoded. Fonte unica = tabela `firms` do Supabase.
+  // Motivo: o array fixo aqui servia link MORTO (aquafutures.io), parametro errado
+  // (fundingpips ?ref=) e rota de login (futureselite) meses depois do conserto no banco.
+  var FIRMS=[];
+
   function ext(arr){ return arr.map(function(f){return '<a href="'+f[1]+'" target="_blank" rel="noopener noreferrer">'+esc(f[0])+'</a>';}).join(''); }
   function lnk(items){ return items.map(function(i){return '<a href="'+i[1]+'"'+(i[2]?' target="_blank" rel="noopener noreferrer"':'')+'>'+esc(i[0])+'</a>';}).join(''); }
   var tools=[[t('t_pos'),'/calculator'],[t('t_quiz'),'/quiz'],[t('t_comp'),'/compare'],[t('t_cal'),'/calendar'],[t('t_ind'),'/indicators'],[t('t_gex'),'/gamma'],[t('t_app'),'/app']];
@@ -158,6 +143,24 @@
   var style=document.createElement('style'); style.textContent=css; document.head.appendChild(style);
   var slot=document.getElementById('mc-site-footer');
   if(slot){ slot.outerHTML=html; } else { document.body.insertAdjacentHTML('beforeend',html); }
+
+  // Preenche a coluna "Prop Firms" lendo a tabela `firms` (RLS: so linhas ativas).
+  (function(){
+    var SB='https://qfwhduvutfumsaxnuofa.supabase.co';
+    var K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    fetch(SB+'/rest/v1/firms?select=nome,affiliate_url&ativo=eq.true&order=nome',{headers:{apikey:K,Authorization:'Bearer '+K}})
+      .then(function(r){return r.ok?r.json():[];})
+      .then(function(rows){
+        if(!rows || !rows.length) return;
+        var col=document.querySelector('#mc-site-ft .fc-col');
+        if(!col) return;
+        var h=rows.map(function(f){
+          return '<a href="'+f.affiliate_url+'" target="_blank" rel="noopener noreferrer">'+esc(f.nome)+'</a>';
+        }).join('');
+        var h2=col.querySelector('.ft-h');
+        col.innerHTML=(h2?h2.outerHTML:'')+h;
+      }).catch(function(){});
+  })();
 
   window.MCFT_sub=function(e){
     e.preventDefault();

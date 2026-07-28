@@ -27,12 +27,15 @@
   // Cada entrada: { match: substring no href, param: nome do query param que o painel afiliado le }
   // - Apex/Bulenox (amember): &keyword=<sub_id> aparece na pagina Keywords do painel
   // - FundedNext (FirstPromoter): &fpr_t=<sub_id> aparece em Reports -> Sub-Ids
+  // SEM codigo de afiliado aqui: o match identifica a ROTA, nao o codigo.
+  // Assim o sub_id continua funcionando mesmo quando o codigo muda na tabela `firms`
+  // (antes, trocar o codigo silenciosamente desligava a atribuicao por canal).
   const AFFILIATE_MATCHES = [
-    { match: 'apextraderfunding.com/member/aff/go/evertonmiranda', param: 'keyword' },
-    { match: 'bulenox.com/member/aff/go/marketcoupons', param: 'keyword' },
-    { match: 'fundednext.com/?fpr=everton33', param: 'fpr_t' },
-    { match: 'tradeday.com/?a_aid=marketscoupons', param: 'data1' },
-    { match: 'goatfundedfutures.com/sign-up?referral_id=MARKET', param: 'sub_id' }
+    { match: 'apextraderfunding.com/member/aff/go', param: 'keyword' },
+    { match: 'bulenox.com/member/aff/go', param: 'keyword' },
+    { match: 'fundednext.com/', param: 'fpr_t' },
+    { match: 'tradeday.com/', param: 'data1' },
+    { match: 'goatfundedfutures.com/', param: 'sub_id' }
   ];
 
   const STORAGE_KEY = 'mc_attribution';
