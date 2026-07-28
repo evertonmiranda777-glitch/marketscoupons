@@ -140,7 +140,38 @@ if (!UNDO) {
 fs.writeFileSync(vpath, vtxt, 'utf8');
 console.log(`  vercel.json: ${UNDO ? 'redirects removidos' : nreg + ' redirects 301 adicionados'}`);
 
-console.log(`\nFALTA VOCE:`);
-console.log(`  1. node scripts/regen-static.mjs --force`);
-console.log(`  2. node scripts/build-compat.mjs && npx vercel --prod --yes --token=...`);
-console.log(`  3. conferir: curl -sI https://www.marketscoupons.com/${slug} | head -1   (espera 301)\n`);
+// Pipeline completo aqui dentro: o objetivo e ser UM comando. Deixar passo manual
+// depois significa, na pratica, banco atualizado com o site ainda servindo o velho.
+function rodar(cmd, args, rotulo) {
+  process.stdout.write(`  ${rotulo}... `);
+  try {
+    execFileSync(cmd, args, { cwd: ROOT, stdio: 'pipe', env: process.env, shell: process.platform === 'win32' });
+    console.log('ok');
+    return true;
+  } catch (e) {
+    console.log('FALHOU');
+    console.error(`    ${String(e.stderr || e.message).slice(0, 300)}`);
+    return false;
+  }
+}
+
+console.log(`\nPUBLICANDO:`);
+rodar('node', ['scripts/regen-static.mjs', '--force'], 'regen das paginas');
+rodar('node', ['scripts/build-compat.mjs'], 'build ES2019');
+
+const vt = (() => {
+  try {
+    const m = fs.readFileSync(path.join(ROOT, '.env.local'), 'utf8').match(/^VERCEL_TOKEN=(.*)$/m);
+    return m ? m[1].trim().replace(/^["']|["']$/g, '') : '';
+  } catch { return ''; }
+})();
+if (!vt) {
+  console.log(`\n  sem VERCEL_TOKEN no .env.local — deploye na mao:`);
+  console.log(`    npx vercel --prod --yes --token=<token>`);
+} else {
+  rodar('npx', ['vercel', '--prod', '--yes', '--token', vt], 'deploy Vercel');
+}
+
+console.log(`\nCONFIRA (301 esperado nos dois):`);
+console.log(`  curl -sI https://www.marketscoupons.com/${slug} | head -1`);
+console.log(`  curl -sI https://www.marketscoupons.com/apex-vs-${slug} | head -1\n`);
