@@ -7,12 +7,18 @@ sobreviveu ate o destino final. Falha silenciosa de link de afiliado
 nao gera erro nenhum no site: a pagina carrega, o usuario cadastra,
 e a comissao simplesmente nao e atribuida.
 
-FONTE: a tabela `firms` no Supabase (fonte unica de verdade).
-       firms.json e' so FALLBACK, usado quando o Supabase nao responde.
+FONTE: a Edge Function `firms-check`, autenticada por FIRMS_CHECK_TOKEN.
+       firms.json e' FALLBACK SOMENTE-LEITURA quando a funcao nao responde.
+
+Este script NUNCA toca no banco direto. A SUPABASE_SERVICE_ROLE_KEY ignora RLS e
+da acesso total de leitura e escrita ao banco INTEIRO — por isso ela fica so
+dentro da Edge Function e nunca sai do Supabase. O que roda no GitHub Actions
+carrega apenas o FIRMS_CHECK_TOKEN, cujo pior caso de vazamento e alguem
+desativar uma firma (reversivel), nao perder o banco.
 
 Zero dependencias externas. Roda com qualquer Python 3.
     python3 check_links.py
-    python3 check_links.py --config firms.json     # forca o fallback
+    python3 check_links.py --offline               # forca o fallback firms.json
     python3 check_links.py --fix                   # ver ETAPA 4b abaixo
 """
 
@@ -32,50 +38,58 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
 MAX_REDIRECTS = 10
 
-SB_URL = "https://qfwhduvutfumsaxnuofa.supabase.co"
+FN_URL = os.environ.get(
+    "FIRMS_CHECK_URL",
+    "https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/firms-check",
+)
 LOG_DIR = "logs"
 LOG_FILE = os.path.join(LOG_DIR, "autofix.log")
 
 
 # ─────────────────────────── fonte de dados ───────────────────────────
 
-def _sb_key():
-    k = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") or os.environ.get("SUPABASE_SERVICE_ROLE")
-    if k:
-        return k
-    # conveniencia local: le do .env.local sem exigir export
-    try:
-        for linha in open(".env.local", encoding="utf-8"):
-            if linha.startswith("SUPABASE_SERVICE_ROLE_KEY="):
-                return linha.split("=", 1)[1].strip().strip('"').strip("'")
-    except OSError:
-        pass
+def _token():
+    """
+    Token da Edge Function. Nunca e' impresso, logado nem posto em mensagem
+    de commit. Sem token o script ainda LE (via firms.json), mas nao ESCREVE.
+    """
+    t = os.environ.get("FIRMS_CHECK_TOKEN")
+    if t:
+        return t.strip()
+    # conveniencia local: arquivo gitignored, so na maquina do dono
+    for arq in (".firms-check-token.tmp", ".env.local"):
+        try:
+            for linha in open(arq, encoding="utf-8"):
+                if arq.endswith(".tmp"):
+                    return linha.strip()
+                if linha.startswith("FIRMS_CHECK_TOKEN="):
+                    return linha.split("=", 1)[1].strip().strip('"').strip("'")
+        except OSError:
+            continue
     return None
 
 
-def sb_request(caminho, metodo="GET", corpo=None):
-    key = _sb_key()
-    if not key:
-        raise RuntimeError("sem SUPABASE_SERVICE_ROLE_KEY")
+def fn_request(metodo="GET", corpo=None):
+    """Fala com a Edge Function. Levanta se nao houver token."""
+    tok = _token()
+    if not tok:
+        raise RuntimeError("sem FIRMS_CHECK_TOKEN")
     dados = json.dumps(corpo).encode() if corpo is not None else None
     req = urllib.request.Request(
-        SB_URL + caminho, data=dados, method=metodo,
-        headers={
-            "apikey": key,
-            "Authorization": "Bearer " + key,
-            "Content-Type": "application/json",
-            "Prefer": "return=representation",
-        },
+        FN_URL, data=dados, method=metodo,
+        headers={"X-Firms-Token": tok, "Content-Type": "application/json"},
     )
     with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        txt = r.read().decode()
-    return json.loads(txt) if txt.strip() else []
+        return json.loads(r.read().decode() or "{}")
 
 
-def carregar_da_tabela():
-    """Le a tabela `firms`. Devolve lista no formato do firms.json."""
-    cols = "slug,nome,affiliate_url,tracking_param,tracking_value,coupon_code,needs_review,extra"
-    linhas = sb_request("/rest/v1/firms?ativo=eq.true&select=%s&order=slug" % cols)
+def carregar_da_funcao():
+    """
+    Le via `firms-check`. A funcao devolve TODAS as firmas, inclusive as
+    inativas — precisamos enxergar as inativas pra detectar quando um link
+    volta a funcionar e a firma pode ser religada.
+    """
+    d = fn_request("GET")
     return [
         {
             "slug": x["slug"],
@@ -84,10 +98,11 @@ def carregar_da_tabela():
             "param": x["tracking_param"],
             "valor": x["tracking_value"],
             "coupon_code": x.get("coupon_code"),
+            "ativo": x.get("ativo", True),
             "needs_review": bool(x.get("needs_review")),
             "extra": x.get("extra") or {},
         }
-        for x in linhas
+        for x in d.get("firms", [])
     ]
 
 
@@ -97,17 +112,22 @@ def carregar_do_json(caminho):
 
 
 def carregar(caminho_json, forcar_json=False):
-    """Tabela primeiro, firms.json de fallback. Devolve (firmas, origem)."""
+    """
+    Edge Function primeiro, firms.json de fallback SOMENTE-LEITURA.
+    Devolve (firmas, origem). O fallback nunca habilita escrita: quem cair nele
+    fica sem --fix, e o --fix falha de forma explicita (nao em silencio).
+    """
     if not forcar_json:
         try:
-            firmas = carregar_da_tabela()
+            firmas = carregar_da_funcao()
             if firmas:
-                return firmas, "tabela firms (Supabase)"
+                return firmas, "Edge Function firms-check"
         except Exception as e:
-            print(f"  aviso: Supabase indisponivel ({type(e).__name__}), caindo pro fallback",
-                  file=sys.stderr)
+            # Nunca imprimir o corpo do erro: uma URL de erro poderia carregar o token.
+            print(f"  aviso: firms-check indisponivel ({type(e).__name__}), "
+                  f"caindo pro fallback somente-leitura", file=sys.stderr)
     try:
-        return carregar_do_json(caminho_json), f"fallback {caminho_json}"
+        return carregar_do_json(caminho_json), f"fallback somente-leitura {caminho_json}"
     except FileNotFoundError:
         print(f"config nao encontrado: {caminho_json}", file=sys.stderr)
         sys.exit(2)
@@ -321,7 +341,13 @@ def registrar(linhas):
 
 
 def aplicar_fix(falhas):
-    """Desativa o que quebrou. Devolve lista de linhas de log."""
+    """
+    Desativa o que quebrou, via Edge Function. Devolve lista de linhas de log.
+
+    A funcao so aceita { slug, motivo } — ela NAO tem como escrever cupom, URL
+    ou tracking, nem que este script tentasse. E o unico verbo dela e desativar:
+    religar uma firma e sempre decisao humana no banco.
+    """
     linhas = []
     for r in falhas:
         slug = r["slug"]
@@ -329,20 +355,17 @@ def aplicar_fix(falhas):
             # Caso 3: o destino devolveu um codigo que nao e' o nosso. Pode ser
             # rotacao legitima da firma OU sequestro de afiliado. Nao da pra saber
             # daqui, entao NAO adota: tira do ar e pede olho humano.
-            corpo = {"ativo": False, "needs_review": True}
-            msg = (f"{slug} DESATIVADA + needs_review — destino devolveu "
-                   f"'{r.get('encontrado')}' no lugar de '{r['url']}'. "
-                   f"Valor novo NAO foi adotado (so humano decide).")
+            motivo = (f"destino devolveu '{r.get('encontrado')}' no lugar do nosso codigo; "
+                      f"valor novo NAO adotado (so humano decide)")
         else:
             # Caso 2: link morto ou parametro perdido.
-            corpo = {"ativo": False}
-            msg = f"{slug} DESATIVADA — {r['motivo']}"
+            motivo = r["motivo"]
         try:
-            sb_request(f"/rest/v1/firms?slug=eq.{urllib.parse.quote(slug)}",
-                       metodo="PATCH", corpo=corpo)
-            linhas.append(msg)
+            fn_request("POST", {"slug": slug, "motivo": motivo})
+            linhas.append(f"{slug} DESATIVADA — {motivo}")
         except Exception as e:
-            linhas.append(f"{slug} FALHA ao desativar ({type(e).__name__}: {e})")
+            # type(e) apenas: o corpo do erro pode conter a URL com o token.
+            linhas.append(f"{slug} FALHA ao desativar ({type(e).__name__})")
     return linhas
 
 
@@ -400,11 +423,16 @@ def main():
         print(f"    problema  : {r['motivo']}\n")
 
     if args.fix:
+        # Falha EXPLICITA, nunca silenciosa: sem token o operador tem que saber
+        # que o autofix nao rodou, senao o job fica verde sem ter consertado nada.
         if args.offline:
-            print("--fix ignorado: --offline nao escreve no banco.\n")
-        else:
-            registrar(aplicar_fix(falhas))
-            print()
+            print("ERRO: --fix nao roda com --offline (fallback e' somente-leitura).\n")
+            return 2
+        if not _token():
+            print("ERRO: --fix precisa do FIRMS_CHECK_TOKEN. Nada foi alterado.\n")
+            return 2
+        registrar(aplicar_fix(falhas))
+        print()
 
     return 1
 

@@ -5,18 +5,40 @@ on:
     - cron: "0 11 * * *"   # todo dia 08:00 em Brasilia (11:00 UTC)
   workflow_dispatch:        # botao pra rodar na mao quando quiser
 
-# O --fix escreve na tabela e commita as paginas regeradas de volta no repo.
+# NAO roda em pull_request. PR de fork executaria codigo de terceiro com acesso
+# aos secrets do repo — e o unico secret aqui ja e o de menor privilegio possivel,
+# mas nao ha motivo nenhum pra expo-lo a codigo que nao passou por revisao.
+
+concurrency:
+  group: check-links
+  cancel-in-progress: false
+
 permissions:
-  contents: write
+  contents: write   # so pra commitar as paginas regeradas
 
 jobs:
   check:
+    # Cinto e suspensorio: mesmo que alguem adicione o gatilho pull_request
+    # depois, esta guarda impede execucao vinda de fork.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+
     env:
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      # UNICO secret do job. Nao e' a service role.
+      #
+      # A SUPABASE_SERVICE_ROLE_KEY ignora RLS e da leitura e escrita no banco
+      # INTEIRO — se vazasse, so se revoga rotacionando o projeto todo. Ela fica
+      # dentro da Edge Function `firms-check` e nunca sai do Supabase.
+      #
+      # Este token abre exatamente duas portas: ler as firms e DESATIVAR uma
+      # firma. Nao altera cupom, URL nem tracking (a funcao devolve 400). Pior
+      # caso de vazamento: alguem tira uma firma do ar, e um UPDATE reverte.
+      FIRMS_CHECK_TOKEN: ${{ secrets.FIRMS_CHECK_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - uses: actions/setup-python@v5
         with:
@@ -26,8 +48,18 @@ jobs:
         with:
           node-version: "20"
 
-      # 1. Os LINKS da tabela ainda atribuem comissao?
-      #    --fix so DESATIVA o que quebrou; nunca adota valor novo sozinho.
+      - name: Conferir que o token esta cadastrado
+        run: |
+          if [ -z "$FIRMS_CHECK_TOKEN" ]; then
+            echo "FIRMS_CHECK_TOKEN nao cadastrado."
+            echo "Sem ele o job rodaria em modo somente-leitura e ficaria verde"
+            echo "sem consertar nada. Falhando de proposito."
+            exit 1
+          fi
+          echo "token presente"
+
+      # 1. Os LINKS ainda atribuem comissao?
+      #    --fix so DESATIVA (via Edge Function); nunca adota valor novo.
       - name: Checar links de afiliado
         id: links
         continue-on-error: true
@@ -36,7 +68,6 @@ jobs:
       # 2. As PAGINAS GERADAS ainda batem com a tabela?
       #    Elas sao HTML estatico: nao passam pela tabela em runtime, entao um
       #    valor corrigido no banco NAO chega nelas ate alguem regerar.
-      #    --fix = regerar da tabela (nunca editar o HTML na mao).
       - name: Checar paginas geradas
         id: pages
         continue-on-error: true
@@ -50,13 +81,16 @@ jobs:
           if git diff --cached --quiet; then
             echo "nada mudou"
           else
+            # Mensagem FIXA e literal. Nada de interpolar saida de script aqui:
+            # texto de erro pode carregar URL com token, e a mensagem de commit
+            # fica publica no historico pra sempre.
             git commit -m "chore(autofix): paginas regeradas da tabela firms [skip ci]"
             git push
           fi
 
-      # 3. Falhou alguma coisa? O job fica vermelho e o GitHub manda e-mail sozinho.
-      #    Isso vem DEPOIS do commit de proposito: o conserto e' salvo mesmo quando
-      #    sobra problema que so humano resolve.
+      # 3. Falhou alguma coisa? Job vermelho e o GitHub manda e-mail sozinho.
+      #    Vem DEPOIS do commit de proposito: o que deu pra consertar fica salvo
+      #    mesmo quando sobra problema que so humano resolve.
       - name: Resultado
         if: steps.links.outcome == 'failure' || steps.pages.outcome == 'failure'
         run: |
@@ -65,6 +99,13 @@ jobs:
           echo "Ver logs/autofix.log no repo pra saber o que foi desativado."
           exit 1
 
+# Sobre vazamento de secret no log:
+#  - o Actions mascara automaticamente qualquer valor de secret que apareca na saida;
+#  - alem disso, os scripts nunca imprimem o token nem o corpo de erro de rede
+#    (so o TIPO da excecao), porque uma URL de erro poderia carrega-lo;
+#  - logs/autofix.log grava slug + motivo, nunca credencial;
+#  - a mensagem de commit e literal, sem interpolacao.
+#
 # Pra receber no Telegram tambem, adicione depois do passo acima:
 #
 #      - name: Avisar no Telegram

@@ -18,7 +18,27 @@
 const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const PROJECT_REF = 'qfwhduvutfumsaxnuofa';
 
+const FN_URL = process.env.FIRMS_CHECK_URL
+  || 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/firms-check';
+
+// Le pela Edge Function `firms-check` usando so o FIRMS_CHECK_TOKEN.
+// E' esse o caminho que roda no GitHub Actions: a SUPABASE_SERVICE_ROLE_KEY
+// (que ignora RLS e abre o banco inteiro) nunca sai do Supabase.
+async function fetchViaFuncao() {
+  const tok = process.env.FIRMS_CHECK_TOKEN;
+  if (!tok) return [];
+  const r = await fetch(FN_URL, { headers: { 'X-Firms-Token': tok } });
+  if (!r.ok) return [];
+  const d = await r.json();
+  // So as ativas geram pagina: firma desativada pelo autofix nao volta pro ar sozinha.
+  return (d.firms || []).filter((x) => x.ativo === true);
+}
+
 async function fetchFirmsTable() {
+  const viaFn = await fetchViaFuncao();
+  if (viaFn.length) return viaFn;
+
+  // Caminho LOCAL (maquina do dono, .env.local). Nao usado no CI.
   const SR = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
   const SBP = process.env.SUPABASE_ACCESS_TOKEN || '';
   const cols = 'slug,nome,affiliate_url,tracking_param,tracking_value,coupon_code,coupon_description,ativo,needs_review,extra';
@@ -53,7 +73,7 @@ export async function mergeAffiliate(firms, { strict = true } = {}) {
     throw new Error(
       'tabela `firms` vazia ou inacessivel. Abortado de proposito: gerar pagina estatica\n' +
       'com dado de afiliado velho vaza comissao em silencio.\n' +
-      'Defina SUPABASE_SERVICE_ROLE_KEY (ou SUPABASE_ACCESS_TOKEN) e rode de novo.'
+      'Defina FIRMS_CHECK_TOKEN (CI) ou SUPABASE_SERVICE_ROLE_KEY (local) e rode de novo.'
     );
   }
 

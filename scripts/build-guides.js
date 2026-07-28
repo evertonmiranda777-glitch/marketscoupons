@@ -315,6 +315,24 @@ async function loadAffiliates(){
   const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
   const SR = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
   const cols = 'slug,affiliate_url,coupon_code';
+
+  // CI: Edge Function com o token dedicado (a service role nunca sai do Supabase)
+  const tok = process.env.FIRMS_CHECK_TOKEN;
+  if (tok) {
+    const fnUrl = process.env.FIRMS_CHECK_URL || `${SB_URL}/functions/v1/firms-check`;
+    const r = await fetch(fnUrl, { headers: { 'X-Firms-Token': tok } });
+    if (r.ok) {
+      const d = await r.json();
+      const ativas = (d.firms || []).filter((x) => x.ativo === true);
+      if (ativas.length) {
+        const m = Object.create(null);
+        for (const a of ativas) m[a.slug] = a;
+        return m;
+      }
+    }
+  }
+
+  // Local (maquina do dono, .env.local)
   if (SR) {
     const r = await fetch(`${SB_URL}/rest/v1/firms?ativo=eq.true&select=${cols}`, {
       headers: { apikey: SR, Authorization: `Bearer ${SR}` },
@@ -328,7 +346,7 @@ async function loadAffiliates(){
   }
   throw new Error(
     'tabela `firms` inacessivel. Abortado de proposito: gerar guia com URL/cupom velho\n' +
-    'vaza comissao em silencio. Defina SUPABASE_SERVICE_ROLE_KEY e rode de novo.'
+    'vaza comissao em silencio. Defina FIRMS_CHECK_TOKEN (CI) ou SUPABASE_SERVICE_ROLE_KEY (local).'
   );
 }
 
