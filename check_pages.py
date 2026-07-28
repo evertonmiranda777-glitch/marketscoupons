@@ -178,6 +178,46 @@ def checar_arquivo(caminho, por_slug, slugs):
     return problemas
 
 
+def checar_lp_x_telegram():
+    """
+    O botao do criativo do Telegram manda pra /coupons quando a firma tem card la,
+    e pra home quando nao tem. Essa lista vive no telegram-creative (edge function,
+    nao le HTML). Se alguem adicionar uma firma na LP e esquecer da lista, o post
+    dessa firma cai na home: degrada, nao quebra — mas manda o trafego pro lugar
+    errado calado. Aqui a divergencia aparece.
+    """
+    lp = "coupons.html"
+    fn = "supabase/functions/telegram-creative/index.ts"
+    if not (os.path.isfile(lp) and os.path.isfile(fn)):
+        return []
+
+    html = open(lp, encoding="utf-8", errors="replace").read()
+    na_lp = set(re.findall(r"id:\s*'([a-z0-9-]+)'", html))
+
+    ts = open(fn, encoding="utf-8", errors="replace").read()
+    m = re.search(r"LP_COUPONS\s*=\s*new Set\(\[([^\]]*)\]\)", ts)
+    if not m:
+        return [{"tipo": "lp_telegram", "detalhe": "LP_COUPONS nao encontrada no telegram-creative"}]
+    na_fn = set(re.findall(r'"([a-z0-9-]+)"', m.group(1)))
+
+    problemas = []
+    for slug in sorted(na_lp - na_fn):
+        problemas.append({
+            "tipo": "lp_telegram",
+            "achado": slug,
+            "detalhe": (f"'{slug}' tem card na /coupons mas NAO esta em LP_COUPONS: "
+                        f"o post dessa firma cai na home em vez da LP"),
+        })
+    for slug in sorted(na_fn - na_lp):
+        problemas.append({
+            "tipo": "lp_telegram",
+            "achado": slug,
+            "detalhe": (f"'{slug}' esta em LP_COUPONS mas NAO tem card na /coupons: "
+                        f"o post manda pra uma LP onde a firma nao aparece"),
+        })
+    return problemas
+
+
 def aplicar_fix():
     """
     ETAPA 4b, caso 1: pagina divergente da tabela.
@@ -215,6 +255,11 @@ def main():
     total = 0
     afetados = {}
     por_tipo = defaultdict(int)
+
+    # trava de sincronia LP <-> telegram-creative (nao e por arquivo)
+    for prob in checar_lp_x_telegram():
+        afetados.setdefault("supabase/functions/telegram-creative/index.ts", []).append(prob)
+        por_tipo[prob["tipo"]] += 1
 
     for caminho in arquivos_html(dirs):
         total += 1

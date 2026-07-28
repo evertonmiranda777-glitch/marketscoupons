@@ -537,7 +537,7 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
 ` : "";
 
   // Dedicated firm page, clean URL, UTMs inferred from t.me referrer on the site
-  const checkoutUrl = `https://${SITE_URL}/${firm.id}`;
+  const checkoutUrl = `https://${SITE_URL}/${firm.id}?keyword=telegram-${firm.id}`;
 
   const text =
     `⚡ <b>Flash Deal, ${firm.name}</b>\n\n` +
@@ -621,7 +621,7 @@ async function handlePromoReminder(db: ReturnType<typeof createClient>) {
       const couponPt = firm.coupon ? `🎟 Cupom: <code>${firm.coupon}</code>` : `🔗 Desconto aplicado automaticamente`;
       const couponEn = firm.coupon ? `🎟 Code: <code>${firm.coupon}</code>` : `🔗 No code needed`;
 
-      const checkoutUrl = `https://${SITE_URL}/${firm.id}`;
+      const checkoutUrl = `https://${SITE_URL}/${firm.id}?keyword=telegram-${firm.id}`;
       const promoLabel = firm.promo_label ? `, ${firm.promo_label}` : "";
 
       const text =

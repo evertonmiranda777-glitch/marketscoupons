@@ -29,6 +29,11 @@ const SCHEDULE: Record<string, Slot[]> = {
   "0": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "goat", off: 50, name: "Goat Funded Futures" }, { firmId: "tradeday", off: 55, name: "TradeDay" }, { firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }],
 };
 
+// Firmas com card proprio na landing /coupons (coupons.html tem dataset proprio).
+// FONTE: os `id:` do array de firmas em coupons.html. Mantido em sincronia pelo
+// check_pages.py (secao "LP /coupons x telegram-creative").
+const LP_COUPONS = new Set(["apex", "bulenox", "fn", "funded-futures-family", "tradeday"]);
+
 function slotForHour(utcHour: number): number { if (utcHour >= 11 && utcHour < 15) return 0; if (utcHour >= 15 && utcHour < 19) return 1; if (utcHour >= 19 && utcHour < 23) return 2; return 3; }
 
 // COUPONS: NAO e mais fallback de runtime (28/07/2026) — cupom velho num post publico
@@ -111,7 +116,15 @@ async function postCreative(slot: Slot, chatId: string, prefix?: string, trackFo
   if (png.length < 5000) return { ok: false, details: { error: "png_too_small_likely_blank", size: png.length } };
   const live = await getFirmLive(slot.firmId);
   const caption = buildCaption(slot, prefix, live);
-  const buyUrl = `${SITE}/aff/go/${slot.firmId}`;
+  // O botao manda pro NOSSO site, nunca direto pro link de afiliado (ordem do dono,
+  // 28/07). O visitante passa pela nossa pagina, ve o cupom e o preco, e so entao vai
+  // pro checkout da firma — e a gente ganha o pixel, o retargeting e a chance de ele
+  // olhar outra firma. Ir direto pro afiliado entrega o trafego de graca.
+  //
+  // Firma que TEM card na /coupons -> /coupons. As outras -> home.
+  // Se a LP ganhar uma firma nova e ninguem atualizar essa lista, o post cai na home:
+  // degrada, nao quebra. O check_pages.py acusa a divergencia.
+  const buyUrl = `${SITE}${LP_COUPONS.has(slot.firmId) ? "/coupons" : "/"}?keyword=telegram-${slot.firmId}`;
   const form = new FormData();
   form.append("chat_id", chatId);
   form.append("caption", caption);
