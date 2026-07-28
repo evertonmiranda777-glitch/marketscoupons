@@ -14607,7 +14607,15 @@ function renderHeroPremium(firm, content, L) {
     } else {
       const GREEN = '#10B981';
       h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
-      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${firm.disc_note ? escHtml(firm.disc_note) : (_crLang==='pt'?'Sem cupom · use nosso link':'No coupon · use our link')}</span></div>`;
+      const _noteTxt = firm.disc_note ? escHtml(firm.disc_note) : (_crLang==='pt'?'Sem cupom · use nosso link':'No coupon · use our link');
+      const _noteLen = (firm.disc_note || 'No coupon · use our link').length;
+      // ~730px uteis na caixa (846 - padding - o icone ✓). A fonte encolhe pelo
+      // tamanho do texto pra caber em UMA linha ate ~84 chars. Acima disso, encolher
+      // mais deixaria o texto ilegivel num post de Instagram: melhor 2 linhas
+      // EQUILIBRADAS (text-wrap:balance) do que uma linha minuscula ou uma palavra
+      // orfa sozinha embaixo. Caso real: a nota da Apex tem 112 chars.
+      const _noteFs = _noteLen <= 40 ? 26 : _noteLen <= 52 ? 23 : _noteLen <= 66 ? 20 : 17;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="color:#fff;font-size:${_noteFs}px;font-weight:800;letter-spacing:.3px;line-height:1.3;text-wrap:balance;">${_noteTxt}</span></div>`;
     }
   }
 
