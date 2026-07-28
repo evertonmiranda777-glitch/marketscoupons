@@ -24,7 +24,7 @@ const SCHEDULE: Record<string, Slot[]> = {
   "2": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "goat", off: 50, name: "Goat Funded Futures" }, { firmId: "tradeday", off: 50, name: "TradeDay" }, { firmId: "e2t", off: 50, name: "Earn2Trade" }],
   "3": [{ firmId: "fn", off: 47, name: "FundedNext" }, { firmId: "blueguardian", off: 25, name: "Blue Guardian" }, { firmId: "cti", off: 20, name: "City Traders Imperium" }, { firmId: "futureselite", off: 30, name: "Futures Elite" }],
   "4": [{ firmId: "brightfunded", off: 30, name: "BrightFunded" }, { firmId: "alphafutures", off: 40, name: "Alpha Futures" }, { firmId: "fundingpips", off: 20, name: "FundingPips" }, { firmId: "ftmo", off: 19, name: "FTMO" }],
-  "5": [{ firmId: "e8", off: 40, name: "E8 Markets" }, { firmId: "the5ers", off: 5, name: "The5ers" }, { firmId: "apex", off: 90, name: "Apex Trader Funding" }, { firmId: "bulenox", off: 89, name: "Bulenox" }],
+  "5": [{ firmId: "e8", off: 40, name: "E8 Markets" }, { firmId: "the5ers", off: 70, name: "The5ers" }, { firmId: "apex", off: 90, name: "Apex Trader Funding" }, { firmId: "bulenox", off: 89, name: "Bulenox" }],
   "6": [{ firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }, { firmId: "bulenox", off: 89, name: "Bulenox" }, { firmId: "toponefutures", off: 60, name: "Top One Futures" }, { firmId: "aquafutures", off: 45, name: "Aqua Futures" }],
   "0": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "goat", off: 50, name: "Goat Funded Futures" }, { firmId: "tradeday", off: 50, name: "TradeDay" }, { firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }],
 };
