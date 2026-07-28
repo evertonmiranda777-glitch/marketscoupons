@@ -43,3 +43,4 @@ _b.json
 .env.vercel.tmp
 .cron.tmp
 .firms-check-token.tmp
+__pycache__/
