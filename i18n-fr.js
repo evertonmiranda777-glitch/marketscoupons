@@ -14,3 +14,4 @@ Object.assign(window.I18N.fr,{"signup_marketing_label": "Je veux recevoir des co
 Object.assign(window.I18N.fr,{"aw_dia": "jour", "aw_dias": "jours", "aw_todas": "Toutes les firmes, par note"});
 Object.assign(window.I18N.fr,{"lg_title": "Comptes Legacy", "lg_pill": "DURÉE LIMITÉE", "lg_popular": "POPULAIRE", "lg_cta": "Voir les comptes Legacy", "lg_sub": "Mensuel · 90% le 1er mois, 80% ensuite · avec MARKET · activation PA 125$ jusqu'au 11 août"});
 Object.assign(window.I18N.fr,{actv_no_fee:'Sans Frais d’Activation',actv_nofee_plan:'Offre un plan sans frais'});
+Object.assign(window.I18N.fr,{"promo_lifetime":"Réduction à vie"});

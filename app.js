@@ -2962,7 +2962,7 @@ function promoTimerPill(f) {
   // escassez fabricada (Lei #0 / CDC art. 37) e se contradiz na propria tela:
   // "90% OFF vitalicio" com um contador correndo do lado. Aconteceu em 28/07 com
   // Apex e Bulenox, no site E no Telegram.
-  if (f.discount_type === 'lifetime') return '';
+  if ((f.dtype || f.discount_type) === 'lifetime') return '';
   const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
   if (!end || end <= Date.now()) return '';
   if (!f.show_promo_on_checkout) return '';
@@ -3022,13 +3022,33 @@ function renderPromoTopbar() {var _siteSettings2;
   // Master toggle via site_settings
   const enabled = typeof _siteSettings !== 'undefined' && ((_siteSettings2 = _siteSettings) === null || _siteSettings2 === void 0 ? void 0 : _siteSettings2.promo_topbar_enabled) !== undefined ? _siteSettings.promo_topbar_enabled === 'true' : true;
   if (!enabled) {hideBar();return;}
+  // COM prazo real = contador. Firma lifetime NUNCA entra aqui: prazo em oferta
+  // vitalicia e deadline inventado (Lei #0), e foi o que fez o Telegram publicar
+  // "89% OFF (vitalicio!)" e "Termina em 48h" na mesma mensagem em 28/07.
   const active = (FIRMS || []).filter((f) => {
+    if ((f.dtype || f.discount_type) === 'lifetime') return false;
     const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
     return end && end > Date.now();
   }).sort((a, b) => Date.parse(a.promo_ends_at) - Date.parse(b.promo_ends_at));
-  if (!active.length) {hideBar();return;}
+
+  // SEM prazo mas vitalicia = entra na barra com selo, sem relogio. Apex e Bulenox
+  // sao as duas maiores ofertas do site; tirar as duas da barra so porque nao tem
+  // prazo seria jogar fora o melhor espaco da home. "Lifetime" vende MAIS que um
+  // contador — o desconto nao acaba, e isso e' verdade.
+  const vitalicias = (FIRMS || []).filter((f) =>
+  (f.dtype || f.discount_type) === 'lifetime' && f.show_promo_on_checkout && (f.discount || 0) > 0).
+  sort((a, b) => (b.discount || 0) - (a.discount || 0));
+
+  if (!active.length && !vitalicias.length) {hideBar();return;}
   bar.style.display = 'flex';
-  bar.innerHTML = active.map((f, i) => {
+  const _lifeTxt = t('promo_lifetime') || 'Lifetime deal';
+  const itensVit = vitalicias.map((f) =>
+  `<div class="pt-item">
+      <span class="pt-headline" onclick="openD('${f.id}');track('promo_topbar_click',{firm_id:'${f.id}'})">${f.name} ${f.discount}% OFF</span>
+      <span class="pt-clock"><span class="pt-unit"><span class="pt-num">${_lifeTxt}</span></span></span>
+    </div>`);
+
+  bar.innerHTML = [].concat(active.map((f, i) => {
     const end = Date.parse(f.promo_ends_at);
     return `<div class="pt-item">
       <span class="pt-headline" onclick="openD('${f.id}');track('promo_topbar_click',{firm_id:'${f.id}'})">${f.name} ${t('promo_ends_in') || 'promo ends in'}</span>
@@ -3038,8 +3058,8 @@ function renderPromoTopbar() {var _siteSettings2;
         <span class="pt-unit"><span class="pt-num pt-m">--</span><span class="pt-suf">m</span></span>
         <span class="pt-unit"><span class="pt-num pt-s">--</span><span class="pt-suf">s</span></span>
       </span>
-    </div>${i < active.length - 1 ? '<span class="pt-sep">•</span>' : ''}`;
-  }).join('');
+    </div>`;
+  }), itensVit).join('<span class="pt-sep">•</span>');
   document.body.classList.add('has-promo-topbar');
   try {localStorage.removeItem('mc_promo_off');} catch (_) {}
   requestAnimationFrame(() => {

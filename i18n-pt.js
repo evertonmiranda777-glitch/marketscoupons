@@ -14,3 +14,4 @@ Object.assign(window.I18N.pt,{"signup_marketing_label": "Quero receber cupons e 
 Object.assign(window.I18N.pt,{"aw_dia": "dia", "aw_dias": "dias", "aw_todas": "Todas as firmas, por nota"});
 Object.assign(window.I18N.pt,{"lg_title": "Contas Legacy", "lg_pill": "TEMPO LIMITADO", "lg_popular": "POPULAR", "lg_cta": "Ver contas Legacy", "lg_sub": "Mensal · 90% off no 1º mês, 80% depois · com MARKET · ativação da PA $125 até 11/ago"});
 Object.assign(window.I18N.pt,{actv_no_fee:'Sem Taxa de Ativação',actv_nofee_plan:'Tem plano sem taxa'});
+Object.assign(window.I18N.pt,{"promo_lifetime":"Desconto vitalício"});
