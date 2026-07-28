@@ -166,12 +166,19 @@ function renderHeroPremium(firm, content, L) {
     h += `<div class="cr-hp-prices">`;
     top4.forEach(p => {
       const newP = p.n || '—';
-      const oldP = (p.o && p.o !== '—') ? p.o : '';
+      // 'de' so aparece quando ha desconto REAL. Com n == o o card mostrava o mesmo
+      // numero duas vezes ("$249  $249" riscado) e parecia quebrado num post do
+      // Instagram - caso da The5ers (1-Step Summer, High Stakes sem desconto).
+      const _nv = parseFloat(String(newP).replace(/[^0-9.]/g,''));
+      const _ov = parseFloat(String(p.o||'').replace(/[^0-9.]/g,''));
+      const temDesconto = !!(_nv && _ov && _ov > _nv);
+      const oldP = (temDesconto && p.o && p.o !== '—') ? p.o : '';
       let saveTxt = '';
-      if (oldP) {
-        const n = parseFloat(String(newP).replace(/[^0-9.]/g,''));
-        const o = parseFloat(String(oldP).replace(/[^0-9.]/g,''));
-        if (n && o && o>n) saveTxt = `${_crLang==='pt'?'Economize':'Save'} $${Math.round(o-n)}`;
+      if (temDesconto) {
+        // moeda vem do proprio preco, nao chumbada: a FTMO cobra em EUR e o card
+        // dizia "Save $101" em cima de "€439 de €540".
+        const _sym = (String(p.o).match(/[^0-9.,\s]/) || ['$'])[0];
+        saveTxt = `${_crLang==='pt'?'Economize':'Save'} ${_sym}${Math.round(_ov-_nv)}`;
       }
       const size = (p.a||'').replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
       h += `<div class="cr-hp-pc" style="border:1.5px solid ${color}B3;background:linear-gradient(180deg, ${color}14 0%, rgba(0,0,0,.35) 100%);">

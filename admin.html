@@ -14573,7 +14573,7 @@ function renderHeroPremium(firm, content, L) {
     futureselite: '/img/Firms Logos/Futures Elite.svg',
     'funded-futures-family': '/img/Firms Logos/funded futures family.svg'
   };
-  const logoSrc = FIRM_WORDMARK[firm.id] || firm.icon_url || '';
+  const logoSrc = FIRM_WORDMARK[firm.id] || ('/' + (firm.icon_url||'').replace(/^\//,''));
   h += `<div class="cr-hp-logo"><img src="${logoSrc}" alt="${escHtml(firm.name)}" onerror="this.onerror=null;this.src='${firm.icon_url||''}';this.style.maxWidth='220px';"></div>`;
 
   // Firm type
@@ -14607,7 +14607,7 @@ function renderHeroPremium(firm, content, L) {
     } else {
       const GREEN = '#10B981';
       h += `<div class="cr-hp-cplabel" style="color:${GREEN}B3;">${_crLang==='pt'?'DESCONTO EXCLUSIVO':'EXCLUSIVE DISCOUNT'}</div>`;
-      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${_crLang==='pt'?'Sem cupom · use nosso link':'No coupon · use our link'}</span></div>`;
+      h += `<div class="cr-hp-cpbox" style="border:1.5px dashed ${GREEN}CC;background:linear-gradient(180deg, ${GREEN}33, ${GREEN}1F);padding:18px 32px;display:flex;align-items:center;gap:14px;"><span style="color:#fff;background:${GREEN};border-radius:50%;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;line-height:1;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span style="color:#fff;font-size:26px;font-weight:800;letter-spacing:.3px;">${firm.disc_note ? escHtml(firm.disc_note) : (_crLang==='pt'?'Sem cupom · use nosso link':'No coupon · use our link')}</span></div>`;
     }
   }
 
@@ -14624,12 +14624,19 @@ function renderHeroPremium(firm, content, L) {
     h += `<div class="cr-hp-prices">`;
     top4.forEach(p => {
       const newP = p.n || '—';
-      const oldP = (p.o && p.o !== '—') ? p.o : '';
+      // 'de' so aparece quando ha desconto REAL. Com n == o o card mostrava o mesmo
+      // numero duas vezes ("$249  $249" riscado) e parecia quebrado num post do
+      // Instagram - caso da The5ers (1-Step Summer, High Stakes sem desconto).
+      const _nv = parseFloat(String(newP).replace(/[^0-9.]/g,''));
+      const _ov = parseFloat(String(p.o||'').replace(/[^0-9.]/g,''));
+      const temDesconto = !!(_nv && _ov && _ov > _nv);
+      const oldP = (temDesconto && p.o && p.o !== '—') ? p.o : '';
       let saveTxt = '';
-      if (oldP) {
-        const n = parseFloat(String(newP).replace(/[^0-9.]/g,''));
-        const o = parseFloat(String(oldP).replace(/[^0-9.]/g,''));
-        if (n && o && o>n) saveTxt = `${_crLang==='pt'?'Economize':'Save'} $${Math.round(o-n)}`;
+      if (temDesconto) {
+        // moeda vem do proprio preco, nao chumbada: a FTMO cobra em EUR e o card
+        // dizia "Save $101" em cima de "€439 de €540".
+        const _sym = (String(p.o).match(/[^0-9.,\s]/) || ['$'])[0];
+        saveTxt = `${_crLang==='pt'?'Economize':'Save'} ${_sym}${Math.round(_ov-_nv)}`;
       }
       const size = (p.a||'').replace(/\s*(Intraday|EOD|Trail)\s*/gi,'').trim();
       h += `<div class="cr-hp-pc" style="border:1.5px solid ${color}B3;background:linear-gradient(180deg, ${color}14 0%, rgba(0,0,0,.35) 100%);">
