@@ -79,33 +79,57 @@ function arquivosDaFirma() {
   return achados;
 }
 
-// ── 2. redirects 301 no vercel.json ──────────────────────────────────────────
-function regrasRedirect() {
-  // Sintaxe path-to-regexp com grupo NOMEADO, que e a que o vercel.json deste repo
-  // ja usa e comprovadamente funciona (ex: "/:path(.*)"). Grupo nomeado e
-  // obrigatorio quando o parametro nao ocupa o segmento inteiro: "/:a-vs-goat"
-  // nao casa de forma confiavel, "/:a([a-z0-9-]+)-vs-goat" casa.
-  const L = '(en|es|it|fr|de|ar|id)';
+// ── 2. redirect 301 no vercel.json ───────────────────────────────────────────
+// ATENCAO: este projeto usa `routes` (schema legado). Quando `routes` existe, ele
+// tem PRECEDENCIA e os `redirects` sao ignorados — foi assim que a 1a versao deste
+// script deixou 296 URLs em 404: as paginas sumiram e o redirect nunca disparou.
+// Entao: 301 escrito COMO ROUTE, no topo (routes sao avaliadas em ordem), e o slug
+// removido das alternativas de firma das rotas existentes.
+function rotasRedirect() {
+  const L = '(en|es|fr|de|it|ar|id)';
+  const paraCoupons = { status: 301, headers: { Location: DESTINO } };
+  const paraCompare = { status: 301, headers: { Location: '/compare' } };
   return [
-    { source: `/${slug}`,                                    destination: DESTINO, permanent: true },
-    { source: `/${slug}-coupon`,                             destination: DESTINO, permanent: true },
-    { source: `/:lang${L}/${slug}`,                          destination: DESTINO, permanent: true },
-    { source: `/:lang${L}/${slug}-coupon`,                   destination: DESTINO, permanent: true },
-    { source: `/:a([a-z0-9-]+)-vs-${slug}`,                  destination: '/compare', permanent: true },
-    { source: `/${slug}-vs-:b([a-z0-9-]+)`,                  destination: '/compare', permanent: true },
-    { source: `/:lang${L}/:a([a-z0-9-]+)-vs-${slug}`,        destination: '/compare', permanent: true },
-    { source: `/:lang${L}/${slug}-vs-:b([a-z0-9-]+)`,        destination: '/compare', permanent: true },
+    { src: `/${slug}`, ...paraCoupons },
+    { src: `/${slug}-coupon`, ...paraCoupons },
+    { src: `/${L}/${slug}`, ...paraCoupons },
+    { src: `/${L}/${slug}-coupon`, ...paraCoupons },
+    { src: `/buy/${slug}`, ...paraCoupons },
+    { src: `/([a-z0-9-]+)-vs-${slug}`, ...paraCompare },
+    { src: `/${slug}-vs-([a-z0-9-]+)`, ...paraCompare },
+    { src: `/${L}/([a-z0-9-]+)-vs-${slug}`, ...paraCompare },
+    { src: `/${L}/${slug}-vs-([a-z0-9-]+)`, ...paraCompare },
   ];
 }
 
 function mexeVercel(remover) {
   const p = path.join(ROOT, 'vercel.json');
   const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
-  cfg.redirects = cfg.redirects || [];
-  // tira o que ja existir dessa firma (idempotente)
-  cfg.redirects = cfg.redirects.filter((r) => !String(r.source || '').includes(slug));
-  if (!remover) cfg.redirects = regrasRedirect().concat(cfg.redirects);
-  return { p, txt: JSON.stringify(cfg, null, 2) + '\n', n: remover ? 0 : regrasRedirect().length };
+  cfg.routes = cfg.routes || [];
+
+  // tira redirects/rotas dessa firma que ja existirem (idempotente)
+  if (Array.isArray(cfg.redirects)) {
+    cfg.redirects = cfg.redirects.filter((r) => !String(r.source || '').includes(slug));
+  }
+  cfg.routes = cfg.routes.filter((r) => !(r.status === 301 && String(r.src || '').includes(slug)));
+
+  if (remover) {
+    // religar: devolve o slug as alternativas de firma
+    cfg.routes.forEach((r) => {
+      const s = String(r.src || '');
+      if (/\(apex\|/.test(s) && !s.includes(slug)) r.src = s.replace('(apex|', `(${slug}|apex|`);
+    });
+  } else {
+    // matar: tira o slug das alternativas, senao /slug segue servindo o index.html
+    cfg.routes.forEach((r) => {
+      const s = String(r.src || '');
+      if (s.includes(slug)) {
+        r.src = s.replace(`|${slug}|`, '|').replace(`|${slug})`, ')').replace(`(${slug}|`, '(');
+      }
+    });
+    cfg.routes = rotasRedirect().concat(cfg.routes);
+  }
+  return { p, txt: JSON.stringify(cfg, null, 2) + '\n', n: remover ? 0 : rotasRedirect().length };
 }
 
 // ── main ─────────────────────────────────────────────────────────────────────
@@ -114,7 +138,7 @@ const { p: vpath, txt: vtxt, n: nreg } = mexeVercel(UNDO);
 
 console.log(`\n${UNDO ? 'DESFAZER' : 'MATAR'} a firma: ${slug}\n${'='.repeat(60)}`);
 console.log(`  paginas geradas encontradas : ${arquivos.length}`);
-console.log(`  regras de redirect 301      : ${nreg}  -> ${DESTINO} / /compare`);
+console.log(`  rotas de redirect 301       : ${nreg}  -> ${DESTINO} / /compare`);
 console.log(`  banco                       : cms_firms.active=${UNDO} , firms.ativo=${UNDO}`);
 if (arquivos.length) {
   console.log(`\n  exemplos:`);
@@ -138,7 +162,7 @@ if (!UNDO) {
   console.log(`  ${arquivos.length} paginas removidas do disco`);
 }
 fs.writeFileSync(vpath, vtxt, 'utf8');
-console.log(`  vercel.json: ${UNDO ? 'redirects removidos' : nreg + ' redirects 301 adicionados'}`);
+console.log(`  vercel.json: ${UNDO ? 'rotas de redirect removidas' : nreg + ' rotas 301 no topo + slug tirado das rotas de firma'}`);
 
 // Pipeline completo aqui dentro: o objetivo e ser UM comando. Deixar passo manual
 // depois significa, na pratica, banco atualizado com o site ainda servindo o velho.

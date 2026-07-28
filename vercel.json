@@ -10,218 +10,639 @@
   "redirects": [
     {
       "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "marketscoupons.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "marketscoupons.com"
+        }
+      ],
       "destination": "https://www.marketscoupons.com/:path",
       "permanent": true
     },
-    { "source": "/ind", "destination": "/indicators?utm_source=instagram&utm_medium=manychat&utm_campaign=indicator_download", "permanent": false },
-    { "source": "/buy", "destination": "/coupons?utm_source=instagram&utm_medium=manychat&utm_campaign=coupon_buyer", "permanent": false },
-    { "source": "/x", "destination": "/coupons?utm_source=twitter&utm_medium=bio&utm_campaign=max_bio", "permanent": false },
-    { "source": "/ig", "destination": "/coupons?utm_source=instagram&utm_medium=bio&utm_campaign=max_bio", "permanent": false },
-    { "source": "/insta", "destination": "/?utm_source=instagram&utm_medium=bio&utm_campaign=ig_bio_home", "permanent": false },
-    { "source": "/th", "destination": "/coupons?utm_source=threads&utm_medium=bio&utm_campaign=max_bio", "permanent": false },
-    { "source": "/x/gamma", "destination": "/gamma?utm_source=twitter&utm_medium=bio&utm_campaign=max_analysis", "permanent": false },
-    { "source": "/firms/apex.html", "destination": "/apex", "permanent": true },
-    { "source": "/firms/bulenox.html", "destination": "/bulenox", "permanent": true },
-    { "source": "/firms/ftmo.html", "destination": "/ftmo", "permanent": true },
-    { "source": "/firms/fn.html", "destination": "/fn", "permanent": true },
-    { "source": "/firms/e2t.html", "destination": "/e2t", "permanent": true },
-    { "source": "/firms/the5ers.html", "destination": "/the5ers", "permanent": true },
-    { "source": "/firms/fundingpips.html", "destination": "/fundingpips", "permanent": true },
-    { "source": "/firms/brightfunded.html", "destination": "/brightfunded", "permanent": true },
-    { "source": "/firms/e8.html", "destination": "/e8", "permanent": true },
-    { "source": "/firms/cti.html", "destination": "/cti", "permanent": true },
-    { "source": "/firms/tradeday.html", "destination": "/tradeday", "permanent": true },
-    { "source": "/volumefilter-landing.html", "destination": "/volumefilter", "permanent": true },
-    { "source": "/volume-filter", "destination": "/volumefilter", "permanent": true },
-    { "source": "/t/coupons", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=coupons", "permanent": false },
-    { "source": "/t/analysis", "destination": "/analysis?utm_source=telegram&utm_medium=social&utm_campaign=analysis", "permanent": false },
-    { "source": "/t/gex", "destination": "/gamma?utm_source=telegram&utm_medium=social&utm_campaign=gex", "permanent": false },
-    { "source": "/t/calendar", "destination": "/calendar?utm_source=telegram&utm_medium=social&utm_campaign=calendar", "permanent": false },
-    { "source": "/t/calendar-alert", "destination": "/calendar?utm_source=telegram&utm_medium=social&utm_campaign=calendar_alert", "permanent": false },
-    { "source": "/t/pro", "destination": "/pro?utm_source=telegram&utm_medium=social&utm_campaign=pro", "permanent": false },
-    { "source": "/t/loyalty", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=loyalty", "permanent": false },
-    { "source": "/t/firm/:id", "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=flash_promo#firm/:id", "permanent": false },
-    { "source": "/pt/guides/:slug", "destination": "/guides/:slug", "permanent": false },
-    { "source": "/privacy-policy", "destination": "/privacy", "permanent": true },
-    { "source": "/privacy_policy", "destination": "/privacy", "permanent": true },
-    { "source": "/politica-de-privacidade", "destination": "/privacy", "permanent": true },
-    { "source": "/terms-of-service", "destination": "/terms", "permanent": true },
-    { "source": "/terms-and-conditions", "destination": "/terms", "permanent": true },
-    { "source": "/termos-de-uso", "destination": "/terms", "permanent": true }
+    {
+      "source": "/ind",
+      "destination": "/indicators?utm_source=instagram&utm_medium=manychat&utm_campaign=indicator_download",
+      "permanent": false
+    },
+    {
+      "source": "/buy",
+      "destination": "/coupons?utm_source=instagram&utm_medium=manychat&utm_campaign=coupon_buyer",
+      "permanent": false
+    },
+    {
+      "source": "/x",
+      "destination": "/coupons?utm_source=twitter&utm_medium=bio&utm_campaign=max_bio",
+      "permanent": false
+    },
+    {
+      "source": "/ig",
+      "destination": "/coupons?utm_source=instagram&utm_medium=bio&utm_campaign=max_bio",
+      "permanent": false
+    },
+    {
+      "source": "/insta",
+      "destination": "/?utm_source=instagram&utm_medium=bio&utm_campaign=ig_bio_home",
+      "permanent": false
+    },
+    {
+      "source": "/th",
+      "destination": "/coupons?utm_source=threads&utm_medium=bio&utm_campaign=max_bio",
+      "permanent": false
+    },
+    {
+      "source": "/x/gamma",
+      "destination": "/gamma?utm_source=twitter&utm_medium=bio&utm_campaign=max_analysis",
+      "permanent": false
+    },
+    {
+      "source": "/firms/apex.html",
+      "destination": "/apex",
+      "permanent": true
+    },
+    {
+      "source": "/firms/bulenox.html",
+      "destination": "/bulenox",
+      "permanent": true
+    },
+    {
+      "source": "/firms/ftmo.html",
+      "destination": "/ftmo",
+      "permanent": true
+    },
+    {
+      "source": "/firms/fn.html",
+      "destination": "/fn",
+      "permanent": true
+    },
+    {
+      "source": "/firms/e2t.html",
+      "destination": "/e2t",
+      "permanent": true
+    },
+    {
+      "source": "/firms/the5ers.html",
+      "destination": "/the5ers",
+      "permanent": true
+    },
+    {
+      "source": "/firms/fundingpips.html",
+      "destination": "/fundingpips",
+      "permanent": true
+    },
+    {
+      "source": "/firms/brightfunded.html",
+      "destination": "/brightfunded",
+      "permanent": true
+    },
+    {
+      "source": "/firms/e8.html",
+      "destination": "/e8",
+      "permanent": true
+    },
+    {
+      "source": "/firms/cti.html",
+      "destination": "/cti",
+      "permanent": true
+    },
+    {
+      "source": "/firms/tradeday.html",
+      "destination": "/tradeday",
+      "permanent": true
+    },
+    {
+      "source": "/volumefilter-landing.html",
+      "destination": "/volumefilter",
+      "permanent": true
+    },
+    {
+      "source": "/volume-filter",
+      "destination": "/volumefilter",
+      "permanent": true
+    },
+    {
+      "source": "/t/coupons",
+      "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=coupons",
+      "permanent": false
+    },
+    {
+      "source": "/t/analysis",
+      "destination": "/analysis?utm_source=telegram&utm_medium=social&utm_campaign=analysis",
+      "permanent": false
+    },
+    {
+      "source": "/t/gex",
+      "destination": "/gamma?utm_source=telegram&utm_medium=social&utm_campaign=gex",
+      "permanent": false
+    },
+    {
+      "source": "/t/calendar",
+      "destination": "/calendar?utm_source=telegram&utm_medium=social&utm_campaign=calendar",
+      "permanent": false
+    },
+    {
+      "source": "/t/calendar-alert",
+      "destination": "/calendar?utm_source=telegram&utm_medium=social&utm_campaign=calendar_alert",
+      "permanent": false
+    },
+    {
+      "source": "/t/pro",
+      "destination": "/pro?utm_source=telegram&utm_medium=social&utm_campaign=pro",
+      "permanent": false
+    },
+    {
+      "source": "/t/loyalty",
+      "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=loyalty",
+      "permanent": false
+    },
+    {
+      "source": "/t/firm/:id",
+      "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=flash_promo#firm/:id",
+      "permanent": false
+    },
+    {
+      "source": "/pt/guides/:slug",
+      "destination": "/guides/:slug",
+      "permanent": false
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/privacy_policy",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/politica-de-privacidade",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/terms-of-service",
+      "destination": "/terms",
+      "permanent": true
+    },
+    {
+      "source": "/terms-and-conditions",
+      "destination": "/terms",
+      "permanent": true
+    },
+    {
+      "source": "/termos-de-uso",
+      "destination": "/terms",
+      "permanent": true
+    }
   ],
   "routes": [
-    { "src": "/blog/(pt|en|es|fr|de|it|ar|id)/([^/]+)", "dest": "/blog.html" },
-    { "src": "/blog/([^/]+)", "dest": "/blog.html" },
-    { "src": "/gamma", "dest": "/gex.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/gamma", "dest": "/gex.html" },
-    { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/best-prop-firms", "dest": "/best.html" },
-    { "src": "/best-prop-firms-futures", "dest": "/best.html" },
-    { "src": "/best-prop-firms-no-activation-fee", "dest": "/best.html" },
-    { "src": "/best-prop-firms-with-coupon", "dest": "/best.html" },
-    { "src": "/cheapest-prop-firms", "dest": "/best.html" },
-    { "src": "/highest-rated-prop-firms", "dest": "/best.html" },
-    { "src": "/coupons", "dest": "/coupons.html" },
-    { "src": "/operational", "dest": "/operational.html" },
-    { "src": "/(en|pt|es|fr|de|it|ar|id)/operational", "dest": "/operational.html" },
-    { "src": "/criativos/ranking", "dest": "/data/criativos/ranking.html" },
-    { "src": "/criativos/carrossel", "dest": "/data/criativos/carrossel.html" },
-    { "src": "/volumefilter", "dest": "/volumefilter-landing.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/volumefilter", "dest": "/volumefilter-landing.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/coupons", "dest": "/coupons.html?lang=$1" },
-    { "src": "/risk-disclosure", "dest": "/risk-disclosure.html" },
-    { "src": "/declaracao-de-risco", "dest": "/risk-disclosure.html" },
-    { "src": "/go", "dest": "/go.html" },
-    { "src": "/go/(.*)", "dest": "/go.html?firm=$1" },
-    { "src": "/aff/go/(.*)", "dest": "/go.html?firm=$1" },
-    { "src": "/email-confirm", "dest": "/api/welcome-email" },
-    { "src": "/guides/([a-z0-9-]+)", "dest": "/guides/$1.html" },
-    { "src": "/pt/guides/([a-z0-9-]+)", "dest": "/guides/$1.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/guides/([a-z0-9-]+)", "dest": "/$1/guides/$2.html" },
-    { "src": "/signup", "dest": "/index.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/signup", "dest": "/index.html" },
-    { "src": "/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|painel|perfil|loyalty|pro-success|calculator|privacy|terms|app|faq)", "dest": "/index.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|painel|perfil|loyalty|pro-success|calculator|privacy|terms|app|faq)", "dest": "/index.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)", "dest": "/index.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/?$", "dest": "/index.html" },
-    { "src": "/buy/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)", "dest": "/buy.html?firm=$1" },
-    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)-coupon", "dest": "/seo/$1.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)-coupon", "dest": "/$1/seo/$2.html" },
-    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)", "dest": "/index.html" },
-    { "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)", "dest": "/compare/$1-vs-$2.html" },
-    { "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)", "dest": "/$1/compare/$2-vs-$3.html" }
+    {
+      "src": "/goat",
+      "status": 301,
+      "headers": {
+        "Location": "/coupons"
+      }
+    },
+    {
+      "src": "/goat-coupon",
+      "status": 301,
+      "headers": {
+        "Location": "/coupons"
+      }
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/goat",
+      "status": 301,
+      "headers": {
+        "Location": "/coupons"
+      }
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/goat-coupon",
+      "status": 301,
+      "headers": {
+        "Location": "/coupons"
+      }
+    },
+    {
+      "src": "/buy/goat",
+      "status": 301,
+      "headers": {
+        "Location": "/coupons"
+      }
+    },
+    {
+      "src": "/([a-z0-9-]+)-vs-goat",
+      "status": 301,
+      "headers": {
+        "Location": "/compare"
+      }
+    },
+    {
+      "src": "/goat-vs-([a-z0-9-]+)",
+      "status": 301,
+      "headers": {
+        "Location": "/compare"
+      }
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/([a-z0-9-]+)-vs-goat",
+      "status": 301,
+      "headers": {
+        "Location": "/compare"
+      }
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/goat-vs-([a-z0-9-]+)",
+      "status": 301,
+      "headers": {
+        "Location": "/compare"
+      }
+    },
+    {
+      "src": "/blog/(pt|en|es|fr|de|it|ar|id)/([^/]+)",
+      "dest": "/blog.html"
+    },
+    {
+      "src": "/blog/([^/]+)",
+      "dest": "/blog.html"
+    },
+    {
+      "src": "/gamma",
+      "dest": "/gex.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/gamma",
+      "dest": "/gex.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/admin.html"
+    },
+    {
+      "src": "/best-prop-firms",
+      "dest": "/best.html"
+    },
+    {
+      "src": "/best-prop-firms-futures",
+      "dest": "/best.html"
+    },
+    {
+      "src": "/best-prop-firms-no-activation-fee",
+      "dest": "/best.html"
+    },
+    {
+      "src": "/best-prop-firms-with-coupon",
+      "dest": "/best.html"
+    },
+    {
+      "src": "/cheapest-prop-firms",
+      "dest": "/best.html"
+    },
+    {
+      "src": "/highest-rated-prop-firms",
+      "dest": "/best.html"
+    },
+    {
+      "src": "/coupons",
+      "dest": "/coupons.html"
+    },
+    {
+      "src": "/operational",
+      "dest": "/operational.html"
+    },
+    {
+      "src": "/(en|pt|es|fr|de|it|ar|id)/operational",
+      "dest": "/operational.html"
+    },
+    {
+      "src": "/criativos/ranking",
+      "dest": "/data/criativos/ranking.html"
+    },
+    {
+      "src": "/criativos/carrossel",
+      "dest": "/data/criativos/carrossel.html"
+    },
+    {
+      "src": "/volumefilter",
+      "dest": "/volumefilter-landing.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/volumefilter",
+      "dest": "/volumefilter-landing.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/coupons",
+      "dest": "/coupons.html?lang=$1"
+    },
+    {
+      "src": "/risk-disclosure",
+      "dest": "/risk-disclosure.html"
+    },
+    {
+      "src": "/declaracao-de-risco",
+      "dest": "/risk-disclosure.html"
+    },
+    {
+      "src": "/go",
+      "dest": "/go.html"
+    },
+    {
+      "src": "/go/(.*)",
+      "dest": "/go.html?firm=$1"
+    },
+    {
+      "src": "/aff/go/(.*)",
+      "dest": "/go.html?firm=$1"
+    },
+    {
+      "src": "/email-confirm",
+      "dest": "/api/welcome-email"
+    },
+    {
+      "src": "/guides/([a-z0-9-]+)",
+      "dest": "/guides/$1.html"
+    },
+    {
+      "src": "/pt/guides/([a-z0-9-]+)",
+      "dest": "/guides/$1.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/guides/([a-z0-9-]+)",
+      "dest": "/$1/guides/$2.html"
+    },
+    {
+      "src": "/signup",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/signup",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|painel|perfil|loyalty|pro-success|calculator|privacy|terms|app|faq)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/(firms|platforms|indicators|compare|calendar|heatmap|analysis|gamma|guides|blog|live|quiz|awards|panel|painel|perfil|loyalty|pro-success|calculator|privacy|terms|app|faq)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/buy/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)",
+      "dest": "/buy.html?firm=$1"
+    },
+    {
+      "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)-coupon",
+      "dest": "/seo/$1.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)-coupon",
+      "dest": "/$1/seo/$2.html"
+    },
+    {
+      "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)",
+      "dest": "/compare/$1-vs-$2.html"
+    },
+    {
+      "src": "/(en|es|fr|de|it|ar|id)/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)-vs-(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|funded-futures-family)",
+      "dest": "/$1/compare/$2-vs-$3.html"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)\\.html",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/app.js",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/i18n.js",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/i18n-(.*)\\.js",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/blog/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/(apex|bulenox|ftmo|fn|e2t|the5ers|fundingpips|brightfunded|e8|cti|tradeday|blueguardian|toponefutures|aquafutures|blueberryfutures|alphafutures|futureselite|goat|funded-futures-family)",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/(en|es|fr|de|it|ar|id)/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/(en|es|fr|de|it|ar|id)",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/sitemap.xml",
       "headers": [
-        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
-        { "key": "Cache-Control", "value": "public, max-age=3600" }
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
       ]
     },
     {
       "source": "/sw.js",
       "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
-        { "key": "Service-Worker-Allowed", "value": "/" }
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
       ]
     },
     {
       "source": "/manifest.json",
       "headers": [
-        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" },
-        { "key": "Cache-Control", "value": "public, max-age=3600" }
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
       ]
     },
     {
       "source": "/robots.txt",
       "headers": [
-        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
       ]
     },
     {
       "source": "/img/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/css/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/fonts/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/js/site-(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, must-revalidate"
+        }
       ]
     },
     {
       "source": "/js/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/tracking.js",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-DNS-Prefetch-Control", "value": "off" },
-        { "key": "X-Powered-By", "value": "" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
-        { "key": "Permissions-Policy", "value": "accelerometer=(), autoplay=(), browsing-topics=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), interest-cohort=(), magnetometer=(), microphone=(), midi=(), payment=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://s3.tradingview.com https://browser.sentry-cdn.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://qfwhduvutfumsaxnuofa.supabase.co https://*.supabase.co https://ipinfo.io https://viacep.com.br https://api.zippopotam.us https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.anthropic.com https://api.brevo.com https://connect.facebook.net https://www.facebook.com https://*.doubleclick.net https://*.sentry.io https://*.ingest.sentry.io https://browser.sentry-cdn.com https://*.run.app https://*.conversionsapigateway.com https://cdn.jsdelivr.net; frame-src https://www.tradingview-widget.com https://s.tradingview.com https://s3.tradingview.com https://www.tradingview.com https://www.youtube.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" }
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "off"
+        },
+        {
+          "key": "X-Powered-By",
+          "value": ""
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "accelerometer=(), autoplay=(), browsing-topics=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), interest-cohort=(), magnetometer=(), microphone=(), midi=(), payment=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://s3.tradingview.com https://browser.sentry-cdn.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://qfwhduvutfumsaxnuofa.supabase.co https://*.supabase.co https://ipinfo.io https://viacep.com.br https://api.zippopotam.us https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.anthropic.com https://api.brevo.com https://connect.facebook.net https://www.facebook.com https://*.doubleclick.net https://*.sentry.io https://*.ingest.sentry.io https://browser.sentry-cdn.com https://*.run.app https://*.conversionsapigateway.com https://cdn.jsdelivr.net; frame-src https://www.tradingview-widget.com https://s.tradingview.com https://s3.tradingview.com https://www.tradingview.com https://www.youtube.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+        }
       ]
     }
   ]
