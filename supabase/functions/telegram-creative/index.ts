@@ -31,6 +31,9 @@ const SCHEDULE: Record<string, Slot[]> = {
 
 function slotForHour(utcHour: number): number { if (utcHour >= 11 && utcHour < 15) return 0; if (utcHour >= 15 && utcHour < 19) return 1; if (utcHour >= 19 && utcHour < 23) return 2; return 3; }
 
+// COUPONS: NAO e mais fallback de runtime (28/07/2026) — cupom velho num post publico
+// nao tem retificacao. Fica so como referencia humana; quem manda e a tabela `firms`.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const COUPONS: Record<string, string | null> = { apex: "MARKET", bulenox: "MARKET89", toponefutures: "MARKET", aquafutures: "h5d", blueberryfutures: "MARKET-7652C", goat: "MARKET", tradeday: "MARKETS", e2t: "MARKETSCOUPONS", fn: "MARKET", blueguardian: "MARKET", cti: "INFINITY8", futureselite: null, brightfunded: "CLNLTPxtT4Sok0PzHaRIIQ", alphafutures: "MARKETS026158", fundingpips: "HELLO", ftmo: null, e8: "MARKET", the5ers: "MARKET", "funded-futures-family": "MARKET" };
 
 async function renderCreativePngWithRetry(firmId: string, format = "feed", lang = "en"): Promise<Uint8Array | { error: string }> {
@@ -64,14 +67,22 @@ async function getFirmLive(firmId: string): Promise<{ discount?: number; coupon?
     if (!SUPABASE_URL || !SERVICE_ROLE) return null;
     const db = createClient(SUPABASE_URL, SERVICE_ROLE);
     const { data } = await db.from("cms_firms").select("discount,coupon,disc_note").eq("id", firmId).maybeSingle();
-    return data || null;
+    if (!data) return null;
+    // FONTE UNICA do cupom: tabela `firms` (o cms_firms guarda preco/regra).
+    // Post de Telegram vai pro canal inteiro sem revisao e nao tem retificacao.
+    const { data: aff } = await db.from("firms").select("coupon_code").eq("slug", firmId).eq("ativo", true).maybeSingle();
+    if (aff) data.coupon = aff.coupon_code;   // null = firma sem codigo
+    return data;
   } catch { return null; }
 }
 
 function buildCaption(slot: Slot, prefix?: string, live?: { discount?: number; coupon?: string | null; disc_note?: string | null } | null): string {
   const hasLive = live && typeof live.discount === "number";
   const off = hasLive ? live!.discount : slot.off;
-  const coupon = hasLive ? (live!.coupon ?? null) : (COUPONS[slot.firmId] ?? null);
+  // Sem dado vivo: NAO cair no mapa hardcoded. Cupom velho num post publico e pior
+  // que post sem cupom — o link credita do mesmo jeito, e cupom errado nao tem
+  // como corrigir depois de enviado. O mapa COUPONS fica so como referencia.
+  const coupon = hasLive ? (live!.coupon ?? null) : null;
   const note = hasLive && live!.disc_note ? ` (${live!.disc_note})` : "";
   const lines: string[] = [];
   if (prefix) lines.push(prefix, "");

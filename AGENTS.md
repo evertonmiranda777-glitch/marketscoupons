@@ -120,21 +120,52 @@ Ele só sabe **desativar** e **registrar**. Escrever valor novo é decisão huma
 
 Tudo fica em `logs/autofix.log`.
 
-## 8. Dívida conhecida — cupom literal que ficou de propósito
+## 8. O critério de classificação (não erre isso de novo)
 
-Estes pontos ainda têm cupom escrito à mão. **Não são bug**: nenhum deles chega
-no usuário final. Ficaram fora do escopo de propósito, para o diff da migração
-não virar um refactor de arquivo inteiro.
+O critério **não é "é e-mail"**. É:
+
+> **Chega no usuário sem revisão humana?**
+
+Se sim, o valor vem da tabela. Sempre. Não importa o canal.
+
+Errei essa classificação uma vez: tratei `PUSH_PRESETS` como componente interno
+porque não era e-mail. Push tem o **mesmo alcance** de um disparo de e-mail e
+**menos** chance de conserto — e-mail errado admite retificação, push que saiu, saiu.
+Post público em X/Telegram é ainda pior: fica indexado.
+
+Ordem de gravidade, do pior pro menos ruim:
+
+| Canal | Alcance | Dá pra corrigir depois? |
+|---|---|---|
+| Post público (X, Telegram, Instagram) | todo mundo, indexado | não |
+| Push | base inteira | não |
+| E-mail | base inteira | só com outro e-mail |
+| Página estática | quem visitar | sim, regerando |
+| Preview no painel | só você | não chega em ninguém |
+
+**Superfícies que já leem da tabela via `{{CUP:slug}}`:**
+
+| Arquivo | Canal |
+|---|---|
+| `lib/email-render.js` | e-mail do cron, base inteira |
+| `admin.html` `buildInstitutionalHtml` | e-mail manual (espelho do de cima — **mexeu num, mexe no outro**) |
+| `admin.html` `applyPushPreset` | push |
+| `api/welcome-email.js` | e-mail de todo cadastro novo |
+| `api/bot.js` | Max, threads do X, caption do Instagram, post do Telegram |
+| `supabase/functions/telegram-creative` | post do canal |
+| `scripts/build-guides.js` + `.md` dos guias | páginas |
+
+### Dívida conhecida — cupom literal que ficou de propósito
+
+Nenhum destes chega no usuário. Ficaram fora do escopo pra o diff não virar
+refactor de arquivo inteiro.
 
 | Onde | O que é | Por que pode ficar |
 |---|---|---|
-| `admin.html:3664-3667` | dados de exemplo do dashboard de tracking quando não há evento | só popula gráfico vazio no seu painel |
-| `admin.html:6842` | preview do corpo de e-mail (`{cupom}` de mentira) | é o preview, não o envio |
-| `admin.html:7041-7058` | `PUSH_PRESETS.apex_nofee` (en/pt/es) | ⚠️ **não é e-mail, mas é disparado pra base.** Mesmo raio de alcance de um e-mail. Migrar quando o dono autorizar |
-
-Tudo que **é enviado** já lê da tabela via `{{CUP:slug}}`: `lib/email-render.js`
-(cron, base inteira) e `admin.html` `buildInstitutionalHtml` (envio manual).
-Os dois são espelho um do outro — **mexeu num, mexe no outro**.
+| `admin.html:3664-3667` | dados de exemplo do dashboard quando não há evento | popula gráfico vazio no seu painel |
+| `admin.html:6843` | preview do corpo de e-mail (`{cupom}` de mentira) | é o preview, não o envio |
+| `api/gen-firm-copy.js` | exemplos few-shot do prompt de copy de anúncio | a saída passa por você antes de virar anúncio; o cupom real já vem da tabela |
+| `supabase/functions/telegram-creative` `COUPONS` | mapa de referência | **não é mais fallback de runtime** — se a tabela falhar, o post sai sem cupom em vez de com cupom velho |
 
 ## 9. Escopo
 

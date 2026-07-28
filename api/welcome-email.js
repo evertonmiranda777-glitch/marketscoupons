@@ -42,7 +42,7 @@ const PCFG = {
   m3v:'6+', m3l:{pt:'Ferramentas',en:'Tools',es:'Herramientas',fr:'Outils',de:'Tools',it:'Strumenti',ar:'أدوات'},
   hlLabel:{pt:'Comece por aqui',en:'Start here',es:'Empieza aquí',fr:'Commencez ici',de:'Starte hier',it:'Inizia qui',ar:'ابدأ من هنا'},
   hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
-  hlSubTxt:{pt:'Cupom <strong>MARKET89</strong>, 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>MARKET89</strong>, 89% OFF applied automatically at checkout',es:'Cupón <strong>MARKET89</strong>, 89% OFF aplicado automáticamente',fr:'Coupon <strong>MARKET89</strong>, 89% OFF appliqué automatiquement',de:'Gutschein <strong>MARKET89</strong>, 89% OFF automatisch angewendet',it:'Coupon <strong>MARKET89</strong>, 89% OFF applicato automaticamente',ar:'كوبون <strong>MARKET89</strong>, 89% OFF يُطبق تلقائياً'}
+  hlSubTxt:{pt:'Cupom <strong>{{CUP:bulenox}}</strong>, 89% OFF aplicado automaticamente no checkout',en:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF applied automatically at checkout',es:'Cupón <strong>{{CUP:bulenox}}</strong>, 89% OFF aplicado automáticamente',fr:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF appliqué automatiquement',de:'Gutschein <strong>{{CUP:bulenox}}</strong>, 89% OFF automatisch angewendet',it:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF applicato automaticamente',ar:'كوبون <strong>{{CUP:bulenox}}</strong>, 89% OFF يُطبق تلقائياً'}
 };
 
 function buildUnsubUrl(email, lang){
@@ -50,6 +50,26 @@ function buildUnsubUrl(email, lang){
     const t = signUnsub(email);
     return `https://www.marketscoupons.com/api/unsubscribe?e=${encodeURIComponent(email)}&t=${t}&lang=${lang||'en'}`;
   } catch { return 'https://www.marketscoupons.com/'; }
+}
+
+/* {{CUP:slug}} — mesmo token de api/bot.js, dos guias e do lib/email-render.js.
+   Este e-mail dispara em TODO cadastro novo: cupom literal aqui e disparo em massa
+   sem revisao humana. _CUP e preenchido por primeCupons() antes de renderizar. */
+let _CUP = null;
+async function primeCupons(){
+  try{
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/firms?select=slug,coupon_code&ativo=eq.true`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+    if (r.ok){ const m={}; (await r.json()).forEach(x=>{ m[x.slug]=x.coupon_code; }); _CUP=m; }
+  }catch(_){ /* mantem null: token some do texto, nunca vira cupom errado */ }
+  return _CUP;
+}
+function resolveCupons(html){
+  if (html == null) return html;
+  return String(html).replace(/\{\{CUP:([a-z0-9-]+)\}\}/g, (full, slug) => {
+    const c = _CUP && _CUP[slug];
+    return c == null ? '' : c;   // firma sem codigo -> vazio, NUNCA cupom de outra
+  });
 }
 
 function buildWelcomeHtml(lang='pt', email=''){
@@ -673,7 +693,8 @@ module.exports = async (req, res) => {
     const unsubUrl = (() => { try { return `https://www.marketscoupons.com/api/unsubscribe?e=${encodeURIComponent(email)}&t=${signUnsub(email)}&lang=${useLang}`; } catch { return ''; } })();
     const listUnsubHeader = unsubUrl ? `<${unsubUrl}>, <mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>` : '<mailto:unsubscribe@marketscoupons.com?subject=unsubscribe>';
 
-    const htmlContent = buildWelcomeHtml(useLang, email)
+    await primeCupons();   // {{CUP:slug}} da tabela `firms` antes de renderizar
+    const htmlContent = resolveCupons(buildWelcomeHtml(useLang, email))
       .replace(/href\s*=\s*"(https?:\/\/[^"]+)"/gi, (m, url) => {
         if (url.indexOf('/api/unsubscribe') !== -1) return `href="${url}"`;
         return `href="${tagUrl(url)}"`;

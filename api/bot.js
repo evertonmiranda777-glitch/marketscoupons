@@ -28,6 +28,43 @@ const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5c
 
 let _promoCache = { at: 0, text: '' };
 let _cupomPorSlug = {};
+
+/* resolveCupons(): resolve {{CUP:slug}} com o valor VIVO da tabela `firms`.
+   Mesmo token do prompt do Max, dos guias, do lib/email-render.js e do admin.
+   Usado tambem nos posts de Telegram/X: aquilo sai pro publico inteiro sem
+   revisao humana e nao tem como retificar depois de postado.
+   `vazio` decide o que sai quando a firma nao tem codigo. */
+function resolveCupons(txt, vazio) {
+  if (txt == null) return txt;
+  return String(txt).replace(/\{\{CUP:([a-z0-9-]+)\}\}/g, function (full, slug) {
+    const c = _cupomPorSlug[slug];
+    return (c && c.coupon_code) ? c.coupon_code : (vazio === undefined ? '' : vazio);
+  });
+}
+/* cupomDe(): o codigo cru de uma firma (ou '' se ela nao tem). Pra montar regex
+   de validacao, nunca pra escrever no texto — no texto use o token. */
+function cupomDe(slug) {
+  const c = _cupomPorSlug[slug];
+  return (c && c.coupon_code) ? c.coupon_code : '';
+}
+/* primeCupons(): preenche _cupomPorSlug sem depender do getLivePromoBlock.
+   Os handlers de X/Instagram/Telegram nao passam por la, e post publico com
+   token cru (ou com cupom velho) nao tem retificacao depois de postado. */
+let _cupAt = 0;
+async function primeCupons() {
+  if (Date.now() - _cupAt < 300000 && Object.keys(_cupomPorSlug).length) return _cupomPorSlug;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/firms?select=slug,coupon_code,affiliate_url&ativo=eq.true`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+    });
+    if (r.ok) {
+      const m = {}; (await r.json()).forEach((x) => { m[x.slug] = x; });
+      if (Object.keys(m).length) { _cupomPorSlug = m; _cupAt = Date.now(); }
+    }
+  } catch (_) {}
+  return _cupomPorSlug;
+}
+
 async function getLivePromoBlock() {
   const now = Date.now();
   if (now - _promoCache.at < 60_000 && _promoCache.text) return _promoCache.text;
@@ -1104,10 +1141,10 @@ function buildXGuide(rows, date, lang = 'en', gex = null) {
       : `I bring this read right before the open, so you don't blow the account. The full breakdown lives on the site, link in bio. Good trades. 👊\n\nEducational content, not financial advice.`).slice(0,280));
     // 11) Cupom + assinatura do Max (tweet próprio, nunca corta)
     tweets.push((pt
-      ? `💰 Dica de ouro do Max: conta da Apex por $19.90 com o cupom MARKET. 90% de desconto, hoje, o amanhã a Deus pertence. Aproveita, dólar não cai do céu 😅\n\n🦊 Abraço do Max, da marketscoupons. Câmbio, desligo. 📡`
-      : `💰 Gold tip from Max: an Apex account for $19.90 with code MARKET. 90% off, today only, tomorrow's not promised. Grab it, dollars don't fall from the sky 😅\n\n🦊 Catch you later, Max from marketscoupons. Over and out. 📡`).slice(0,280));
+      ? `💰 Dica de ouro do Max: conta da Apex por $19.90 com o cupom {{CUP:apex}}. 90% de desconto, hoje, o amanhã a Deus pertence. Aproveita, dólar não cai do céu 😅\n\n🦊 Abraço do Max, da marketscoupons. Câmbio, desligo. 📡`
+      : `💰 Gold tip from Max: an Apex account for $19.90 with code {{CUP:apex}}. 90% off, today only, tomorrow's not promised. Grab it, dollars don't fall from the sky 😅\n\n🦊 Catch you later, Max from marketscoupons. Over and out. 📡`).slice(0,280));
 
-    return tweets.filter(t => t && t.trim().length > 0);
+    return tweets.filter(t => t && t.trim().length > 0).map(t => resolveCupons(t));
   }
 
   // ===== FALLBACK (sem GEX no banco): formato clássico desk de research =====
@@ -1167,7 +1204,7 @@ function buildXGuide(rows, date, lang = 'en', gex = null) {
     tweets.push(`This is why I drop the read every morning at 5:30am ET: bias, support and resistance on ES, NQ, GC and CL + macro. So you know if today is attack or observe.${macroLine}\n\nCoupons in bio. Max from marketscoupons.com. Over and out. 📡`.slice(0,280));
   }
 
-  return tweets.filter(t => t && t.trim().length > 0);
+  return tweets.filter(t => t && t.trim().length > 0).map(t => resolveCupons(t));
 }
 
 // ===== Caption do INSTAGRAM (análise condensada numa legenda única + assinatura Max) =====
@@ -1196,7 +1233,7 @@ function buildIGCaption(rows, date) {
   parts.push(`\n🪙 COMMODITIES\n${[line(byId.GC), line(byId.CL)].filter(Boolean).join('\n')}`);
   parts.push(`\n💡 Trading a prop account today? On high-vol days, trailing-DD traders protect the peak, EOD traders mind the daily floor, and every style wins with fewer, cleaner trades.`);
   parts.push(`\nThis is why I drop the read every morning at 6am ET, bias + support and resistance on ES, NQ, GC and CL + the macro backdrop. So you know if today is attack or observe.`);
-  parts.push(`\n💰 Code MARKET = 90% OFF on Apex. All exclusive prop firm coupons at marketscoupons.com`);
+  parts.push(`\n💰 Code {{CUP:apex}} = 90% OFF on Apex. All exclusive prop firm coupons at marketscoupons.com`);
   parts.push(`Market view, not financial advice. Always do your own research.\nMax from marketscoupons.com. Over and out. 📡`);
   parts.push(`\n.\n#trading #propfirm #futures #daytrading #SP500 #nasdaq #gold #crudeoil #marketanalysis #tradingfutures #fundedtrader #apextraderfunding`);
 
@@ -1207,6 +1244,10 @@ function buildIGCaption(rows, date) {
 // Gera a thread com a VOZ do Max (persona tio Max raposa) a partir dos números REAIS
 // travados do banco. Validação anti-invenção (Lei #0): se citar número não fornecido, descarta.
 async function callGemini(systemText, userText, opts = {}) {
+  // Resolve {{CUP:slug}} ANTES de mandar pro modelo: se o token chegasse cru, o
+  // Gemini o copiaria literalmente pro post publico.
+  systemText = resolveCupons(systemText);
+  userText = resolveCupons(userText);
   const KEYS = (process.env.GEMINI_API_KEY || '').split(',').map(k => k.trim()).filter(Boolean);
   if (!KEYS.length) return null;
   const body = JSON.stringify({
@@ -1262,7 +1303,7 @@ ESTRUTURA (use quantos tweets a análise precisar pra ficar COMPLETA e boa, sem 
 8) Commodities (ouro, petróleo): bias + chão/teto
 9) Resumo honesto pra todos
 10) CTA: "trago essa leitura colada na abertura, pra você não quebrar a conta" + análise completa no site + "link na bio" + "Bons trades. 👊"
-11) Cupom: "💰 Dica de ouro do Max: conta da Apex por $19.90 com o cupom MARKET. 90% de desconto, hoje, o amanhã a Deus pertence. Aproveita, que dólar não cai do céu 😅" e assina "🦊 Abraço do Max, da marketscoupons. Câmbio, desligo. 📡"
+11) Cupom: "💰 Dica de ouro do Max: conta da Apex por $19.90 com o cupom {{CUP:apex}}. 90% de desconto, hoje, o amanhã a Deus pertence. Aproveita, que dólar não cai do céu 😅" e assina "🦊 Abraço do Max, da marketscoupons. Câmbio, desligo. 📡"
 
 FORMATAÇÃO (capriche, dê respiro):
 - Cada tweet CURTO: no MÁXIMO 250 caracteres (deixe folga, conte). Se não couber, QUEBRE em mais tweets. NUNCA estoure nem corte uma frase no meio.
@@ -1302,7 +1343,7 @@ STRUCTURE (use as many tweets as the analysis needs to be COMPLETE and good, no 
 8) Commodities (gold, oil): bias + floor/ceiling
 9) Honest recap for everyone
 10) CTA: "I bring this read right before the open, so you don't blow the account" + full analysis on the site + "link in bio" + "Good trades. 👊"
-11) Coupon: "💰 Gold tip from Max: an Apex account for $19.90 with code MARKET. 90% off, today only, tomorrow's not promised. Grab it, dollars don't fall from the sky 😅" then sign "🦊 Catch you later, Max from marketscoupons. Over and out. 📡"
+11) Coupon: "💰 Gold tip from Max: an Apex account for $19.90 with code {{CUP:apex}}. 90% off, today only, tomorrow's not promised. Grab it, dollars don't fall from the sky 😅" then sign "🦊 Catch you later, Max from marketscoupons. Over and out. 📡"
 
 FORMATTING (breathe, don't cram):
 - Each tweet SHORT: MAX 250 characters (leave slack, count). If it doesn't fit, SPLIT into more tweets. NEVER overflow or cut a sentence mid-way.
@@ -1362,7 +1403,7 @@ function buildMaxData(rows, gex, date, lang) {
     ctx.forEach(c => L.push('- ' + c));
     L.push('');
   }
-  L.push(pt ? `Cupom: Apex 25K por $19.90 com o cupom MARKET (90% off)` : `Coupon: Apex 25K for $19.90 with code MARKET (90% off)`);
+  L.push(pt ? `Cupom: Apex 25K por $19.90 com o cupom {{CUP:apex}} (90% off)` : `Coupon: Apex 25K for $19.90 with code {{CUP:apex}} (90% off)`);
   return { block: L.join('\n'), vix, vchg };
 }
 
@@ -1404,9 +1445,13 @@ async function genMaxThreadAI(rows, gex, date, lang) {
     const over = tweets.filter(t => t.length > 280).length;
     tweets = tweets.map(t => t.slice(0, 280)).filter(Boolean);
     if (tweets.length < 8) { lastReason = 'too-few:' + tweets.length; continue; }
-    // TRAVA DE COMPLETUDE: thread só é válida com cupom (MARKET) + assinatura do Max
+    // TRAVA DE COMPLETUDE: thread só é válida com cupom (o da Apex, resolvido da tabela) + assinatura do Max
     const joined = tweets.join('\n');
-    const hasCoupon = /\bMARKET\b/.test(joined);
+    // Valida contra o cupom VIVO da Apex, nao contra string chumbada: se o cupom
+    // mudar na tabela, a trava acompanha sozinha. includes() basta (o codigo e um
+    // token maiusculo) e evita montar regex a partir de dado do banco.
+    const _cupApex = cupomDe('apex');
+    const hasCoupon = _cupApex ? joined.includes(_cupApex) : true;
     const hasSign = /(câmbio,?\s*desligo|over and out)/i.test(joined);
     if (!hasCoupon || !hasSign) { lastReason = 'incomplete:' + (hasCoupon ? '' : 'noCoupon') + (hasSign ? '' : 'noSign'); continue; }
     return { tweets, reason: 'ok', over };
@@ -1491,6 +1536,8 @@ function maxJargonBlocked(text) {
 // Fallback determinístico (SEM Gemini): se o motor de IA falha/cota estoura,
 // o cron ainda posta um take limpo, compliant e sem jargão, dos dados reais.
 function buildMaxSingleFallback(rows, gex, segment) {
+  // Fallback vai direto pro X quando o Gemini falha: resolve o token na saida.
+  const _fim = (txt) => resolveCupons(txt);
   const es = (rows || []).find(r => r.asset === 'ES') || {};
   const price = es.last_price ? Number(es.last_price).toFixed(0) : null;
   const chg = es.change_pct != null ? `${es.change_pct > 0 ? '+' : ''}${Number(es.change_pct).toFixed(1)}%` : '';
@@ -1498,13 +1545,13 @@ function buildMaxSingleFallback(rows, gex, segment) {
   const cap = g.call_wall ? Number(g.call_wall).toFixed(0) : null;
   const flip = g.zero_gamma ? Number(g.zero_gamma).toFixed(0) : null;
   if (segment === 'coupon') {
-    return "Funded futures account for less: an Apex 25K eval is $19.90 right now with code MARKET, 90% off. Tomorrow's price isn't promised. Coupons in bio.";
+    return resolveCupons("Funded futures account for less: an Apex 25K eval is $19.90 right now with code {{CUP:apex}}, 90% off. Tomorrow's price isn't promised. Coupons in bio.");
   }
   if (price && cap && flip) {
     if (segment === 'recap') return `S&P 500 closed near ${price} (${chg}). ${flip} is the line that flips the day, ${cap} the ceiling the big banks defend. That's the map for tomorrow. Full read on the site, link in bio.`;
-    return `S&P 500 at ${price} (${chg}). The big banks are capping it near ${cap}; ${flip} is the level that flips the day. Patience beats chasing here. Full levels on the site, link in bio.`;
+    return resolveCupons(`S&P 500 at ${price} (${chg}). The big banks are capping it near ${cap}; ${flip} is the level that flips the day. Patience beats chasing here. Full levels on the site, link in bio.`);
   }
-  return "Range-bound tape today, the kind that punishes chasing and rewards patience. Full market read and levels on the site, link in bio.";
+  return resolveCupons("Range-bound tape today, the kind that punishes chasing and rewards patience. Full market read and levels on the site, link in bio.");
 }
 
 async function genMaxSinglePost(rows, gex, date, lang, segment) {
@@ -1514,7 +1561,7 @@ async function genMaxSinglePost(rows, gex, date, lang, segment) {
     premarket: pt ? 'AVISO ANTES DO SINO: o clima de hoje em PORTUGUÊS DE GENTE (o termômetro do medo + a 1 coisa que move o mercado) e o que isso significa na prática pra quem opera intraday vs EOD. NADA de rótulo de jargão (não escreva "call wall"/"zero gamma" crus; traduza). Fecha com "níveis completos no site, link na bio".' : 'PRE-BELL heads-up: today\'s mood in PLAIN ENGLISH (the fear gauge + the one thing moving markets) and what it means for an intraday vs an EOD trader. NO jargon labels (don\'t write raw "call wall"/"zero gamma"; translate them). End with "full levels on the site, link in bio".',
     open: pt ? 'O SETUP de hoje em português de gente: onde o S&P e o Nasdaq estão em relação ao nível que os bancos estão defendendo, e o que isso significa pra sessão. Traduza TODO termo técnico. Curto e direto.' : 'Today\'s setup in plain English: where the S&P and Nasdaq sit vs the level the big banks are defending, and what that means for the session. Translate EVERY technical term. Short and straight.',
     pulse: pt ? 'O PULSO do mercado agora em UMA frase afiada e humana: o que os dados realmente dizem do momento (calmo ou tenso, preso ou em tendência). Sem jargão.' : 'The market PULSE right now in one sharp, human line: what the data really says about this moment (calm or tense, pinned or trending). No jargon.',
-    coupon: pt ? 'Post de OFERTA na voz do Max: conta da Apex por $19.90 com o cupom MARKET, 90% off, com humor. Hook primeiro. Cupons na bio.' : 'OFFER post in Max\'s voice: an Apex account for $19.90 with code MARKET, 90% off, with humor. Hook first. Coupons in bio.',
+    coupon: pt ? 'Post de OFERTA na voz do Max: conta da Apex por $19.90 com o cupom {{CUP:apex}}, 90% off, com humor. Hook primeiro. Cupons na bio.' : 'OFFER post in Max\'s voice: an Apex account for $19.90 with code {{CUP:apex}}, 90% off, with humor. Hook first. Coupons in bio.',
     recap: pt ? 'RECAP honesto do fim do dia: o nível-chave segurou? Como se comportou vs o viés. Português de gente, 1 conclusão clara.' : 'End-of-day recap, honest: did the key level hold? How did it behave vs the bias. Plain English, one clear takeaway.',
   };
   const task = SEG[segment] || (pt ? 'Um post curto com a leitura do mercado hoje.' : 'A short post with today\'s market read.');
@@ -1613,9 +1660,9 @@ function buildXThread(a) {
   t1 = t1.slice(0, 280);
 
   // Tweet 2 — disclaimer + cupom (texto, sem link) + bio
-  const t2 = `Market view, not financial advice. Do your own research.\n\n💰 Trading prop firms? Code MARKET = 90% OFF on Apex.\nAll coupons → link in bio`.slice(0, 280);
+  const t2 = `Market view, not financial advice. Do your own research.\n\n💰 Trading prop firms? Code {{CUP:apex}} = 90% OFF on Apex.\nAll coupons → link in bio`.slice(0, 280);
 
-  return [t1, t2];
+  return [resolveCupons(t1), resolveCupons(t2)];
 }
 
 // ===== X recap: score público hits/misses do dia anterior =====
@@ -2031,6 +2078,9 @@ module.exports = async (req, res) => {
     return handleIgWebhook(req, res);
   }
 
+  // Cupons vivos antes de QUALQUER action: varias delas geram post publico.
+  if (action) { try { await primeCupons(); } catch (_) {} }
+
   if (action === 'ig_webhook') return handleIgWebhook(req, res);
   if (action === 'ig_subscribe') return handleIgSubscribe(req, res);
   if (action === 'ig_poll_test') return handleIgPollTest(req, res);
@@ -2079,10 +2129,7 @@ module.exports = async (req, res) => {
   if (promoBlock) systemText += promoBlock;
   // Resolve {{CUP:slug}} com o valor VIVO da tabela `firms` (nenhum cupom fica literal no prompt).
   // Firma sem codigo vira "no code needed" em vez de exibir um cupom que nao existe.
-  systemText = systemText.replace(/\{\{CUP:([a-z0-9-]+)\}\}/g, (mm, slug) => {
-    const c = _cupomPorSlug[slug];
-    return (c && c.coupon_code) ? c.coupon_code : 'no code needed (discount via our link)';
-  });
+  systemText = resolveCupons(systemText, 'no code needed (discount via our link)');
   const lastUserMsg = (messages.slice().reverse().find(function (m) { return m.role !== 'assistant'; }) || {}).content || '';
   const kbBlock = await getFirmKB(lastUserMsg);
   if (kbBlock) systemText += kbBlock;

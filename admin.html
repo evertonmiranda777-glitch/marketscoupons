@@ -7039,12 +7039,12 @@ window.pushSendTestEmail = pushSendTestEmail;
 // + motivo pra tocar agora. Urgência ÉTICA (sem deadline inventado, compliance CDC/Lei #0). Zero emoji.
 const PUSH_PRESETS = {
   apex_nofee: {
-    en: { title:'Apex with zero activation fee', body:'Get a funded Apex account without paying activation, code MARKET locks the discount. Tap to see the plans.', url:'/coupons', category:'promo', firm:'apex' },
-    pt: { title:'Apex sem taxa de ativação agora', body:'Conta Apex aprovada sem pagar a ativação, o cupom MARKET garante o desconto. Toque e veja os planos.', url:'/coupons', category:'promo', firm:'apex' }
+    en: { title:'Apex with zero activation fee', body:'Get a funded Apex account without paying activation, code {{CUP:apex}} locks the discount. Tap to see the plans.', url:'/coupons', category:'promo', firm:'apex' },
+    pt: { title:'Apex sem taxa de ativação agora', body:'Conta Apex aprovada sem pagar a ativação, o cupom {{CUP:apex}} garante o desconto. Toque e veja os planos.', url:'/coupons', category:'promo', firm:'apex' }
   },
   apex_lasthours: {
-    en: { title:'Apex: 90% off while it lasts', body:'The biggest discount we have on Apex is live right now. Code MARKET at checkout, before the price changes.', url:'/coupons', category:'promo', firm:'apex' },
-    pt: { title:'Apex: 90% off enquanto está no ar', body:'O maior desconto que temos na Apex está ativo agora. Cupom MARKET no checkout, antes que o preço mude.', url:'/coupons', category:'promo', firm:'apex' }
+    en: { title:'Apex: 90% off while it lasts', body:'The biggest discount we have on Apex is live right now. Code {{CUP:apex}} at checkout, before the price changes.', url:'/coupons', category:'promo', firm:'apex' },
+    pt: { title:'Apex: 90% off enquanto está no ar', body:'O maior desconto que temos na Apex está ativo agora. Cupom {{CUP:apex}} no checkout, antes que o preço mude.', url:'/coupons', category:'promo', firm:'apex' }
   },
   top3: {
     en: { title:'The 3 deals that save you most', body:'The 3 prop firms with the biggest live discount this week, most savings first. Tap to see them.', url:'/coupons', category:'promo', firm:'' },
@@ -7055,8 +7055,8 @@ const PUSH_PRESETS = {
     pt: { title:'Entrou prop firm nova no site', body:'Uma firma nova acabou de chegar, com um cupom exclusivo que não existe em outro lugar. Toque e pegue antes de todo mundo.', url:'/coupons', category:'promo', firm:'' }
   },
   fff_launch: {
-    en: { title:'80% OFF on a brand-new prop firm', body:'Funded Futures Family just landed with the biggest discount on the site. Code MARKET at checkout, grab it before the price moves.', url:'/funded-futures-family', category:'promo', firm:'funded-futures-family' },
-    pt: { title:'80% OFF numa prop firm novinha', body:'A Funded Futures Family chegou com o maior desconto do site. Cupom MARKET no checkout, pegue antes do preço mudar.', url:'/funded-futures-family', category:'promo', firm:'funded-futures-family' }
+    en: { title:'80% OFF on a brand-new prop firm', body:'Funded Futures Family just landed with the biggest discount on the site. Code {{CUP:funded-futures-family}} at checkout, grab it before the price moves.', url:'/funded-futures-family', category:'promo', firm:'funded-futures-family' },
+    pt: { title:'80% OFF numa prop firm novinha', body:'A Funded Futures Family chegou com o maior desconto do site. Cupom {{CUP:funded-futures-family}} no checkout, pegue antes do preço mudar.', url:'/funded-futures-family', category:'promo', firm:'funded-futures-family' }
   },
   analysis: {
     en: { title:'SPX & NDX: today\'s levels are live', body:'Key zones, gamma walls and what\'s in play before the open. A 2-minute read to start your day sharp.', url:'/analysis', category:'analysis', firm:'' },
@@ -7097,8 +7097,11 @@ function applyPushPreset(){
   const lang = document.getElementById('push-preset-lang').value || 'en';
   const p = (PUSH_PRESETS[key] && (PUSH_PRESETS[key][lang] || PUSH_PRESETS[key].en));
   if (!p) return;
-  document.getElementById('push-title').value = p.title;
-  document.getElementById('push-body').value = p.body;
+  // resolveCupons AQUI (nao no envio): o preset preenche campos que voce edita e
+  // dispara. Push chega no usuario sem revisao e NAO admite retificacao depois —
+  // e-mail errado a gente corrige com outro e-mail, push que saiu, saiu.
+  document.getElementById('push-title').value = resolveCupons(p.title);
+  document.getElementById('push-body').value = resolveCupons(p.body);
   document.getElementById('push-url').value = p.url;
   document.getElementById('push-category').value = p.category || '';
   document.getElementById('push-firm').value = p.firm || '';
