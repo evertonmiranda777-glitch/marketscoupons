@@ -709,6 +709,132 @@ Deno.serve(async (req: Request) => {
       // Existe porque "restringi os membros" no app do Telegram nao mostra numa
       // tela so o que ficou de fato liberado — e uma permissao esquecida (poll,
       // midia, mudar info) e justamente por onde entra o abuso.
+      // Direitos do PROPRIO bot no grupo. Somente leitura. Sem can_restrict_members
+      // ele nao consegue mexer em permissao nenhuma, e melhor descobrir isso antes.
+      // Tranca can_manage_topics SEM tocar em mais nada.
+      //
+      // Por que precisa de action: o app do Telegram so mostra esse toggle quando o
+      // grupo e forum. Com is_forum=false ele fica ligado e invisivel — armadilha
+      // adormecida pra quando os topicos forem ativados.
+      //
+      // CUIDADO: setChatPermissions substitui o CONJUNTO INTEIRO. Mandar um payload
+      // incompleto num grupo de 309 membros DESTRAVARIA tudo que o dono fechou. Por
+      // isso: le o estado atual, vira UM bit, e confere de volta campo a campo,
+      // restaurando o snapshot se qualquer outra coisa tiver mudado.
+      // use_independent_chat_permissions=true impede o Telegram de inferir
+      // permissoes umas das outras e reabrir algo por tabela.
+      // can_react_to_messages NAO faz parte de ChatPermissions — reacoes nao sao afetadas.
+      // Religa as reacoes. Existe porque o setChatPermissions do lock_topics zerou
+      // can_react_to_messages: esse campo NAO faz parte do ChatPermissions documentado,
+      // mas o Telegram o inclui no conjunto e apaga o que nao vem no payload.
+      case "fix_reactions": {
+        const _s5 = Deno.env.get("MC_TG_SECRET") || "";
+        if (_s5 && (req.headers.get("x-mc-secret") || "") !== _s5) {
+          return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
+        }
+        const dAntes = await (await fetch(tgApi("getChat"), {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: CHAT_ID }),
+        })).json();
+        const atual = { ...(dAntes?.result?.permissions ?? {}) };
+        const antes = atual.can_react_to_messages === true;
+        atual.can_react_to_messages = true;
+        const resp = await (await fetch(tgApi("setChatPermissions"), {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: CHAT_ID, permissions: atual, use_independent_chat_permissions: true }),
+        })).json();
+        const dDepois = await (await fetch(tgApi("getChat"), {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: CHAT_ID }),
+        })).json();
+        result = {
+          api_aceitou: resp?.ok === true,
+          reacoes_antes: antes,
+          reacoes_depois: dDepois?.result?.permissions?.can_react_to_messages === true,
+          perms: dDepois?.result?.permissions,
+        };
+        break;
+      }
+
+      case "lock_topics": {
+        const _s4 = Deno.env.get("MC_TG_SECRET") || "";
+        if (_s4 && (req.headers.get("x-mc-secret") || "") !== _s4) {
+          return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
+        }
+        // ATENCAO: esta lista tem que cobrir TUDO que o getChat devolve em
+        // permissions, nao so os 14 campos documentados de ChatPermissions.
+        // Em 28/07 eu comparei so os documentados e o setChatPermissions zerou
+        // can_react_to_messages sem o guard perceber — o grupo perdeu as reacoes.
+        // can_react_to_messages e can_edit_tag existem no getChat e SAO afetados.
+        const CAMPOS = [
+          "can_send_messages", "can_send_audios", "can_send_documents", "can_send_photos",
+          "can_send_videos", "can_send_video_notes", "can_send_voice_notes", "can_send_polls",
+          "can_send_other_messages", "can_add_web_page_previews", "can_change_info",
+          "can_invite_users", "can_pin_messages", "can_manage_topics",
+          "can_react_to_messages", "can_edit_tag", "can_send_media_messages",
+        ];
+        const lerPerms = async () => {
+          const d = await (await fetch(tgApi("getChat"), {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: CHAT_ID }),
+          })).json();
+          const p = d?.result?.permissions ?? {};
+          const out: Record<string, boolean> = {};
+          for (const k of CAMPOS) out[k] = p[k] === true;
+          return out;
+        };
+        const aplicar = async (perms: Record<string, boolean>) => {
+          const r = await fetch(tgApi("setChatPermissions"), {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: CHAT_ID,
+              permissions: perms,
+              use_independent_chat_permissions: true,
+            }),
+          });
+          return await r.json();
+        };
+
+        const antes = await lerPerms();
+        if (antes.can_manage_topics === false) {
+          result = { ja_estava_travado: true, antes };
+          break;
+        }
+        const alvo = { ...antes, can_manage_topics: false };
+        const resp = await aplicar(alvo);
+        if (resp?.ok !== true) { result = { ok: false, erro: resp, antes }; break; }
+
+        const depois = await lerPerms();
+        const inesperado = CAMPOS.filter((k) => k !== "can_manage_topics" && depois[k] !== antes[k]);
+        if (inesperado.length) {
+          await aplicar(antes);   // rollback imediato
+          result = { ok: false, motivo: "mudou campo que nao devia, revertido", inesperado, antes, depois };
+          break;
+        }
+        result = { ok: true, travado: depois.can_manage_topics === false, antes, depois, mudou: ["can_manage_topics"] };
+        break;
+      }
+
+      case "bot_rights": {
+        const _s3 = Deno.env.get("MC_TG_SECRET") || "";
+        if (_s3 && (req.headers.get("x-mc-secret") || "") !== _s3) {
+          return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
+        }
+        const me = await (await fetch(tgApi("getMe"))).json();
+        const botId = me?.result?.id;
+        const cm = await (await fetch(tgApi("getChatMember"), {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: CHAT_ID, user_id: botId }),
+        })).json();
+        result = {
+          bot: me?.result?.username,
+          status: cm?.result?.status,
+          can_restrict_members: cm?.result?.can_restrict_members ?? false,
+          raw: cm?.result ?? cm,
+        };
+        break;
+      }
+
       case "chat_info": {
         const _s2 = Deno.env.get("MC_TG_SECRET") || "";
         if (_s2 && (req.headers.get("x-mc-secret") || "") !== _s2) {
