@@ -3806,6 +3806,7 @@ function adminGoMobile(page,btn){
  */
 async function initAdmin(){
   await refreshFromSupabase();
+  await loadCupons();   // {{CUP:slug}} dos templates de e-mail, da tabela `firms`
 
   // Restore last active tab from localStorage (URL fica limpa, sem #)
   let savedPage = '';
@@ -7393,7 +7394,9 @@ function composeToLead(email,name){
  setTimeout(()=>{
  const safeName = (name||'').replace(/[\r\n]/g,'');
  document.getElementById('em-subject').value=`Olá ${safeName}, temos uma oferta especial para você!`;
- document.getElementById('em-body').value=`Olá {nome},\n\nVimos que você tem interesse em prop firms e gostaríamos de compartilhar uma oferta exclusiva!\n\n Use o cupom MARKET89 para 89% OFF na Bulenox.\n\nAcesse: https://marketscoupons.com\n\nAbraços,\nEquipe MarketsCoupons`;
+ // resolveCupons AQUI (nao no envio): este texto cai num textarea que voce edita
+ // e manda como esta. Se o token saisse literal, o cliente receberia "{{CUP:bulenox}}".
+ document.getElementById('em-body').value=resolveCupons(`Olá {nome},\n\nVimos que você tem interesse em prop firms e gostaríamos de compartilhar uma oferta exclusiva!\n\n Use o cupom {{CUP:bulenox}} para 89% OFF na Bulenox.\n\nAcesse: https://marketscoupons.com\n\nAbraços,\nEquipe MarketsCoupons`);
  toast('E-mail preparado para '+name);
  },200);
 }
@@ -8484,7 +8487,7 @@ const INST_TEMPLATES = {
   // EN-only (forceLang), site EN-default, evita mismatch subject/body.
   'ultimas-horas': (() => {
     const subj = 'Final hours: Apex 90% and Bulenox 89%, ends today';
-    const pre  = 'Use coupons MARKET and MARKET89 at checkout. After today, full price returns. No extensions.';
+    const pre  = 'Use coupons {{CUP:apex}} and {{CUP:bulenox}} at checkout. After today, full price returns. No extensions.';
     const cta  = 'View Deals';
     const langs = ['pt','en','es','fr','de','it','ar','id'];
     const fillAll = (v) => Object.fromEntries(langs.map(l => [l, v]));
@@ -8507,9 +8510,9 @@ const INST_TEMPLATES = {
     hero_h1: { pt:'Pare de pagar preço cheio<br>nas 3 melhores firmas', en:'Stop paying full price<br>at the 3 best firms', es:'Deja de pagar precio completo<br>en las 3 mejores firmas', fr:'Arrêtez de payer plein tarif<br>chez les 3 meilleures firmes', de:'Hör auf, Vollpreis zu zahlen<br>bei den 3 besten Firmen', it:'Smetti di pagare prezzo pieno<br>nelle 3 migliori firme', ar:'توقف عن دفع السعر الكامل<br>في أفضل 3 شركات' },
     hero_sub: { pt:'Comprando as 3 contas 100K agora você economiza <b style="color:#10B981">$760</b> com esses cupons.', en:'Buying the 3 100K accounts now you save <b style="color:#10B981">$760</b> with these coupons.', es:'Comprando las 3 cuentas 100K ahora ahorras <b style="color:#10B981">$760</b> con estos cupones.', fr:'En achetant les 3 comptes 100K maintenant vous économisez <b style="color:#10B981">$760</b>.', de:'Mit dem Kauf der 3 100K Konten sparst du jetzt <b style="color:#10B981">$760</b>.', it:'Comprando i 3 conti 100K ora risparmi <b style="color:#10B981">$760</b>.', ar:'بشراء حسابات 100K الثلاثة الآن توفر <b style="color:#10B981">$760</b>.' },
     firms: [
-      { id:'apex',    name:'Apex Trader Funding · 100K', accent:'#F0B429', off:'90', price_full:'$399', price_disc:'$39,90', savings:'$359,10', coupon:'MARKET' },
-      { id:'bulenox', name:'Bulenox · 100K',             accent:'#0891B2', off:'89', price_full:'$215', price_disc:'$23,65', savings:'$191,35', coupon:'MARKET89' },
-      { id:'tradeday', name:'TradeDay · 100K',           accent:'#F59E0B', off:'50', price_full:'$285', price_disc:'$142,00', savings:'$143,00', coupon:'MARKETS' },
+      { id:'apex',    name:'Apex Trader Funding · 100K', accent:'#F0B429', off:'90', price_full:'$399', price_disc:'$39,90', savings:'$359,10', coupon:'{{CUP:apex}}' },
+      { id:'bulenox', name:'Bulenox · 100K',             accent:'#0891B2', off:'89', price_full:'$215', price_disc:'$23,65', savings:'$191,35', coupon:'{{CUP:bulenox}}' },
+      { id:'tradeday', name:'TradeDay · 100K',           accent:'#F59E0B', off:'50', price_full:'$285', price_disc:'$142,00', savings:'$143,00', coupon:'{{CUP:tradeday}}' },
     ],
     savings_label: { pt:'Economia: ', en:'Save: ', es:'Ahorras: ', fr:'Économie : ', de:'Ersparnis: ', it:'Risparmio: ', ar:'وفر: ' },
     coupon_label:  { pt:'cupom', en:'coupon', es:'cupón', fr:'coupon', de:'Gutschein', it:'coupon', ar:'كوبون' },
@@ -8726,7 +8729,7 @@ function buildUrgentDealHtml(t, lang){
 <title>Final hours, Apex 90% &amp; Bulenox 89%, Markets Coupons</title>
 <style>:root{color-scheme:light only;}html,body{margin:0!important;padding:0!important;background-color:#f4f5f7!important;}@media (prefers-color-scheme:dark){html,body{background-color:#f4f5f7!important;color:#111!important;}}@media only screen and (max-width:520px){.price-row td{padding:11px 8px!important;font-size:13px!important;}}</style>
 </head><body style="margin:0;padding:0;background:#f4f5f7;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;color:#111;-webkit-font-smoothing:antialiased;">
-<div style="display:none;max-height:0;overflow:hidden;font-size:1px;color:#f4f5f7;opacity:0;">Apex 90% off and Bulenox 89% off. Coupons MARKET and MARKET89. Final hours.</div>
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;color:#f4f5f7;opacity:0;">Apex 90% off and Bulenox 89% off. Coupons {{CUP:apex}} and {{CUP:bulenox}}. Final hours.</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f5f7;padding:24px 0;"><tr><td align="center">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.08);">
   <tr><td style="padding:28px 32px 20px;text-align:center;">
@@ -8747,7 +8750,7 @@ function buildUrgentDealHtml(t, lang){
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:24px;">
       <tr><td style="background:#F97316;padding:16px 22px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
         <td style="vertical-align:middle;text-align:left;"><div style="font-size:17px;font-weight:800;color:#fff;letter-spacing:-.2px;">Apex Trader Funding</div><div style="margin-top:2px;font-size:11px;color:rgba(255,255,255,.88);font-weight:600;letter-spacing:.8px;text-transform:uppercase;">90% OFF · Lifetime</div></td>
-        <td align="right" style="vertical-align:middle;"><div style="display:inline-block;padding:7px 13px;background:#0d141c;border-radius:6px;font-family:'Courier New',monospace;font-size:14px;font-weight:800;color:#F97316;letter-spacing:1.5px;">MARKET</div></td>
+        <td align="right" style="vertical-align:middle;"><div style="display:inline-block;padding:7px 13px;background:#0d141c;border-radius:6px;font-family:'Courier New',monospace;font-size:14px;font-weight:800;color:#F97316;letter-spacing:1.5px;">{{CUP:apex}}</div></td>
       </tr></table></td></tr>
       <tr><td style="padding:14px 22px 4px;text-align:center;">
         <div style="display:inline-block;padding:8px 16px;background:#fff7ed;border:1px solid #F97316;border-radius:8px;">
@@ -8765,15 +8768,15 @@ function buildUrgentDealHtml(t, lang){
         </a></td></tr>
         <tr class="price-row" style="border-top:1px solid #f3f4f6;"><td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;text-align:left;">150K</td><td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$599</td><td style="padding:14px 8px;font-size:18px;font-weight:800;color:#F97316;text-align:left;">$59.90</td><td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;">Save $539</td></tr>
       </table>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td align="center"><a href="https://apextraderfunding.com/member/aff/go/evertonmiranda?keyword=email#block_660bfb7d9cd2c41901144ab4319f8644" style="display:inline-block;padding:13px 32px;background:#F97316;color:#fff;font-size:14px;font-weight:800;text-decoration:none;border-radius:8px;letter-spacing:.2px;">Get Apex with MARKET coupon &rarr;</a></td></tr></table>
-      <p style="margin:10px 0 0;font-size:11px;color:#9ca3af;line-height:1.5;text-align:center;">Use the coupon code <strong style="color:#374151;">MARKET</strong> at checkout to apply the 90% discount.</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td align="center"><a href="https://apextraderfunding.com/member/aff/go/evertonmiranda?keyword=email#block_660bfb7d9cd2c41901144ab4319f8644" style="display:inline-block;padding:13px 32px;background:#F97316;color:#fff;font-size:14px;font-weight:800;text-decoration:none;border-radius:8px;letter-spacing:.2px;">Get Apex with {{CUP:apex}} coupon &rarr;</a></td></tr></table>
+      <p style="margin:10px 0 0;font-size:11px;color:#9ca3af;line-height:1.5;text-align:center;">Use the coupon code <strong style="color:#374151;">{{CUP:apex}}</strong> at checkout to apply the 90% discount.</p>
       </td></tr>
     </table>
 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:24px;">
       <tr><td style="background:#3B82F6;padding:16px 22px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
         <td style="vertical-align:middle;text-align:left;"><div style="font-size:17px;font-weight:800;color:#fff;letter-spacing:-.2px;">Bulenox</div><div style="margin-top:2px;font-size:11px;color:rgba(255,255,255,.92);font-weight:600;letter-spacing:.8px;text-transform:uppercase;">89% OFF · Lifetime</div></td>
-        <td align="right" style="vertical-align:middle;"><div style="display:inline-block;padding:7px 13px;background:#0d141c;border-radius:6px;font-family:'Courier New',monospace;font-size:14px;font-weight:800;color:#60A5FA;letter-spacing:1.5px;">MARKET89</div></td>
+        <td align="right" style="vertical-align:middle;"><div style="display:inline-block;padding:7px 13px;background:#0d141c;border-radius:6px;font-family:'Courier New',monospace;font-size:14px;font-weight:800;color:#60A5FA;letter-spacing:1.5px;">{{CUP:bulenox}}</div></td>
       </tr></table></td></tr>
       <tr><td style="padding:8px 22px 18px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
         <tr class="price-row" style="border-bottom:1px solid #f3f4f6;"><td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;width:60px;text-align:left;">25K</td><td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$145</td><td style="padding:14px 8px;font-size:18px;font-weight:800;color:#3B82F6;text-align:left;">$15.95</td><td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;">Save $129</td></tr>
@@ -8784,8 +8787,8 @@ function buildUrgentDealHtml(t, lang){
         </a></td></tr>
         <tr class="price-row" style="border-top:1px solid #f3f4f6;"><td style="padding:14px 0 14px 14px;font-size:14px;font-weight:700;color:#111;text-align:left;">150K</td><td style="padding:14px 8px;font-size:13px;color:#9ca3af;text-decoration:line-through;text-align:left;">$325</td><td style="padding:14px 8px;font-size:18px;font-weight:800;color:#3B82F6;text-align:left;">$35.75</td><td align="right" style="padding:14px 14px 14px 0;font-size:11px;color:#10B981;font-weight:700;">Save $289</td></tr>
       </table>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td align="center"><a href="https://bulenox.com/member/aff/go/marketcoupons?keyword=email" style="display:inline-block;padding:13px 32px;background:#3B82F6;color:#fff;font-size:14px;font-weight:800;text-decoration:none;border-radius:8px;letter-spacing:.2px;">Get Bulenox with MARKET89 &rarr;</a></td></tr></table>
-      <p style="margin:10px 0 0;font-size:11px;color:#9ca3af;line-height:1.5;text-align:center;">Use the coupon code <strong style="color:#374151;">MARKET89</strong> at checkout to apply the 89% discount.</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td align="center"><a href="https://bulenox.com/member/aff/go/marketcoupons?keyword=email" style="display:inline-block;padding:13px 32px;background:#3B82F6;color:#fff;font-size:14px;font-weight:800;text-decoration:none;border-radius:8px;letter-spacing:.2px;">Get Bulenox with {{CUP:bulenox}} &rarr;</a></td></tr></table>
+      <p style="margin:10px 0 0;font-size:11px;color:#9ca3af;line-height:1.5;text-align:center;">Use the coupon code <strong style="color:#374151;">{{CUP:bulenox}}</strong> at checkout to apply the 89% discount.</p>
       </td></tr>
     </table>
 
@@ -8880,7 +8883,32 @@ function buildTop3CardsHtml(t, lang){
 </body></html>`;
 }
 
+/* ── {{CUP:slug}} nos templates de e-mail ───────────────────────────────────
+   Mesmo token de api/bot.js, dos guias e do lib/email-render.js. Cupom literal
+   em template de e-mail e o pior caso da familia: dispara pra lista inteira de
+   uma vez, e e-mail que ja saiu nao tem como regerar.
+   MC_CUP e carregado da tabela `firms` no boot do painel. Se a tabela nao
+   respondeu ainda, o token fica visivel no preview (erro obvio na tela) em vez
+   de virar um cupom errado silencioso. */
+let MC_CUP = null;
+async function loadCupons(){
+  try{
+    const { data } = await db.from('firms').select('slug,coupon_code').eq('ativo', true);
+    if (data && data.length){ MC_CUP = {}; data.forEach(x => { MC_CUP[x.slug] = x.coupon_code; }); }
+  }catch(e){ /* mantem null: token aparece cru, nao vira cupom errado */ }
+}
+function resolveCupons(html){
+  if (!MC_CUP) return String(html || '');
+  return String(html || '').replace(/\{\{CUP:([a-z0-9-]+)\}\}/g, (full, slug) => {
+    const c = MC_CUP[slug];
+    return c == null ? '' : c;   // firma sem codigo resolve pra vazio, nunca pro cupom de outra
+  });
+}
+
 function buildInstitutionalHtml(name, lang='pt'){
+  return resolveCupons(_buildInstitutionalHtmlRaw(name, lang));
+}
+function _buildInstitutionalHtmlRaw(name, lang='pt'){
   const t = INST_TEMPLATES[name];
   if(!t) return '';
   if(t.kind === 'giveaway') return buildGiveawayHtml(t, lang);
@@ -8953,7 +8981,7 @@ function buildInstitutionalHtml(name, lang='pt'){
       m3v:'11+', m3l:{pt:'Prop Firms',en:'Prop Firms',es:'Prop Firms',fr:'Prop Firms',de:'Prop Firms',it:'Prop Firms',ar:'Prop Firms'},
       hlLabel:{pt:'Melhor oferta do momento',en:'Best deal right now',es:'Mejor oferta del momento',fr:'Meilleure offre',de:'Bestes Angebot',it:'Migliore offerta',ar:'أفضل عرض الآن'},
       hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
-      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong>, 89% OFF · copie no site e use no checkout',en:'Coupon <strong>MARKET89</strong>, 89% OFF · copy on the site, paste at checkout',es:'Cupón <strong>MARKET89</strong>, 89% OFF · cópialo y úsalo en el checkout',fr:'Coupon <strong>MARKET89</strong>, 89% OFF · à copier et coller au checkout',de:'Gutschein <strong>MARKET89</strong>, 89% OFF · kopieren und beim Checkout einfügen',it:'Coupon <strong>MARKET89</strong>, 89% OFF · copia e incolla al checkout',ar:'كوبون <strong>MARKET89</strong>, 89% OFF · انسخه واستخدمه عند الدفع'}
+      hlSubTxt:{pt:'Cupom <strong>{{CUP:bulenox}}</strong>, 89% OFF · copie no site e use no checkout',en:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF · copy on the site, paste at checkout',es:'Cupón <strong>{{CUP:bulenox}}</strong>, 89% OFF · cópialo y úsalo en el checkout',fr:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF · à copier et coller au checkout',de:'Gutschein <strong>{{CUP:bulenox}}</strong>, 89% OFF · kopieren und beim Checkout einfügen',it:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF · copia e incolla al checkout',ar:'كوبون <strong>{{CUP:bulenox}}</strong>, 89% OFF · انسخه واستخدمه عند الدفع'}
     },
     'welcome': {
       color:'#ff8c00', hlBg:'#fff4e6', hlBorder:'#ffcc80', hlSub:'#aa7030',
@@ -8965,7 +8993,7 @@ function buildInstitutionalHtml(name, lang='pt'){
       m3v:'6+', m3l:{pt:'Ferramentas',en:'Tools',es:'Herramientas',fr:'Outils',de:'Tools',it:'Strumenti',ar:'أدوات'},
       hlLabel:{pt:'Comece por aqui',en:'Start here',es:'Empieza aquí',fr:'Commencez ici',de:'Starte hier',it:'Inizia qui',ar:'ابدأ من هنا'},
       hlTitle:{pt:'Bulenox 100K por apenas <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for just <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por solo <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour seulement <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für nur <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a soli <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
-      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong>, 89% OFF · copie no site e use no checkout',en:'Coupon <strong>MARKET89</strong>, 89% OFF · copy on the site, paste at checkout',es:'Cupón <strong>MARKET89</strong>, 89% OFF · cópialo y úsalo en el checkout',fr:'Coupon <strong>MARKET89</strong>, 89% OFF · à copier et coller au checkout',de:'Gutschein <strong>MARKET89</strong>, 89% OFF · kopieren und beim Checkout einfügen',it:'Coupon <strong>MARKET89</strong>, 89% OFF · copia e incolla al checkout',ar:'كوبون <strong>MARKET89</strong>, 89% OFF · انسخه واستخدمه عند الدفع'}
+      hlSubTxt:{pt:'Cupom <strong>{{CUP:bulenox}}</strong>, 89% OFF · copie no site e use no checkout',en:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF · copy on the site, paste at checkout',es:'Cupón <strong>{{CUP:bulenox}}</strong>, 89% OFF · cópialo y úsalo en el checkout',fr:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF · à copier et coller au checkout',de:'Gutschein <strong>{{CUP:bulenox}}</strong>, 89% OFF · kopieren und beim Checkout einfügen',it:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF · copia e incolla al checkout',ar:'كوبون <strong>{{CUP:bulenox}}</strong>, 89% OFF · انسخه واستخدمه عند الدفع'}
     },
     'loyalty': {
       color:'#a855f7', hlBg:'#f5f0ff', hlBorder:'#d4bfff', hlSub:'#6b4fa8',
@@ -9013,7 +9041,7 @@ function buildInstitutionalHtml(name, lang='pt'){
       m3v:'72h', m3l:{pt:'pra acabar',en:'remaining',es:'restantes',fr:'restantes',de:'übrig',it:'rimaste',ar:'متبقية'},
       hlLabel:{pt:'Última chamada',en:'Final call',es:'Última llamada',fr:'Dernier appel',de:'Letzter Aufruf',it:'Ultima chiamata',ar:'النداء الأخير'},
       hlTitle:{pt:'Bulenox 100K por <span style="color:${C};">$23,65</span>',en:'Bulenox 100K for <span style="color:${C};">$23.65</span>',es:'Bulenox 100K por <span style="color:${C};">$23,65</span>',fr:'Bulenox 100K pour <span style="color:${C};">$23,65</span>',de:'Bulenox 100K für <span style="color:${C};">$23,65</span>',it:'Bulenox 100K a <span style="color:${C};">$23,65</span>',ar:'Bulenox 100K بسعر <span style="color:${C};">$23.65</span>'},
-      hlSubTxt:{pt:'Cupom <strong>MARKET89</strong>, 89% OFF aplicado no checkout. Depois volta pro preço cheio.',en:'Coupon <strong>MARKET89</strong>, 89% OFF at checkout. Then it\'s back to full price.',es:'Cupón <strong>MARKET89</strong>, 89% OFF en el checkout.',fr:'Coupon <strong>MARKET89</strong>, 89% OFF au checkout.',de:'Gutschein <strong>MARKET89</strong>, 89% OFF an der Kasse.',it:'Coupon <strong>MARKET89</strong>, 89% OFF al checkout.',ar:'كوبون <strong>MARKET89</strong>, 89% OFF عند الدفع.'}
+      hlSubTxt:{pt:'Cupom <strong>{{CUP:bulenox}}</strong>, 89% OFF aplicado no checkout. Depois volta pro preço cheio.',en:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF at checkout. Then it\'s back to full price.',es:'Cupón <strong>{{CUP:bulenox}}</strong>, 89% OFF en el checkout.',fr:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF au checkout.',de:'Gutschein <strong>{{CUP:bulenox}}</strong>, 89% OFF an der Kasse.',it:'Coupon <strong>{{CUP:bulenox}}</strong>, 89% OFF al checkout.',ar:'كوبون <strong>{{CUP:bulenox}}</strong>, 89% OFF عند الدفع.'}
     }
   };
 
@@ -9105,7 +9133,7 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
                 <p style="font-family:${F};font-size:8px;color:#888;margin:0 0 2px;">Apex Trader</p>
                 <p style="font-family:${F};font-size:8px;color:#555;text-decoration:line-through;margin:0;">$249</p>
                 <p style="font-family:${F};font-size:14px;font-weight:800;color:#ff8c00;margin:0 0 4px;">$24.90</p>
-                <span style="font-family:${F};font-size:7px;background:#2a2a2a;color:#666;padding:2px 4px;border-radius:2px;">MARKET</span>
+                <span style="font-family:${F};font-size:7px;background:#2a2a2a;color:#666;padding:2px 4px;border-radius:2px;">{{CUP:apex}}</span>
               </td></tr>
             </table></td>
             <td width="72" style="padding:0 2px;"><table width="72" cellpadding="0" cellspacing="0" border="0">
@@ -9115,7 +9143,7 @@ table{border-spacing:0!important;border-collapse:collapse!important;}
                 <p style="font-family:${F};font-size:8px;color:#888;margin:0 0 2px;">Bulenox</p>
                 <p style="font-family:${F};font-size:8px;color:#555;text-decoration:line-through;margin:0;">$215</p>
                 <p style="font-family:${F};font-size:14px;font-weight:800;color:#ff8c00;margin:0 0 4px;">$23.65</p>
-                <span style="font-family:${F};font-size:7px;background:#2a2a2a;color:#666;padding:2px 4px;border-radius:2px;">MARKET89</span>
+                <span style="font-family:${F};font-size:7px;background:#2a2a2a;color:#666;padding:2px 4px;border-radius:2px;">{{CUP:bulenox}}</span>
               </td></tr>
             </table></td>
             <td width="72" style="padding-left:5px;"><table width="72" cellpadding="0" cellspacing="0" border="0">

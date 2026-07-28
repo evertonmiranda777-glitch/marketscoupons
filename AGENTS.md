@@ -120,7 +120,23 @@ Ele só sabe **desativar** e **registrar**. Escrever valor novo é decisão huma
 
 Tudo fica em `logs/autofix.log`.
 
-## 8. Escopo
+## 8. Dívida conhecida — cupom literal que ficou de propósito
+
+Estes pontos ainda têm cupom escrito à mão. **Não são bug**: nenhum deles chega
+no usuário final. Ficaram fora do escopo de propósito, para o diff da migração
+não virar um refactor de arquivo inteiro.
+
+| Onde | O que é | Por que pode ficar |
+|---|---|---|
+| `admin.html:3664-3667` | dados de exemplo do dashboard de tracking quando não há evento | só popula gráfico vazio no seu painel |
+| `admin.html:6842` | preview do corpo de e-mail (`{cupom}` de mentira) | é o preview, não o envio |
+| `admin.html:7041-7058` | `PUSH_PRESETS.apex_nofee` (en/pt/es) | ⚠️ **não é e-mail, mas é disparado pra base.** Mesmo raio de alcance de um e-mail. Migrar quando o dono autorizar |
+
+Tudo que **é enviado** já lê da tabela via `{{CUP:slug}}`: `lib/email-render.js`
+(cron, base inteira) e `admin.html` `buildInstitutionalHtml` (envio manual).
+Os dois são espelho um do outro — **mexeu num, mexe no outro**.
+
+## 9. Escopo
 
 Não altere lógica de autenticação, migrations já aplicadas, nem schema de tabela
 que não seja a que você está criando. Se achar que precisa: **pare e pergunte.**
