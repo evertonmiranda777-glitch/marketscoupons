@@ -2958,6 +2958,11 @@ function renderQuiz() {
 
 /* ── Promo countdown timer (home cards + checkout) ── */
 function promoTimerPill(f) {
+  // Oferta VITALICIA nao tem prazo, por definicao. Relogio em cima de lifetime e
+  // escassez fabricada (Lei #0 / CDC art. 37) e se contradiz na propria tela:
+  // "90% OFF vitalicio" com um contador correndo do lado. Aconteceu em 28/07 com
+  // Apex e Bulenox, no site E no Telegram.
+  if (f.discount_type === 'lifetime') return '';
   const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
   if (!end || end <= Date.now()) return '';
   if (!f.show_promo_on_checkout) return '';

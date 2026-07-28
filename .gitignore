@@ -44,3 +44,4 @@ _b.json
 .cron.tmp
 .firms-check-token.tmp
 __pycache__/
+.mc-tg-secret.tmp

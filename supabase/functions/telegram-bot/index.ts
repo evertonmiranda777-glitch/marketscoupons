@@ -524,10 +524,17 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
   const discountEn =
     firm.discount_type === "lifetime" ? `${firm.discount}% OFF (lifetime deal!)` : `${firm.discount}% OFF`;
 
-  // 48h countdown, ends at now + 48h
-  const endsAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
-  const endsLabelPt = endsAt.toLocaleString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) + " UTC";
-  const endsLabelEn = endsAt.toUTCString().replace(":00 GMT", " UTC");
+  // O prazo vem do BANCO (promo_ends_at). Antes era Date.now()+48h chumbado: um
+  // deadline que o codigo inventava, renovado a cada disparo. Sem prazo real no
+  // banco, ou com firma lifetime, a mensagem sai SEM linha de contagem.
+  const semPrazo = firm.discount_type === "lifetime" || !firm.promo_ends_at;
+  const endsAt = semPrazo ? null : new Date(firm.promo_ends_at as string);
+  const endsLabelPt = endsAt ? endsAt.toLocaleString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) + " UTC" : "";
+  const endsLabelEn = endsAt ? endsAt.toUTCString().replace(":00 GMT", " UTC") : "";
+  const linhaPrazoPt = endsAt ? `⏰ <b>Termina em</b> ${endsLabelPt}
+` : "";
+  const linhaPrazoEn = endsAt ? `⏰ <b>Ends</b> ${endsLabelEn}
+` : "";
 
   // Dedicated firm page, clean URL, UTMs inferred from t.me referrer on the site
   const checkoutUrl = `https://${SITE_URL}/${firm.id}`;
@@ -539,21 +546,21 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     couponPt + `\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    `⏰ <b>Termina em 48h</b>, ${endsLabelPt}\n` +
+    linhaPrazoPt +
     `\n━━━━━━━━━━\n\n` +
     `🇺🇸 <b>EN</b>\n` +
     `🔥 ${discountEn}\n` +
     couponEn + `\n` +
     (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
     (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    `⏰ <b>Ends in 48h</b>, ${endsLabelEn}\n` +
+    linhaPrazoEn +
     (urgency ? `\n${urgency}\n` : "") +
     `\n👉 <a href="${checkoutUrl}"><b>Garantir oferta / Get Deal</b></a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "flash_promo");
 
-  return { sent: msgId !== null, firm: firm.name, ends_at: endsAt.toISOString() };
+  return { sent: msgId !== null, firm: firm.name, ends_at: endsAt ? endsAt.toISOString() : null };
 }
 
 // ── action=promo_reminder ──────────────────────────────────────────────────
@@ -575,6 +582,13 @@ async function handlePromoReminder(db: ReturnType<typeof createClient>) {
   const results: Array<{ firm: string; threshold: number; sent: boolean; reason?: string }> = [];
 
   for (const firm of firms) {
+    // Promo VITALICIA nao tem prazo — por definicao. Mandar "Termina em 48h" numa
+    // oferta lifetime e deadline INVENTADO (Lei #0 / CDC art. 37) e ainda se
+    // contradiz na mesma mensagem: "89% OFF (vitalicio!)" + "Termina em 48h".
+    // Foi exatamente o que saiu no canal em 28/07 com Apex e Bulenox.
+    // O api/bot.js ja tinha essa guarda; aqui faltava.
+    if (firm.discount_type === "lifetime") continue;
+
     const endsAt = new Date(firm.promo_ends_at as string).getTime();
     const hoursLeft = (endsAt - now) / 3600000;
     if (hoursLeft < 0) continue;
