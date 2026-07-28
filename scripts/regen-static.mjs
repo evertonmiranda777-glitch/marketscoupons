@@ -24,9 +24,33 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { affiliateMap } from './lib/firms-source.mjs';
 
+// As paginas nao carregam so dado de afiliado: elas estampam desconto, preco e
+// disc_note, que moram no `cms_firms`. Vigiar so a tabela `firms` deixa passar
+// exatamente o caso de 28/07: corrigi The5ers de 5% pra 70% no cms_firms, a
+// `firms` nao mudou, o regen disse "nada pra regerar" e as ~3.000 paginas
+// continuaram anunciando 5%. Agora o hash cobre as DUAS fontes.
+async function fetchConteudo() {
+  const SR = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
+  const tok = process.env.FIRMS_CHECK_TOKEN;
+  if (!SR) {
+    // No CI so existe o token da Edge Function, que nao expoe cms_firms.
+    // Sem poder ler o conteudo, o certo e regerar sempre em vez de assumir
+    // que nada mudou (o lado seguro do erro).
+    return tok ? null : null;
+  }
+  const cols = 'id,discount,disc_note,prices,detail_plans';
+  const r = await fetch(
+    `https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/cms_firms?active=eq.true&select=${cols}&order=id`,
+    { headers: { apikey: SR, Authorization: `Bearer ${SR}` } },
+  );
+  if (!r.ok) return null;
+  return await r.json();
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const SNAPSHOT = path.join(ROOT, 'firms.json');
+const ESTADO = path.join(ROOT, 'data', 'regen-state.json');
 const LANGS_COMPARE = ['pt', 'en', 'es', 'fr', 'de', 'it', 'ar', 'id'];
 
 // Espelho da tabela `firms` em disco. Serve pra 2 coisas:
@@ -64,18 +88,32 @@ async function main() {
   }
 
   const snap = buildSnapshot(map);
-  const novo = hashOf(snap);
-  let antigo = null;
-  if (fs.existsSync(SNAPSHOT)) {
-    try { antigo = hashOf(JSON.parse(fs.readFileSync(SNAPSHOT, 'utf8'))); } catch { /* snapshot corrompido = regera */ }
-  }
-
   fs.writeFileSync(SNAPSHOT, JSON.stringify(snap, null, 2) + '\n', 'utf8');
-  console.log(`firms.json: ${snap.length} firmas | hash ${antigo || 'ausente'} -> ${novo}`);
+
+  // Estado = afiliado (tabela `firms`) + conteudo (cms_firms). Qualquer um dos
+  // dois mudando obriga a regerar, porque os dois aparecem na pagina.
+  const conteudo = await fetchConteudo();
+  const novo = {
+    afiliado: hashOf(snap),
+    conteudo: conteudo ? hashOf(conteudo) : null,
+  };
+  let antigo = {};
+  if (fs.existsSync(ESTADO)) {
+    try { antigo = JSON.parse(fs.readFileSync(ESTADO, 'utf8')); } catch { /* corrompido = regera */ }
+  }
+  fs.mkdirSync(path.dirname(ESTADO), { recursive: true });
+  fs.writeFileSync(ESTADO, JSON.stringify(novo, null, 2) + '\n', 'utf8');
+
+  console.log(`firms.json: ${snap.length} firmas`);
+  console.log(`  afiliado: ${antigo.afiliado || 'ausente'} -> ${novo.afiliado}`);
+  console.log(`  conteudo: ${antigo.conteudo || 'ausente'} -> ${novo.conteudo || '(sem acesso ao cms_firms)'}`);
 
   if (process.argv.includes('--snapshot')) return;
 
-  const mudou = antigo !== novo;
+  // Sem conseguir ler o conteudo, regera: assumir "nada mudou" e o erro caro.
+  const mudou = novo.conteudo == null
+    || antigo.afiliado !== novo.afiliado
+    || antigo.conteudo !== novo.conteudo;
   if (!mudou && !process.argv.includes('--force')) {
     console.log('\nTabela `firms` inalterada. Nada pra regerar. (use --force pra regerar mesmo assim)');
     return;
