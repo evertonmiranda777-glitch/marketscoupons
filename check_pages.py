@@ -178,6 +178,101 @@ def checar_arquivo(caminho, por_slug, slugs):
     return problemas
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ESPELHOS: o mesmo dado copiado em dois arquivos. Sempre que um e' atualizado e
+# o outro nao, o site passa a contar duas historias.
+#
+# Ja aconteceu tres vezes:
+#   CR_NOFEE      -> selo No Activation Fee so no criativo-render: a MESMA firma
+#                    saia COM selo no Telegram e SEM selo na aba Criativos
+#   FIRM_WORDMARK -> apex sem '/' no admin (viola a lei de URL absoluta): o logo
+#                    some quando a pagina nao esta na raiz
+#   SHORT_NAMES   -> sem tradeday no admin, e o template top3 usa TradeDay
+#
+# (arquivo_a, arquivo_b, simbolo, modo)
+#   "igual"    = o conteudo tem que bater caractere a caractere (ignorando espaco/comentario)
+#   "contem"   = b tem que ter TODAS as chaves de a (b pode ter extras)
+ESPELHOS = [
+    ("admin.html", "criativo-render.html", "CR_NOFEE", "igual"),
+    ("admin.html", "criativo-render.html", "CR_NOFEE_PLAN", "igual"),
+    ("admin.html", "criativo-render.html", "FIRM_WORDMARK", "igual"),
+    ("lib/email-render.js", "admin.html", "SHORT_NAMES", "contem"),
+]
+# Diferencas conhecidas e INTENCIONAIS — nao sao bug, nao alarmar:
+#   CR_LABELS  admin tem chaves de um template antigo que o criativo nao usa
+#   GA4_FUNNEL coupons.html e subconjunto de proposito (a LP nao dispara purchase,
+#              e os eventos lp_* ficam fora do GA4 por design)
+
+
+def _literal(texto, nome):
+    """Extrai o literal de `const NOME = {...}` balanceando delimitadores."""
+    m = re.search(r"(?:const|let|var)\s+" + re.escape(nome) + r"\s*=\s*", texto)
+    if not m:
+        return None
+    i = m.end()
+    while i < len(texto) and texto[i] not in "{[(":
+        i += 1
+    if i >= len(texto):
+        return None
+    ab = texto[i]
+    fe = {"{": "}", "[": "]", "(": ")"}[ab]
+    d, j = 0, i
+    while j < len(texto):
+        if texto[j] == ab:
+            d += 1
+        elif texto[j] == fe:
+            d -= 1
+            if d == 0:
+                return texto[i:j + 1]
+        j += 1
+    return None
+
+
+def _sem_ruido(t):
+    t = re.sub(r"/\*.*?\*/", "", t, flags=re.S)
+    t = re.sub(r"//[^\n]*", "", t)
+    return re.sub(r"\s+", "", t)
+
+
+def checar_espelhos():
+    problemas = []
+    for a, b, nome, modo in ESPELHOS:
+        if not (os.path.isfile(a) and os.path.isfile(b)):
+            continue
+        ta = _literal(open(a, encoding="utf-8", errors="replace").read(), nome)
+        tb = _literal(open(b, encoding="utf-8", errors="replace").read(), nome)
+        if ta is None or tb is None:
+            falta = a if ta is None else b
+            problemas.append({
+                "tipo": "espelho",
+                "achado": nome,
+                "detalhe": f"'{nome}' nao encontrado em {falta} (o espelho quebrou ou foi renomeado)",
+            })
+            continue
+        if modo == "igual":
+            if _sem_ruido(ta) != _sem_ruido(tb):
+                itens_a = set(re.findall(r"['\"]([^'\"]{2,60})['\"]", ta))
+                itens_b = set(re.findall(r"['\"]([^'\"]{2,60})['\"]", tb))
+                problemas.append({
+                    "tipo": "espelho",
+                    "achado": nome,
+                    "detalhe": (f"'{nome}' DIVERGE entre {a} e {b}"
+                                + (f" | so em {a}: {sorted(itens_a - itens_b)[:5]}" if itens_a - itens_b else "")
+                                + (f" | so em {b}: {sorted(itens_b - itens_a)[:5]}" if itens_b - itens_a else "")),
+                })
+        else:  # contem
+            chaves_a = set(re.findall(r"([A-Za-z0-9_-]+)\s*:", ta))
+            chaves_b = set(re.findall(r"([A-Za-z0-9_-]+)\s*:", tb))
+            faltando = chaves_a - chaves_b
+            if faltando:
+                problemas.append({
+                    "tipo": "espelho",
+                    "achado": nome,
+                    "detalhe": f"'{nome}' em {b} nao tem: {sorted(faltando)} (existe em {a})",
+                })
+    return problemas
+
+
 def checar_lp_x_telegram():
     """
     O botao do criativo do Telegram manda pra /coupons quando a firma tem card la,
@@ -257,6 +352,10 @@ def main():
     por_tipo = defaultdict(int)
 
     # trava de sincronia LP <-> telegram-creative (nao e por arquivo)
+    for prob in checar_espelhos():
+        afetados.setdefault("<espelhos duplicados>", []).append(prob)
+        por_tipo[prob["tipo"]] += 1
+
     for prob in checar_lp_x_telegram():
         afetados.setdefault("supabase/functions/telegram-creative/index.ts", []).append(prob)
         por_tipo[prob["tipo"]] += 1

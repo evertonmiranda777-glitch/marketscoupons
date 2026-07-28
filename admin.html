@@ -8817,7 +8817,7 @@ function buildTop3CardsHtml(t, lang){
   const C = t.color || '#F0B429';
   const SAV = gt(t.savings_label);
   const CPN = gt(t.coupon_label);
-  const SHORT_NAMES = { apex:'Apex · 100K', bulenox:'Bulenox · 100K' };
+  const SHORT_NAMES = { apex:'Apex · 100K', bulenox:'Bulenox · 100K', tradeday:'TradeDay · 100K' };
 
   const cardsHtml = (t.firms||[]).map(f => {
     const shortName = SHORT_NAMES[f.id] || f.name;
@@ -14553,25 +14553,25 @@ function renderHeroPremium(firm, content, L) {
 
   // Firm logo, wordmark light (fallback para icon_url)
   const FIRM_WORDMARK = {
-    apex: 'img/Firms Logos/apex-logo-wide-light.png',
-    bulenox: 'img/Firms Logos/Bulenox-Logo-1-01-800x207.png',
-    tradeday: 'img/Firms Logos/TradeDay.png',
-    ftmo: 'img/Firms Logos/FTMO logo - light.png',
-    cti: 'img/Firms Logos/City-Traders-Imperium-Logo-for-Dark-Backgrounds-1-2048x388.png',
-    fn: 'img/Firms Logos/FundedNext Monochromatic Logo White 2x.png',
-    brightfunded: 'img/Firms Logos/brightfunded logo.svg',
-    e8: 'img/Firms Logos/e8markets logo.svg',
-    fundingpips: 'img/Firms Logos/fundingpips-logo.svg',
-    e2t: 'img/Firms Logos/earn2trade white.svg',
-    the5ers: 'img/Firms Logos/logo-white-est.png',
-    goat: 'img/Firms Logos/Goat Funded Futures.png',
-    blueguardian: 'img/Firms Logos/Blue Guardian.svg',
-    toponefutures: 'img/Firms Logos/Top One Futures.svg',
-    aquafutures: 'img/Firms Logos/Aqua Future.svg',
-    blueberryfutures: 'img/Firms Logos/Blueberry Futures.svg',
-    alphafutures: 'img/Firms Logos/Alpha-Future.svg',
-    futureselite: 'img/Firms Logos/Futures Elite.svg',
-    'funded-futures-family': 'img/Firms Logos/funded futures family.svg'
+    apex: '/img/Firms Logos/apex-logo-wide-light.png',
+    bulenox: '/img/Firms Logos/Bulenox-Logo-1-01-800x207.png',
+    tradeday: '/img/Firms Logos/TradeDay.png',
+    ftmo: '/img/Firms Logos/FTMO logo - light.png',
+    cti: '/img/Firms Logos/City-Traders-Imperium-Logo-for-Dark-Backgrounds-1-2048x388.png',
+    fn: '/img/Firms Logos/FundedNext Monochromatic Logo White 2x.png',
+    brightfunded: '/img/Firms Logos/brightfunded logo.svg',
+    e8: '/img/Firms Logos/e8markets logo.svg',
+    fundingpips: '/img/Firms Logos/fundingpips-logo.svg',
+    e2t: '/img/Firms Logos/earn2trade white.svg',
+    the5ers: '/img/Firms Logos/logo-white-est.png',
+    goat: '/img/Firms Logos/Goat Funded Futures.png',
+    blueguardian: '/img/Firms Logos/Blue Guardian.svg',
+    toponefutures: '/img/Firms Logos/Top One Futures.svg',
+    aquafutures: '/img/Firms Logos/Aqua Future.svg',
+    blueberryfutures: '/img/Firms Logos/Blueberry Futures.svg',
+    alphafutures: '/img/Firms Logos/Alpha-Future.svg',
+    futureselite: '/img/Firms Logos/Futures Elite.svg',
+    'funded-futures-family': '/img/Firms Logos/funded futures family.svg'
   };
   const logoSrc = FIRM_WORDMARK[firm.id] || firm.icon_url || '';
   h += `<div class="cr-hp-logo"><img src="${logoSrc}" alt="${escHtml(firm.name)}" onerror="this.onerror=null;this.src='${firm.icon_url||''}';this.style.maxWidth='220px';"></div>`;
