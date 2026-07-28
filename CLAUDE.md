@@ -8,6 +8,20 @@
 
 ---
 
+## ⚡ LEIS 28/jul, parte 2 (segurança do CI + canal de disparo + prazo de pendência)
+
+**🔐 SERVICE ROLE NÃO ENTRA EM CI. NUNCA.** Ela ignora RLS = lê e escreve o banco **inteiro**, e só se revoga rotacionando o projeto. O verificador fala com a Edge Function **`firms-check`** (auth = header `X-Firms-Token`, secret `FIRMS_CHECK_TOKEN`): **GET** traz todas as firms **inclusive `ativo=false`**; **POST `{slug,motivo}`** só desativa (`ativo=false` + `needs_review=true`). **Allowlist explícita: qualquer outro campo devolve 400, não é ignorado calado** (ignorar esconderia sequestro de afiliado). O UPDATE é literal, dois booleanos — nenhum valor vem do corpo. **A função não sabe reativar, de propósito.** Pior caso de vazar o token: alguém desativa uma firma. ⚠️ **PENDENTE: cadastrar `FIRMS_CHECK_TOKEN` no GitHub (Settings → Secrets → Actions).**
+
+**🚨 O CRITÉRIO NÃO É "É E-MAIL", É "CHEGA NO USUÁRIO SEM REVISÃO HUMANA" (LEI, errei classificando):** gravidade — **post público (X/Telegram/IG) > push > e-mail > página > preview**. Post e push **não têm retificação**; e-mail admite outro e-mail; página regera. Tudo nessa lista lê o cupom da tabela via `{{CUP:slug}}`: `lib/email-render.js` · `admin.html` (`buildInstitutionalHtml` **e** `applyPushPreset`) · `api/welcome-email.js` · `api/bot.js` · `telegram-creative` · `build-guides.js`. Armadilhas: **`callGemini` resolve o prompt ANTES** do modelo (token cru sairia literal no post); **`primeCupons()` no dispatcher** (`_cupomPorSlug` só era preenchido no `getLivePromoBlock`, que X/IG não chamam); **"MARKET CONTEXT" não é cupom**. `telegram-creative`: o mapa `COUPONS` **não é mais fallback** — sem dado vivo o post sai **sem cupom**, nunca com cupom velho.
+
+**⏰ `needs_review` TEM PRAZO:** coluna `firms.needs_review_since`, carimbada **no TRIGGER** (no app, um caminho de escrita esquecido faria a pendência nascer sem idade). `check_links.py` imprime **PENDÊNCIAS ANTIGAS** (30+ dias) e **CANDIDATAS A REATIVAÇÃO** (inativa que voltou a passar, com o UPDATE pronto). **Não reativa sozinho** — o link pode ter voltado com atribuição diferente. Inativa que continua falhando = **silêncio**. Nenhuma das duas seções mexe no exit code.
+
+**🔁 O REGEN VIGIA DUAS FONTES, NÃO UMA (buraco que quase repetiu a cagada da Aqua):** `regen-static.mjs` só olhava a tabela `firms`. Corrigi o `discount` do The5ers no **`cms_firms`**, a `firms` não mudou, o script disse *"nada pra regerar"* e as ~3.000 páginas continuariam com o valor velho. Agora `data/regen-state.json` guarda **2 hashes**: afiliado (`firms`) + conteúdo (`cms_firms` discount/disc_note/prices/detail_plans). Sem conseguir ler o conteúdo, **regera**.
+
+**🏷️ THE5ERS = SELO ÂMBAR, NÃO VERDE (28/jul):** o **Bootcamp 3-Step** cobra `Remaining Fee Upon Success` na aprovação (20K $50 / 100K $205 / 250K $350) = taxa de ativação daquele programa. Hyper Growth, High Stakes, Day Trade e Swing/Summer dizem "None". **Manchete = 70%** (Summer 100K $149 contra $491 regular), **não os 5% do cupom MARKET** , são coisas diferentes: 5% é o que o *cupom* rende, 70% é a promo *do site*. ⚠️ **Eu já confundi as duas e desfiz meu próprio acerto 1h22 depois.** Detalhe: [[project_sessao_2026_07_28]].
+
+---
+
 ## ⚡ LEIS 28/jul (dado de afiliado = tabela `firms` + verificador diário)
 
 **📄 REGRAS DE AGENTE VIVEM EM [AGENTS.md](AGENTS.md) — ler junto com este arquivo.**
