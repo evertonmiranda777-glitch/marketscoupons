@@ -25,6 +25,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { mergeAffiliate } from './lib/firms-source.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -51,7 +52,7 @@ async function loadFirms() {
       headers: { apikey: SR, Authorization: `Bearer ${SR}` },
     });
     const data = await r.json();
-    if (Array.isArray(data) && data.length) return data;
+    if (Array.isArray(data) && data.length) return mergeAffiliate(data);
   }
   // Fallback: Management API (sbp_ token) via raw SQL
   if (SBP) {
@@ -61,7 +62,7 @@ async function loadFirms() {
       body: JSON.stringify({ query: 'SELECT * FROM cms_firms WHERE active=true ORDER BY sort_order' }),
     });
     const data = await r.json();
-    if (Array.isArray(data)) return data;
+    if (Array.isArray(data)) return mergeAffiliate(data);
     console.error('Management API error:', data);
   }
   return [];

@@ -1,0 +1,173 @@
+[
+  {
+    "slug": "alphafutures",
+    "nome": "Alpha Futures",
+    "url": "https://app.alpha-futures.com/signup/Markets026158/",
+    "param": "path",
+    "valor": "Markets026158",
+    "coupon_code": "MARKETS026158",
+    "needs_review": false
+  },
+  {
+    "slug": "apex",
+    "nome": "Apex Trader Funding",
+    "url": "https://apextraderfunding.com/member/aff/go/evertonmiranda#block_660bfb7d9cd2c41901144ab4319f8644",
+    "param": "path",
+    "valor": "evertonmiranda",
+    "coupon_code": "MARKET",
+    "needs_review": false
+  },
+  {
+    "slug": "aquafutures",
+    "nome": "Aqua Futures",
+    "url": "https://www.aquafunded.com/?afmc=h5d",
+    "param": "afmc",
+    "valor": "h5d",
+    "coupon_code": "h5d",
+    "needs_review": false
+  },
+  {
+    "slug": "blueberryfutures",
+    "nome": "Blueberry Futures",
+    "url": "https://portal.blueberryfutures.com/auth/signup?ref_code=MARKET-7652C",
+    "param": "ref_code",
+    "valor": "MARKET-7652C",
+    "coupon_code": "MARKET-7652C",
+    "needs_review": false
+  },
+  {
+    "slug": "blueguardian",
+    "nome": "Blue Guardian",
+    "url": "https://checkout.blueguardian.com/?afmc=MARKET",
+    "param": "afmc",
+    "valor": "MARKET",
+    "coupon_code": "MARKET",
+    "needs_review": false
+  },
+  {
+    "slug": "brightfunded",
+    "nome": "BrightFunded",
+    "url": "https://brightfunded.com/a/CLNLTPxtT4Sok0PzHaRIIQ",
+    "param": "path",
+    "valor": "CLNLTPxtT4Sok0PzHaRIIQ",
+    "coupon_code": "CLNLTPxtT4Sok0PzHaRIIQ",
+    "needs_review": false
+  },
+  {
+    "slug": "bulenox",
+    "nome": "Bulenox",
+    "url": "https://bulenox.com/member/aff/go/marketcoupons",
+    "param": "path",
+    "valor": "marketcoupons",
+    "coupon_code": "MARKET89",
+    "needs_review": false
+  },
+  {
+    "slug": "cti",
+    "nome": "City Traders Imperium",
+    "url": "https://app.citytradersimperium.com/user-auth/register?referral_code=1331c5&utm_source=client&utm_medium=referral&utm_id=1331c5",
+    "param": "referral_code",
+    "valor": "1331c5",
+    "coupon_code": "INFINITY8",
+    "needs_review": false
+  },
+  {
+    "slug": "e2t",
+    "nome": "Earn2Trade",
+    "url": "https://www.earn2trade.com/purchase?plan=TCP25&a_pid=marketscoupons&a_bid=2e8e8a14",
+    "param": "a_pid",
+    "valor": "marketscoupons",
+    "coupon_code": "MARKETSCOUPONS",
+    "needs_review": false
+  },
+  {
+    "slug": "e8",
+    "nome": "E8 Markets",
+    "url": "https://e8markets.com/d/MARKET",
+    "param": "path",
+    "valor": "MARKET",
+    "coupon_code": "MARKET",
+    "needs_review": false
+  },
+  {
+    "slug": "fn",
+    "nome": "FundedNext",
+    "url": "https://fundednext.com/futures?fpr=everton33",
+    "param": "fpr",
+    "valor": "everton33",
+    "coupon_code": "MARKET",
+    "needs_review": false
+  },
+  {
+    "slug": "ftmo",
+    "nome": "FTMO",
+    "url": "https://trader.ftmo.com/?affiliates=eyfIptUCGgfcfaUlyrRP",
+    "param": "affiliates",
+    "valor": "eyfIptUCGgfcfaUlyrRP",
+    "coupon_code": null,
+    "needs_review": true
+  },
+  {
+    "slug": "funded-futures-family",
+    "nome": "Funded Futures Family",
+    "url": "https://app.fundedfuturesfamily.com/affiliation/?ref_code=ed5ae23f-10eb-46c6-b6d1-280369e720eb",
+    "param": "ref_code",
+    "valor": "ed5ae23f-10eb-46c6-b6d1-280369e720eb",
+    "coupon_code": "MARKET",
+    "needs_review": false
+  },
+  {
+    "slug": "fundingpips",
+    "nome": "Funding Pips",
+    "url": "https://app.fundingpips.com/register?referral_code=31985EAA",
+    "param": "referral_code",
+    "valor": "31985EAA",
+    "coupon_code": "HELLO",
+    "needs_review": false
+  },
+  {
+    "slug": "futureselite",
+    "nome": "Futures Elite",
+    "url": "https://app.futureselite.com/auth/sign-up?aff=AFF5585615",
+    "param": "aff",
+    "valor": "AFF5585615",
+    "coupon_code": null,
+    "needs_review": false
+  },
+  {
+    "slug": "goat",
+    "nome": "Goat Funded Futures",
+    "url": "https://app.goatfundedfutures.com/checkout?referral_id=MARKET",
+    "param": "referral_id",
+    "valor": "MARKET",
+    "coupon_code": "MARKET",
+    "needs_review": false
+  },
+  {
+    "slug": "the5ers",
+    "nome": "The5ers",
+    "url": "https://www.the5ers.com/?afmc=19jp",
+    "param": "afmc",
+    "valor": "19jp",
+    "coupon_code": "MARKET",
+    "needs_review": false
+  },
+  {
+    "slug": "toponefutures",
+    "nome": "Top One Futures",
+    "url": "https://toponefutures.com/?linkId=lp_707970&sourceId=markets&tenantId=toponefutures",
+    "param": "linkId",
+    "valor": "lp_707970",
+    "coupon_code": "MARKET",
+    "needs_review": false
+  },
+  {
+    "slug": "tradeday",
+    "nome": "TradeDay",
+    "url": "https://www.tradeday.com/?a_aid=marketscoupons#pricing",
+    "param": "a_aid",
+    "valor": "marketscoupons",
+    "coupon_code": "MARKETS",
+    "needs_review": false
+  }
+]

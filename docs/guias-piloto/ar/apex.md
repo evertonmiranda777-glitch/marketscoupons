@@ -46,7 +46,7 @@ schema_types: [Article, FAQPage, HowTo, Review]
 | **الحد الأقصى للحسابات لكل متداول** | 20 |
 | **المنصات** | Rithmic، Tradovate، Wealthcharts |
 | **Trustpilot** | 4.4/5 (أكثر من 19,000 مراجعة) |
-| **كود الإحالة** | [MARKET](https://apextraderfunding.com/member/aff/go/evertonmiranda) (خصم 90% مدى الحياة) |
+| **كود الإحالة** | [MARKET]({{AFF:apex}}) (خصم 90% مدى الحياة) |
 
 ---
 
@@ -100,7 +100,7 @@ Apex Trader Funding شركة تقييم تداول احترافية مقرّها
 
 ### كيفية استخدام كوبون MARKET
 
-1. ادخل إلى صفحة تسعير Apex عبر [هذا الرابط](https://apextraderfunding.com/member/aff/go/evertonmiranda)
+1. ادخل إلى صفحة تسعير Apex عبر [هذا الرابط]({{AFF:apex}})
 2. اختر حجم الحساب ونوع Drawdown
 3. عند الدفع، أدخل كود الكوبون **MARKET**
 4. تأكّد من ظهور الخصم قبل إتمام الدفع
@@ -524,7 +524,7 @@ E2T لديها تقييم "Gauntlet" (15 يوم تداول كحد أدنى) وPr
 
 ### الخطوة 1: استخدم رابط MARKET التابع
 
-ادخل إلى [apextraderfunding.com عبر رابط الإحالة الخاص بنا](https://apextraderfunding.com/member/aff/go/evertonmiranda). هذا يضمن تطبيق كوبون **MARKET** مسبقاً وربطه بحسابك لكل عملية شراء مستقبلية (خصم مدى الحياة).
+ادخل إلى [apextraderfunding.com عبر رابط الإحالة الخاص بنا]({{AFF:apex}}). هذا يضمن تطبيق كوبون **MARKET** مسبقاً وربطه بحسابك لكل عملية شراء مستقبلية (خصم مدى الحياة).
 
 ### الخطوة 2: اختر حجم الحساب
 
@@ -567,7 +567,7 @@ Apex Trader Funding هي الخيار الافتراضي لمعظم متداول
 
 للمتداولين الذين يقارنون الخيارات، مزيج Apex من السعر وSplit والسجل يصعب مضاهاته. التحفّظات الرئيسية هي سياسة عدم الإعادة على الحسابات الجديدة، وساعة الـ30 يوماً للتقييم، وسقوف السحوبات المبكرة, لا شيء من هذا يُعدّ كاسراً للصفقة إذا ميزَنت بحسابه.
 
-**جاهز للبدء؟** استخدم الكود **MARKET** في [Apex Trader Funding](https://apextraderfunding.com/member/aff/go/evertonmiranda) للحصول على خصم 90% على تقييمك.
+**جاهز للبدء؟** استخدم الكود **MARKET** في [Apex Trader Funding]({{AFF:apex}}) للحصول على خصم 90% على تقييمك.
 
 ---
 

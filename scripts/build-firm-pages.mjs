@@ -19,6 +19,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { mergeAffiliate } from './lib/firms-source.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -66,6 +67,11 @@ async function loadFirms() {
   });
   const d = await r.json();
   if (Array.isArray(d)) return d; console.error('Management API error:', d); return [];
+}
+
+// Preco/regra vem do cms_firms; cupom + URL de afiliado vem da tabela `firms` (28/07/2026).
+async function loadFirmsWithAffiliate() {
+  return mergeAffiliate(await loadFirms());
 }
 
 function priceMin(prices, key) {
@@ -443,7 +449,7 @@ a{color:inherit}img{max-width:100%;display:block}
 }
 
 async function main() {
-  const firms = await loadFirms();
+  const firms = await loadFirmsWithAffiliate();
   if (!firms.length) { console.error('Sem firmas.'); process.exit(1); }
 
   if (PREVIEW) {

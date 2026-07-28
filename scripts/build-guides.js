@@ -306,8 +306,43 @@ function writeOut(outPath, html){
   fs.writeFileSync(outPath, html, 'utf8');
 }
 
-function renderBody(md){
-  const html = marked.parse(md, { mangle: false, headerIds: true });
+// ── Dados de afiliado: tabela `firms` no Supabase (fonte unica desde 28/07/2026) ──
+// Os .md usam {{AFF:slug}} (URL de cadastro) e {{CUP:slug}} (cupom). Nunca o valor cru:
+// guia e HTML estatico, um link que morreu fica servido pra sempre sem ninguem ver.
+let AFF = null;
+
+async function loadAffiliates(){
+  const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+  const SR = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
+  const cols = 'slug,affiliate_url,coupon_code';
+  if (SR) {
+    const r = await fetch(`${SB_URL}/rest/v1/firms?ativo=eq.true&select=${cols}`, {
+      headers: { apikey: SR, Authorization: `Bearer ${SR}` },
+    });
+    const d = await r.json();
+    if (Array.isArray(d) && d.length) {
+      const m = Object.create(null);
+      for (const a of d) m[a.slug] = a;
+      return m;
+    }
+  }
+  throw new Error(
+    'tabela `firms` inacessivel. Abortado de proposito: gerar guia com URL/cupom velho\n' +
+    'vaza comissao em silencio. Defina SUPABASE_SERVICE_ROLE_KEY e rode de novo.'
+  );
+}
+
+function resolveTokens(md, filePath){
+  return String(md).replace(/\{\{(AFF|CUP):([a-z0-9-]+)\}\}/g, (full, kind, slug) => {
+    const a = AFF && AFF[slug];
+    if (!a) throw new Error(`${filePath}: ${full} — slug '${slug}' nao existe na tabela firms`);
+    if (kind === 'AFF') return a.affiliate_url;
+    return a.coupon_code || '';   // firma sem codigo resolve pra vazio, nunca pra cupom de outra
+  });
+}
+
+function renderBody(md, filePath){
+  const html = marked.parse(resolveTokens(md, filePath), { mangle: false, headerIds: true });
   return rewriteImagePaths(html);
 }
 
@@ -325,7 +360,7 @@ function build(){
 
     for (const [lang, filePath] of Object.entries(langs)) {
       const { fm, body, schema } = readGuide(filePath);
-      const bodyHtml = renderBody(body);
+      const bodyHtml = renderBody(body, filePath);
       const otherLangs = Object.keys(langs).filter(l => l !== lang);
       const html = template({ fm, bodyHtml, schema, lang, slug, alts, otherLangs });
 
@@ -383,5 +418,9 @@ ${alternates}${xdefault}
   console.log('sitemap.xml updated with', urls.length, 'guide URLs');
 }
 
-const bySlug = build();
-writeSitemap(bySlug);
+(async () => {
+  AFF = await loadAffiliates();
+  console.log(`[firms] ${Object.keys(AFF).length} firmas carregadas da tabela`);
+  const bySlug = build();
+  writeSitemap(bySlug);
+})().catch(e => { console.error(e.message || e); process.exit(1); });

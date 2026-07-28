@@ -42,7 +42,7 @@ schema_types: [Article, FAQPage, HowTo, Review]
 | **Max accounts per trader** | 20 |
 | **Platforms** | Rithmic, Tradovate, Wealthcharts |
 | **Trustpilot** | 4.4/5 (19,000+ reviews) |
-| **Affiliate code** | [MARKET](https://apextraderfunding.com/member/aff/go/evertonmiranda) (90% lifetime) |
+| **Affiliate code** | [MARKET]({{AFF:apex}}) (90% lifetime) |
 
 ---
 
@@ -96,7 +96,7 @@ Legacy accounts (pre-March 1, 2026) retain the **$80 reset** option.
 
 ### How to claim the MARKET coupon
 
-1. Go to the Apex pricing page through [this link](https://apextraderfunding.com/member/aff/go/evertonmiranda)
+1. Go to the Apex pricing page through [this link]({{AFF:apex}})
 2. Choose your account size and drawdown type
 3. At checkout, enter the coupon code **MARKET**
 4. Confirm the discount shows before completing payment
@@ -520,7 +520,7 @@ Follow these steps to minimize your cost and maximize your chance of passing:
 
 ### Step 1: Use the MARKET affiliate link
 
-Go to [apextraderfunding.com via our affiliate link](https://apextraderfunding.com/member/aff/go/evertonmiranda). This ensures the **MARKET** coupon is pre-applied and stays linked to your account for every future purchase (lifetime discount).
+Go to [apextraderfunding.com via our affiliate link]({{AFF:apex}}). This ensures the **MARKET** coupon is pre-applied and stays linked to your account for every future purchase (lifetime discount).
 
 ### Step 2: Pick your account size
 
@@ -563,7 +563,7 @@ The two rules that matter are the **intraday trailing drawdown** (pick EOD if yo
 
 For traders comparing options, Apex's combination of price, split, and track record is difficult to match. The main watch-outs are the no-reset policy on new accounts, the 30-day evaluation clock, and the early payout caps, none of which are deal-breakers if you budget for them.
 
-**Ready to start?** Use the code **MARKET** at [Apex Trader Funding](https://apextraderfunding.com/member/aff/go/evertonmiranda) for 90% off your evaluation.
+**Ready to start?** Use the code **MARKET** at [Apex Trader Funding]({{AFF:apex}}) for 90% off your evaluation.
 
 ---
 

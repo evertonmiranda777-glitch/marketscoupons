@@ -43,7 +43,7 @@ lang: pt-BR
 | **Máx. de contas por trader** | 20 |
 | **Plataformas** | Rithmic, Tradovate, Wealthcharts |
 | **Trustpilot** | 4,4/5 (19.000+ reviews) |
-| **Cupom de afiliado** | [MARKET](https://apextraderfunding.com/member/aff/go/evertonmiranda) (90% lifetime) |
+| **Cupom de afiliado** | [MARKET]({{AFF:apex}}) (90% lifetime) |
 
 ---
 
@@ -97,7 +97,7 @@ Contas legadas (pré 1º de março de 2026) mantêm a opção de **reset por US$
 
 ### Como aplicar o cupom MARKET
 
-1. Acesse a página de preços da Apex [por este link](https://apextraderfunding.com/member/aff/go/evertonmiranda)
+1. Acesse a página de preços da Apex [por este link]({{AFF:apex}})
 2. Escolha o tamanho de conta e o tipo de drawdown
 3. No checkout, digite o código **MARKET**
 4. Confirme que o desconto apareceu antes de finalizar o pagamento
@@ -521,7 +521,7 @@ Siga esses passos pra minimizar o custo e maximizar a chance de passar:
 
 ### Passo 1: Use o link de afiliado MARKET
 
-Acesse [apextraderfunding.com pelo nosso link de afiliado](https://apextraderfunding.com/member/aff/go/evertonmiranda). Isso garante que o cupom **MARKET** é pré-aplicado e fica vinculado à sua conta em toda compra futura (desconto lifetime).
+Acesse [apextraderfunding.com pelo nosso link de afiliado]({{AFF:apex}}). Isso garante que o cupom **MARKET** é pré-aplicado e fica vinculado à sua conta em toda compra futura (desconto lifetime).
 
 ### Passo 2: Escolha o tamanho da conta
 
@@ -564,7 +564,7 @@ As duas regras que importam são o **Intraday Trailing Drawdown** (escolha EOD s
 
 Pra traders comparando opções, a combinação de preço, split e histórico da Apex é difícil de bater. Os principais pontos de atenção são a política sem reset em contas novas, o relógio de 30 dias e os tetos iniciais de Payout, nenhum deles é deal-breaker se você planejar.
 
-**Pronto pra começar?** Use o código **MARKET** na [Apex Trader Funding](https://apextraderfunding.com/member/aff/go/evertonmiranda) pra 90% de desconto na sua avaliação.
+**Pronto pra começar?** Use o código **MARKET** na [Apex Trader Funding]({{AFF:apex}}) pra 90% de desconto na sua avaliação.
 
 ---
 

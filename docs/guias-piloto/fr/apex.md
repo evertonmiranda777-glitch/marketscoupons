@@ -35,7 +35,7 @@ schema_types: [Article, FAQPage, HowTo, Review]
 | **Comptes max par trader** | 20 |
 | **Plateformes** | Rithmic, Tradovate, Wealthcharts |
 | **Trustpilot** | 4,4/5 (plus de 19 000 avis) |
-| **Code affilié** | [MARKET](https://apextraderfunding.com/member/aff/go/evertonmiranda) (90 % à vie) |
+| **Code affilié** | [MARKET]({{AFF:apex}}) (90 % à vie) |
 
 ---
 
@@ -89,7 +89,7 @@ Les comptes legacy (avant le 1er mars 2026) conservent l'option de **reset à 80
 
 ### Comment réclamer le coupon MARKET
 
-1. Allez sur la page de tarification Apex via [ce lien](https://apextraderfunding.com/member/aff/go/evertonmiranda)
+1. Allez sur la page de tarification Apex via [ce lien]({{AFF:apex}})
 2. Choisissez votre taille de compte et type de drawdown
 3. Au checkout, entrez le code coupon **MARKET**
 4. Confirmez que la réduction s'affiche avant de finaliser le paiement
@@ -513,7 +513,7 @@ Suivez ces étapes pour minimiser votre coût et maximiser votre chance de passe
 
 ### Étape 1 : Utilisez le lien affilié MARKET
 
-Allez sur [apextraderfunding.com via notre lien affilié](https://apextraderfunding.com/member/aff/go/evertonmiranda). Cela garantit que le coupon **MARKET** est pré-appliqué et reste lié à votre compte pour chaque achat futur (réduction à vie).
+Allez sur [apextraderfunding.com via notre lien affilié]({{AFF:apex}}). Cela garantit que le coupon **MARKET** est pré-appliqué et reste lié à votre compte pour chaque achat futur (réduction à vie).
 
 ### Étape 2 : Choisissez votre taille de compte
 
@@ -556,7 +556,7 @@ Les deux règles qui importent sont le **drawdown trailing intraday** (choisisse
 
 Pour les traders comparant des options, la combinaison prix, split, et historique d'Apex est difficile à égaler. Les principaux points de vigilance sont la politique sans reset sur les nouveaux comptes, l'horloge d'évaluation 30 jours, et les plafonds de payout précoces, aucun n'est un deal-breaker si vous budgétez pour eux.
 
-**Prêt à démarrer ?** Utilisez le code **MARKET** sur [Apex Trader Funding](https://apextraderfunding.com/member/aff/go/evertonmiranda) pour 90 % de réduction sur votre évaluation.
+**Prêt à démarrer ?** Utilisez le code **MARKET** sur [Apex Trader Funding]({{AFF:apex}}) pour 90 % de réduction sur votre évaluation.
 
 ---
 

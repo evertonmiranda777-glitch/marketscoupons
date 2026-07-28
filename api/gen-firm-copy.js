@@ -691,6 +691,23 @@ module.exports = async (req, res) => {
     return res.status(500).json({ error: 'Firm fetch error' });
   }
 
+  // FONTE UNICA do cupom/link: tabela `firms`. O cms_firms guarda preco e regra,
+  // mas o dado de afiliado mora na `firms` desde 28/07/2026. Sem isso a copy de
+  // anuncio pode sair com cupom velho (= venda que acontece e nao credita).
+  try {
+    const ra = await fetch(
+      `${SUPABASE_URL}/rest/v1/firms?slug=eq.${encodeURIComponent(firmId)}&select=coupon_code,affiliate_url&ativo=eq.true`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } },
+    );
+    if (ra.ok) {
+      const a = (await ra.json())[0];
+      if (a) {
+        firm.coupon = a.coupon_code || null;   // null = firma sem codigo
+        if (a.affiliate_url) firm.link = a.affiliate_url;
+      }
+    }
+  } catch (_) { /* mantem o do cms_firms */ }
+
   const prompt = buildPrompt(firm, langName, tmpl);
   const payload = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],

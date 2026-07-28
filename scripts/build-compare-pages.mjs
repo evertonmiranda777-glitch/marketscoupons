@@ -15,6 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { mergeAffiliate } from './lib/firms-source.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -370,7 +371,9 @@ async function loadFirms() {
   for (const f of firms) {
     if (f.discount_type && DTYPE[f.discount_type]) f.discount_type = DTYPE[f.discount_type][LANG] || f.discount_type;
   }
-  return firms;
+  // Cupom + URL de afiliado vem da tabela `firms` (fonte unica desde 28/07/2026),
+  // nao do cms_firms. Aborta se a tabela nao responder.
+  return mergeAffiliate(firms);
 }
 
 function priceMin(prices) {
