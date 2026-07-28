@@ -8,6 +8,22 @@
 
 ---
 
+## ⚡ LEIS 28/jul (dado de afiliado = tabela `firms` + verificador diário)
+
+**📄 REGRAS DE AGENTE VIVEM EM [AGENTS.md](AGENTS.md) — ler junto com este arquivo.**
+
+**🔗 DADO DE AFILIADO SÓ NA TABELA `firms`:** cupom, URL de cadastro, parâmetro e código de tracking. Proibido escrever esses valores em `.js`/`.html`/`.md`. Runtime lê a tabela; páginas geradas lêem via `scripts/lib/firms-source.mjs` (**ABORTA** se a tabela não responder); guias usam `{{AFF:slug}}`/`{{CUP:slug}}`. `coupon_code = NULL` = firma **sem** código (estado válido); `needs_review = true` = valor desconhecido. **São coisas diferentes.**
+
+**🔁 MUDOU A TABELA? REGERE AS PÁGINAS.** O site conserta na hora, as **~3.000 páginas em `seo/`+`compare/`+`guides/` NÃO** (HTML em disco). Foi assim que `seo/aquafutures.html` ficou anunciando 60% OFF (real 45%) no domínio morto `aquafutures.io`, em 152 arquivos. Comando: `node scripts/regen-static.mjs` (só regera se a tabela mudou) / `--force`. **NUNCA editar página gerada à mão** — a próxima geração desfaz e o bug volta escondido.
+
+**🚨 HTTP STATUS NÃO É VEREDITO DE LINK DE AFILIADO (LEI, custou 6 falsos positivos):** a 1ª versão do `check_links.py` reprovou 6 firmas VIVAS e o `--fix` teria desativado todas. Provas de hoje: **E8** responde **404** e mesmo assim renderiza e grava `discount=MARKET` por JS · **Apex 403** = bot-block Cloudflare · **FundingPips 429** = rate limit · **Bulenox/BrightFunded** gravam cookie (`amember_aff_id`/`affiliateId`) e jogam pra home · **FTMO** reembala o código em **base64 dentro do `authPayload`** do SSO. **Julgar por EVIDÊNCIA DE ATRIBUIÇÃO** (URL, path, cookie, payload base64), não por status. Site que barra robô = **INCONCLUSIVO**, nunca falha e nunca entra no `--fix`. Hoje: **19/19 OK**.
+
+**🛠️ `--fix` SÓ DESATIVA E REGISTRA, NUNCA ADOTA VALOR NOVO.** Página divergente → regera da tabela. Link morto/param perdido → `ativo=false`. Destino devolveu **outro** código → `ativo=false` + `needs_review` (pode ser rotação legítima OU sequestro de afiliado; daqui não dá pra saber). Log em `logs/autofix.log`. Roda 08:00 BRT em `.github/workflows/check-links.yml`. Detalhe: [[project_verificador_afiliado_2026_07_28]].
+
+**⚠️ FTMO não tem rota estática de cadastro** — o botão "Crie um perfil" do SSO é gerado por sessão (`tab_id`+`execution`). A entrada correta é o próprio `affiliate_url`. `needs_review` continua `true`.
+
+---
+
 ## ⚡ LEIS 25/jul (selo No-Fee em todo lugar + pente fino de preços)
 
 **🏷️ SELO "NO ACTIVATION FEE" — 3 arquivos que se espelham:** fonte = `ACTIVATION_FEE` map em `app.js` (~3097): `fee:0`=firma 100% sem taxa (**selo verde**, 14 firmas); `fee>0 + hasNoFeeOption:true`=cobra MAS tem plano sem taxa (**selo âmbar** "tem plano sem taxa", só **Apex** e **Top One**). `activationSelo(f)` renderiza; i18n `actv_no_fee`+`actv_nofee_plan` nos 8 `i18n-<lang>.js`. Aparece em: aba Firms + home (app.js `renderFirms`/`renderHome`), **/coupons** (faixa `.fr-nofee`, hoje FFF/FundedNext/TradeDay), **criativo-render** (`CR_NOFEE`/`CR_NOFEE_PLAN`). ⚠️ **`CR_NOFEE` espelha o `ACTIVATION_FEE` — mudou num, muda no outro.** NUNCA selo verde numa firma que cobra em algum plano (Lei #0). Detalhe: [[project_sessao_2026_07_25]].
