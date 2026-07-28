@@ -3104,7 +3104,12 @@ const ACTIVATION_FEE = {
   'fn': { fee: 0 }, 'funded-futures-family': { fee: 0 }, 'tradeday': { fee: 0 }, 'aquafutures': { fee: 0 },
   'blueberryfutures': { fee: 0 }, 'futureselite': { fee: 0 }, 'e8': { fee: 0 }, 'alphafutures': { fee: 0 },
   'fundingpips': { fee: 0 }, 'ftmo': { fee: 0 }, 'brightfunded': { fee: 0 }, 'blueguardian': { fee: 0 },
-  'cti': { fee: 0 }, 'the5ers': { fee: 0 },
+  'cti': { fee: 0 },
+  // The5ers NAO e' 100% sem taxa (relatorio do Everton 28/jul): o Bootcamp 3-Step cobra
+  // 'Remaining Fee Upon Success' na aprovacao ($50 no 20K / $205 no 100K / $350 no 250K),
+  // que na pratica E' a taxa de ativacao daquele programa. Hyper Growth, High Stakes,
+  // Day Trade e Swing/Summer dizem 'Activation fee: None'. Selo AMBAR, nunca verde.
+  'the5ers': { fee: 50, hasNoFeeOption: true, amount: 'Bootcamp 3-Step charges a remaining fee on approval (20K $50 / 100K $205 / 250K $350) - Hyper Growth, High Stakes, Day Trade and Swing have none' },
   // COBRAM ativacao (nao recebem selo; amount aparece no detalhe):
   'bulenox': { fee: 143, amount: 'Master activation (one-time, after you pass) — 25K $143 · 50K $148 · 100K $248 · 150K $498 · 250K $898' },
   'toponefutures': { fee: 139, hasNoFeeOption: true, amount: 'Elite Daily: $0 activation · Elite Access: $139–$359 one-time (ACCESS promo 2 for $19 each)' },

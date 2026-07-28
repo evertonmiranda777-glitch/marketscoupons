@@ -1,25 +1,25 @@
-# The5ers — deep KB
+FIRM: The5ers (Forex/CFD + Futures). SOURCE OF TRUTH: Everton's raw reports, archived verbatim at docs/firm-research/2026-07-28-the5ers.md (latest) and 2026-07-27-the5ers.md. In any conflict, the RAW report wins over this KB.
 
-> Fonte viva: cms_firms.kb (id=the5ers). O Max puxa isto sob demanda.
+COUPON: MARKET (5% OFF) - confirmed on Everton's affiliate panel 27/jul (Coupon Code MARKET, Discount 5%, Commission 10%, ID 11266885). Affiliate link https://www.the5ers.com/?afmc=19jp. IMPORTANT: the 5% of the coupon is NOT the headline. The site's own SUMMER PLAN promo is far bigger and applies automatically - our card headlines 70% because the 2-Step Summer 10/5 100K is $149 against the regular High Stakes NEW 100K at $491. Never quote 5% as the main saving, and never claim the coupon stacks with Summer (not verified).
 
-THE5ERS (The 5%ers) — deep knowledge (official site, 2026-07-23). Five Percent Online Ltd, UK + Israel, since 2016. Forex/CFD programs (Hyper Growth, High Stakes, Bootcamp) + Futures (Day Trade, Swing). Platforms: MT5, cTrader, TradingView (US clients only) for CFD; BlackArrow for Futures.
+ACTIVATION FEE - READ CAREFULLY, THIS IS NOT A "NO FEE" FIRM: most programs state 'Activation fee: None' (Hyper Growth 1-Step, High Stakes 2-Step, Day Trade futures, Swing/Summer Plan). BUT the BOOTCAMP (3-Step) charges a second fee called 'Remaining Fee Upon Success', due at the moment the trader passes and gets funded: 20K $22 entry + $50 on approval = $72 total | 100K $95 + $205 = $300 | 250K $225 + $350 = $575. That remaining fee IS, in practice, the activation fee of that program. So The5ers carries the AMBER badge ('has a plan with no activation fee'), never the green one. If a user asks about activation fee, say: none on Hyper Growth, High Stakes, Day Trade and Swing; Bootcamp charges the remaining fee when you pass.
 
-COUPON: **MARKET** = Everton's OFFICIAL The5ers coupon (confirmed in his affiliate panel 27/jul: 'Coupon Code MARKET', Discount 5%, Commission 10%, reference ID 11266885). NEVER say The5ers has no code — an earlier version of this KB wrongly stated 'COUPON: NONE' and the code was removed from the site. Affiliate link: https://www.the5ers.com/?afmc=19jp. Separately, the site runs the 'Summer Plan' promo on the $100K only (2-Step 10/5 $149 | 2-Step 8/5 $179 | 1-Step $249, vs $491 for the regular 2-Step High Stakes 100K) — that promo is not the coupon. NO ACTIVATION FEE on any program (official FAQ: 'no hidden or recurring fees'); only cTrader adds a $10 platform surcharge.
+SUMMER PLAN (live promo, site-wide banner 'Industry's Lowest $100K For $149', page the5ers.com/summer-plan/). Covers BOTH CFD and Futures, with reduced prices and account sizes exclusive to the promo, for a limited time.
 
-LIVE PROMO "Summer Plan" (limited time): the headline is $100K for $149 (2-Step 10/5). Also 100K 2-Step 8/5 $179 and 100K 1-Step $249. Futures Swing is currently sold only at Summer prices.
+SUMMER - CFD ($100,000 account ONLY):
+- 1-Step: single fee $249. Profit target 10%, max loss 6%, daily loss 3%, leverage 1:100, bonus 10% in Hub credits once funded.
+- 2-Step 'Summer 10/5': $149 (phase 1 target 10%, phase 2 target 5%).
+- 2-Step 'Summer 8/5': $179 (phase 1 8%, phase 2 5%).
+- Refund policy on the 2-Step Summer: 10% back in credits on passing phase 1, 20% on passing phase 2, and 70% withdrawal unlocked at the 3rd payout.
 
-CFD PROGRAMS:
-- Hyper Growth (1-Step). "Pro Growth" (with evaluation): 5K $52 | 10K $98 | 20K $189 | 50K $329. Instant "Hyper Growth" (no eval, funded immediately): 5K $260 | 10K $450 | 20K $850 (no 50K). Rules: target 10%, stop-out 6%, daily loss 3%, leverage 1:30, no time limit, 3 min profitable days (Pro Growth); scales (doubling every 10% profit) up to $4,000,000, profit split up to 100% (base 75/25).
-- High Stakes (2-Step): 2.5K $19 | 5K $35 | 10K $69 | 25K $176 | 50K $278 | 100K $491 (100K promo $149 via Summer). "New" = Phase1 10% / Phase2 5%; "Classic" = 8% / 5%; max drawdown 10% (absolute), daily loss 5%, leverage 1:100, 3 min days, no time limit. Scales to $500,000; split 80/20 rising to 100/0 + a fixed monthly payout at $350K ($4,000/mo) and $500K ($10,000/mo).
-- Bootcamp (3-Step, pay-as-you-pass): 20K total $72 | 100K total $300 | 250K total $575 (you pay a small Step-1 fee, the rest only when you reach funded). Targets 6%/6%/6%, funded 5%; max loss 5% per step, 4% funded; leverage 1:30; scales to $4M.
+SUMMER - FUTURES (Swing accounts): 25K $69 | 50K $120 | 100K $189 (new size) | 150K $219 (new size). Site states explicitly 'Activation fee (Upon Passing): None' for every size. Extra rewards program 'Summer Boost Rewards', Swing accounts only: $15 in credits when funded, $20 on the 1st payout, $25 on the 2nd, account refund + $30 on the 3rd, $35 on the 4th. NOTE: the Swing line is currently sold ONLY through the Summer Plan.
 
-FUTURES:
-- Day Trade: 25K $59 | 50K $100 | 100K $170 | 150K $199.
-- Swing (Summer prices): 25K $69 | 50K $120 | 100K $189 | 150K $219.
-Rules: eval target 6%, funded 4%; max loss 4% End-of-Day; 40% consistency PER POSITION (not per day); one-time fee, no monthly. Contracts by size (25K = 2 mini/20 micro up to 150K = 12 mini). Swing has overnight holding limits; NO weekend holds (close by 16:50 ET Fri) and NO weekend on Day Trade; copy trading only between your own 25K/50K accounts (max $75K combined).
+REGULAR PRICES (outside the promo):
+- 1-Step Hyper Growth: 5K $52 | 10K $98 | 20K $189 | 50K $329. No activation fee.
+- 2-Step High Stakes: 2.5K $19 | 5K $35 | 10K $69 | 25K $176 | 50K $278 | 100K $491. No activation fee.
+- 2-Step High Stakes Classic 100K $545 (pricier than NEW).
+- Hyper Growth Instant: 5K $260 | 10K $450 | 20K $850 (no 50K).
+- 3-Step Bootcamp (split fee, see ACTIVATION FEE above): 20K $72 total | 100K $300 total | 250K $575 total.
+- Futures Day Trade: 25K $59 | 50K $100 | 100K $170 | 150K $199. Activation fee: none on every size.
 
-FUNDED / PAYOUTS: CFD first withdrawal needs >=$150 profit and account active >=14 days, then bi-weekly. Futures first payout needs funded, >=4% profit, >=14 days active, 40% consistency; processed in 5-8 business days. Withdrawal fee 3.5% (Hub Credits free). Methods: Rise, crypto (USDT/USDC/ETH/LTC), bank wire. FEE REFUND: High Stakes returns 70% on the 1st payout (10% Hub Credit at Step1, 20% at Step2, 70% cash when funded); Futures 100% back on the 3rd payout; Summer 1-Step 90% back on 3rd payout.
-CONSISTENCY RULE (general): best day cannot exceed 50% (or 30% depending on program) of total profit — this only DELAYS payout eligibility, it does NOT fail the account. Futures is 40% per position.
-OTHER RULES: news trading allowed but no new orders 2 min before/after high-impact news; CFD overnight + weekend holds allowed (watch swaps); EAs allowed if you own the source code (no tick-scalp, latency/hedge arbitrage, HFT, stealth stop-loss); no hedging across different traders' accounts; Islamic/swap-free accounts on request (funded phase only). Reset: none paid — failing means buying a new evaluation. No refund. Inactivity kills the account at 30 days (CFD) / 14 days (Futures).
-RESTRICTED countries: Afghanistan, Belarus, Russia, Iran, North Korea, Syria, Venezuela, and others. Min age 18. Trustpilot 4.7.
-
+SCALING: up to $4,000,000 as 5-10% targets are hit. No monthly/recurring fees on any program (official FAQ: 'there are no hidden or recurring fees'); only cTrader adds a $10 platform surcharge.
