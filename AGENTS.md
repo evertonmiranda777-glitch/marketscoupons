@@ -167,7 +167,29 @@ refactor de arquivo inteiro.
 | `api/gen-firm-copy.js` | exemplos few-shot do prompt de copy de anúncio | a saída passa por você antes de virar anúncio; o cupom real já vem da tabela |
 | `supabase/functions/telegram-creative` `COUPONS` | mapa de referência | **não é mais fallback de runtime** — se a tabela falhar, o post sai sem cupom em vez de com cupom velho |
 
-## 9. Escopo
+## 9. Código duplicado em dois arquivos = bomba-relógio
+
+Alguns símbolos existem **copiados** em dois lugares. Atualizar um e esquecer o outro
+faz o site contar duas histórias — e ninguém percebe, porque cada tela sozinha parece certa.
+
+| Símbolo | Onde | O que quebra se divergir |
+|---|---|---|
+| `CR_NOFEE` · `CR_NOFEE_PLAN` | `admin.html` ↔ `criativo-render.html` | selo No-Fee aparece no Telegram e some na aba Criativos |
+| `FIRM_WORDMARK` | `admin.html` ↔ `criativo-render.html` | logo da firma some no criativo |
+| `renderHeroPremium` | `admin.html` ↔ `criativo-render.html` | o criativo inteiro renderiza diferente |
+| `INST_TEMPLATES` e os `build*Html` | `admin.html` ↔ `lib/email-render.js` | e-mail manual ≠ e-mail do cron |
+| `SHORT_NAMES` | idem | firma sai sem nome no template top3 |
+
+**`check_pages.py` trava isso** (lista `ESPELHOS`). Rodou sozinho e achou 18 caminhos de
+logo relativos no admin que a inspeção manual não pegou.
+
+**Ao editar qualquer um desses: edita nos dois, e roda `python3 check_pages.py`.**
+
+Diferenças que são **intencionais** e já estão documentadas no código — não "consertar":
+`GA4_FUNNEL` em `coupons.html` é subconjunto de propósito · `CPN`/`SAV` têm assinatura
+diferente mas equivalente · `CR_LABELS` do admin tem chaves de um template antigo.
+
+## 10. Escopo
 
 Não altere lógica de autenticação, migrations já aplicadas, nem schema de tabela
 que não seja a que você está criando. Se achar que precisa: **pare e pergunte.**
