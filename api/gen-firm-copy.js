@@ -607,9 +607,9 @@ ${fewShot}
 - platforms_line = ${platforms || 'sem dado de plataformas'}
 - perks_line = ${perks || 'sem perks listados'}
 
-# HASHTAGS (1 linha, 10-12 tags lowercase, separadas por espaço)
-Use APENAS dessa whitelist (NÃO invente, NÃO use #lifestyle/#motivation/#success/#luxury):
-${suggestedHashtags}
+# HASHTAGS
+NAO escreva hashtag nenhuma. NAO escreva linhas contendo so um ponto.
+O sistema anexa o bloco final fixo depois. Encerre no ultimo paragrafo de conteudo.
 
 # REGRAS DURAS (viole qualquer uma = rejeitado)
 ✅ OBRIGATÓRIO: replicar EXATAMENTE a voz, ordem dos blocos, emojis e frase-chave do template em uso (${template === 'promocional' ? 'PROMOCIONAL' : 'INSTITUCIONAL'}). Os exemplos few-shot SÃO o template, não recrie estrutura, só substitua os dados.
@@ -643,6 +643,27 @@ const ALLOWED_ORIGINS = [
 function getCorsOrigin(req) {
   const origin = req.headers.origin || '';
   return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+}
+
+
+// Rodape fixo pedido pelo dono (28/07). O Instagram limita a 5 hashtags, entao ele
+// escolheu as 3 de maior alcance. Os 3 pontos em linhas separadas sao o truque
+// padrao do Instagram pra empurrar as tags pra baixo do "ver mais".
+//
+// ANEXADO NO SERVIDOR, nao pedido ao modelo: LLM nao reproduz formatacao exata de
+// forma confiavel, e aqui o formato E o requisito. Antes de colar, remove qualquer
+// hashtag ou linha-de-ponto que o modelo tenha inventado, pra nao duplicar.
+const COPY_FOOTER = '.\n.\n.\n#daytrading #trader #tradingtips';
+
+function withFooter(txt) {
+  const linhas = String(txt || '').replace(/\r/g, '').trimEnd().split('\n');
+  const soTags = /^(#[^\s#]+)(\s+#[^\s#]+)*$/;
+  while (linhas.length) {
+    const ultima = linhas[linhas.length - 1].trim();
+    if (ultima === '' || ultima === '.' || soTags.test(ultima)) { linhas.pop(); continue; }
+    break;
+  }
+  return linhas.join('\n').trimEnd() + '\n\n' + COPY_FOOTER;
 }
 
 module.exports = async (req, res) => {
@@ -750,12 +771,21 @@ module.exports = async (req, res) => {
         if (attempt < maxAttempts - 1) { await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)])); continue; }
         return res.status(502).json({ error: 'Upstream error', status: resp.status, detail: errDetail });
       }
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      const cand = data.candidates?.[0];
+      // Copy CORTADA no meio nao pode sair como se estivesse pronta: o rodape fixo
+      // que anexamos depois daria cara de completa a um texto truncado, e o cupom
+      // costuma ficar justamente no final. Trata como falha e tenta de novo.
+      if (cand?.finishReason === 'MAX_TOKENS') {
+        console.error('[gen-firm-copy] resposta truncada (MAX_TOKENS), tentando de novo');
+        if (attempt < maxAttempts - 1) { await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)])); continue; }
+        return res.status(502).json({ error: 'Copy truncada, tente de novo' });
+      }
+      const text = cand?.content?.parts?.[0]?.text || '';
       if (!text) {
         if (attempt < maxAttempts - 1) { await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)])); continue; }
         return res.status(502).json({ error: 'Empty response' });
       }
-      return res.status(200).json({ copy: text.trim(), firmName: firm.name });
+      return res.status(200).json({ copy: withFooter(text), firmName: firm.name });
     } catch (e) {
       console.error(`[gen-firm-copy] fetch error:`, e.message);
       if (attempt < maxAttempts - 1) { await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)])); continue; }

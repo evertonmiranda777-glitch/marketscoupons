@@ -21,12 +21,12 @@ function json(obj: any, status = 200) { return new Response(JSON.stringify(obj),
 type Slot = { firmId: string; off: number; name: string };
 const SCHEDULE: Record<string, Slot[]> = {
   "1": [{ firmId: "apex", off: 90, name: "Apex Trader Funding" }, { firmId: "bulenox", off: 89, name: "Bulenox" }, { firmId: "toponefutures", off: 50, name: "Top One Futures" }, { firmId: "aquafutures", off: 45, name: "Aqua Futures" }],
-  "2": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "goat", off: 50, name: "Goat Funded Futures" }, { firmId: "tradeday", off: 55, name: "TradeDay" }, { firmId: "e2t", off: 50, name: "Earn2Trade" }],
+  "2": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "tradeday", off: 55, name: "TradeDay" }, { firmId: "e2t", off: 50, name: "Earn2Trade" }],
   "3": [{ firmId: "fn", off: 47, name: "FundedNext" }, { firmId: "blueguardian", off: 25, name: "Blue Guardian" }, { firmId: "cti", off: 20, name: "City Traders Imperium" }, { firmId: "futureselite", off: 30, name: "Futures Elite" }],
   "4": [{ firmId: "brightfunded", off: 30, name: "BrightFunded" }, { firmId: "alphafutures", off: 40, name: "Alpha Futures" }, { firmId: "fundingpips", off: 20, name: "FundingPips" }, { firmId: "ftmo", off: 19, name: "FTMO" }],
   "5": [{ firmId: "e8", off: 40, name: "E8 Markets" }, { firmId: "the5ers", off: 70, name: "The5ers" }, { firmId: "apex", off: 90, name: "Apex Trader Funding" }, { firmId: "bulenox", off: 89, name: "Bulenox" }],
   "6": [{ firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }, { firmId: "bulenox", off: 89, name: "Bulenox" }, { firmId: "toponefutures", off: 50, name: "Top One Futures" }, { firmId: "aquafutures", off: 45, name: "Aqua Futures" }],
-  "0": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "goat", off: 50, name: "Goat Funded Futures" }, { firmId: "tradeday", off: 55, name: "TradeDay" }, { firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }],
+  "0": [{ firmId: "blueberryfutures", off: 60, name: "Blueberry Futures" }, { firmId: "tradeday", off: 55, name: "TradeDay" }, { firmId: "funded-futures-family", off: 80, name: "Funded Futures Family" }],
 };
 
 // Firmas com card proprio na landing /coupons (coupons.html tem dataset proprio).
@@ -67,6 +67,18 @@ async function renderCreativePngWithRetry(firmId: string, format = "feed", lang 
 }
 
 // Puxa desconto/cupom/nota AO VIVO do cms_firms (fonte unica = mesma coisa que o site e a imagem do criativo mostram). Fallback pro SCHEDULE/COUPONS hardcoded se a query falhar. Evita post do TG divergir do site (compliance).
+// Guarda: firma com active=false no cms_firms NAO deve ser postada, nem que ainda
+// esteja num slot do SCHEDULE. Antes so a lista de slots decidia, e uma firma pausada
+// no site continuaria indo pro canal.
+async function firmaPausada(firmId: string): Promise<boolean> {
+  try {
+    if (!SUPABASE_URL || !SERVICE_ROLE) return false;
+    const db = createClient(SUPABASE_URL, SERVICE_ROLE);
+    const { data } = await db.from("cms_firms").select("active").eq("id", firmId).maybeSingle();
+    return data ? data.active === false : false;
+  } catch { return false; }
+}
+
 async function getFirmLive(firmId: string): Promise<{ discount?: number; coupon?: string | null; disc_note?: string | null } | null> {
   try {
     if (!SUPABASE_URL || !SERVICE_ROLE) return null;
@@ -114,6 +126,9 @@ async function postCreative(slot: Slot, chatId: string, prefix?: string, trackFo
   const png = pngOrErr as Uint8Array;
   // Defesa: se PNG retornado for muito pequeno (<5kb), e provavelmente uma imagem preta/vazia. Aborta.
   if (png.length < 5000) return { ok: false, details: { error: "png_too_small_likely_blank", size: png.length } };
+  if (await firmaPausada(slot.firmId)) {
+    return { ok: false, skipped: "firma_pausada", firm: slot.firmId };
+  }
   const live = await getFirmLive(slot.firmId);
   const caption = buildCaption(slot, prefix, live);
   // O botao manda pro NOSSO site, nunca direto pro link de afiliado (ordem do dono,
