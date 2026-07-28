@@ -35,8 +35,10 @@ const TOKEN = Deno.env.get("FIRMS_CHECK_TOKEN") || "";
 
 // Colunas devolvidas no GET. `extra` entra porque o verificador usa
 // extra.verificacao='js' pra saber que a atribuicao e' invisivel headless.
+// needs_review_since vem junto: pendencia sem idade vira divida invisivel, e e com
+// ela que o verificador monta a secao PENDENCIAS ANTIGAS (>30 dias).
 const COLS = "slug,nome,affiliate_url,tracking_param,tracking_value," +
-             "coupon_code,coupon_description,ativo,needs_review,extra";
+             "coupon_code,coupon_description,ativo,needs_review,needs_review_since,extra";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",

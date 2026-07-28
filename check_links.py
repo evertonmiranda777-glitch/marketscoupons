@@ -100,10 +100,28 @@ def carregar_da_funcao():
             "coupon_code": x.get("coupon_code"),
             "ativo": x.get("ativo", True),
             "needs_review": bool(x.get("needs_review")),
+            "needs_review_since": x.get("needs_review_since"),
+            "coupon_description": x.get("coupon_description"),
             "extra": x.get("extra") or {},
         }
         for x in d.get("firms", [])
     ]
+
+
+DIAS_PENDENCIA_VELHA = 30
+
+
+def dias_desde(iso):
+    """Dias inteiros desde um timestamptz ISO. None se nao der pra ler."""
+    if not iso:
+        return None
+    try:
+        t = datetime.datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
+        if t.tzinfo is None:
+            t = t.replace(tzinfo=datetime.timezone.utc)
+        return (datetime.datetime.now(datetime.timezone.utc) - t).days
+    except Exception:
+        return None
 
 
 def carregar_do_json(caminho):
@@ -369,6 +387,81 @@ def aplicar_fix(falhas):
     return linhas
 
 
+# ────────────────────── secoes de acompanhamento ──────────────────────
+#
+# Nenhuma das duas mexe no exit code. Nao sao falha de link, sao lembrete:
+# se derrubassem o job, o painel viveria vermelho e ninguem mais leria o
+# vermelho que importa.
+
+def secao_pendencias_antigas(firmas):
+    """needs_review=true ha mais de 30 dias. Divida que ninguem cobrou."""
+    velhas = []
+    for f in firmas:
+        if not f.get("needs_review"):
+            continue
+        d = dias_desde(f.get("needs_review_since"))
+        if d is not None and d >= DIAS_PENDENCIA_VELHA:
+            velhas.append((d, f))
+
+    pendentes = [f["nome"] for f in firmas if f.get("needs_review")]
+    if pendentes:
+        print(f"\nPendentes de revisao humana (needs_review): {', '.join(pendentes)}")
+
+    if not velhas:
+        return
+    velhas.sort(key=lambda x: -x[0])
+    print(f"\n{'=' * 100}\nPENDENCIAS ANTIGAS (needs_review ha {DIAS_PENDENCIA_VELHA}+ dias)")
+    print("Nao e falha de link: e lembrete. Nao afeta o resultado do job.\n")
+    for d, f in velhas:
+        motivo = (f.get("coupon_description") or "").strip()
+        if not motivo:
+            motivo = ((f.get("extra") or {}).get("nota_url")
+                      or (f.get("extra") or {}).get("nota_verificacao") or "sem motivo registrado")
+        estado = "" if f.get("ativo", True) else " [INATIVA]"
+        print(f"  {f['nome']}{estado} — parada ha {d} dias")
+        print(f"      {motivo[:160]}")
+    print("=" * 100)
+
+
+def secao_candidatas_reativacao(inativas):
+    """
+    Testa as firmas com ativo=false. Firma desativada por instabilidade fica fora
+    do site ate alguem lembrar dela na mao — e ninguem lembra.
+
+    NAO reativa nada, e de proposito: o link pode ter voltado com atribuicao
+    DIFERENTE (codigo rotacionado, afiliado trocado) e daqui nao da pra distinguir
+    isso de uma volta legitima. Religar continua sendo decisao manual no banco.
+
+    Inativa que continua falhando: silencio total. Ela ja esta fora do site, o
+    problema ja e conhecido, e repetir isso todo dia so gera ruido.
+    """
+    if not inativas:
+        return
+    candidatas = []
+    for f in inativas:
+        try:
+            if checar(f)["ok"]:
+                candidatas.append(f)
+        except Exception:
+            pass   # falhou de novo: segue fora, sem barulho
+    if not candidatas:
+        return
+
+    print(f"\n{'=' * 100}\nCANDIDATAS A REATIVACAO ({len(candidatas)})")
+    print("Voltaram a passar em todos os criterios de atribuicao.")
+    print("NAO foram reativadas: o link pode ter voltado com atribuicao diferente,")
+    print("e daqui nao da pra saber. Religar e decisao sua, no banco.\n")
+    for f in candidatas:
+        d = dias_desde(f.get("needs_review_since"))
+        fora = f"ha {d} dias" if d is not None else "ha tempo indeterminado"
+        motivo = (f.get("coupon_description") or "").strip() or "sem motivo registrado"
+        print(f"  {f['nome']} — fora do site {fora}")
+        print(f"      motivo da desativacao: {motivo[:160]}")
+        print(f"      pra religar: update firms set ativo=true, needs_review=false "
+              f"where slug='{f['slug']}';")
+    print("=" * 100)
+
+
 # ─────────────────────────── main ───────────────────────────
 
 def main():
@@ -383,12 +476,15 @@ def main():
 
     firmas, origem = carregar(args.config, forcar_json=args.offline)
 
+    ativas = [f for f in firmas if f.get("ativo", True)]
+    inativas = [f for f in firmas if not f.get("ativo", True)]
+
     falhas, inconclusivos = [], []
-    print(f"\nVerificando {len(firmas)} links de afiliado | fonte: {origem}\n")
+    print(f"\nVerificando {len(ativas)} links de afiliado ativos | fonte: {origem}\n")
     print(f"{'FIRMA':<24} {'STATUS':<14} DETALHE")
     print("-" * 100)
 
-    for firma in firmas:
+    for firma in ativas:
         r = checar(firma)
         marca = "OK" if r["ok"] else ("INCONCLUSIVO" if r["inconclusivo"] else "FALHOU")
         print(f"{r['nome']:<24} {marca:<14} {r['motivo']}")
@@ -407,9 +503,8 @@ def main():
         for r in inconclusivos:
             print(f"  {r['nome']}: {r['motivo']}")
 
-    revisar = [f["nome"] for f in firmas if f.get("needs_review")]
-    if revisar:
-        print(f"\nPendentes de revisao humana (needs_review): {', '.join(revisar)}")
+    secao_pendencias_antigas(firmas)
+    secao_candidatas_reativacao(inativas)
 
     if not falhas:
         print("\nTodos os links preservaram o parametro de tracking.\n")
