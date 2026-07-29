@@ -125,13 +125,18 @@ serve(async (req) => {
     }
 
     if (normalized.length) {
-      // FFF REPLACE: a raspagem da FFF e' parcial (a tabela pagina, mostra ~25 sem filtro).
-      // A v0.4.9 manda as linhas por dia com o que foi REALMENTE raspado + o total oficial em
-      // linha separada (granularity='total', descartada acima). Apagamos tudo da FFF antes de
-      // inserir pra scrape parcial antigo nao somar por cima. So p/ FFF + reconciliado.
-      if (body.fff_replace === true && firm === "funded-futures-family") {
-        await sb.from("affiliate_daily_stats").delete().eq("firm_id", firm);
-      }
+      // 🚨 O DELETE-TUDO DA FFF FOI REMOVIDO (29/07/2026).
+      // Era: `delete().eq("firm_id","funded-futures-family")` a cada sync com
+      // fff_replace:true, e existia pra impedir que o total reconciliado somasse por
+      // cima de scrapes parciais antigos. Mas a raspagem V^E SO ~25 das ~125 linhas
+      // (a tabela pagina), entao o efeito real era: apaga o historico inteiro e
+      // regrava um pedaco. Sintoma que o Everton pegou , no admin, a FFF em "Este
+      // mes" mostrava 14 vendas / $40.84 enquanto SO O DIA de hoje, no painel
+      // oficial, era 23 vendas / $47.98. Mes menor que o dia = impossivel.
+      // Enquanto a reconciliacao inflava o dia mais recente, o buraco ficava
+      // escondido; ao tirar a invencao, a perda apareceu.
+      // O upsert por (firm_id,date) ja substitui os dias observados e NAO toca nos
+      // outros. Nao existe motivo pra apagar , dia nao observado nao e' dia zerado.
       const { error, count } = await sb
         .from("affiliate_daily_stats")
         .upsert(normalized, { onConflict: "firm_id,date", count: "exact" });
