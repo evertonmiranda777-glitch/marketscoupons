@@ -135,6 +135,15 @@ async function injectFirms(page) {
     const meta = document.querySelector('.meta');
     if (meta) meta.innerHTML = `Showing <b>${total} companies</b> &nbsp;&bull;&nbsp; Sorted by Biggest Discount`;
 
+    // O CTA do template diz "View all 11 firms" CHUMBADO, e nunca era substituido:
+    // o criativo saia anunciando 11 quando o catalogo tem 18 ativas (sub-vendia o
+    // proprio site, num PNG publicado). Contagem se le do dado, nunca se escreve.
+    document.querySelectorAll('.block p').forEach(p => {
+      if (/View all \d+ firms/i.test(p.textContent)) {
+        p.textContent = p.textContent.replace(/View all \d+ firms/i, `View all ${total} firms`);
+      }
+    });
+
     // Replace visible (non-blurred) firm rows
     const visibleFirms = document.querySelectorAll('.firm:not(.bl)');
     const parent = visibleFirms[0]?.parentNode;
