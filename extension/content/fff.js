@@ -121,10 +121,12 @@ async function mcSyncFFF(opts = {}) {
   //
   // 🚨 COMO ISSO QUEBROU (29/07/2026): a versao anterior jogava a diferenca "no dia mais recente".
   // O painel abre com filter=all_time, entao a diferenca era o ACUMULADO DA VIDA INTEIRA , e ele
-  // aparecia como se fosse HOJE. No admin, filtro "Hoje" mostrava a FFF com 122 vendas / $326.46
-  // e ZERO cliques, enquanto a Apex (firma nº1) fazia 4. Os numeros nem fechavam: 122 + 3 = 125
-  // contra 122 orders oficiais. Distribuir um total acumulado sobre um dia e' inventar dado , e o
-  // painel inteiro existe pra decidir gasto de anuncio por dia.
+  // aparecia como se fosse HOJE. No admin, filtro "Hoje" mostrava a FFF com 122 vendas e ZERO
+  // cliques, enquanto a Apex (firma nº1) fazia 4.
+  // A SOMA estava CERTA (122 + 3 = 125 = Total Orders do painel). O defeito era so a
+  // DISTRIBUICAO: um acumulado espalhado num unico dia. Nao confundir os dois , eu inflei esse
+  // diagnostico pra "matematica quebrada" sem conferir a soma, e nao era.
+  // Mesmo somando certo, e' inventar dado: o painel existe pra decidir gasto de anuncio POR DIA.
   //
   // AGORA: o total oficial vai numa linha PROPRIA com granularity 'total'. Ela nao e' um dia e nao
   // pode ser somada em filtro de periodo (o admin exclui o que nao for 'day'). As linhas por dia

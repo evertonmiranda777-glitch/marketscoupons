@@ -71,7 +71,8 @@ serve(async (req) => {
     //  - Apex/Bulenox: o CSV traz uma linha "monthly summary" com granularity='month' e
     //    date=1o do mes, que colidia com o dia 01 e dobrava o dashboard.
     //  - FFF (29/07/2026): a extensao jogava o total all_time "no dia mais recente" e o
-    //    filtro "Hoje" mostrava 122 vendas / $326.46 com ZERO cliques (a Apex fez 4).
+    //    filtro "Hoje" mostrava 122 vendas com ZERO cliques (a Apex, nº1, fez 4). A soma
+    //    batia com o painel (122+3=125 orders); o defeito era a DISTRIBUICAO num dia so.
     //
     // Por isso a regra virou ALLOWLIST, nao blocklist: passa somente o que e' declarado
     // como dia. Agregado e' DESCARTADO e contado na resposta , descartar calado esconderia
@@ -100,7 +101,7 @@ serve(async (req) => {
     // 🚨 RECUSA O FORMATO ANTIGO DA FFF (extensao <= v0.4.8).
     // A v0.4.8 fundia o total ALL_TIME do painel "no dia mais recente" e mandava tudo
     // etiquetado granularity='day' , indistinguivel de dado diario legitimo aqui na borda.
-    // Sintoma em 29/07/2026: filtro "Hoje" no admin mostrava a FFF com 122 vendas / $326.46
+    // Sintoma em 29/07/2026: filtro "Hoje" no admin mostrava a FFF com 122 vendas
     // e ZERO cliques, enquanto a Apex (firma nº1) fazia 4. E como a aba aberta re-sincroniza
     // a cada 2min, corrigir no banco NAO resolvia: a extensao velha reescrevia em 60s.
     //

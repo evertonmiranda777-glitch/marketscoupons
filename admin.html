@@ -4072,7 +4072,7 @@ async function renderFinanceiro(){
   const [statsRes, leadsRes, spendRes] = await Promise.all([statsQ, leadsQ, spendQ]);
   // Só linha de DIA entra em filtro de período. Linha agregada (total do painel, resumo
   // mensal do CSV) tem uma data gravada mas NÃO representa aquele dia — somar infla.
-  // Foi assim que a FFF apareceu com 122 vendas / $326.46 e ZERO cliques no filtro "Hoje"
+  // Foi assim que a FFF apareceu com 122 vendas e ZERO cliques no filtro "Hoje"
   // em 29/07/2026 (o acumulado all_time do painel carimbado como hoje). A `finance-sync`
   // já rejeita isso na entrada; este filtro cobre o que ficou gravado ANTES do fix.
   // `raw.granularity` ausente = 'day' (parsers antigos de Apex/Bulenox/FTMO não mandavam).
