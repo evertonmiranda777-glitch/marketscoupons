@@ -4206,7 +4206,30 @@ async function renderCriativosRanking(sinceDate, untilDate, fxUSDtoBRL){
   }
 }
 
-async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
+async 
+// ── Nome de campanha: normaliza ANTES de virar chave de agrupamento ──────────
+// O Instagram anexa "_seeall" ao utm_campaign quando o clique vem do "ver mais"
+// do perfil. A campanha e a MESMA, so o rotulo vem sujo — mas o cruzamento
+// gasto x venda e por nome exato, entao a venda com sufixo nao achava a campanha
+// e ficava FORA do ROAS dela. Em 29/07 isso tirava 5 campanhas do relatorio,
+// entre elas as duas que mais gastam ([RMKT][PAISES][NEWSCRIATIVOS] e
+// [LEADS][APEX][EUA][DAY]).
+//
+// Normaliza na LEITURA, nao na escrita: conserta o historico inteiro de uma vez
+// e nao mexe em dado ja gravado. O sufixo continua no banco pra quem quiser ver
+// de onde veio o clique.
+function normCampanha(nome) {
+  // regex DENTRO da funcao de proposito: `function` e icado, `const` nao —
+  // com o padrao la fora, qualquer chamada antes daquela linha estouraria TDZ.
+  const sufixos = /_(seeall|see_all|profile|bio|linkinbio)$/i;
+  let n = String(nome || '').trim();
+  if (!n) return '';
+  let antes;
+  do { antes = n; n = n.replace(sufixos, ''); } while (n !== antes);  // pode vir empilhado
+  return n;
+}
+
+function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
   const tbl = document.getElementById('fin-roas-keywords');
   if (!tbl) return;
   // affiliate_keyword_stats = valores CUMULATIVOS (lifetime) do painel Apex/Bulenox.
@@ -4241,7 +4264,7 @@ async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
   // Agregar spend por campaign_name.lowercase (igual ao formato mcBuildKeyword que normaliza)
   const spendByKw = {};
   spend.forEach(s => {
-    const k = String(s.campaign_name||'').toLowerCase().replace(/[^a-z0-9_\-]/g,'_').slice(0,40);
+    const k = String(normCampanha(s.campaign_name)).toLowerCase().replace(/[^a-z0-9_\-]/g,'_').slice(0,40);
     if (!k) return;
     if (!spendByKw[k]) spendByKw[k] = { spend:0, clicks:0, currency:s.currency||'USD' };
     spendByKw[k].spend += Number(s.spend||0);
@@ -4359,7 +4382,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
   // Group by utm_campaign
   const byCamp = {};
   attrs.forEach(a => {
-    const camp = a.utm_campaign || '(sem utm)';
+    const camp = normCampanha(a.utm_campaign) || '(sem utm)';
     if (!byCamp[camp]) byCamp[camp] = { campaign:camp, source:a.utm_source||'', sales:0, revenueUSD:0, confs:[] };
     byCamp[camp].sales += 1;
     byCamp[camp].revenueUSD += Number(a.amount||0);
@@ -4370,7 +4393,7 @@ async function renderRoasReal(sinceIso, untilIso, sinceDate, untilDate, fxUSDtoB
   // Pra comparar 1:1 com 'Nosso' (vendas atribuidas), so faz sentido usar purchases.
   const spendByCamp = {};
   spend.forEach(s => {
-    const k = s.campaign_name || '(sem campaign)';
+    const k = normCampanha(s.campaign_name) || '(sem campaign)';
     if (!spendByCamp[k]) spendByCamp[k] = { spend:0, clicks:0, impressions:0, currency:s.currency||'USD', metaPurchases:0, metaLeads:0, metaConvValue:0 };
     spendByCamp[k].spend += Number(s.spend||0);
     spendByCamp[k].clicks += Number(s.clicks||0);
@@ -5337,8 +5360,8 @@ async function renderAnalytics() {
   const campTbl = document.getElementById('tbl-campaigns');
   if (campTbl) {
     const campaigns = {};
-    leads.forEach(l => { const c = l.utm_campaign || '(sem campanha)'; if (!campaigns[c]) campaigns[c] = { leads:0, checkouts:0, spend:0 }; campaigns[c].leads++; });
-    eType('checkout_click').forEach(e => { const ev = leads.find(l => l.email === e.params?.email); const c = ev?.utm_campaign || e.utm_campaign || '(sem campanha)'; if (!campaigns[c]) campaigns[c] = { leads:0, checkouts:0, spend:0 }; campaigns[c].checkouts++; });
+    leads.forEach(l => { const c = normCampanha(l.utm_campaign) || '(sem campanha)'; if (!campaigns[c]) campaigns[c] = { leads:0, checkouts:0, spend:0 }; campaigns[c].leads++; });
+    eType('checkout_click').forEach(e => { const ev = leads.find(l => l.email === e.params?.email); const c = normCampanha(ev?.utm_campaign || e.utm_campaign) || '(sem campanha)'; if (!campaigns[c]) campaigns[c] = { leads:0, checkouts:0, spend:0 }; campaigns[c].checkouts++; });
     spends.forEach(s => { const c = s.campaign; if (campaigns[c]) campaigns[c].spend += parseFloat(s.spend_usd||0); });
     const rows = Object.entries(campaigns).sort((a,b) => b[1].checkouts - a[1].checkouts);
     campTbl.innerHTML = `<thead><tr><th>Campanha</th><th>Leads</th><th>Checkouts</th><th>Conversão</th><th>Gasto</th><th>Custo/Lead</th></tr></thead>
@@ -5577,7 +5600,7 @@ async function renderROI(ev, days) {
   let totalRevenue = 0;
   attributions.forEach(a => {
     const src = _normSource(a.utm_source || '');
-    const camp = a.utm_campaign || '';
+    const camp = normCampanha(a.utm_campaign) || '';
     const amt = Number(a.amount || 0);
     if (!amt) return;
     totalRevenue += amt;
@@ -5617,7 +5640,7 @@ async function renderROI(ev, days) {
     metaSpendBRL += amtBRL;
     metaClicks += (s.clicks||0);
     metaImpressions += (s.impressions||0);
-    const key = s.campaign_name || '(sem campaign)';
+    const key = normCampanha(s.campaign_name) || '(sem campaign)';
     if(!metaByCampaign[key]) metaByCampaign[key] = { amount:0, clicks:0, impressions:0 };
     metaByCampaign[key].amount += amtBRL;
     metaByCampaign[key].clicks += (s.clicks||0);
@@ -5657,7 +5680,7 @@ async function renderROI(ev, days) {
   ev.forEach(e => {
     const rawSrc = e.utm_source || e.params?.utm_source || '';
     const src = _normSource(rawSrc);
-    const camp = e.utm_campaign || e.params?.utm_campaign || '';
+    const camp = normCampanha(e.utm_campaign || e.params?.utm_campaign) || '';
     if(!src) return;
     if(!convBySource[src]) convBySource[src] = { pv:0, detail:0, coupon:0, checkout:0, signup:0 };
     if(e.event==='page_view') { convBySource[src].pv++; totalPV++; }
@@ -13880,7 +13903,7 @@ async function renderCouponAttribution(sinceIso, untilIso){
     }
     const grp = {};
     rows.forEach(r => {
-      const camp = r.utm_campaign || (r.fbclid ? '(meta-direct)' : '(organico)');
+      const camp = normCampanha(r.utm_campaign) || (r.fbclid ? '(meta-direct)' : '(organico)');
       const src = r.utm_source || (r.fbclid ? 'facebook' : (r.gclid ? 'google' : (r.referrer ? 'referral' : 'direct')));
       const med = r.utm_medium || (r.fbclid||r.gclid ? 'cpc' : (r.referrer ? 'referral' : 'none'));
       const key = [camp, src, med, r.firm_id||'', r.coupon_code||''].join('|');
