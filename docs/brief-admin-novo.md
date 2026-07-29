@@ -46,7 +46,12 @@ Campos que a UI precisa tratar com cuidado:
 - `discount`, `discount_type` (`lifetime`/`flash`), `disc_note`, `promo_label`, `promo_ends_at`
 - `kb` (texto longo, até 60k) — **NUNCA carregar no frontend público**, só no admin
 
-## 3. O que o admin ATUAL faz (31 páginas, 9 seções)
+## 3. O que o admin ATUAL faz
+
+> **O detalhe página a página está em [brief-admin-inventario.md](brief-admin-inventario.md)** —
+> os 37 containers de página com os botões e handlers reais de cada um. Leia junto: esta
+> tabela é só o mapa; o inventário é o que não pode sumir.
+
 
 O novo não precisa clonar tudo, mas nada pode sumir sem decisão explícita.
 
