@@ -4206,7 +4206,7 @@ async function renderCriativosRanking(sinceDate, untilDate, fxUSDtoBRL){
   }
 }
 
-async 
+
 // ── Nome de campanha: normaliza ANTES de virar chave de agrupamento ──────────
 // O Instagram anexa "_seeall" ao utm_campaign quando o clique vem do "ver mais"
 // do perfil. A campanha e a MESMA, so o rotulo vem sujo — mas o cruzamento
@@ -4229,7 +4229,7 @@ function normCampanha(nome) {
   return n;
 }
 
-function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
+async function renderRoasKeywords(sinceDate, untilDate, fxUSDtoBRL, spendCur){
   const tbl = document.getElementById('fin-roas-keywords');
   if (!tbl) return;
   // affiliate_keyword_stats = valores CUMULATIVOS (lifetime) do painel Apex/Bulenox.
