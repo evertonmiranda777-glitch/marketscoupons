@@ -13183,34 +13183,57 @@ let lastLeadCount = 0;
 let lastProofCount = 0;
 
 async function pollForUpdates() {
+  // ── Por que esta funcao foi reescrita (29/07/2026) ────────────────────────
+  // A versao antiga baixava a TABELA INTEIRA a cada 30s so pra comparar a
+  // CONTAGEM e saber se tinha lead novo: email_subscribers.select('*') com
+  // 24.509 linhas / 8,6 MB, mais events.select('*') com 2.000 linhas.
+  // Deu 33.566 + 33.525 chamadas no pg_stat_statements e estourou o orcamento
+  // de Disk IO do projeto (2o aviso da Supabase).
+  //
+  // A linha JA TEM created_at. Entao pergunta so o que interessa: "o que entrou
+  // DEPOIS da ultima vez?". Sem novidade, volta ZERO linha e o custo e ~nada.
+  // Com novidade, volta a linha de verdade — e o nome do lead continua na
+  // notificacao, que a versao por contagem perderia.
+  if (document.hidden) return;   // aba em segundo plano nao consulta banco
+
   try {
-    // Fetch fresh data from Supabase
-    const { data: freshLeads } = await db.from('email_subscribers').select('*').order('created_at', { ascending: false }).limit(500);
-    if(freshLeads && freshLeads.length > lastLeadCount && lastLeadCount > 0) {
-      const newLead = freshLeads[0];
-      pushNotif('new_lead','Leads','Novo lead: '+(newLead.name||newLead.email)+' ('+(newLead.tool||'direto')+')','lead');
-      localStorage.setItem('mc_leads', JSON.stringify(freshLeads));
-      const active = document.querySelector('.admin-page.active')?.id?.replace('page-','');
-      if(active) renderPage(active);
+    if (!window._ultimoLeadTs) {
+      // 1a rodada: pega SO a linha mais nova pra marcar o ponto de partida
+      const { data } = await db.from('email_subscribers')
+        .select('created_at').order('created_at', { ascending: false }).limit(1);
+      window._ultimoLeadTs = data?.[0]?.created_at || new Date().toISOString();
+    } else {
+      const { data: novos } = await db.from('email_subscribers')
+        .select('email,name,tool,created_at')
+        .gt('created_at', window._ultimoLeadTs)
+        .order('created_at', { ascending: false }).limit(20);
+      if (novos && novos.length) {
+        window._ultimoLeadTs = novos[0].created_at;
+        const l = novos[0];
+        const extra = novos.length > 1 ? ' (+' + (novos.length - 1) + ')' : '';
+        pushNotif('new_lead', 'Leads', 'Novo lead: ' + (l.name || l.email) + ' (' + (l.tool || 'direto') + ')' + extra, 'lead');
+        // so re-renderiza quando REALMENTE mudou
+        const active = document.querySelector('.admin-page.active')?.id?.replace('page-', '');
+        if (active) renderPage(active);
+      }
     }
-    if(freshLeads) lastLeadCount = freshLeads.length;
-  } catch(e) {}
+  } catch (e) {}
+
   try {
     const pending = await getLoyaltyPendingAdmin();
-    const pendingCount = (pending||[]).filter(p=>p.status==='pending').length;
-    if(pendingCount > lastProofCount && lastProofCount > 0) {
-      pushNotif('new_proof','Fidelidade','Novo comprovante aguardando validação','proof');
+    const pendingCount = (pending || []).filter(p => p.status === 'pending').length;
+    if (pendingCount > lastProofCount && lastProofCount > 0) {
+      pushNotif('new_proof', 'Fidelidade', 'Novo comprovante aguardando validação', 'proof');
     }
     lastProofCount = pendingCount;
-  } catch(e) {}
-  // Also refresh events silently
-  try {
-    const { data: freshEvents } = await db.from('events').select('*').order('created_at', { ascending: false }).limit(2000);
-    if(freshEvents) localStorage.setItem('mc_events', JSON.stringify(freshEvents));
-  } catch(e) {}
-  // Update alert banners (loyalty badge DESATIVADO, query órfã esgotava Disk IO)
-  const activePage = document.querySelector('.admin-page.active')?.id?.replace('page-','');
-  if(activePage === 'overview') renderAlerts();
+  } catch (e) {}
+
+  // events NAO e mais consultada aqui: a escrita nessa tabela esta DESLIGADA
+  // desde 30/jun (kill-switch do 522), entao ela nunca muda — eram 2.000 linhas
+  // lidas a cada 30s pra nada. Quem precisa dela carrega ao abrir a pagina.
+
+  const activePage = document.querySelector('.admin-page.active')?.id?.replace('page-', '');
+  if (activePage === 'overview') renderAlerts();
 }
 
 /* Initialize polling and notifications */
@@ -13221,7 +13244,7 @@ document.addEventListener('DOMContentLoaded', () => {
   getLoyaltyPendingAdmin().then(arr => {
     lastProofCount = (arr||[]).filter(p=>p.status==='pending').length;
   }).catch(() => { lastProofCount = 0; });
-  setInterval(pollForUpdates, 30000);
+  setInterval(pollForUpdates, 120000);
 });
 
 
