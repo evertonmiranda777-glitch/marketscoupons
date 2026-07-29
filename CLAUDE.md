@@ -8,6 +8,14 @@
 
 ---
 
+## 🏗️ EM ANDAMENTO (29/jul) — SITE NOVO, LP NOVA E ADMIN NOVO
+
+**O Claude Design está construindo os três.** Meu papel é **CONECTAR no Supabase depois, não construir.** Briefs que eu escrevi, commitados: **[docs/brief-admin-novo.md](docs/brief-admin-novo.md)** (o que fazer + regras duras + o que FALTA) e **[docs/brief-admin-inventario.md](docs/brief-admin-inventario.md)** (as **37 páginas** do admin atual, botão por botão — a 1ª versão só tinha os NOMES e o Everton pegou). ⚠️ **NÃO consigo abrir link do `claude.ai/design`** (é da conta dele) — pedir o HTML, nunca fingir que vi. **Migração POR PARTES:** Firmas → Criativos → E-mail → Analytics/Financeiro → Conteúdo/Site/Config; o admin velho fica no ar até cada pedaço ser conferido. **`/apex` é o checkout que ele desenhou — mantém.** A seção "Site" (15 sub-abas) edita blocos do layout ANTIGO e provavelmente morre junto. **~3.000 páginas indexadas exigem plano de 301** (404 perde posição por meses). Detalhe: [[project_site_novo_claude_design]].
+
+**📈 PESQUISA DE TENDÊNCIA = NAVEGADOR, NÃO SCRIPT (LEI 29/jul):** a skill `content-ideas-free` tem o caminho automático **bloqueado nesta máquina** — o **mesmo `channel_id`** dá **404 no Python e 200 no navegador**, e o X entra em **429** nas 5 contas depois de 1 rodada. Usar **busca do YouTube pelo Playwright**: `youtube.com/results?search_query=<termo>&sp=EgQIAxAB` (7 dias) + esperar ~4s pelo lazy load antes de ler os `ytd-video-renderer`. ⚠️ **Nunca escolher canal por nome** — montei watchlist de "prop firm" e peguei um canal de **70 inscritos**. Conferir inscritos/views antes. Detalhe: [[reference_pesquisa_tendencia_conteudo]].
+
+---
+
 ## ⚡ LEIS 28/jul, parte 2 (segurança do CI + canal de disparo + prazo de pendência)
 
 **🔐 SERVICE ROLE NÃO ENTRA EM CI. NUNCA.** Ela ignora RLS = lê e escreve o banco **inteiro**, e só se revoga rotacionando o projeto. O verificador fala com a Edge Function **`firms-check`** (auth = header `X-Firms-Token`, secret `FIRMS_CHECK_TOKEN`): **GET** traz todas as firms **inclusive `ativo=false`**; **POST `{slug,motivo}`** só desativa (`ativo=false` + `needs_review=true`). **Allowlist explícita: qualquer outro campo devolve 400, não é ignorado calado** (ignorar esconderia sequestro de afiliado). O UPDATE é literal, dois booleanos — nenhum valor vem do corpo. **A função não sabe reativar, de propósito.** Pior caso de vazar o token: alguém desativa uma firma. ⚠️ **PENDENTE: cadastrar `FIRMS_CHECK_TOKEN` no GitHub (Settings → Secrets → Actions).**
