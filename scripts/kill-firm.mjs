@@ -199,3 +199,27 @@ if (!vt) {
 console.log(`\nCONFIRA (301 esperado nos dois):`);
 console.log(`  curl -sI https://www.marketscoupons.com/${slug} | head -1`);
 console.log(`  curl -sI https://www.marketscoupons.com/apex-vs-${slug} | head -1\n`);
+
+// ---------------------------------------------------------------------------
+// O MAX NAO SAI SOZINHO. Este script mexe em banco, paginas e rotas , NAO no
+// prompt do bot. O `getFirmKB()` do api/bot.js busca a KB por id SEM filtrar
+// `active`, e o BOT_SYSTEM traz a firma escrita a mao com cupom e tabela de
+// preco. Resultado real (Goat, 28/07 -> 29/07): a firma saiu do site e o Max
+// continuou 24h recomendando ela com cupom e preco.
+// Por isso a checagem abaixo e ruidosa de proposito.
+// ---------------------------------------------------------------------------
+if (!UNDO) {
+  const bot = path.join(ROOT, 'api', 'bot.js');
+  const txt = fs.existsSync(bot) ? fs.readFileSync(bot, 'utf8') : '';
+  const citado = txt.includes(`{{CUP:${slug}}}`) || new RegExp(`\\b${slug}\\b`, 'i').test(txt);
+  if (citado) {
+    console.log(`FALTA O MAX , 'api/bot.js' ainda cita "${slug}".`);
+    console.log(`  1) no BOT_SYSTEM, troque o bloco da firma por instrucao de DELISTED`);
+    console.log(`     (nunca recomendar, nunca cotar cupom/preco, NUNCA dizer o motivo)`);
+    console.log(`  2) tire o slug de listas tipo "rota sem taxa de ativacao"`);
+    console.log(`  3) prefixe cms_firms.kb com o aviso de delistada (o KB entra sem filtro de active)`);
+    console.log(`  4) prove em producao: curl -X POST .../api/bot pedindo o cupom da firma\n`);
+  } else {
+    console.log(`Max: 'api/bot.js' nao cita mais "${slug}". ok\n`);
+  }
+}
