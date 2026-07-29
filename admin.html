@@ -4070,7 +4070,14 @@ async function renderFinanceiro(){
   let leadsQ = db.from('affiliate_conversions').select('*').gte('created_at', sinceIso).lte('created_at', untilIso).order('created_at',{ascending:false}).limit(50);
   let spendQ = db.from('ad_spend_daily').select('*').gte('date', sinceDate).lte('date', untilDate);
   const [statsRes, leadsRes, spendRes] = await Promise.all([statsQ, leadsQ, spendQ]);
-  const stats = statsRes.data || [];
+  // Só linha de DIA entra em filtro de período. Linha agregada (total do painel, resumo
+  // mensal do CSV) tem uma data gravada mas NÃO representa aquele dia — somar infla.
+  // Foi assim que a FFF apareceu com 122 vendas / $326.46 e ZERO cliques no filtro "Hoje"
+  // em 29/07/2026 (o acumulado all_time do painel carimbado como hoje). A `finance-sync`
+  // já rejeita isso na entrada; este filtro cobre o que ficou gravado ANTES do fix.
+  // `raw.granularity` ausente = 'day' (parsers antigos de Apex/Bulenox/FTMO não mandavam).
+  const _ehDia = r => { const g = r && r.raw && r.raw.granularity; return g == null || String(g) === 'day'; };
+  const stats = (statsRes.data || []).filter(_ehDia);
   const leads = leadsRes.data || [];
   const spend = spendRes.data || [];
 

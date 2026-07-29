@@ -116,26 +116,38 @@ async function mcSyncFFF(opts = {}) {
   const rows = Object.values(byDay);
 
   // RECONCILIA com o total OFICIAL do painel FFF ("Total Purchase/Grand Total Commission" +
-  // "Total Orders") = numero ESTAVEL. A raspagem linha-a-linha e' furada (a tabela pagina/mostra
-  // so ~25 sem filtro), entao NAO da pra confiar na soma das linhas. Se o total oficial vier,
-  // joga a diferenca no dia mais recente e marca fff_replace (a finance-sync substitui TUDO da FFF,
-  // senao o acumulo parcial infla). O rotulo "...Commission" NUNCA casa "Total Sales", entao confio
-  // no valor (sanidade so >0 e <100k). Sem o guard de proporcao velho, que matava com poucas linhas.
+  // "Total Orders"). A raspagem linha-a-linha e' furada (a tabela pagina/mostra so ~25), entao a
+  // soma das linhas SUBCONTA e o total oficial e' o numero confiavel de acumulado.
+  //
+  // 🚨 COMO ISSO QUEBROU (29/07/2026): a versao anterior jogava a diferenca "no dia mais recente".
+  // O painel abre com filter=all_time, entao a diferenca era o ACUMULADO DA VIDA INTEIRA , e ele
+  // aparecia como se fosse HOJE. No admin, filtro "Hoje" mostrava a FFF com 122 vendas / $326.46
+  // e ZERO cliques, enquanto a Apex (firma nº1) fazia 4. Os numeros nem fechavam: 122 + 3 = 125
+  // contra 122 orders oficiais. Distribuir um total acumulado sobre um dia e' inventar dado , e o
+  // painel inteiro existe pra decidir gasto de anuncio por dia.
+  //
+  // AGORA: o total oficial vai numa linha PROPRIA com granularity 'total'. Ela nao e' um dia e nao
+  // pode ser somada em filtro de periodo (o admin exclui o que nao for 'day'). As linhas por dia
+  // ficam com o que foi REALMENTE raspado , subcontam, e subcontar e' honesto; inflar nao e'.
   let fffReplace = false;
   try {
     const sm = mcFFFScrapeSummary();
-    const curC = rows.reduce((a, r) => a + (Number(r.commission) || 0), 0);
-    const curT = rows.reduce((a, r) => a + (Number(r.transactions) || 0), 0);
-    if (sm.total != null && sm.total > 0 && sm.total < 100000 && sm.total > curC + 0.01) {
-      let tgt = rows.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
-      if (!tgt) { tgt = { date: new Date().toISOString().slice(0, 10), transactions: 0, commission: 0, granularity: 'day' }; rows.push(tgt); }
-      tgt.commission = Math.round((Number(tgt.commission || 0) + (sm.total - curC)) * 100) / 100;
-      if (sm.orders && sm.orders > curT) tgt.transactions = Number(tgt.transactions || 0) + (sm.orders - curT);
-      fffReplace = true; // reconciliou com o oficial -> pode substituir tudo com seguranca
+    if (sm.total != null && sm.total > 0 && sm.total < 100000) {
+      rows.push({
+        date: new Date().toISOString().slice(0, 10),
+        transactions: Number(sm.orders) || 0,
+        commission: Math.round(Number(sm.total) * 100) / 100,
+        granularity: 'total', // <- NAO e' um dia. Acumulado oficial do painel (all_time).
+      });
+      fffReplace = true; // leu o oficial -> pode substituir tudo da FFF com seguranca
     }
   } catch (_) {}
 
-  const out = await mcSendFFF({ firm: 'funded-futures-family', source: 'ext_fff_v1', snapshot: null, rows, leads, fff_replace: fffReplace });
+  // `parser_version` existe pra finance-sync poder RECUSAR o formato antigo. Sem isso o
+  // lote da v0.4.8 (total all_time fundido num dia, etiquetado 'day') e' indistinguivel de
+  // dado diario legitimo na borda da API, e uma aba velha aberta re-sincroniza a cada 2min
+  // e desfaz qualquer correcao feita no servidor , foi o que aconteceu em 29/07.
+  const out = await mcSendFFF({ firm: 'funded-futures-family', source: 'ext_fff_v1', snapshot: null, rows, leads, fff_replace: fffReplace, parser_version: '0.4.9' });
   if (out.ok) { mcToastFFF(`FFF: ${leads.length} raspadas, ${out.leads_saved ?? '?'} gravadas`); await mcMarkFFF('fff'); }
   else { mcToastFFF('FFF: erro, ' + (out.error || '?')); }
   return out;

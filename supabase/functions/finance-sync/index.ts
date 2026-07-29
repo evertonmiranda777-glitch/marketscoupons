@@ -63,11 +63,28 @@ serve(async (req) => {
   const out: any = { ok: true, firm };
 
   if (rows.length) {
+    // `affiliate_daily_stats` guarda SO dia de calendario. A chave de upsert e'
+    // (firm_id, date), entao qualquer linha AGREGADA que chegue com uma data ocupa o
+    // lugar do dia real e vira um numero inventado no filtro de periodo.
+    //
+    // Historico das duas vezes que isso mordeu:
+    //  - Apex/Bulenox: o CSV traz uma linha "monthly summary" com granularity='month' e
+    //    date=1o do mes, que colidia com o dia 01 e dobrava o dashboard.
+    //  - FFF (29/07/2026): a extensao jogava o total all_time "no dia mais recente" e o
+    //    filtro "Hoje" mostrava 122 vendas / $326.46 com ZERO cliques (a Apex fez 4).
+    //
+    // Por isso a regra virou ALLOWLIST, nao blocklist: passa somente o que e' declarado
+    // como dia. Agregado e' DESCARTADO e contado na resposta , descartar calado esconderia
+    // exatamente este bug. `granularity` ausente conta como 'day' por compatibilidade com
+    // os parsers antigos (Apex/Bulenox/FTMO) que nunca mandaram o campo.
+    const ehDia = (r: any) => { const g = r.granularity == null ? 'day' : String(r.granularity); return g === 'day'; };
+    const agregadas = rows.filter((r: any) => r && r.date && !ehDia(r));
+    if (agregadas.length) {
+      out.aggregated_rows_dropped = agregadas.length;
+      out.aggregated_kinds = [...new Set(agregadas.map((r: any) => String(r.granularity)))];
+    }
     const normalized = rows
-      // Drop monthly summary rows from affiliate panels (Apex/Bulenox CSV includes them).
-      // They have granularity='month' and date=firstDayOfMonth, which collides with the day-1 daily row
-      // under the (firm_id,date) upsert key, corrupting the day-1 value with the full month total.
-      .filter(r => r && r.date && r.granularity !== 'month')
+      .filter(r => r && r.date && ehDia(r))
       .map(r => ({
         firm_id: firm,
         date: r.date,
@@ -80,11 +97,37 @@ serve(async (req) => {
         raw: { granularity: r.granularity || 'day', affiliate_id: body.affiliate_id || null, ...r }
       }));
 
+    // 🚨 RECUSA O FORMATO ANTIGO DA FFF (extensao <= v0.4.8).
+    // A v0.4.8 fundia o total ALL_TIME do painel "no dia mais recente" e mandava tudo
+    // etiquetado granularity='day' , indistinguivel de dado diario legitimo aqui na borda.
+    // Sintoma em 29/07/2026: filtro "Hoje" no admin mostrava a FFF com 122 vendas / $326.46
+    // e ZERO cliques, enquanto a Apex (firma nº1) fazia 4. E como a aba aberta re-sincroniza
+    // a cada 2min, corrigir no banco NAO resolvia: a extensao velha reescrevia em 60s.
+    //
+    // O discriminador e' de VERSAO, nao heuristica de proporcao (guard de proporcao ja foi
+    // tentado e matava dado correto quando havia poucas linhas). fff_replace=true significa
+    // "reconciliei com o total oficial"; a partir da v0.4.9 esse total vem em linha propria
+    // com granularity='total' (e e' descartado acima). Se veio fff_replace sem parser_version,
+    // e' a extensao velha: RECUSA o lote inteiro e diz o que fazer. Melhor sem dado que com
+    // dado inventado , e o erro aparece no toast da extensao.
+    if (
+      firm === "funded-futures-family" &&
+      body.fff_replace === true &&
+      !body.parser_version
+    ) {
+      return json({
+        error: "extensao_desatualizada",
+        detalhe:
+          "A extensao MarketsCoupons Sync esta na v0.4.8, que grava o total acumulado da FFF como se fosse venda de hoje. Recarregue a extensao em chrome://extensions (deve virar 0.4.9) e de F5 na aba do painel da FFF.",
+        rows_rejected: rows.length,
+      }, 409);
+    }
+
     if (normalized.length) {
-      // FFF REPLACE: a raspagem da FFF e' parcial (a tabela pagina, mostra ~25 sem filtro), entao
-      // a extensao ja RECONCILIOU o total com o painel oficial ("Grand Total Commission") e manda
-      // fff_replace:true. Aqui apagamos TUDO da FFF antes de inserir o lote reconciliado, senao os
-      // dias antigos de scrapes parciais somam por cima e o total infla/desfaz. So p/ FFF + reconciliado.
+      // FFF REPLACE: a raspagem da FFF e' parcial (a tabela pagina, mostra ~25 sem filtro).
+      // A v0.4.9 manda as linhas por dia com o que foi REALMENTE raspado + o total oficial em
+      // linha separada (granularity='total', descartada acima). Apagamos tudo da FFF antes de
+      // inserir pra scrape parcial antigo nao somar por cima. So p/ FFF + reconciliado.
       if (body.fff_replace === true && firm === "funded-futures-family") {
         await sb.from("affiliate_daily_stats").delete().eq("firm_id", firm);
       }
