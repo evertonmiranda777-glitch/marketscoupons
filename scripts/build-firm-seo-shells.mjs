@@ -26,7 +26,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'firms');
 const SBP = process.env.SUPABASE_ACCESS_TOKEN || '';
-const SR = process.env.SUPABASE_SERVICE_ROLE || '';
+const SR = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
 const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const PROJECT_REF = 'qfwhduvutfumsaxnuofa';
 if (!SR && !SBP) { console.error('SUPABASE_ACCESS_TOKEN ou SUPABASE_SERVICE_ROLE obrigatorio'); process.exit(1); }

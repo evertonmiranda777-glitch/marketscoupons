@@ -24,7 +24,7 @@ import { mergeAffiliate } from './lib/firms-source.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const SBP = process.env.SUPABASE_ACCESS_TOKEN || '';
-const SR = process.env.SUPABASE_SERVICE_ROLE || '';
+const SR = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
 const PREVIEW = process.env.PREVIEW || '';
 const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const PROJECT_REF = 'qfwhduvutfumsaxnuofa';

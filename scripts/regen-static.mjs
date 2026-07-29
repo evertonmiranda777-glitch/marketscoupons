@@ -102,13 +102,22 @@ async function main() {
     try { antigo = JSON.parse(fs.readFileSync(ESTADO, 'utf8')); } catch { /* corrompido = regera */ }
   }
   fs.mkdirSync(path.dirname(ESTADO), { recursive: true });
-  fs.writeFileSync(ESTADO, JSON.stringify(novo, null, 2) + '\n', 'utf8');
+  // ATENCAO: o estado e' gravado SO DEPOIS que a geracao termina bem (fim desta
+  // funcao). Gravar aqui foi bug real em 29/07: o build-firm-pages.mjs abortou
+  // por falta de env, o hash novo ja estava salvo, e a rodada seguinte disse
+  // "tabela inalterada, nada pra regerar" com as paginas VELHAS em disco , o
+  // exato modo de falha que este script existe pra impedir. Carimbar sucesso
+  // antes de ter sucesso transforma o guarda em mentira.
 
   console.log(`firms.json: ${snap.length} firmas`);
   console.log(`  afiliado: ${antigo.afiliado || 'ausente'} -> ${novo.afiliado}`);
   console.log(`  conteudo: ${antigo.conteudo || 'ausente'} -> ${novo.conteudo || '(sem acesso ao cms_firms)'}`);
 
-  if (process.argv.includes('--snapshot')) return;
+  const salvarEstado = () => {
+    fs.writeFileSync(ESTADO, JSON.stringify(novo, null, 2) + '\n', 'utf8');
+  };
+
+  if (process.argv.includes('--snapshot')) { salvarEstado(); return; }
 
   // Sem conseguir ler o conteudo, regera: assumir "nada mudou" e o erro caro.
   const mudou = novo.conteudo == null
@@ -123,6 +132,10 @@ async function main() {
   run('node', ['scripts/build-firm-pages.mjs']);            // seo/ + <lang>/seo/
   for (const l of LANGS_COMPARE) run('node', ['scripts/build-compare-pages.mjs', l]);
   run('node', ['scripts/build-guides.js']);                 // guides/ + <lang>/guides/
+
+  // Chegou aqui = os tres geradores terminaram sem lancar. So agora o estado
+  // pode dizer "as paginas em disco correspondem a estes hashes".
+  salvarEstado();
 
   console.log('\nPronto. Rode `python3 check_pages.py` pra conferir e depois deploye.');
 }

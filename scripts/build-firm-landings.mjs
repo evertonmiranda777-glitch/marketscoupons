@@ -32,7 +32,7 @@ const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'firms');
 
 // Aceita tanto SUPABASE_SERVICE_ROLE (JWT pra PostgREST) quanto SUPABASE_ACCESS_TOKEN (sbp_ pra Management API).
-const SR = process.env.SUPABASE_SERVICE_ROLE || '';
+const SR = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
 const SBP = process.env.SUPABASE_ACCESS_TOKEN || '';
 const SB_URL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const PROJECT_REF = 'qfwhduvutfumsaxnuofa';
