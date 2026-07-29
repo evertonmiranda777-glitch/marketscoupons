@@ -109,6 +109,35 @@ incluindo as seções PENDÊNCIAS ANTIGAS e CANDIDATAS A REATIVAÇÃO.
 Hoje é script no terminal (`scripts/kill-firm.mjs`). Vira botão, com aviso do que
 vai acontecer (quantas páginas, quantos redirects) e confirmação.
 
+### 4.5 Normalizar o nome da campanha ANTES de agrupar (não é opcional)
+
+O Instagram anexa **`_seeall`** ao `utm_campaign` quando o clique vem do "ver mais"
+do perfil. A campanha é **a mesma** — só o rótulo vem sujo. Mas o cruzamento
+gasto × venda é por **nome exato**: sem normalizar, a venda com sufixo não acha a
+campanha e **fica fora do ROAS dela**. O gasto aparece sem a receita que gerou.
+
+Medido no banco em 29/07: **9 vendas / US$ 26,30 órfãs**, incluindo as duas
+campanhas que mais gastam (`[RMKT][PAISES][NEWSCRIATIVOS]` e `[LEADS][APEX][EUA][DAY]`).
+
+```js
+function normCampanha(nome) {
+  const sufixos = /_(seeall|see_all|profile|bio|linkinbio)$/i;
+  let n = String(nome || '').trim();
+  if (!n) return '';
+  let antes;
+  do { antes = n; n = n.replace(sufixos, ''); } while (n !== antes);  // podem vir empilhados
+  return n;
+}
+```
+
+**Normalizar na LEITURA, nunca na escrita.** Na leitura conserta o histórico inteiro
+de uma vez e o sufixo continua no banco — dá pra saber de onde veio o clique. Na
+escrita só corrige daqui pra frente e joga a informação fora.
+
+Aplicar em **todo** ponto onde o nome vira chave de agrupamento: ROAS por campanha,
+gasto por campanha, keyword do painel da firma, leads por campanha, eventos e
+atribuições. No admin atual são 9 pontos.
+
 ## 5. Regras duras (violar = prejuízo real, não estética)
 
 1. **Dado de afiliado só vem da tabela `firms`.** Proibido escrever cupom, URL ou
@@ -123,6 +152,8 @@ vai acontecer (quantas páginas, quantos redirects) e confirmação.
 6. **Nada de emoji na UI.** SVG Feather sempre.
 7. **Mudou dado de firma → as ~3.000 páginas estáticas precisam ser regeradas.**
    O site lê o banco em runtime, as páginas não.
+8. **Nome de campanha SEMPRE passa por `normCampanha()` antes de virar chave.**
+   Sem isso o `_seeall` do Instagram tira a venda do ROAS da campanha (ver 4.5).
 
 ## 6. Armadilhas que já custaram caro aqui
 
