@@ -6842,15 +6842,15 @@ function toggleBot() {
 }
 function openBot() {botOpen = false;toggleBot();}
 const BOT_QUICK_ANSWERS = {
-  'bot_q_coupons': {
-    pt: `Sim! Esses são os cupons ativos agora:\n\n**APEX**, cupom **MARKET** → 90% OFF vitalício (25K sai por $19.90)\n**BULENOX**, cupom **MARKET89** → 89% OFF vitalício (25K sai por $15.95)\n**EARN2TRADE**, cupom **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, cupom **FLEX** → 47% OFF\n**FUNDINGPIPS**, cupom **HELLO** → 20% OFF\n**BRIGHTFUNDED**, cupom na aba Firmas → 20% OFF\n**E8 MARKETS**, cupom **E8** → up to 40% OFF\n**FTMO** e **THE5ERS** não tem cupom, mas oferecem trial grátis.\n\nTodos na aba **Ofertas** com link direto.`,
-    en: `Yes! Here are the active coupons right now:\n\n**APEX**, coupon **MARKET** → 90% OFF lifetime (25K for $19.90)\n**BULENOX**, coupon **MARKET89** → 89% OFF lifetime (25K for $15.95)\n**EARN2TRADE**, coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, coupon **FLEX** → 47% OFF\n**FUNDINGPIPS**, coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED**, coupon on Firms tab → 20% OFF\n**E8 MARKETS**, coupon **E8** → up to 40% OFF\n**FTMO** and **THE5ERS** have no coupon but offer a free trial.\n\nAll on the **Offers** tab with direct links.`,
-    es: `¡Sí! Estos son los cupones activos ahora:\n\n**APEX**, cupón **MARKET** → 90% OFF vitalicio (25K por $19.90)\n**BULENOX**, cupón **MARKET89** → 89% OFF vitalicio\n**EARN2TRADE**, cupón **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, cupón **FLEX** → 47% OFF\n**FUNDINGPIPS**, cupón **HELLO** → 20% OFF\n**BRIGHTFUNDED**, cupón en pestaña Firmas → 20% OFF\n**E8 MARKETS**, cupón **E8** → up to 40% OFF\n**FTMO** y **THE5ERS** no tienen cupón pero ofrecen prueba gratis.\n\nTodo en la pestaña **Ofertas**.`,
-    it: `Sì! Ecco i coupon attivi adesso:\n\n**APEX**, coupon **MARKET** → 90% OFF a vita (25K a $19.90)\n**BULENOX**, coupon **MARKET89** → 89% OFF a vita\n**EARN2TRADE**, coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, coupon **FLEX** → 47% OFF\n**FUNDINGPIPS**, coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED**, coupon nella scheda Firme → 20% OFF\n**E8 MARKETS**, coupon **E8** → up to 40% OFF\n**FTMO** e **THE5ERS** non hanno coupon ma offrono prova gratuita.\n\nTutto nella scheda **Offerte**.`,
-    fr: `Oui ! Voici les coupons actifs maintenant :\n\n**APEX**, coupon **MARKET** → 90% OFF à vie (25K à $19.90)\n**BULENOX**, coupon **MARKET89** → 89% OFF à vie\n**EARN2TRADE**, coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, coupon **FLEX** → 47% OFF\n**FUNDINGPIPS**, coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED**, coupon dans l'onglet Firmes → 20% OFF\n**E8 MARKETS**, coupon **E8** → up to 40% OFF\n**FTMO** et **THE5ERS** n'ont pas de coupon mais offrent un essai gratuit.\n\nTout dans l'onglet **Offres**.`,
-    de: `Ja! Hier sind die aktiven Coupons:\n\n**APEX**, Coupon **MARKET** → 90% OFF lebenslang (25K für $19.90)\n**BULENOX**, Coupon **MARKET89** → 89% OFF lebenslang\n**EARN2TRADE**, Coupon **MARKETSCOUPONS** → 60% OFF\n**FUNDEDNEXT**, Coupon **FLEX** → 47% OFF\n**FUNDINGPIPS**, Coupon **HELLO** → 20% OFF\n**BRIGHTFUNDED**, Coupon im Tab Firmen → 20% OFF\n**E8 MARKETS**, Coupon **E8** → up to 40% OFF\n**FTMO** und **THE5ERS** haben keinen Coupon, bieten aber eine kostenlose Testversion.\n\nAlles im Tab **Angebote**.`,
-    ar: `نعم! هذه الكوبونات النشطة الآن:\n\n**APEX**, كوبون **MARKET** → 90% خصم مدى الحياة (25K بـ $19.90)\n**BULENOX**, كوبون **MARKET89** → 89% خصم مدى الحياة\n**EARN2TRADE**, كوبون **MARKETSCOUPONS** → 60% خصم\n**FUNDEDNEXT**, كوبون **FLEX** → 30% خصم\n**FUNDINGPIPS**, كوبون **HELLO** → 20% خصم\n**BRIGHTFUNDED**, كوبون في تبويب الشركات → 20% خصم\n**E8 MARKETS**, كوبون **E8** → 40% خصم\n**FTMO** و **THE5ERS** بدون كوبون لكن يوفرون تجربة مجانية.\n\nالكل في تبويب **العروض**.`
-  },
+  // 'bot_q_coupons' saiu daqui DE PROPOSITO. Era texto chumbado em 8 idiomas, servido
+  // direto ao usuario pelo qmsg() SEM passar pela tabela, e estava no ar ERRADO:
+  //   - mandava digitar "E8" (codigo PUBLICO da E8, que NAO paga comissao) em vez de MARKET
+  //   - dizia que a FundedNext usa "FLEX" (cupom que nao existe)
+  //   - Earn2Trade 60% quando e 50%; BrightFunded 20% quando e 30%
+  //   - "FTMO e The5ers nao tem cupom" , a The5ers tem (MARKET, 5%)
+  //   - citava 7 firmas de 18, e o arabe dizia FundedNext 30% enquanto o PT dizia 47%
+  // Agora e' GERADO em runtime por mcCuponsAtivosTexto(), a partir do FIRMS (cms_firms).
+  // Dado de afiliado nao se escreve a mao. Ver AGENTS.md secao 3.
   'bot_q_firm': {
     pt: `Depende do teu perfil. Vou direto ao ponto:\n\n**Futures com maior desconto?** Apex, cupom **MARKET**, 90% OFF vitalício. 25K por $19.90. 100% profit split.\n\n**Forex com melhor split?** FundedNext, 95% split, cupom **FLEX** 47% OFF. Ou The5ers, 100% split, scaling até $4M.\n\n**Menor preço pra começar?** CTI tem conta de $1. Bulenox 25K por $15.95.\n\n**Sem regra de consistência?** Bulenox e Apex.\n\n**Pra decidir melhor:** vai na aba **Quiz** (6 perguntas e te recomendo a ideal) ou **Comparator** pra colocar lado a lado.`,
     en: `Depends on your profile. Straight to the point:\n\n**Futures with biggest discount?** Apex, coupon **MARKET**, 90% OFF lifetime. 25K for $19.90. 100% profit split.\n\n**Forex with best split?** FundedNext, 95% split, coupon **FLEX** 47% OFF. Or The5ers, 100% split, scaling to $4M.\n\n**Cheapest to start?** CTI has a $1 account. Bulenox 25K for $15.95.\n\n**No consistency rule?** Bulenox and Apex.\n\n**To decide better:** go to the **Quiz** tab (6 questions, I'll recommend the best fit) or **Comparator** to compare side by side.`,
@@ -6879,8 +6879,50 @@ const BOT_QUICK_ANSWERS = {
     ar: `القواعد تختلف حسب الشركة، لكن هذه عالمية, اكسر واحدة وتخسر الحساب:\n\n**1. أقصى drawdown.** Trailing أو EOD أو ثابت. افهم أي نوع تستخدمه شركتك.\n\n**2. هدف الربح.** عادة 6-10%. لازم توصله.\n\n**3. أيام تداول minimum.** Apex: 1. Earn2Trade: 10.\n\n**4. ممنوعات:** copy trading، latency arbitrage، تلاعب بالسوق.\n\n**5. News trading.** Apex و Bulenox يسمحون. FTMO و Earn2Trade **لا**.\n\nفي تبويب **الشركات** كل القواعد بالتفصيل.`
   }
 };
+// Monta a resposta "quais os cupons ativos?" a partir do FIRMS (que vem do cms_firms),
+// nunca de texto escrito a mao. Ordena por desconto decrescente, igual a home.
+//
+// Regras que a versao chumbada quebrava:
+//  - firma SEM cupom nao pode exibir codigo (o usuario digita invalido e abandona). Sai
+//    como "via link" , mesmo tratamento do card (i18n met_via/met_nocode).
+//  - `lifetime` nao ganha contador nem prazo aqui; so a palavra "lifetime".
+//  - o campo no FIRMS chama `dtype` (o loadFirmsFromSupabase renomeia discount_type),
+//    entao le os dois: (f.dtype || f.discount_type).
+//  - nada de "os cupons ativos sao X, Y e Z" com lista parcial: entra TODA firma ativa.
+var MC_CUPONS_STRINGS = {
+  pt: { head: 'Esses são os cupons ativos agora:', via: 'via link, sem código', life: 'vitalício', foot: 'Todos na aba **Ofertas** com link direto.', cup: 'cupom' },
+  en: { head: 'Here are the active coupons right now:', via: 'via link, no code', life: 'lifetime', foot: 'All on the **Offers** tab with direct links.', cup: 'coupon' },
+  es: { head: 'Estos son los cupones activos ahora:', via: 'vía enlace, sin código', life: 'vitalicio', foot: 'Todos en la pestaña **Ofertas** con enlace directo.', cup: 'cupón' },
+  it: { head: 'Ecco i coupon attivi adesso:', via: 'via link, senza codice', life: 'a vita', foot: 'Tutti nella scheda **Offerte** con link diretto.', cup: 'coupon' },
+  fr: { head: 'Voici les coupons actifs maintenant :', via: 'via lien, sans code', life: 'à vie', foot: 'Tous dans l\'onglet **Offres** avec lien direct.', cup: 'coupon' },
+  de: { head: 'Hier sind die aktiven Coupons:', via: 'über Link, ohne Code', life: 'lebenslang', foot: 'Alle im Tab **Angebote** mit Direktlink.', cup: 'Coupon' },
+  ar: { head: 'هذه الكوبونات النشطة الآن:', via: 'عبر الرابط، بدون كود', life: 'مدى الحياة', foot: 'الكل في تبويب **العروض**.', cup: 'كوبون' },
+  id: { head: 'Ini kupon yang aktif sekarang:', via: 'via tautan, tanpa kode', life: 'selamanya', foot: 'Semua ada di tab **Penawaran** dengan tautan langsung.', cup: 'kupon' }
+};
+function mcCuponsAtivosTexto(lang) {
+  var S = MC_CUPONS_STRINGS[lang] || MC_CUPONS_STRINGS.en;
+  var lista = (typeof FIRMS !== 'undefined' && FIRMS && FIRMS.length) ? FIRMS.slice() : [];
+  if (!lista.length) return null; // FIRMS ainda nao carregou -> deixa cair no Max (API), nao inventa
+  lista.sort(function (a, b) { return (Number(b.discount) || 0) - (Number(a.discount) || 0); });
+  var linhas = lista.map(function (f) {
+    var nome = String(f.name || f.id || '').toUpperCase();
+    var cup = (f.coupon || '').trim();
+    var d = Number(f.discount) || 0;
+    var tipo = (f.dtype || f.discount_type || '');
+    var pct = d > 0 ? (d + '% OFF') : '';
+    var life = (tipo === 'lifetime' && d > 0) ? (' ' + S.life) : '';
+    if (!cup) return '**' + nome + '**, ' + S.via + (pct ? ' → ' + pct + life : '');
+    return '**' + nome + '**, ' + S.cup + ' **' + cup + '**' + (pct ? ' → ' + pct + life : '');
+  });
+  return S.head + '\n\n' + linhas.join('\n') + '\n\n' + S.foot;
+}
+
 function getQuickAnswer(qKey) {
   const lang = typeof _currentLang !== 'undefined' ? _currentLang : 'en';
+  // Cupom SEMPRE do dado vivo. Se o FIRMS ainda nao chegou, devolve null de proposito:
+  // o qmsg() cai no sendBot() (Max, que le a tabela server-side). Melhor esperar a resposta
+  // do bot que responder na hora com cupom velho.
+  if (qKey === 'bot_q_coupons') return mcCuponsAtivosTexto(lang);
   const a = BOT_QUICK_ANSWERS[qKey];
   if (!a) return null;
   return a[lang] || a.en || a.pt || null;
