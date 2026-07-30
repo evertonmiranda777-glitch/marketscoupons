@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/.firms-check-token.tmp)",
+      "Bash(env)",
+      "Bash(printenv)",
+      "Bash(export -p)",
+      "Bash(cat .env*)",
+      "Bash(cat **/.env*)",
+      "Bash(curl -v:*)",
+      "Bash(vercel env pull:*)",
+      "Bash(vercel env ls:*)",
+      "Bash(supabase secrets list:*)",
+      "Bash(gh secret list:*)"
+    ]
+  }
+}

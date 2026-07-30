@@ -47,3 +47,7 @@ __pycache__/
 .mc-tg-secret.tmp
 data/scrape-shots/
 data/scrape-report.json
+
+# --- blindagem de segredos ---
+.claude/settings.local.json
+.prod-refs
