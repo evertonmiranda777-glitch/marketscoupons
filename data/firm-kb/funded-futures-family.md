@@ -22,3 +22,46 @@ SCALING PLAN (funded + S2F only, adjusts at day's end by realized profit): e.g. 
 === RULES / VIOLATIONS ===
 News trading allowed but monitored (Fair Play policy). NO weekend holding (futures markets close). Overnight allowed per plan (funded). MICROSCALPING policy: at least 50% of trades/profit must come from trades held over 20 seconds. Bots/algorithmic trading regulated (transparency required). HFT restricted. 2% CME PRICE-LIMIT RULE: can't trade a product within 2% of its CME daily price limit. VPN/VPS/multi-device regulated ("Trading Environment Restrictions" — VPN to mask a restricted-country location is a violation). VIOLATIONS (end the account): max drawdown (EOD or intraday trailing per plan), daily loss (where it existed), consistency breach, Fair Play/microscalping violation, 2% CME rule, VPN/VPS misuse, restricted-country. RESET: eval resets are per-plan ($59-$335, unlimited); FUNDED reset $499/$649/$1,099/$1,499 (up to 3x). Payment must be your own card (3rd-party = violation). RESTRICTED COUNTRIES: Afghanistan, Russia, Iran, Iraq, Syria, North Korea, Cuba, Indonesia, Ukraine, Libya, Sudan, Somalia, Guinea, Mali, DRC/Congo, Haiti, Myanmar, Guam, Puerto Rico + more. ACCOUNTS: 5 simulated funded per household (3 holder + 1 family... up to 5), 1 Live per household. Recent: major update 2025-03-17 ($50k->$100k payout cap); payout structure change 2026-04-07 (Premier+ vs legacy). Assets: index futures (no full per-symbol list published). Trustpilot solid.
 
+=== ATUALIZACAO 2026-07-30 (relatorio completo do Everton) ===
+LEGAL: o rodape do site diz "State of Incorporation: California" e os Termos dizem
+"Funded Futures Family LLC, a Wyoming limited liability company", com a clausula de lei
+aplicavel apontando para a California. Tres referencias que se contradizem no proprio site.
+Suporte: Support@fundedfuturesfamily.com / 888-700-6501. Fundacao nao divulgada (o site diz
+"over one year of funding real futures traders").
+COBRANCA: Prime, Premier Plus e Velocity sao ASSINATURA MENSAL RECORRENTE ate passar ou
+cancelar; reset NAO reinicia o ciclo de cobranca. S2F e pagamento unico.
+CUPOM: nosso codigo e MARKET (confirmado 30/07 na API do painel de afiliado: as 125 orders
+tem coupon_code=MARKET). O site tambem roda um codigo PUBLICO "FFF". O desconto varia por
+plano: 80% na avaliacao Velocity e 70% no reset dela; 40% nas 5 primeiras usadas do codigo
+em Premier/Premier Plus/Prime, depois 30%; S2F sem desconto.
+PRAZO: NAO existe data fixa. O site usa um cronometro dinamico que parece rotativo, entao
+promo_ends_at foi ZERADO , prazo sem fonte nao vai pro ar.
+SPLIT: os primeiros $10.000 acumulados em payout sao 100% do trader; acima disso, 90/10.
+DIA VENCEDOR = dia com lucro liquido >= $200. Dias exigidos: 3 (Prime), 5 (Premier+ pos
+07/04/2026), 7 (S2F e contas antigas Classic/Premier/Elite).
+PAYOUT: nao existe mais janela fixa , pede a qualquer momento; pedido antes das 17h EST e
+avaliado no mesmo dia util; pago em ate 24h apos assinar o contrato na Rise. Cap acumulado
+de $100.000 sacaveis por usuario (era $50.000 antes de 17/03/2025).
+MUDANCA DATADA 07/04/2026: contas Classic/Premier/Elite compradas ANTES seguem consistencia
+escalonada (40% nos payouts 1-3, 45% nos 4-5, 50% do 6 em diante), exigem BUFFER e 7 dias.
+Contas "Premier+" compradas DEPOIS: sem consistencia, sem buffer, 5 dias, regra de "lucro
+liquido +$1" sobre o saldo do payout anterior, e teto de 50% do lucro por saque.
+SCALING: so na conta fundeada e no S2F, ajustado no FIM do dia pelo lucro realizado. Se
+estourar o limite de contratos, ha 10 SEGUNDOS pra corrigir; nao corrigiu, perde a conta.
+CONTAS: 5 fundeadas simuladas por DOMICILIO (nao por pessoa) e 1 conta Live por domicilio.
+RESET de conta fundeada: $499 (25k) / $649 (50k) / $1.099 (100k) / $1.499 (150k), ate 3x.
+PLANO "CLASSIC": existe SO no Help Center, nao aparece no widget de precos, e TEM taxa de
+ativacao ($100 no 50k / $115 no 100k / $150 no 150k) , contradiz o FAQ que afirma "no plans
+on our platform have an activation fee". Por isso a firma continua como SEM taxa no site
+(os planos vendidos publicamente nao cobram), mas nunca afirmar "nenhum plano cobra".
+PAISES RESTRITOS: Afeganistao, Republica Centro-Africana, Congo (Brazzaville), Cuba, Coreia
+do Norte, Rep. Dem. do Congo, Guine, Guam, Haiti, Indonesia, Ira, Iraque, Libia, Mali,
+Myanmar, Porto Rico, Russia, Somalia, Sudao do Sul, Sudao, Siria, Ucrania.
+PAGAMENTO da compra: cartao OBRIGATORIAMENTE no nome do titular; cartao de terceiro viola
+os Termos. Payout via Rise (transferencia, cripto ou moeda local).
+REGRA CME 2%: proibido operar quando o produto esta a menos de 2% do limite de preco diario
+da CME , desqualifica avaliacao ou conta fundeada.
+MICROSCALPING: pelo menos 50% dos trades/lucros tem que ter mais de 20 SEGUNDOS.
+SEM LIMITE DE TEMPO pra completar a avaliacao.
+CONFLITO ABERTO: max de contas no S2F , o painel da home diz 5, a tabela do artigo do Help
+Center diz 4 e o texto do MESMO artigo diz 5.

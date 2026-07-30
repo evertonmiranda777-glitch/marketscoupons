@@ -23,3 +23,62 @@ RESTRICTED COUNTRIES — CONFLICT: the help center lists 6 (Cuba, Iran, North Ko
 
 FREE $1K CHALLENGE (added 2026-07-27): BrightFunded offers a completely FREE $1,000 simulated challenge - no fee, no card. 1 phase, $100 profit target, max 3% daily / 6% total loss, payout 80% (min $40), NO activation fee. Limited number of claims per country per day. Great zero-risk entry point to recommend.
 PRICES CONFIRMED 2026-07-27 (full -> with our 30% code): 1-Step & 2-Step Classic 5K EUR49->34.30, 10K 97->67.90, 25K 197->137.90, 50K 297->207.90, 100K 497->347.90, 200K 997->697.90. 2-Step Bright 5K 47->32.90, 10K 87->60.90, 25K 187->130.90, 50K 277->193.90, 100K 477->333.90, 200K 947->662.90. NO ACTIVATION FEE on any plan. The site also shows a public code 15MPAID (30%) - ALWAYS push our exclusive CLNLTPxtT4Sok0PzHaRIIQ instead: same 30% for the trader, but only ours pays our commission.
+
+=== ATUALIZACAO 2026-07-30 (relatorio completo do Everton) ===
+LEGAL: Emirados Arabes Unidos (Dubai). CONFLITO no proprio site: o rodape diz "Bright Global
+Computer Systems Software Design - FZCO" (Dubai Silicon Oasis) e os Termos dizem "Bright
+Global FZCO" (Building A1, Dubai Digital Park). Fundada em 2023. NAO e corretora.
+CUPOM, ATENCAO: o nosso e CLNLTPxtT4Sok0PzHaRIIQ e o desconto vem AUTOMATICO pelo link. Os
+codigos SUMMER30 / SUMMER25 / SUMMER15 sao PUBLICOS da firma, um por plano. NUNCA trocar o
+nosso pelos publicos (lei do repo). O card vai SEM exibir codigo, porque digitar o nosso
+renderia menos que o desconto automatico do link.
+DESCONTO POR PLANO: 1-Step 30% · 2-Step Bright 25% · 2-Step Classic 15%.
+ATENCAO: em 30/07 o banco tinha 30% nos TRES planos, ou seja 12 precos mais baratos do que a
+firma cobra. Corrigido verbatim. PRECOS EM EURO (cheio -> com desconto):
+1-STEP: 5K 49->34.30 · 10K 97->67.90 · 25K 197->137.90 · 50K 297->207.90 ·
+100K 497->347.90 · 200K 997->697.90
+2-STEP BRIGHT: 5K 47->35.25 · 10K 87->65.25 · 25K 187->140.25 · 50K 277->207.75 ·
+100K 477->357.75 · 200K 947->710.25
+2-STEP CLASSIC: 5K 49->41.65 · 10K 97->82.45 · 25K 197->167.45 · 50K 297->252.45 ·
+100K 497->422.45 · 200K 997->847.45
+SPLIT: "ate 90%", e os 90% sao ADD-ON PAGO ("90% Payout Ratio"). O split padrao sem o add-on
+NAO e publicado. O banco dizia 100%, o que era exagero; corrigido pra "Up to 90%".
+FREE 1.000 CHALLENGE: existe, 100% gratis, sem cartao. Target 100 (10%), DD 6%, daily 3%,
+split 80% FIXO, payout fixo de 40 a cada marco de 5% de lucro, sem teto total. Exige
+pesquisa de 2 min mais verificacao por telefone, e ha limite de resgates por pais por dia.
+REGRAS: 1-STEP target 10%, DD 6% TRAILING (trava no saldo inicial quando o equity sobe 6%
+acima dele), daily 3%, 5 dias. 2-STEP BRIGHT 8% e depois 5%, DD 8% ESTATICO, daily 4%, 5
+dias por fase. 2-STEP CLASSIC 10% e depois 5%, DD 10% ESTATICO, daily 5%, 5 dias por fase.
+SEM REGRA DE CONSISTENCIA em nenhum plano. Periodo de trading ILIMITADO. 1 minuto de
+posicao aberta ja conta como dia valido.
+ADD-ONS PAGOS (preco nao publicado): Swap-Free, Weekly Payouts, 100% Challenge Fee Refund,
+No Minimum Trading Days, 90% Payout Ratio.
+ALAVANCAGEM: Forex 1:100 · Ouro/Commodities 1:40 · Indices 1:20 · Cripto 1:5, igual na
+avaliacao e na fundeada. COMISSAO: Forex 3/lote · Indices 0 · Cripto 0,024% do volume
+(0,012% por lado) · Commodities 0,0010% do volume.
+NEWS: fases 1 e 2 SEM restricao; conta FUNDED tem janela de 10 min (5 antes e 5 depois) e
+operar ali e SOFT BREACH, deduz o lucro mas NAO quebra a conta. Posicao aberta 48h+ antes da
+noticia fica isenta. CONFLITO: o widget do 1-Step cita "News Trading 5-min Restriction".
+HEDGE: permitido DENTRO da mesma conta, PROIBIDO entre contas (1a vez aviso e fechamento
+forcado, 2a vez encerramento permanente). COPY TRADING: permitido so entre contas do PROPRIO
+trader, proibido entre pessoas diferentes, inclusive familia. EA permitido, mas API e
+automacao NAO funcionam na DXTrade.
+PROIBIDO: HFT, grid, arbitragem, tick scalping, overleveraging, overexposicao, account
+rolling, exploracao de erro de feed. VPN e VPS PERMITIDOS (so o titular pode operar).
+OVERNIGHT e FIM DE SEMANA permitidos (swap se aplica, salvo o add-on Swap-Free).
+PAGAMENTO da compra: cartao, Revolut Pay e cripto (BTC, BTC Lightning, USDT-Tron,
+USDC-ERC20, ETH, LTC, TRX, SOL). SAQUE: USDC (ERC-20) ou transferencia em euro. Payout
+garantido em 24h.
+KYC via SumSub (passaporte, RG ou carteira de motorista). Analise de risco de 1 a 2 dias
+uteis, podendo chegar a 4.
+PLATAFORMAS: MT5, DXTrade, cTrader. ATENCAO: MT5 indisponivel pra EUA e EAU; cTrader
+indisponivel pra EUA.
+PAISES RESTRITOS, CONFLITO: o Help Center lista Cuba, Ira, Coreia do Norte, Siria, Vietna e
+PAQUISTAO (paquistanes com conta ativa continua, novo cadastro nao); os Termos listam os
+mesmos MENOS o Paquistao.
+MUDANCAS DATADAS: 13/04/2026 o "BrightFunded 2.0" criou os 3 planos atuais (conta "Original"
+comprada antes mantem as regras velhas: 8% e 5%, daily 5%, static 10%). 22/09/2025 novo
+calculo de daily loss pelo "EOD Highest Value" do rollover 23:30-23:59 CET. 13/08/2024 regra
+de hedge entre contas. 09/05/2024 regra de news. 23/07/2024 pos-KYC automatizado.
+NAO PUBLICADO: valor do reset, minimo e maximo de saque, cadencia padrao de payout sem o
+add-on semanal, preco de cada add-on, e o split exato sem o add-on de 90%.
