@@ -197,3 +197,37 @@ que não seja a que você está criando. Se achar que precisa: **pare e pergunte
 ---
 
 Regras de produto, deploy, i18n e visual estão em [CLAUDE.md](CLAUDE.md).
+
+## 10. Telegram e qualquer canal público: INGLÊS, ponto final
+
+Ordem direta do Everton (30/07/2026): *"o meu site é americano e ponto final"* e
+*"não envia mais msg em português"*.
+
+**Regra:** toda mensagem que chega no usuário sai em **inglês**. Vale pro canal do
+Telegram, push, e-mail default, criativo, caption, OG card. O admin continua PT (é
+privado, e é o Everton que usa).
+
+**O que já está garantido no código:**
+- `montarMsgCanal()` em `telegram-bot/index.ts` é o único builder do canal, e é EN-only.
+  Antes cada mensagem saía bilíngue (bloco PT + separador + bloco EN).
+- Os dois functions do Telegram (`telegram-bot`, `telegram-creative`) foram varridos:
+  zero string PT em texto de usuário. Comentário em PT pode, é pra mim.
+
+**Onde o português voltava sozinho:** o campo `cms_firms.promo_label`. Ele é injetado
+no bloco de promo ao vivo do Max (`api/bot.js` ~119) e já foi usado no cabeçalho do
+Telegram. Em 30/07 tinha 6 labels em PT ("Cupom", "por $149", "via nosso link",
+"avaliação grátis após o 1º payout"). **Ao mexer em firma, conferir o `promo_label`
+junto com preço e cupom** — ele não tem validação e apodrece calado.
+
+**Também proibido nesse campo:** em-dash `" — "` (regra do repo) e qualquer
+percentual/código que contradiga as colunas `discount`/`coupon` da mesma linha. Em
+30/07, 7 labels contradiziam o dado vivo (cti anunciava `ADHA30 30%` com o cupom
+`MARKET` a 15%; futureselite `JUNE30` em julho; aquafutures `AQUA 60%` sendo
+MIDSUMMER 45%) — foram limpos.
+
+**Teste rápido antes de declarar pronto:**
+```bash
+# nenhum label deve ter PT, em-dash, ou % que contradiga a coluna discount
+curl -s ".../cms_firms?active=eq.true&promo_label=not.is.null&select=id,discount,coupon,promo_label" \
+  -H "apikey: $K" -H "Authorization: Bearer $K"
+```
