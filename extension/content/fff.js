@@ -99,59 +99,112 @@ async function mcFFFCollectAll(maxSteps = 80) {
 }
 
 async function mcSyncFFF(opts = {}) {
-  const leads = await mcWaitFFFTable();
-  if (!leads.length) { mcToastFFF('FFF: sem transacoes na pagina (abra affiliate-orders com filter=all_time)'); return { ok:false, error:'no_data' }; }
-
-  // Da id ESTAVEL a orders sem coluna "transaction" (senao a finance-sync as descarta =
-  // order perdida). Usa a assinatura da linha -> mesma order gera sempre a mesma id (upsert, sem dup).
-  leads.forEach(l => { if (!l.transaction_id) l.transaction_id = 'fff:' + l._sig; });
-
-  const byDay = {};
-  leads.forEach(l => {
-    if (!l.date) return;
-    if (!byDay[l.date]) byDay[l.date] = { date: l.date, transactions: 0, commission: 0, granularity: 'day' };
-    byDay[l.date].transactions += 1;
-    byDay[l.date].commission += Number(l.commission) || 0;
-  });
-  const rows = Object.values(byDay);
-
-  // RECONCILIA com o total OFICIAL do painel FFF ("Total Purchase/Grand Total Commission" +
-  // "Total Orders"). A raspagem linha-a-linha e' furada (a tabela pagina/mostra so ~25), entao a
-  // soma das linhas SUBCONTA e o total oficial e' o numero confiavel de acumulado.
+  // ---------------------------------------------------------------------------
+  // LE A API, NAO A TELA (v0.5.0, 29/07/2026).
   //
-  // 🚨 COMO ISSO QUEBROU (29/07/2026): a versao anterior jogava a diferenca "no dia mais recente".
-  // O painel abre com filter=all_time, entao a diferenca era o ACUMULADO DA VIDA INTEIRA , e ele
-  // aparecia como se fosse HOJE. No admin, filtro "Hoje" mostrava a FFF com 122 vendas e ZERO
-  // cliques, enquanto a Apex (firma nº1) fazia 4.
-  // A SOMA estava CERTA (122 + 3 = 125 = Total Orders do painel). O defeito era so a
-  // DISTRIBUICAO: um acumulado espalhado num unico dia. Nao confundir os dois , eu inflei esse
-  // diagnostico pra "matematica quebrada" sem conferir a soma, e nao era.
-  // Mesmo somando certo, e' inventar dado: o painel existe pra decidir gasto de anuncio POR DIA.
+  // O que a raspagem de DOM nunca ia resolver: a tabela e' MUI TablePagination,
+  // 30 linhas por pagina, botoes 1..5. O mcFFFCollectAll ROLAVA, mas rolar nao
+  // vira pagina , entao a extensao SO ENXERGAVA A PAGINA 1, sempre. Sintoma que
+  // o Everton pegou: painel oficial 23 vendas / $47.98 no dia, admin 11 / $29.02.
+  // A tentativa anterior de tapar isso (somar o total oficial e jogar a diferenca
+  // no dia mais recente) virou dado inventado , o acumulado da vida inteira
+  // aparecendo como venda de hoje.
   //
-  // AGORA: o total oficial vai numa linha PROPRIA com granularity 'total'. Ela nao e' um dia e nao
-  // pode ser somada em filtro de periodo (o admin exclui o que nao for 'day'). As linhas por dia
-  // ficam com o que foi REALMENTE raspado , subcontam, e subcontar e' honesto; inflar nao e'.
-  let fffReplace = false;
+  // O painel e' Next.js e busca de uma API REST no MESMO dominio, entao o content
+  // script pode chamar direto com o cookie de sessao:
+  //   GET /api/dashboard/affiliate-orders/?filter=all_time&page_size=100&page=N
+  //   -> { success, data: { count, results:[...], totals, sales } }
+  // Cada item traz commission_amount, order_date em ISO UTC, order_final_amount,
+  // coupon_code e transaction_id. Venda a venda, sem paginacao pra adivinhar.
+  //
+  // Conferido em 29/07 contra o painel, ao vivo: count 125 = 125 baixadas em 2
+  // paginas; soma das comissoes $338.28 = "Grand Total Commission"; o dia
+  // 2026-07-29 deu 23 vendas / $47.98 = exatamente o painel filtrado no dia.
+  //
+  // Data em ISO UTC tambem mata o parse de "07-29-202605:03 PM" (data e hora
+  // colados, sem separador) que a tabela renderiza.
+  // ---------------------------------------------------------------------------
+  var pedidos = [];
+  var contaOficial = null;
   try {
-    const sm = mcFFFScrapeSummary();
-    if (sm.total != null && sm.total > 0 && sm.total < 100000) {
-      rows.push({
-        date: new Date().toISOString().slice(0, 10),
-        transactions: Number(sm.orders) || 0,
-        commission: Math.round(Number(sm.total) * 100) / 100,
-        granularity: 'total', // <- NAO e' um dia. Acumulado oficial do painel (all_time).
-      });
-      fffReplace = true; // leu o oficial -> pode substituir tudo da FFF com seguranca
+    for (var pag = 1; pag <= 40; pag++) {
+      var r = await fetch('/api/dashboard/affiliate-orders/?filter=all_time&page_size=100&page=' + pag, { credentials: 'include' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      var j = await r.json();
+      var d = (j && j.data) || {};
+      contaOficial = (typeof d.count === 'number') ? d.count : contaOficial;
+      var res = d.results || [];
+      pedidos = pedidos.concat(res);
+      if (!res.length) break;
+      if (contaOficial != null && pedidos.length >= contaOficial) break;
     }
-  } catch (_) {}
+  } catch (e) {
+    // Sem a API nao inventa nada e nao grava pedaco: avisa e sai.
+    mcToastFFF('FFF: nao consegui ler a API de orders (' + (e.message || e) + '). Nada foi gravado.');
+    return { ok: false, error: 'api_falhou' };
+  }
+  if (!pedidos.length) { mcToastFFF('FFF: a API nao devolveu nenhuma order.'); return { ok: false, error: 'no_data' }; }
 
-  // `parser_version` existe pra finance-sync poder RECUSAR o formato antigo. Sem isso o
-  // lote da v0.4.8 (total all_time fundido num dia, etiquetado 'day') e' indistinguivel de
-  // dado diario legitimo na borda da API, e uma aba velha aberta re-sincroniza a cada 2min
-  // e desfaz qualquer correcao feita no servidor , foi o que aconteceu em 29/07.
-  const out = await mcSendFFF({ firm: 'funded-futures-family', source: 'ext_fff_v1', snapshot: null, rows, leads, fff_replace: fffReplace, parser_version: '0.4.9' });
-  if (out.ok) { mcToastFFF(`FFF: ${leads.length} raspadas, ${out.leads_saved ?? '?'} gravadas`); await mcMarkFFF('fff'); }
-  else { mcToastFFF('FFF: erro, ' + (out.error || '?')); }
+  // Conferencia de completude: se baixou menos que o count oficial, NAO grava.
+  // Gravar parcial e' o que fazia o mes ficar menor que o dia.
+  if (contaOficial != null && pedidos.length < contaOficial) {
+    mcToastFFF('FFF: baixei ' + pedidos.length + ' de ' + contaOficial + ' orders. Parcial NAO e gravado.');
+    return { ok: false, error: 'incompleto', baixadas: pedidos.length, total: contaOficial };
+  }
+
+  // Dia de calendario em BRT, que e' o fuso que o resto do admin usa
+  // (ad_spend_daily e affiliate_daily_stats sao dia LOCAL, ver admin.html _localDay).
+  // O painel da FFF mostra ET, entao perto da meia-noite um dia pode diferir de 1-2
+  // orders , o acumulado fecha igual, o corte do dia e' que muda de fuso.
+  var diaBRT = function (iso) {
+    try { return new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' }); }
+    catch (e) { return String(iso).slice(0, 10); }
+  };
+
+  var porDia = {};
+  var leads = [];
+  pedidos.forEach(function (o) {
+    var iso = o.order_date;
+    if (!iso) return;
+    var dia = diaBRT(iso);
+    var com = Number(o.commission_amount) || 0;
+    var val = Number(o.order_final_amount) || 0;
+    if (!porDia[dia]) porDia[dia] = { date: dia, transactions: 0, commission: 0, granularity: 'day' };
+    porDia[dia].transactions += 1;
+    porDia[dia].commission += com;
+    // transaction_id no MESMO formato de antes ('fff:' + 1o segmento) pra nao duplicar
+    // as vendas que ja estao gravadas em affiliate_conversions.
+    var txn = String(o.transaction_id || o.order_id || '').split('#')[0].trim();
+    leads.push({
+      transaction_id: txn ? ('fff:' + txn) : undefined,
+      order_id: txn ? undefined : o.order_id,
+      date: dia,
+      sold_at: iso,               // timestamp REAL da venda (a finance-sync usa se vier)
+      commission: com,
+      amount: val,
+      coupon: o.coupon_code || '',
+      product: o.product_name || o.account_type || '',
+      status: 'approved'
+    });
+  });
+  Object.keys(porDia).forEach(function (k) {
+    porDia[k].commission = Math.round(porDia[k].commission * 100) / 100;
+  });
+  var rows = Object.keys(porDia).map(function (k) { return porDia[k]; });
+
+  // fff_replace NAO e' mais mandado: ele disparava um delete de TODA a FFF no
+  // servidor, e com scrape parcial isso apagava o historico. O upsert por
+  // (firma, data) ja substitui exatamente os dias que estao neste lote.
+  var out = await mcSendFFF({
+    firm: 'funded-futures-family', source: 'ext_fff_v1', snapshot: null,
+    rows: rows, leads: leads, parser_version: '0.5.0'
+  });
+  if (out.ok) {
+    mcToastFFF('FFF: ' + pedidos.length + '/' + contaOficial + ' orders da API, ' + rows.length + ' dias, ' + (out.leads_saved != null ? out.leads_saved : '?') + ' vendas gravadas');
+    await mcMarkFFF('fff');
+  } else {
+    mcToastFFF('FFF: erro, ' + (out.error || '?'));
+  }
   return out;
 }
 

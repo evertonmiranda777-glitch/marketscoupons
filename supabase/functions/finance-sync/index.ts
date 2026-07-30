@@ -291,7 +291,15 @@ serve(async (req) => {
           raw_payload: l
         };
         // created_at pela data da venda (pro match de clique cair na janela de 7d certa).
-        if (l.date && /^\d{4}-\d{2}-\d{2}$/.test(String(l.date))) row.created_at = `${l.date}T15:00:00Z`;
+        // `sold_at` = timestamp REAL da venda, quando o scraper consegue (a FFF passou a vir
+        // da API, que da order_date em ISO UTC). Preferir sempre o real: o fallback
+        // `${date}T15:00:00Z` e' um horario CHUMBADO, e foi ele que jogou venda da manha
+        // no FUTURO e fez o Meta rejeitar o Purchase com subcode 2804004 (13/07).
+        if (l.sold_at && !isNaN(Date.parse(String(l.sold_at)))) {
+          row.created_at = new Date(String(l.sold_at)).toISOString();
+        } else if (l.date && /^\d{4}-\d{2}-\d{2}$/.test(String(l.date))) {
+          row.created_at = `${l.date}T15:00:00Z`;
+        }
         return row;
       })
       .filter(t => t.transaction_id);

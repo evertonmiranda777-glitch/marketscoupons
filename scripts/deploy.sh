@@ -27,6 +27,20 @@ fi
 echo "== build-compat (ES2019)"
 node scripts/build-compat.mjs
 
+# Snapshot estatico das firmas: e' o fallback que impede a pagina de renderizar
+# VAZIA quando o Postgres cai (aconteceu 29/07, ~3h, visitante novo via 0 firmas
+# e 0 cupons enquanto o CDN devolvia 200 e nenhum monitor acusava).
+# Regerar a cada deploy, senao o fallback envelhece e serve cupom velho.
+echo "== snapshot de fallback das firmas"
+SR=$(grep '^SUPABASE_SERVICE_ROLE_KEY=' .env.local | sed 's/^SUPABASE_SERVICE_ROLE_KEY=//' | tr -d '" ')
+if [ -n "$SR" ]; then
+  SUPABASE_SERVICE_ROLE_KEY="$SR" node scripts/build-firms-fallback.mjs || {
+    echo "AVISO: nao regerei o fallback. Deploy segue com o snapshot anterior." >&2
+  }
+else
+  echo "AVISO: sem SUPABASE_SERVICE_ROLE_KEY, fallback nao regerado." >&2
+fi
+
 LOG=$(mktemp)
 # Sai do log em qualquer caminho , inclusive erro , pra nao deixar o token
 # escrito em arquivo temporario no disco.

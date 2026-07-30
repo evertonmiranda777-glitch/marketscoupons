@@ -4779,36 +4779,12 @@ function _achAllPlans(f) {if (f.plansByType) {let a = [];Object.values(f.plansBy
 CHECKOUT_FIRMS.forEach((f) => {achActiveType[f.id] = f.types[0];achState[f.id] = {};_achAllPlans(f).forEach((p) => {achState[f.id][p.size] = { type: f.types[0], plat: f.platforms[0] };});});
 
 /* ── SUPABASE: Load firms dynamically (overwrites hardcoded arrays) ── */
-async function loadFirmsFromSupabase() {
-  try {var _document$getElementB16, _document$getElementB17;
-    // 🟢 EGRESS (Free tier 5GB, 22/jul): cache-first. Se o cache tem < 6h, NAO busca o cms_firms
-    // do banco (antes baixava o dataset inteiro em TODA pagina de TODO visitante = a maior fonte
-    // de banda). Dado de firma muda raro; quando o Everton atualiza preco, chega em <=6h pra quem
-    // ja tem cache (e na hora pra visitante novo/aba anonima). Deploy com ?v= tambem fura o cache.
-    try {
-      const _ts = parseInt(localStorage.getItem('mc_firms_ts') || '0', 10);
-      if (FIRMS.length && _ts && Date.now() - _ts < 6 * 3600 * 1000) {
-        try {document.dispatchEvent(new CustomEvent('mc:firms-loaded', { detail: { count: FIRMS.length, cached: true } }));} catch (_) {}
-        return; // usa o cache ja carregado no boot, zero egress
-      }
-    } catch (_) {}
-    const { data, error } = await db.from('cms_firms').
-    select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,trustpilot_status,sort_order,badge,news_trading,day1_payout,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,disc_note,internal_rating,internal_reviews_count').
-    eq('active', true).
-    order('sort_order', { ascending: true });
-    if (error || !data || !data.length) {
-      // Fallback: try localStorage cache
-      const cached = localStorage.getItem('mc_firms_cache_v13');
-      if (cached && FIRMS.length === 0) {
-        try {const arr = JSON.parse(cached);arr.forEach((f) => FIRMS.push(f));} catch (e) {}
-      }
-      return;
-    }
-    // Include promo column in SELECT result (already fetched above since we used named cols)
-
-    // Map Supabase rows → FIRMS format (same shape renderFirms() expects)
-    FIRMS.length = 0;
-    data.forEach((f) => {
+// Converte linha crua de cms_firms no formato que renderFirms() espera.
+// Extraida de dentro de loadFirmsFromSupabase em 29/07/2026 pra que o fallback
+// estatico (/data/firms-fallback.json) passe pelo MESMO mapeamento , se o
+// fallback empurrasse linha crua no FIRMS, o card renderizaria quebrado.
+function _mapFirmRows(rows) {
+  (rows || []).forEach((f) => {
       const firm = {
         id: f.id, name: f.name, type: f.type,
         color: f.color, bg: f.bg || f.color + '1F',
@@ -4845,7 +4821,60 @@ async function loadFirmsFromSupabase() {
       FIRMS.push(firm);
 
       // Overlay data (about_html, detail_plans, bg_image) loaded lazily via loadFirmOverlayData()
-    });
+  });
+}
+
+async function loadFirmsFromSupabase() {
+  try {var _document$getElementB16, _document$getElementB17;
+    // 🟢 EGRESS (Free tier 5GB, 22/jul): cache-first. Se o cache tem < 6h, NAO busca o cms_firms
+    // do banco (antes baixava o dataset inteiro em TODA pagina de TODO visitante = a maior fonte
+    // de banda). Dado de firma muda raro; quando o Everton atualiza preco, chega em <=6h pra quem
+    // ja tem cache (e na hora pra visitante novo/aba anonima). Deploy com ?v= tambem fura o cache.
+    try {
+      const _ts = parseInt(localStorage.getItem('mc_firms_ts') || '0', 10);
+      if (FIRMS.length && _ts && Date.now() - _ts < 6 * 3600 * 1000) {
+        try {document.dispatchEvent(new CustomEvent('mc:firms-loaded', { detail: { count: FIRMS.length, cached: true } }));} catch (_) {}
+        return; // usa o cache ja carregado no boot, zero egress
+      }
+    } catch (_) {}
+    const { data, error } = await db.from('cms_firms').
+    select('id,name,type,color,bg,icon,icon_url,rating,reviews,discount,discount_type,coupon,link,tags,platforms,min_days,eval_days,drawdown,split,dd_pct,target,scaling,prices,price_types,perks,proibido,description,trustpilot_url,trustpilot_score,trustpilot_reviews,trustpilot_status,sort_order,badge,news_trading,day1_payout,leverage,consistency,payout_speed,max_accounts,promo_ends_at,show_promo_on_checkout,has_activation_fee,disc_note,internal_rating,internal_reviews_count').
+    eq('active', true).
+    order('sort_order', { ascending: true });
+    if (error || !data || !data.length) {
+      // Fallback 1: cache do localStorage (visitante que ja esteve aqui)
+      const cached = localStorage.getItem('mc_firms_cache_v13');
+      if (cached && FIRMS.length === 0) {
+        try {const arr = JSON.parse(cached);arr.forEach((f) => FIRMS.push(f));} catch (e) {}
+      }
+      // Fallback 2: ARQUIVO ESTATICO no CDN. Existe por causa de 29/07/2026:
+      // o Postgres ficou fora ~3h, o HTML continuou respondendo 200 (vem do CDN),
+      // mas quem chegava SEM cache , ou seja, o visitante novo que o anuncio pago
+      // traz , via a pagina com ZERO firma e ZERO cupom. Medido: FIRMS=0, 0 cards.
+      // Pagina vazia devolvendo 200 nao acende nenhum monitor de uptime.
+      // Este arquivo e' gerado por scripts/build-firms-fallback.mjs e vai no deploy,
+      // entao esta vivo enquanto o CDN estiver vivo. Dado de ate o ultimo deploy e'
+      // infinitamente melhor que tela em branco.
+      if (FIRMS.length === 0) {
+        try {
+          const rf = await fetch('/data/firms-fallback.json', { cache: 'no-store' });
+          if (rf.ok) {
+            const jf = await rf.json();
+            const arr = (jf && jf.firms) || [];
+            if (arr.length) {
+              _mapFirmRows(arr);
+              try {document.dispatchEvent(new CustomEvent('mc:firms-loaded', { detail: { count: FIRMS.length, fallback: true } }));} catch (_) {}
+            }
+          }
+        } catch (_) {}
+      }
+      return;
+    }
+    // Include promo column in SELECT result (already fetched above since we used named cols)
+
+    // Map Supabase rows → FIRMS format (same shape renderFirms() expects)
+    FIRMS.length = 0;
+    _mapFirmRows(data);
 
     // FIRMS terminou de carregar do cms_firms: avisa quem depende da lista VIVA.
     // Sem isso, quem renderiza antes (ex: pills de firma favorita no painel) fica com o
