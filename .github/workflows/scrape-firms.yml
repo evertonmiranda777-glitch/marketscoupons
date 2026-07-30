@@ -46,7 +46,19 @@ jobs:
           npm install playwright@1.49.0 --no-save
           npx playwright install --with-deps chromium
 
-      - name: Raspar e conferir
+      # 1) VIGIA: vai no site e COLHE o que esta ativo (cupom, promo, prazo, taxa).
+      #    Mantem cupom da Markets, so troca generico, e nao escreve estrutura nova.
+      - name: Colher promo e cupom de cada firma
+        id: vigia
+        env:
+          FIRMS_CHECK_TOKEN: ${{ secrets.FIRMS_CHECK_TOKEN }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_READONLY_KEY }}
+        run: node scripts/vigia-firmas.mjs
+        continue-on-error: true
+
+      # 2) CONFERIDOR: pergunta o inverso , o preco que esta no banco ainda aparece
+      #    no site? Os dois juntos cobrem "o que mudou?" e "o que eu tenho ainda vale?".
+      - name: Conferir precos do banco contra o site
         id: raspagem
         env:
           FIRMS_CHECK_TOKEN: ${{ secrets.FIRMS_CHECK_TOKEN }}
@@ -64,10 +76,12 @@ jobs:
           path: |
             data/scrape-shots/
             data/scrape-report.json
+            data/vigia-shots/
+            data/vigia-report.json
           retention-days: 30
 
-      - name: Falhar se divergiu
-        if: steps.raspagem.outcome == 'failure'
+      - name: Falhar se algo divergiu ou precisa de olho humano
+        if: steps.raspagem.outcome == 'failure' || steps.vigia.outcome == 'failure'
         run: |
           echo "Alguma firma divergiu do banco. Baixe o artifact 'raspagem-${{ github.run_number }}',"
           echo "olhe o screenshot da firma e o data/scrape-report.json antes de mudar qualquer preco."

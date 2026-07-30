@@ -51,3 +51,5 @@ data/scrape-report.json
 # --- blindagem de segredos ---
 .claude/settings.local.json
 .prod-refs
+data/vigia-shots/
+data/vigia-report.json
