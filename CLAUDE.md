@@ -1,5 +1,49 @@
 # MarketsCoupons, Contexto do Projeto
 
+## 🔴🔴 LEI 29/jul — "RESPONDEU 200" NÃO É "ESTÁ FUNCIONANDO" (custou ~3h de venda)
+
+O Postgres caiu, eu vi **HTTP 200** na home e disse **"o site não caiu"**. O HTML vem do
+**CDN da Vercel** e responde 200 com o banco morto — mas firma/preço/cupom são lidos do
+`cms_firms` em **runtime**. Medido com `localStorage.clear()` (= visitante novo, que é quem
+o anúncio pago traz): **FIRMS=0, 0 cards, 0 cupom**. A LP `/coupons` também. **Página em
+branco devolvendo 200 não acende monitor de uptime nenhum.**
+
+**Agora existe 3ª perna de fallback:** banco → cache local → **`data/firms-fallback.json`**
+(gerado por `scripts/build-firms-fallback.mjs`, regerado a cada deploy pelo `scripts/deploy.sh`).
+Provado bloqueando todo `supabase.co`: 18 firmas na tela. **Feature nova que lê banco no boot
+precisa de fallback estático, não só cache.**
+
+**Diagnóstico de queda:** `status: ACTIVE_HEALTHY` **MENTE**. Usar
+`GET api.supabase.com/v1/projects/<ref>/health?services=db,rest,auth` — e mesmo esse errou o
+`auth`. Recuperação: `POST api.supabase.com/v1/projects/<ref>/restart` (~7min, passa por
+521→503→200). **Suspeita da causa: saldo de Disk I/O do Free tier esgotado** — se repetir, é
+conversa de plano pago = decisão do Everton, eu não toco em billing.
+
+**🚀 DEPLOY = `bash scripts/deploy.sh`, nunca `npx vercel` na mão.** O CLI imprime
+`--token=<valor cru>` no fim e eu vazei o `VERCEL_TOKEN` no log hoje. O wrapper lê do
+`.env.local`, redige a saída e regera o snapshot de fallback. ⚠️ Rotação de token do Vercel
+**só pelo painel** (a API nega criação: *"must be authenticated to scope"*).
+
+**💰 FFF = API, não raspagem (v0.5.0):** `/api/dashboard/affiliate-orders/?filter=all_time&page_size=100&page=N`
+→ `{data:{count,results[]}}` com `commission_amount`, `order_date` ISO, `coupon_code`. A
+raspagem de DOM só via a **página 1** (MUI paginado; rolar não vira página) → admin mostrava
+11 vendas onde o painel dizia 23. Fecha exato: 125 orders / **$338,28** = painel. **Baixou
+menos que o `count`? NÃO GRAVA.** ⚠️ Everton precisa recarregar a extensão → **0.5.0**.
+
+**🚨 Cupom chumbado em código chega no cliente ERRADO:** a resposta "quais os cupons ativos?"
+do bot (`app.js`, `qmsg()`) mandava digitar **`E8`** (código público, **zero comissão**) e
+**`FLEX`** (inexistente), citava 7 de 18 firmas, e os 8 idiomas divergiam entre si. Agora
+`mcCuponsAtivosTexto()` gera do FIRMS. **Dado de afiliado nunca se escreve à mão.**
+
+**🏷️ CTI = `MARKET` 15%** (COO por escrito 29/jul; INFINITY8 era público e não pagava). ⚠️ A
+promo pública da CTI **bate a nossa** (INFINITY8STEP 25%) — decisão: **fica MARKET**, e o Max
+não afirma que o nosso é o maior. **Aqua: `h5d` NÃO é cupom**, é o `afmc` de atribuição — o
+código é **MIDSUMMER** (o 200% refund é só forex, após o 4º payout).
+
+Detalhe: [[project_sessao_2026_07_29]] · [[feedback_200_nao_e_funcionando]]
+
+---
+
 ## 🔥🔥🔥 DOUTRINA IMPARÁVEL, vigente 03/06/2026 🔥🔥🔥
 
 **13 mandamentos absolutos do Everton:** nunca dizer "não", sempre buscar solução, usar qualquer skill/agent/ferramenta do mundo, construir memória permanente, reconhecer erros, melhorar infinitamente, acatar ordem com maestria. Detalhe completo: [memory/feedback_doutrina_imparavel.md](memory/feedback_doutrina_imparavel.md). Documento vivo, Everton adiciona ao longo do tempo.
