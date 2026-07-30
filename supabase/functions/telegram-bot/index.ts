@@ -497,12 +497,90 @@ async function handleProLoyalty(db: ReturnType<typeof createClient>) {
 }
 
 // ── action=flash_promo ──────────────────────────────────────────────────────
+// ── FORMATO DO CANAL (definido pelo Everton em 30/07/2026) ─────────────────
+// Uma mensagem, SO EM INGLES (o canal e publico e o site e EN-default). Antes saia
+// bilingue PT+EN com separador, o dobro do tamanho.
+//
+//   ⚡️ Apex Trader Funding, 90% OFF · Code MARKET · Activation $69
+//   🔥 90% OFF (lifetime deal!)
+//   🎟 Code: MARKET
+//   ✅ No Activation Fee plans available
+//   💰 Profit Split: 100% up to $25K / 90%
+//   📉 Drawdown: Trailing/EOD
+//   ⏰ Ends in 48h        <- SO se houver prazo REAL e a oferta nao for lifetime
+//
+// 🚨 O CABECALHO NAO USA `promo_label`. Conferido em 30/07: aquele campo apodrece
+// calado e estava mentindo em metade do catalogo , cti dizia "ADHA30 30% OFF"
+// (o cupom e MARKET 15%), futureselite "JUNE30" em julho, aquafutures "AQUA 60%"
+// (e MIDSUMMER 45%), e8 "up to 10%" com discount 40, blueguardian "up to 45%" com
+// discount 25, e apex/bulenox/fn/e2t/the5ers/brightfunded em PORTUGUES. Publicar
+// isso no canal e cupom morto no ar. O cabecalho monta de name+discount+coupon,
+// que sao campos vivos.
+//
+// 🚨 LIFETIME NAO TEM PRAZO. Em 28/07 o canal recebeu "89% OFF (vitalicio!)" e
+// "Termina em 48h" na MESMA mensagem. O modelo que o Everton colou tinha os dois
+// juntos de novo; a guarda fica.
+//
+// TAXA DE ATIVACAO: a fonte e o mapa ACTIVATION_FEE do app.js (~3127). Nao da pra
+// importar app.js daqui (edge function Deno), entao esta espelhado abaixo.
+// ⚠️ MUDOU NUM, MUDA NO OUTRO , mesmo contrato do CR_NOFEE no criativo.
+// ⚠️ `cms_firms.has_activation_fee` NAO serve: diverge do mapa (diz true pra cti,
+// que e' sem taxa, e false pra toponefutures, que cobra e tem plano sem taxa).
+const SEM_TAXA_ATIVACAO = new Set([
+  "fn", "funded-futures-family", "tradeday", "aquafutures", "blueberryfutures",
+  "futureselite", "e8", "alphafutures", "fundingpips", "ftmo", "brightfunded",
+  "blueguardian", "cti",
+]);
+// Cobram, MAS tem rota sem taxa. Ambar: nunca afirmar que a firma toda e' sem taxa.
+const TEM_PLANO_SEM_TAXA: Record<string, string> = {
+  apex: "Intraday 25K $69 / 50K $79 / 100K $99 / 150K $129",
+  toponefutures: "Elite Daily $0 · Elite Access $139–$359",
+  the5ers: "Bootcamp 3-Step charges on approval; Hyper Growth, High Stakes, Day Trade and Swing have none",
+  goat: "$0 on EOD plans",
+};
+
+type FirmMsg = {
+  id: string; name: string; discount: number | null; discount_type: string | null;
+  coupon: string | null; split: string | null; drawdown: string | null;
+  promo_ends_at?: string | null;
+};
+
+function montarMsgCanal(firm: FirmMsg, urgencia = ""): string {
+  const pct = firm.discount ? `${firm.discount}% OFF` : "";
+  const vitalicia = firm.discount_type === "lifetime";
+  const cupom = (firm.coupon || "").trim();
+
+  // Cabecalho: nome + desconto + codigo. Sem promo_label (ver comentario acima).
+  const partes: string[] = [firm.name];
+  if (pct) partes.push(pct);
+  const cab = `⚡️ <b>${partes.join(", ")}</b>${cupom ? ` · Code <code>${cupom}</code>` : " · via link"}`;
+
+  const linhas: string[] = [cab];
+  if (pct) linhas.push(`🔥 ${pct}${vitalicia ? " (lifetime deal!)" : ""}`);
+  linhas.push(cupom ? `🎟 Code: <code>${cupom}</code>` : `🔗 No code needed, discount applied via link`);
+
+  // Taxa de ativacao , 3 estados, nunca afirmando mais do que e verdade.
+  if (SEM_TAXA_ATIVACAO.has(firm.id)) {
+    linhas.push(`✅ No Activation Fee`);
+  } else if (TEM_PLANO_SEM_TAXA[firm.id]) {
+    linhas.push(`✅ No Activation Fee plans available`);
+  }
+
+  if (firm.split) linhas.push(`💰 Profit Split: ${firm.split}`);
+  if (firm.drawdown) linhas.push(`📉 Drawdown: ${firm.drawdown}`);
+
+  // Prazo: so com promo_ends_at REAL e oferta NAO vitalicia.
+  if (urgencia && !vitalicia) linhas.push(urgencia);
+
+  return linhas.join("\n");
+}
+
 async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: string, urgency = "") {
   if (!firmId) return { sent: false, reason: "missing_firm_id" };
 
   const { data: firm, error } = await db
     .from("cms_firms")
-    .select("id, name, discount, coupon, link, discount_type, split, drawdown")
+    .select("id, name, discount, coupon, link, discount_type, split, drawdown, promo_ends_at")
     .eq("id", firmId)
     .eq("active", true)
     .maybeSingle();
@@ -512,50 +590,22 @@ async function handleFlashPromo(db: ReturnType<typeof createClient>, firmId: str
     return { sent: false, reason: "firm_not_found" };
   }
 
-  const couponPt = firm.coupon
-    ? `🎟 Cupom: <code>${firm.coupon}</code>`
-    : `🔗 Desconto aplicado automaticamente`;
-  const couponEn = firm.coupon
-    ? `🎟 Code: <code>${firm.coupon}</code>`
-    : `🔗 No code needed, discount applied automatically`;
-
-  const discountPt =
-    firm.discount_type === "lifetime" ? `${firm.discount}% OFF (vitalício!)` : `${firm.discount}% OFF`;
-  const discountEn =
-    firm.discount_type === "lifetime" ? `${firm.discount}% OFF (lifetime deal!)` : `${firm.discount}% OFF`;
-
-  // O prazo vem do BANCO (promo_ends_at). Antes era Date.now()+48h chumbado: um
-  // deadline que o codigo inventava, renovado a cada disparo. Sem prazo real no
-  // banco, ou com firma lifetime, a mensagem sai SEM linha de contagem.
+  // Prazo vem do BANCO (promo_ends_at). Antes era Date.now()+48h chumbado , deadline
+  // que o codigo inventava e renovava a cada disparo. Sem prazo real, ou firma
+  // lifetime, a mensagem sai SEM linha de contagem.
   const semPrazo = firm.discount_type === "lifetime" || !firm.promo_ends_at;
   const endsAt = semPrazo ? null : new Date(firm.promo_ends_at as string);
-  const endsLabelPt = endsAt ? endsAt.toLocaleString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) + " UTC" : "";
-  const endsLabelEn = endsAt ? endsAt.toUTCString().replace(":00 GMT", " UTC") : "";
-  const linhaPrazoPt = endsAt ? `⏰ <b>Termina em</b> ${endsLabelPt}
-` : "";
-  const linhaPrazoEn = endsAt ? `⏰ <b>Ends</b> ${endsLabelEn}
-` : "";
+  const horasRestantes = endsAt ? Math.round((endsAt.getTime() - Date.now()) / 3600000) : 0;
+  const linhaPrazo = endsAt && horasRestantes > 0
+    ? `⏰ <b>Ends in ${horasRestantes}h</b>`
+    : "";
 
-  // Dedicated firm page, clean URL, UTMs inferred from t.me referrer on the site
   const checkoutUrl = `https://${SITE_URL}/${firm.id}?keyword=telegram-${firm.id}`;
-
   const text =
-    `⚡ <b>Flash Deal, ${firm.name}</b>\n\n` +
-    `🇧🇷 <b>PT</b>\n` +
-    `🔥 ${discountPt}\n` +
-    couponPt + `\n` +
-    (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
-    (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    linhaPrazoPt +
-    `\n━━━━━━━━━━\n\n` +
-    `🇺🇸 <b>EN</b>\n` +
-    `🔥 ${discountEn}\n` +
-    couponEn + `\n` +
-    (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
-    (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-    linhaPrazoEn +
-    (urgency ? `\n${urgency}\n` : "") +
-    `\n👉 <a href="${checkoutUrl}"><b>Garantir oferta / Get Deal</b></a>`;
+    montarMsgCanal(firm as FirmMsg, urgency || linhaPrazo) +
+    `
+
+👉 <a href="${checkoutUrl}"><b>Get Deal</b></a>`;
 
   const msgId = await sendMessage(text);
   if (msgId) await storeMessageId(db, msgId, "flash_promo");
@@ -605,41 +655,19 @@ async function handlePromoReminder(db: ReturnType<typeof createClient>) {
         .maybeSingle();
       if (already) continue;
 
+      // Canal e SO ingles (site EN-default). Thresholds 48h / 24h / 2h.
       const urgencyLabel = th === 48
-        ? { pt: "⏰ <b>Termina em 48h</b>", en: "⏰ <b>Ends in 48h</b>" }
+        ? { en: "⏰ <b>Ends in 48h</b>" }
         : th === 24
-          ? { pt: "🔥 <b>Termina em 24h</b>", en: "🔥 <b>Ends in 24h</b>" }
-          : { pt: "🚨 <b>ÚLTIMAS 2 HORAS</b>", en: "🚨 <b>LAST 2 HOURS</b>" };
-
-      const discountPt = firm.discount_type === "lifetime"
-        ? `${firm.discount}% OFF (vitalício!)`
-        : `${firm.discount}% OFF`;
-      const discountEn = firm.discount_type === "lifetime"
-        ? `${firm.discount}% OFF (lifetime deal!)`
-        : `${firm.discount}% OFF`;
-
-      const couponPt = firm.coupon ? `🎟 Cupom: <code>${firm.coupon}</code>` : `🔗 Desconto aplicado automaticamente`;
-      const couponEn = firm.coupon ? `🎟 Code: <code>${firm.coupon}</code>` : `🔗 No code needed`;
+          ? { en: "🔥 <b>Ends in 24h</b>" }
+          : { en: "🚨 <b>LAST 2 HOURS</b>" };
 
       const checkoutUrl = `https://${SITE_URL}/${firm.id}?keyword=telegram-${firm.id}`;
-      const promoLabel = firm.promo_label ? `, ${firm.promo_label}` : "";
-
       const text =
-        `${th === 2 ? "🚨" : th === 24 ? "🔥" : "⚡"} <b>${firm.name}${promoLabel}</b>\n\n` +
-        `🇧🇷 <b>PT</b>\n` +
-        `🔥 ${discountPt}\n` +
-        couponPt + `\n` +
-        (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
-        (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-        urgencyLabel.pt + `\n` +
-        `\n━━━━━━━━━━\n\n` +
-        `🇺🇸 <b>EN</b>\n` +
-        `🔥 ${discountEn}\n` +
-        couponEn + `\n` +
-        (firm.split ? `💰 Profit Split: ${firm.split}\n` : "") +
-        (firm.drawdown ? `📉 Drawdown: ${firm.drawdown}\n` : "") +
-        urgencyLabel.en + `\n` +
-        `\n👉 <a href="${checkoutUrl}"><b>${th === 2 ? "Garantir agora / Grab now" : "Ver oferta / See deal"}</b></a>`;
+        montarMsgCanal(firm as FirmMsg, urgencyLabel.en) +
+        `
+
+👉 <a href="${checkoutUrl}"><b>${th === 2 ? "Grab now" : "See deal"}</b></a>`;
 
       const msgId = await sendMessage(text);
       if (msgId) {
