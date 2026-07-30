@@ -45,3 +45,5 @@ _b.json
 .firms-check-token.tmp
 __pycache__/
 .mc-tg-secret.tmp
+data/scrape-shots/
+data/scrape-report.json

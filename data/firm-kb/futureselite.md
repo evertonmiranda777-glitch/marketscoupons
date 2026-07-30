@@ -70,3 +70,50 @@ PLATAFORMAS: Tradovate, NinjaTrader, DeepChart (DXfeed), Volumetrica, Quantower,
 Level 1 gratis; Level 2 e upgrade pago de 39/mes. A pagina About cita "Project X", que NAO
 esta no seletor de plataformas: conflito.
 PROGRAMA LIVE: existe transicao pra conta real, com custo, comissao e dados proprios.
+
+=== CORRECAO 2026-07-30, 2o relatorio (teste MANUAL no campo de cupom) ===
+Este relatorio o Everton fez testando o campo de cupom na propria calculadora: aplicou um
+codigo INVALIDO pra ver o preco cheio e reaplicou o SUMMER pra ver o promocional. Prevalece
+sobre o relatorio anterior no que divergir.
+
+CUPOM: **SUMMER**, e ele vem PRE-CARREGADO no campo do checkout. O relatorio anterior dizia
+"nenhum codigo divulgado" e por isso a firma estava com coupon=null aqui. Corrigido.
+A atribuicao continua vindo do LINK (aff=AFF5585615), nao do codigo , entao usar o SUMMER
+publico nao custa comissao.
+
+DESCONTO REAL POR PLANO: **Elite 20%** (nao 25%) · Prime 30% · Instant 30%.
+PRECO ELITE (cheio -> com SUMMER): 50K $153->$122.40 · 100K $253->$202.40 · 150K $353->$282.40.
+🚨 DE ONDE VEIO O ERRO: o valor $189.75 que estava gravado pro Elite 100K e o preco da
+**2a UNIDADE DO BUNDLE** (25%), nao o da primeira. Quem leu a tabela de bundle pegou o
+degrau errado. Ao ler tabela com desconto progressivo, confirmar SEMPRE qual e a 1a unidade.
+PRIME e INSTANT batem com o relatorio anterior: Prime 50K $125.30 · 100K $195.30 ·
+150K $258.30. Instant 50K $244.30 · 100K $328.30 · 150K $398.30.
+
+BUNDLE, degraus confirmados (o % ja inclui o SUMMER na 1a unidade):
+ELITE e INSTANT, ate 5 contas, a 5a GRATIS. Elite 100K: 1a 20% $202.40 · 2a 25% $189.75 ·
+3a 30% $177.10 · 4a 35% $164.45 · 5a $0. Instant 100K: 1a 30% $328.30 · 2a 35% $304.85 ·
+3a 40% $281.40 · 4a 45% $257.95 · 5a $0.
+PRIME, ate 10 contas, a 10a GRATIS. 100K: 30/35/40/43/45/48/50/52/54% e a 10a $0
+($195.30 · $181.35 · $167.40 · $159.03 · $153.45 · $145.08 · $139.50 · $133.92 · $128.34).
+Exemplo testado por ele: 5x Elite 50K = $250.000 de alocacao por $443,70 (economia $321,30).
+
+TAXA DE RESET (calculadora): Elite $89/$159/$229 · Prime $109/$159/$209 · Instant NAO TEM
+(nao ha fase de avaliacao). Isso confirma o lado do WIDGET no conflito com o Help Center
+(que dizia $59 no Prime 50K e $179 no 150K). Continuar reportando os dois quando perguntarem.
+
+TAXA DE ATIVACAO: ZERO, confirmado na calculadora E no FAQ, que diz textual: "No Activation
+Fees. Not on Elite, not on Prime, not on Instant."
+
+⚠️ CONFLITO ENTRE OS DOIS RELATORIOS DELE: o 1o citava um plano "Custom"; o 2o diz que
+"nao existe um plano chamado Custom", so Elite, Prime e Instant. O 2o e o mais recente e foi
+feito na calculadora , tratar Custom como INEXISTENTE ate ver na tela de novo.
+
+ELITE CREDITS: creditos acumulados a partir dos payouts, usados pra comprar novas contas com
+desconto. **1 Elite Credit = US$ 1,05 de poder de compra.** Nao e cupom.
+
+NEWSLETTER: o rodape oferece "exclusive 10% discount code" por e-mail. O codigo NAO e
+publico. Nao anunciar o que nao da pra ver.
+
+REEMBOLSO: o FAQ "Do I get my fee back?" diz que todo pagamento e final e nao reembolsavel.
+INSTANT $25K: citado no FAQ, ausente da calculadora. Preco nao confirmavel publicamente,
+possivelmente legado. NAO inventar valor.

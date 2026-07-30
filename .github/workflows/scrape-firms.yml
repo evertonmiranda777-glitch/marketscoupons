@@ -1,0 +1,74 @@
+# Raspagem semanal de preco das firmas, com 3 confirmacoes independentes.
+#
+# Pedido do Everton em 30/07/2026: "cria uma ferramenta que raspa as infos nem que for na
+# parte de codigo do site ali no F12 e resolve isso toda segunda as 06:00, quero as firmas
+# atualizadas. Quero 3 confirmacoes pra nada passar batido."
+#
+# Ele passou dias coletando preco na mao. E em 30/07 eu peguei um relatorio ANTIGO dele e
+# sobrescrevi 12 precos CORRETOS da BrightFunded , o pente fino de 27/28 estava certo e eu
+# estraguei. Este job existe pra que a fonte seja o SITE, toda semana, sem depender de
+# relatorio nem da minha memoria.
+#
+# 🚨 ELE NAO ESCREVE NO BANCO. Gera relatorio + screenshots e falha se algo divergir.
+# Adotar valor automaticamente a partir de raspagem sem historico de acerto seria repetir o
+# erro de 30/07 com outro nome. Liga a escrita depois de umas semanas de relatorio limpo.
+#
+# Nao usa SUPABASE_SERVICE_ROLE_KEY: ela ignora RLS e abre o banco inteiro. Le pela Edge
+# Function `firms-check` com o FIRMS_CHECK_TOKEN, mesmo caminho do check_links.
+
+name: Raspagem de precos das firmas
+
+on:
+  schedule:
+    # Segunda 06:00 BRT = 09:00 UTC. O cron do GitHub e sempre UTC.
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  raspar:
+    # Nao roda em PR de fork: segredo nao vaza pra codigo de terceiro.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Playwright (so o Chromium)
+        run: |
+          npm install playwright@1.49.0 --no-save
+          npx playwright install --with-deps chromium
+
+      - name: Raspar e conferir
+        id: raspagem
+        env:
+          FIRMS_CHECK_TOKEN: ${{ secrets.FIRMS_CHECK_TOKEN }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_READONLY_KEY }}
+        run: node scripts/scrape-firms.mjs
+        continue-on-error: true
+
+      # Os screenshots sao a 3a confirmacao e a prova auditavel. Ficam 30 dias, que e o
+      # suficiente pra conferir "o preco mudou mesmo ou o scraper que errou?".
+      - name: Guardar screenshots e relatorio
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: raspagem-${{ github.run_number }}
+          path: |
+            data/scrape-shots/
+            data/scrape-report.json
+          retention-days: 30
+
+      - name: Falhar se divergiu
+        if: steps.raspagem.outcome == 'failure'
+        run: |
+          echo "Alguma firma divergiu do banco. Baixe o artifact 'raspagem-${{ github.run_number }}',"
+          echo "olhe o screenshot da firma e o data/scrape-report.json antes de mudar qualquer preco."
+          exit 1
