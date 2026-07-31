@@ -1449,6 +1449,15 @@ select.filter-inp option{background:var(--sur);color:var(--t1);}
        <input type="number" id="em-cooldown-days" value="7" min="1" max="365" style="width:70px;padding:7px 10px;background:var(--card2);border:1px solid var(--b1);border-radius:6px;color:var(--t1);font-size:12px;text-align:center;" onchange="updateDestCount();">
        <span style="font-size:10px;color:var(--t3);">dias</span>
      </div>
+     <!-- Reenvio livre: ignora a tag `received-{campanha}` no servidor (noDedup).
+          Com isso LIGADO o retry de timeout e' DESLIGADO no sendEmailsSmtp , sem o dedup,
+          uma retentativa mandaria o mesmo e-mail duas vezes pra quem ja tinha recebido. -->
+     <div style="display:flex;align-items:center;gap:8px;" title="Ignora o bloqueio de 'ja recebeu esta campanha' e manda pra TODOS os selecionados, mesmo quem ja recebeu antes. Use na sua base propria do site.">
+       <label for="em-no-dedup" style="white-space:nowrap;display:flex;align-items:center;gap:6px;cursor:pointer;">
+         <input type="checkbox" id="em-no-dedup" style="cursor:pointer;" onchange="updateDestCount();">
+         Reenviar p/ quem já recebeu
+       </label>
+     </div>
    </div>
 
    <!-- Painel de progresso LIVE durante o disparo (escondido até clicar Enviar) -->
@@ -10859,6 +10868,12 @@ async function sendEmailsSmtp(){
       // tempo total é o provider mais LENTO, não o mais rápido.
       // 50 pelo Brevo cabe folgado em 60s; 200 não cabia.
       const CHUNK = 50;
+      // Checkbox "Reenviar p/ quem ja recebeu". Manda `noDedup:true` pro servidor, que
+      // entao NAO filtra por `received-{campanha}`.
+      // ⚠️ E DESLIGA O RETRY: a retentativa de timeout so e' segura PORQUE o dedup existe
+      // (o 2o envio e' filtrado). Sem dedup, retentar = mandar o e-mail duas vezes.
+      const semDedup = !!document.getElementById('em-no-dedup')?.checked;
+      const MAX_TENTATIVAS = semDedup ? 1 : 3;
       for(const [lang, group] of Object.entries(langGroups)){
         const html = isPromo ? buildWhitePromoHtml(emailPromoFirm, lang) : buildInstitutionalHtml(window._instTemplateName, lang);
         const instTpl = isInst ? INST_TEMPLATES[window._instTemplateName] : null;
@@ -10882,10 +10897,11 @@ async function sendEmailsSmtp(){
             subject: langSubject,
             htmlContent: html,
             tags: [isPromo ? 'promo-'+emailPromoFirm.id : 'inst-'+window._instTemplateName, 'lang-'+lang, ...(emailCustomTagFilter||[])],
+            noDedup: semDedup,
           }),
         });
           tentativa++;
-        } while (TIMEOUTS.includes(resp.status) && tentativa < 3);
+        } while (TIMEOUTS.includes(resp.status) && tentativa < MAX_TENTATIVAS);
         const data = await resp.json().catch(()=>({}));
         // Capture debug pra cada call multilíngue
         window._lastSendDebug.calls.push({ lang, chunk_off: off, chunk_size: chunk.length, http_status: resp.status, http_ok: resp.ok, body_keys: Object.keys(data||{}), success: data.success, sent: data.sent, failed: data.failed, error: data.error, message: data.message, results_sample: (data.results||[]).slice(0,2) });
