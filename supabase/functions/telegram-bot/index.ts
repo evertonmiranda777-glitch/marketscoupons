@@ -1,6 +1,12 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
+// .trim() + remocao de caracteres invisiveis: colar token do Telegram no campo do painel
+// arrasta \n, espaco e as vezes um zero-width (U+200B/FEFF) junto. Qualquer um deles entra
+// na URL da API e o Telegram devolve 401 , com o MESMO token funcionando no navegador.
+// Perseguido em 31/07/2026, depois da rotacao forcada pelo sequestro do bot.
+const BOT_TOKEN = (Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "")
+  .replace(/[​-‍﻿ ]/g, "")
+  .trim();
 const CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID") ?? "-1002924828989";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "https://qfwhduvutfumsaxnuofa.supabase.co";
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -859,6 +865,35 @@ Deno.serve(async (req: Request) => {
           status: cm?.result?.status,
           can_restrict_members: cm?.result?.can_restrict_members ?? false,
           raw: cm?.result ?? cm,
+        };
+        break;
+      }
+
+      // Diagnostico do token SEM revelar o valor: so formato e o que o Telegram responde.
+      // Existe porque em 31/07/2026 o token novo funcionava no navegador e dava 401 aqui,
+      // e sem enxergar a FORMA do que chegou na funcao nao dava pra saber se era sujeira
+      // na colagem, valor truncado ou token ja revogado.
+      case "token_shape": {
+        const _s4 = Deno.env.get("MC_TG_SECRET") || "";
+        if (_s4 && (req.headers.get("x-mc-secret") || "") !== _s4) {
+          return new Response(JSON.stringify({ error: "forbidden" }), { status: 403, headers: { "Content-Type": "application/json" } });
+        }
+        const cru = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
+        const idPart = BOT_TOKEN.split(":")[0] || "";
+        let getMe: Record<string, unknown> = {};
+        try {
+          const g = await (await fetch(tgApi("getMe"))).json();
+          getMe = { ok: g?.ok, code: g?.error_code, desc: g?.description, username: g?.result?.username };
+        } catch (e) { getMe = { erro: String(e).slice(0, 120) }; }
+        result = {
+          existe: cru.length > 0,
+          tamanho_cru: cru.length,
+          tamanho_limpo: BOT_TOKEN.length,
+          tinha_sujeira: cru.length !== BOT_TOKEN.length,
+          tem_dois_pontos: BOT_TOKEN.includes(":"),
+          id_len: idPart.length,
+          id_so_digitos: /^\d+$/.test(idPart),
+          getMe,
         };
         break;
       }
