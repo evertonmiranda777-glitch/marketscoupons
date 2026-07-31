@@ -479,21 +479,25 @@ module.exports = async (req, res) => {
     }
     results.push(result);
 
-    // Auto-tag em email_subscribers se envio bem-sucedido, colecta promise pra await NO FINAL
-    // (fire-and-forget não funciona em Vercel serverless: handler return mata in-flight network)
+    // ⚠️ MARCA NA HORA, NAO NO FINAL. Antes as promises eram acumuladas e resolvidas
+    // depois do laco inteiro (`await Promise.all(tagPromises)`), o que e mais rapido MAS
+    // quebra sob timeout: se a funcao estoura no meio (foi o 504 de 30/07 com chunk de
+    // 142), o Promise.all nunca roda, NINGUEM fica marcado, e o reenvio manda de novo
+    // pra quem ja recebeu , e-mail duplicado, que nao tem retificacao.
+    // Marcando inline, quem ja recebeu esta marcado ANTES do proximo envio comecar,
+    // entao o dedup por campaign_key protege mesmo com a funcao morrendo no meio.
+    // Custo: ~150ms por destinatario. Com chunk de 50 sobra tempo dentro dos 60s.
     if (result.status === 'sent' && campaignKey) {
-      tagPromises.push(appendCampaignTag(result.email, campaignKey).catch(() => null));
+      await appendCampaignTag(result.email, campaignKey).catch(() => null);
     }
 
     // Small delay to avoid rate limiting
     if (to.length > 10) await new Promise(r => setTimeout(r, 100));
   }
 
-  // Aguarda TODOS os auto-tags terminarem antes de retornar (Vercel kills in-flight on return)
-  if (tagPromises.length > 0) {
-    console.log(`[send-email] aguardando ${tagPromises.length} auto-tags...`);
-    await Promise.all(tagPromises);
-  }
+  // As tags agora sao gravadas INLINE, logo apos cada envio (ver comentario no laco).
+  // Este bloco ficou como rede de seguranca pra qualquer promise que ainda sobre.
+  if (tagPromises.length > 0) await Promise.all(tagPromises);
 
   const sent = results.filter(r => r.status === 'sent').length;
   const failed = results.filter(r => r.status === 'failed').length;

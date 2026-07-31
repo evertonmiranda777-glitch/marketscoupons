@@ -10841,15 +10841,24 @@ async function sendEmailsSmtp(){
       } catch(e){ console.warn('[sendEmailsSmtp] token refresh failed:', e); }
       return token;
     };
-    let totalSent=0, totalFailed=0;
+    // `totalSemConfirmacao` = chunk que estourou o tempo (504). NAO e falha: parte
+    // pode ter saido, e o dedup por campaign_key impede duplicata na proxima rodada.
+    let totalSent=0, totalFailed=0, totalSemConfirmacao=0;
 
     if(isPromo || isInst){
       window._lastSendResults = [];
       window._lastSendDebug = { calls: [] };
       window._lastSendProviders = { brevo: 0, resend: 0, sendgrid: 0 };
       // Send per language group, each gets HTML in their language
-      // Chunk em lotes de 200 (limite do /api/send-email, Brevo aceita até 1000 mas a função impõe 200)
-      const CHUNK = 200;
+      // ⚠️ CHUNK ERA 200 E CAUSOU 142 "FALHAS" EM 30/07/2026.
+      // O que aconteceu: chunk 1 (200 destinatários) esgotou o orçamento do Resend e
+      // passou; o chunk 2 (142) caiu no BREVO, que é SMTP relay e é lento, e a função
+      // estourou os 60s do `maxDuration` → HTTP 504. O painel mostrou "142 falhas" e
+      // ninguém soube por quê. Chunks 3 e 4 (25 e 1) passaram porque eram pequenos.
+      // O envio dentro da função é SEQUENCIAL, um e-mail por vez, então o que manda no
+      // tempo total é o provider mais LENTO, não o mais rápido.
+      // 50 pelo Brevo cabe folgado em 60s; 200 não cabia.
+      const CHUNK = 50;
       for(const [lang, group] of Object.entries(langGroups)){
         const html = isPromo ? buildWhitePromoHtml(emailPromoFirm, lang) : buildInstitutionalHtml(window._instTemplateName, lang);
         const instTpl = isInst ? INST_TEMPLATES[window._instTemplateName] : null;
@@ -10857,7 +10866,15 @@ async function sendEmailsSmtp(){
         for(let off=0; off<group.length; off+=CHUNK){
         const chunk = group.slice(off, off+CHUNK);
         await ensureFreshToken();
-        const resp = await fetch('/api/send-email', {
+        // ⚠️ TIMEOUT NAO E FALHA DE ENVIO , e' resposta que nao chegou. Parte dos e-mails
+        // do chunk pode ter saido antes do 504. Por isso: TENTA DE NOVO em vez de contar
+        // como falha. O reenvio e SEGURO porque a /api/send-email deduplica por
+        // `campaign_key` (filtra quem ja recebeu a campanha), entao ninguem recebe 2x.
+        let resp, tentativa = 0;
+        const TIMEOUTS = [408, 502, 503, 504, 524];
+        do {
+          if (tentativa) await new Promise(r => setTimeout(r, 3000));
+          resp = await fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({
@@ -10867,6 +10884,8 @@ async function sendEmailsSmtp(){
             tags: [isPromo ? 'promo-'+emailPromoFirm.id : 'inst-'+window._instTemplateName, 'lang-'+lang, ...(emailCustomTagFilter||[])],
           }),
         });
+          tentativa++;
+        } while (TIMEOUTS.includes(resp.status) && tentativa < 3);
         const data = await resp.json().catch(()=>({}));
         // Capture debug pra cada call multilíngue
         window._lastSendDebug.calls.push({ lang, chunk_off: off, chunk_size: chunk.length, http_status: resp.status, http_ok: resp.ok, body_keys: Object.keys(data||{}), success: data.success, sent: data.sent, failed: data.failed, error: data.error, message: data.message, results_sample: (data.results||[]).slice(0,2) });
@@ -10881,6 +10900,13 @@ async function sendEmailsSmtp(){
           _liveProviders.sendgrid += (data.providers.sendgrid||0);
         }
         if(data.success){ totalSent+=data.sent||0; totalFailed+=data.failed||0; }
+        else if (TIMEOUTS.includes(resp.status)) {
+          // Estourou o tempo mesmo apos as tentativas. NAO conta como falha: nao da pra
+          // saber quantos sairam, e o dedup impede duplicata na proxima rodada. Fica
+          // registrado como "sem confirmacao" pra aparecer no relatorio, nao no contador
+          // de falha , foi assim que 1 timeout virou "142 falhas" no painel.
+          totalSemConfirmacao += chunk.length;
+        }
         else { totalFailed+=chunk.length; }
         // Atualiza painel LIVE a cada chunk
         chunksDone++;
@@ -10933,7 +10959,7 @@ async function sendEmailsSmtp(){
       status: totalFailed===0 ? 'sent' : (totalSent===0 ? 'failed' : 'partial'),
       sent_by: 'admin',
       provider: 'auto',
-      brevo_response: { sent: totalSent, failed: totalFailed, languages: Object.keys(langGroups), tags: logTags, first_errors: _firstErrors, server_debug: _serverDebug, providers_breakdown: _providersBreakdown },
+      brevo_response: { sent: totalSent, failed: totalFailed, sem_confirmacao: totalSemConfirmacao, languages: Object.keys(langGroups), tags: logTags, first_errors: _firstErrors, server_debug: _serverDebug, providers_breakdown: _providersBreakdown },
     });
 
     addEmailSentToday(totalSent);
