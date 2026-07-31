@@ -389,11 +389,25 @@ module.exports = async (req, res) => {
             if (Number.isFinite(v) && v > 0) resendDailyLimit = v;
           }
         } catch {}
-        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.resend&created_at=gte.${today}&select=recipients`, {
+        // ⚠️ CONSERTADO 31/07/2026 , A CONTA NUNCA DESCONTAVA NADA.
+        // Era: `provider=eq.resend` somando o campo `recipients`. Dois erros juntos:
+        //   1. disparo em massa e' gravado com provider 'auto', NUNCA 'resend' , entao o
+        //      filtro voltava VAZIO todo dia e `sentToday` era sempre 0;
+        //   2. `recipients` e' o TAMANHO DA FILA, nao o que saiu (fila 366 -> 8 enviados).
+        // Resultado: o orcamento do Resend nascia cheio (100) em toda chamada e o sistema
+        // empurrava alem da cota real. Em 31/07 o Resend mandou "100% of your daily quota"
+        // pro Everton depois de 149 envios que a nossa conta enxergava como zero.
+        // Agora le TODOS os logs do dia e soma `brevo_response.providers.resend`, que e'
+        // quanto o Resend aceitou de fato, independente do provider gravado no log.
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?created_at=gte.${today}&select=brevo_response`, {
           headers: { apikey: subKey, Authorization: `Bearer ${subKey}` },
         });
         const logs = r.ok ? await r.json() : [];
-        const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);
+        const sentToday = logs.reduce((s, l) => {
+          let br = l.brevo_response;
+          if (typeof br === 'string') { try { br = JSON.parse(br); } catch { br = null; } }
+          return s + (br?.providers?.resend || 0);
+        }, 0);
         resendBudget = Math.max(0, resendDailyLimit - sentToday);
         console.log(`[send-email] Resend sentToday: ${sentToday}, dailyLimit: ${resendDailyLimit}, bulk budget: ${resendBudget}`);
       } catch (e) {
@@ -405,11 +419,18 @@ module.exports = async (req, res) => {
       // SendGrid free tier: 100/dia. Subtrai quantos já enviamos hoje via email_logs (provider='sendgrid').
       try {
         const today = new Date().toISOString().slice(0, 10);
-        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?provider=eq.sendgrid&created_at=gte.${today}&select=recipients`, {
+        // ⚠️ MESMO DEFEITO DO RESEND, consertado junto em 31/07/2026: filtrava por
+        // `provider=eq.sendgrid` (log de massa e' 'auto', nunca casava) e somava
+        // `recipients` (tamanho da fila, nao o que saiu). O orcamento nascia cheio sempre.
+        const r = await fetch(`${SUPABASE_URL}/rest/v1/email_logs?created_at=gte.${today}&select=brevo_response`, {
           headers: { apikey: SUPABASE_SERVICE_KEY||SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY||SUPABASE_KEY}` },
         });
         const logs = r.ok ? await r.json() : [];
-        const sentToday = logs.reduce((s, l) => s + (l.recipients || 0), 0);
+        const sentToday = logs.reduce((s, l) => {
+          let br = l.brevo_response;
+          if (typeof br === 'string') { try { br = JSON.parse(br); } catch { br = null; } }
+          return s + (br?.providers?.sendgrid || 0);
+        }, 0);
         sendgridBudget = Math.max(0, 100 - sentToday);
         console.log(`[send-email] SendGrid sentToday: ${sentToday}, bulk budget: ${sendgridBudget}`);
       } catch (e) {
