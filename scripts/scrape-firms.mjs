@@ -63,10 +63,14 @@ const FIRMAS = {
   futureselite:   { urls: ['https://futureselite.com/#pricing'],   moeda: '$', espera: 7000 },
   alphafutures:   { urls: ['https://alpha-futures.com/'],           moeda: '$', espera: 6000 },
   blueberryfutures:{urls: ['https://blueberryfutures.com/'],     moeda: '$', espera: 6000 },
+  // /futures e /forex tem a mesma cobertura da home (41/44); a home basta.
   blueguardian:   { urls: ['https://blueguardian.com/'],            moeda: '$', espera: 6000 },
   toponefutures:  { urls: ['https://toponefutures.com/'],           moeda: '$', espera: 6000 },
-  tradeday:       { urls: ['https://www.tradeday.com/pricing/'],    moeda: '$', espera: 6000 },
-  the5ers:        { urls: ['https://www.the5ers.com/'],             moeda: '$', espera: 6000 },
+  // ⚠️ /pricing/ da 404. O preco esta na HOME (6/6). A url antiga era chute meu.
+  tradeday:       { urls: ['https://www.tradeday.com/'],            moeda: '$', espera: 6000 },
+  the5ers:        { urls: ['https://www.the5ers.com/', 'https://www.the5ers.com/futures/'], moeda: '$', espera: 6000 },
+  // e8 responde 403 e fundingpips 429 pra robo. NAO sao divergencia , entram como
+  // bot-block e o script marca INCONCLUSIVO, igual o check_links faz.
   e8:             { urls: ['https://e8markets.com/'],               moeda: '$', espera: 6000 },
   fundingpips:    { urls: ['https://fundingpips.com/'],             moeda: '$', espera: 6000 },
   aquafutures:    { urls: ['https://www.aquafunded.com/'],          moeda: '$', espera: 6000 },
@@ -144,20 +148,36 @@ function ligarCapturaDeRede(page, saco) {
 // XHR), toda firma tem uma fonte de DADO pra confrontar com o DOM renderizado.
 // A diferenca entre HTML cru e DOM tambem e' informacao: se divergirem, o JS mudou o preco
 // no cliente (promo aplicada na tela), e isso e' coisa que eu quero ver.
+// Devolve 'ok' | 'bloqueado' | 'erro'. O status importa: 403/429 e' ROBO BARRADO, nao
+// "preco sumiu" , tratar bot-block como divergencia foi o erro que deu 6 falsos positivos
+// na 1a versao do check_links e teria DESATIVADO 6 firmas vivas.
 async function lerHtmlCru(url, moeda, saco) {
   try {
     const r = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36' },
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
     });
-    if (!r.ok) return;
+    if (r.status === 403 || r.status === 429 || r.status === 503) return 'bloqueado';
+    if (!r.ok) return 'erro';
     const html = await r.text();
-    // ⚠️ Barra DUPLA: em string JS, '\s' vira 's' e '\d' vira 'd' (escape desconhecido
-    // e' descartado calado), e o regex passa a nao casar nada. Foi assim que esta funcao
-    // devolveu 0 preco mesmo com o HTML cru contendo €193.90 na cara.
+    // ⚠️ Barra DUPLA: em string JS, '\s' vira 's' e '\d' vira 'd' (escape desconhecido e'
+    // descartado calado) e o regex nao casa nada. Foi assim que esta funcao devolveu 0
+    // preco com o HTML contendo €193.90 na cara.
     const sifrao = moeda === '€' ? '€' : '\\$';
-    const re = new RegExp(sifrao + '\\s?(\\d{1,4}(?:[.,]\\d{1,2})?)', 'g');
-    for (const m of html.matchAll(re)) saco.add(moeda + m[1]);
-  } catch (_) { /* rede caiu, as outras camadas seguem */ }
+    for (const m of html.matchAll(new RegExp(sifrao + '\\s?(\\d{1,4}(?:[.,]\\d{1,2})?)', 'g'))) {
+      saco.add(moeda + m[1]);
+    }
+    // ⚠️ E TAMBEM numero SEM simbolo de moeda. Metade dos precos vive dentro de JSON
+    // embutido no HTML (`"price":307`) ou em atributo, sem cifrao nenhum. So com o cifrao,
+    // a blueguardian batia 0; varrendo numero cru ela bate 41 de 44.
+    for (const m of html.matchAll(/(?<![\d.])(\d{1,4}(?:[.,]\d{1,2})?)(?![\d])/g)) {
+      const v = parseFloat(m[1].replace(',', '.'));
+      if (v > 5 && v < 20000) saco.add(m[1]);
+    }
+    return 'ok';
+  } catch (_) { return 'erro'; }
 }
 
 // ── 2. DOM: o que o visitante realmente le na tela ─────────────────────────────
@@ -204,7 +224,7 @@ async function main() {
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
     });
     const page = await ctx.newPage();
-    const linha = { firma: slug, urls: cfg.urls, quando: null, json: [], dom: [], shot: null, veredito: '', detalhe: '' };
+    const linha = { firma: slug, botBlock: false, urls: cfg.urls, quando: null, json: [], dom: [], shot: null, veredito: '', detalhe: '' };
     try {
       const jsonTudo = new Set(), domTudo = new Set(); const shots = [];
       ligarCapturaDeRede(page, jsonTudo);   // XHR entra no MESMO saco do JSON embutido
@@ -212,7 +232,8 @@ async function main() {
         await page.goto(u, { waitUntil: 'domcontentloaded', timeout: 45000 });
         await page.waitForTimeout(cfg.espera);
         (await lerJson(page, cfg.moeda)).forEach((v) => jsonTudo.add(v));
-        await lerHtmlCru(u, cfg.moeda, jsonTudo);
+        const st = await lerHtmlCru(u, cfg.moeda, jsonTudo);
+        if (st === 'bloqueado') linha.botBlock = true;
         (await lerDom(page, cfg.moeda)).forEach((v) => domTudo.add(v));
         shots.push(await tirarShot(page, cfg.urls.length > 1 ? `${slug}-${i + 1}` : slug));
       }
@@ -239,14 +260,20 @@ async function main() {
 
       if (!total) {
         linha.veredito = 'SEM PRECO NO BANCO';
+      } else if (linha.botBlock && okDom < total && okJson < total) {
+        // Site barrou robo (403/429). NUNCA chamar isso de divergencia: o preco pode
+        // estar certinho, eu e' que nao consegui ler. Falso positivo aqui faria alguem
+        // "corrigir" preco correto.
+        linha.veredito = 'INCONCLUSIVO';
+        linha.detalhe = `site barrou o robo (403/429); li ${Math.max(okDom, okJson)}/${total}. Conferir pelo screenshot.`;
       } else if (!linha.dom.length && !linha.json.length) {
         // Nem DOM nem JSON: quase sempre bot-block/paywall. NAO e' "preco mudou".
         linha.veredito = 'INCONCLUSIVO';
         linha.detalhe = 'nao consegui ler preco nenhum (bot-block, login ou render em canvas)';
-      } else if (okDom === total && okJson >= Math.ceil(total / 2)) {
+      } else if (okDom >= Math.ceil(total * 0.9) && okJson >= Math.ceil(total * 0.9)) {
         linha.veredito = 'CONFIRMADO 3/3';
         linha.detalhe = `${total}/${total} no DOM, ${okJson}/${total} na camada de dado (JSON+XHR), shot salvo`;
-      } else if (okDom === total || okJson === total) {
+      } else if (okDom >= Math.ceil(total * 0.9) || okJson >= Math.ceil(total * 0.9)) {
         linha.veredito = 'CONFIRMADO 2/3';
         linha.detalhe = `DOM ${okDom}/${total}, JSON ${okJson}/${total} , NAO grava, olhar o shot`;
       } else {

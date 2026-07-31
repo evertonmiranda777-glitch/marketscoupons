@@ -76,11 +76,40 @@ const FIRMAS = {
   tradeday: { urls: ['https://www.tradeday.com/'], moeda: '$', espera: 6000 },
   the5ers: { urls: ['https://www.the5ers.com/', 'https://www.the5ers.com/futures/'], moeda: '$', espera: 6000 },
   aquafutures: { urls: ['https://www.aquafunded.com/'], moeda: '$', espera: 6000 },
-  // e8 (403) e fundingpips (429) barram robo; cti e fff escondem preco atras de login.
-  // Ficam de fora de proposito: colher sem enxergar e' o que quebrou dado hoje.
+  // ⚠️ e8 e fundingpips ESTAO AQUI de propalgo. Elas devolvem 403/429 pro `fetch`
+  // simples, e eu tinha tirado as duas da lista por causa disso , era desculpa. O
+  // Playwright navega como browser de verdade e passa onde o fetch nao passa. E' pra
+  // isso que existem 3 formas: quando uma nao consegue, a outra consegue. Se as duas
+  // primeiras falharem, o SCREENSHOT ainda registra a oferta pra conferencia humana.
+  e8:           { urls: ['https://e8markets.com/'],     moeda: '$', espera: 8000 },
+  fundingpips:  { urls: ['https://fundingpips.com/'],   moeda: '$', espera: 8000 },
+  // ⚠️ CTI e FFF TAMBEM entram. Eu tinha dito que exigiam login , errado, eu abri a
+  // URL errada. A CTI mostra o preco nas paginas de PLANO (/1-step-challenge/ etc, a
+  // home so diz "From $29"), e a FFF no widget da home. O que exige conta e o
+  // CHECKOUT, nao a oferta.
+  cti: {
+    urls: ['https://citytradersimperium.com/1-step-challenge/',
+           'https://citytradersimperium.com/2-step-challenge/',
+           'https://citytradersimperium.com/instant-funding/',
+           'https://citytradersimperium.com/direct-funding/'],
+    moeda: '$', espera: 7000,
+  },
+  'funded-futures-family': { urls: ['https://www.fundedfuturesfamily.com/'], moeda: '$', espera: 8000 },
 };
 
-const num = (s) => { const m = String(s).match(/(\d{1,5}(?:[.,]\d{1,2})?)/); return m ? parseFloat(m[1].replace(',', '.')) : null; };
+// ⚠️ SEPARADOR DE MILHAR. A versao anterior lia "$1,599" como 1.59 e "$2,950" como 2.95,
+// porque o regex parava no primeiro separador. Com isso NENHUMA comparacao entre camadas
+// fechava em firma com preco de 4 digitos, e a ferramenta acusou divergencia em 10 de 13.
+// Regra: separador seguido de 3 digitos e MILHAR (tira); seguido de 1-2 digitos e DECIMAL.
+const num = (s) => {
+  const t = String(s).replace(/[^\d.,]/g, '');
+  if (!t) return null;
+  const limpo = t
+    .replace(/[.,](?=\d{3}(?:\D|$))/g, '')   // milhar: 1,599 / 1.599 -> 1599
+    .replace(',', '.');                       // decimal virgula -> ponto
+  const v = parseFloat(limpo);
+  return Number.isFinite(v) ? v : null;
+};
 
 // ── colheita: cupom, desconto, prazo e sinal de taxa de ativacao ──────────────
 function colherDaPagina(moeda) {
@@ -148,9 +177,19 @@ async function lerCru(url, saco) {
     if ([403, 429, 503].includes(r.status)) return 'bloqueado';
     if (!r.ok) return 'erro';
     const html = await r.text();
-    for (const m of html.matchAll(/(?<![\d.])(\d{1,5}(?:[.,]\d{1,2})?)(?![\d])/g)) {
-      const v = parseFloat(m[1].replace(',', '.'));
-      if (v > 5 && v < 20000) saco.precos.add(String(v));
+    // ⚠️ NAO varrer todo numero do HTML. A versao anterior fazia isso e devolvia 500 a
+    // 800 "precos" por firma , id, timestamp, valor de CSS, metrica de analytics. Ai o
+    // cruzamento com a tela nunca fechava e a ferramenta acusou divergencia em 10 de 13.
+    // Ruido demais nao e' cautela, e' a ferramenta virando inutil.
+    // Preco mora em dois lugares: colado num simbolo de moeda, ou sob chave com nome de
+    // preco no JSON embutido.
+    for (const m of html.matchAll(/[$€£]\s?(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{1,2})?|\d{1,5}(?:[.,]\d{1,2})?)/g)) {
+      const v = num(m[1]);
+      if (v !== null && v > 5 && v < 20000) saco.precos.add(String(v));
+    }
+    for (const m of html.matchAll(/"(?:[a-z_]*(?:price|amount|cost|fee|total|value)[a-z_]*)"\s*:\s*"?(\d{1,5}(?:[.,]\d{1,2})?)"?/gi)) {
+      const v = num(m[1]);
+      if (v !== null && v > 5 && v < 20000) saco.precos.add(String(v));
     }
     for (const m of html.matchAll(/\b([A-Z][A-Z0-9_-]{3,24})\b/g)) {
       const c = m[1];
@@ -177,13 +216,17 @@ async function main() {
   const alvos = SO_FIRMA ? { [SO_FIRMA]: FIRMAS[SO_FIRMA] } : FIRMAS;
   if (SO_FIRMA && !FIRMAS[SO_FIRMA]) { console.error(`firma "${SO_FIRMA}" nao configurada`); process.exit(1); }
 
-  const browser = await chromium.launch();
+  let browser = await chromium.launch();
   const relatorio = [];
   fs.mkdirSync(SHOTS, { recursive: true });
 
-  for (const [slug, cfg] of Object.entries(alvos)) {   // SERIAL, ver cabecalho
+  for (const [slug, cfgOrig] of Object.entries(alvos)) {
+    let cfg = cfgOrig;   // SERIAL, ver cabecalho
     const db = banco[slug];
     const linha = { firma: slug, urls: cfg.urls, botBlock: false, achados: {}, mudancas: [], reportar: [], gravar: [], veredito: '' };
+    // ⚠️ o browser morreu no meio da rodada na the5ers e derrubou as firmas seguintes.
+    // Cada firma abre seu contexto de forma tolerante; se o browser caiu, sobe outro.
+    if (!browser.isConnected()) browser = await chromium.launch();
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36' });
     const page = await ctx.newPage();
     const saco = { precos: new Set(), cuponsHtml: new Set() };
@@ -193,15 +236,29 @@ async function main() {
         if (!/json/i.test(resp.headers()['content-type'] || '') || resp.status() >= 400) return;
         const t = await resp.text();
         if (!t || t.length > 800000) return;
-        for (const m of t.matchAll(/(?<![\d.])(\d{1,5}(?:[.,]\d{1,2})?)(?![\d])/g)) {
-          const v = parseFloat(m[1].replace(',', '.'));
-          if (v > 5 && v < 20000) saco.precos.add(String(v));
+        // Mesma regra do HTML cru: so numero sob chave com nome de preco, ou com
+        // simbolo de moeda. Payload de API tem id, timestamp e contador aos montes.
+        for (const m of t.matchAll(/"(?:[a-z_]*(?:price|amount|cost|fee|total|value)[a-z_]*)"\s*:\s*"?(\d{1,5}(?:[.,]\d{1,2})?)"?/gi)) {
+          const v = num(m[1]);
+          if (v !== null && v > 5 && v < 20000) saco.precos.add(String(v));
+        }
+        for (const m of t.matchAll(/[$€£]\s?(\d{1,5}(?:[.,]\d{1,2})?)/g)) {
+          const v = num(m[1]);
+          if (v !== null && v > 5 && v < 20000) saco.precos.add(String(v));
         }
       } catch (_) {}
     });
 
     try {
-      const dom = { cupons: new Set(), pcts: new Set(), precos: new Set(), prazo: new Set(), taxa: new Set(), tamanhos: new Set() };
+      // ⚠️ REFAZ quando as camadas discordam (ordem do Everton: "se tem alguma
+      // diferenca refaz"). Divergencia costuma ser leitura precoce: o preco ainda
+      // nao renderizou quando eu li o DOM, ou o XHR ainda nao voltou. Uma releitura
+      // com mais espera resolve a maioria. Se persistir na 2a, ai sim e' divergencia
+      // de verdade e nada e' gravado.
+      let dom, tentativa = 0;
+      for (tentativa = 1; tentativa <= 2; tentativa++) {
+      if (tentativa > 1) { saco.precos.clear(); saco.cuponsHtml.clear(); }
+      dom = { cupons: new Set(), pcts: new Set(), precos: new Set(), prazo: new Set(), taxa: new Set(), tamanhos: new Set() };
       for (const [i, u] of cfg.urls.entries()) {
         await page.goto(u, { waitUntil: 'domcontentloaded', timeout: 45000 });
         await page.waitForTimeout(cfg.espera);
@@ -213,7 +270,17 @@ async function main() {
         c.prazo.forEach((x) => dom.prazo.add(x));
         c.taxa.forEach((x) => dom.taxa.add(x));
         c.tamanhos.forEach((x) => dom.tamanhos.add(x));
-        await page.screenshot({ path: path.join(SHOTS, cfg.urls.length > 1 ? `${slug}-${i + 1}.png` : `${slug}.png`), fullPage: true });
+        // screenshot e a 3a confirmacao, mas se ela falhar (fonte que nao carrega, pagina
+        // gigante) NAO pode derrubar a firma inteira , as outras 2 camadas seguem valendo.
+        try {
+          await page.screenshot({ path: path.join(SHOTS, cfg.urls.length > 1 ? `${slug}-${i + 1}.png` : `${slug}.png`), fullPage: true });
+        } catch (e) { linha.shotFalhou = true; }
+      }
+      // as duas camadas concordam? se sim, para de tentar.
+      const _ok = [...dom.precos].map((v) => String(num(v))).filter((v) => v !== 'null');
+      const _bate = _ok.filter((v) => saco.precos.has(v)).length;
+      if (!_ok.length || _bate >= Math.ceil(_ok.length * 0.8)) break;
+      if (tentativa === 1) { cfg = { ...cfg, espera: cfg.espera + 5000 }; linha.refez = true; }
       }
       linha.achados = {
         cupons: [...dom.cupons], descontos: [...dom.pcts].sort((a, b) => b - a),
@@ -226,9 +293,69 @@ async function main() {
         linha.veredito = 'INCONCLUSIVO';
         linha.reportar.push('site barrou o robo; nao da pra afirmar que algo mudou');
       } else {
-        // 3 confirmacoes: DOM tem preco, camada de dado tem preco, shot existe.
-        const conf = (dom.precos.size ? 1 : 0) + (saco.precos.size ? 1 : 0) + 1;
-        linha.veredito = conf === 3 ? 'CONFIRMADO 3/3' : `PARCIAL ${conf}/3`;
+        // ── CRUZAMENTO, ANCORADO NO QUE A GENTE CONHECE ─────────────────────
+        // ⚠️ Duas tentativas anteriores falharam e a licao e a mesma nas duas:
+        //  1a) contava se cada camada devolveu ALGUMA coisa e chamava de "3/3". Isso e
+        //      presenca, nao confirmacao , 3 camadas lendo coisas DIFERENTES marcavam
+        //      3/3 igual.
+        //  2a) comparava o SACO de numeros da tela contra o SACO do dado. Nunca fecha:
+        //      a tela tem tamanho de conta ($50,000), meta de lucro ($3,000) e exemplo
+        //      de payout ($119,175) , tudo com cifrao e nada disso e preco de plano.
+        //      Acusou divergencia em 10 de 13 e eu fui apertar filtro sem resolver a
+        //      raiz.
+        // O que FUNCIONA e comparar a MESMA COISA nas duas camadas: para cada preco que
+        // o banco tem dessa firma, ele aparece na TELA e aparece no DADO? Ancorado, sem
+        // ambiguidade, e e' exatamente o que o scrape-firms ja fecha em 3/3.
+        const doBancoPrecos = [...new Set(
+          // ⚠️ SO o preco CHEIO (`o`). Eu ja tinha aprendido isso no scrape-firms e
+          // repeti o erro aqui: o `n` e o preco COM cupom/link de afiliado, e a visita
+          // anonima mostra o CHEIO. Comparar `n` fez 10 de 13 firmas acusarem
+          // divergencia falsa nas duas ferramentas.
+          (db.prices || []).map((p) => p.o).filter(Boolean).map((v) => num(v)).filter((v) => v !== null)
+        )].map(String);
+        const domNum = new Set([...dom.precos].map((v) => String(num(v))));
+        const confTela = doBancoPrecos.filter((v) => domNum.has(v));
+        const confDado = doBancoPrecos.filter((v) => saco.precos.has(v));
+        linha.cruzamento = { doBanco: doBancoPrecos.length, naTela: confTela.length, noDado: confDado.length };
+
+        if (!doBancoPrecos.length) {
+          linha.veredito = 'SEM PRECO NO BANCO';
+        } else {
+          // ⚠️ A REGRA E "SE UMA NAO CONSEGUE, A OUTRA CONSEGUE" (Everton, 30/07).
+          // Eu tinha implementado como "as tres tem que concordar", que e o OPOSTO, e
+          // por isso 10 de 13 firmas acusavam divergencia falsa. Camada que nao
+          // consegue LER nao contradiz nada , e' justamente o motivo de existirem 3.
+          //
+          // Uma camada so CONTRADIZ quando ela ENXERGA bem (achou bastante preco) e
+          // mesmo assim o preco do banco nao esta la. Camada que voltou vazia ou quase
+          // e' "nao consegui", nao "mudou".
+          const OK = 0.8;
+          const camadas = [
+            { nome: 'tela', achou: dom.precos.size, conf: confTela.length },
+            { nome: 'dado', achou: saco.precos.size, conf: confDado.length },
+          ];
+          const operante = camadas.filter((c) => c.achou >= Math.max(5, doBancoPrecos.length * 0.5));
+          const confirmam = operante.filter((c) => c.conf >= Math.ceil(doBancoPrecos.length * OK));
+          const contradizem = operante.filter((c) => c.conf < Math.ceil(doBancoPrecos.length * 0.25));
+          const detalhe = camadas.map((c) => `${c.nome} ${c.conf}/${doBancoPrecos.length}`).join(', ');
+
+          if (confirmam.length && !contradizem.length) {
+            // pelo menos uma forma confirmou e nenhuma outra desmente: validado.
+            linha.veredito = `VALIDADO (${confirmam.map((c) => c.nome).join('+')}+shot)`;
+          } else if (confirmam.length && contradizem.length) {
+            linha.veredito = 'CAMADAS SE CONTRADIZEM';
+            linha.reportar.push(`${confirmam[0].nome} confirma e ${contradizem[0].nome} desmente (${detalhe}) , nada gravado, olhar o screenshot`);
+            linha.gravar = [];
+          } else if (!operante.length) {
+            linha.veredito = 'INCONCLUSIVO';
+            linha.reportar.push(`nenhuma camada conseguiu ler preco desta pagina (${detalhe}) , so o screenshot serve`);
+            linha.gravar = [];
+          } else {
+            linha.veredito = 'PRECO MUDOU NO SITE';
+            linha.reportar.push(`as camadas que enxergaram NAO acham o preco do banco (${detalhe}) , provavelmente mudou`);
+            linha.gravar = [];
+          }
+        }
 
         // ── CUPOM ──────────────────────────────────────────────────────────
         const cupomDb = (db.coupon_afiliado ?? db.coupon ?? '').trim();
