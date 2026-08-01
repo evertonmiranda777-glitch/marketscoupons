@@ -1,5 +1,76 @@
 # MarketsCoupons, Contexto do Projeto
 
+## 🔴🔴🔴 LEI 01/ago — O REPO ESTÁ NO GITHUB, E ERA PÚBLICO
+
+`github.com/evertonmiranda777-glitch/marketscoupons`, **público desde 30/03/2026**. Eu
+registrei **duas vezes** que "o repo é local, nunca foi pro remoto" e nunca rodei
+`git remote -v` (responde em 2 segundos). Com base nisso ele decidiu não rotacionar os
+segredos vazados em 30/jul.
+
+**Resultado:** o `TELEGRAM_BOT_TOKEN` estava escrito em **5 arquivos**, commitado em 09/04 e
+removido em 20/04 — mas **remover não apaga, o histórico é público e permanente**. Ficou
+legível ~3 meses e meio e o bot foi **sequestrado** (renomeado pra "BEST CASINO MINI-APP"
+no canal). Ele revogou no BotFather e o token velho passou a dar 401 na hora.
+
+**LEI: "vazou no repo" e "vazou no meu texto" são problemas DIFERENTES.** `.gitignore` e
+pre-commit não alcançam nada que eu escreva na tela. **Nunca concluir sobre exposição sem
+rodar o comando.**
+
+Varredura do histórico: 53 arquivos com JWT são **todos `role=anon`** (pública por design,
+RLS protege, não é vazamento) · **1 chave Google** em `.claude/CLAUDE.md` segue no histórico
+(não está mais em uso na máquina) · service_role, `sbp_`, Stripe, Brevo, Resend: **nada**.
+⚠️ **PENDENTE dele: fechar o repo.** Detalhe: [[project_sessao_2026_08_01]].
+
+**🔐 SECRET DO SUPABASE NA API APARECE COMO 64 CHARS HEX** — é o *digest* SHA-256, **não o
+valor**. Todos os 27 aparecem assim. Acusei ele de colar o token errado 3x por causa disso.
+Antes de julgar um secret pelo formato, **olhar outro secret e ver se o padrão se repete**.
+E colar token no painel arrasta espaço/zero-width junto: `telegram-bot` agora lê com `.trim()`
++ remoção de U+200B..U+FEFF, e a ação **`token_shape`** reporta só a FORMA, nunca o valor.
+
+## ⚡ LEIS 01/ago — pontos, atribuição e site novo
+
+**🎯 SISTEMA DE PONTOS (`points` edge function + migration `20260801_sistema_de_pontos.sql`):**
+ponto vira **conta de prop firm**. Saldo = **SOMA do ledger**, nunca contador guardado.
+`point_ledger` é append-only e **o navegador SÓ LÊ** (INSERT/UPDATE/DELETE revogados de anon
+e authenticated nas 4 tabelas); escrita só pela edge function, que tira o uid do **TOKEN**.
+`task_key` é **FK** pra `point_tasks` — nome inventado é recusado PELO BANCO.
+**Tier usa GANHO TOTAL, não saldo** (resgatar não pode rebaixar). Resgate desconta com
+`FOR UPDATE`. **⚠️ O prêmio NÃO declara tamanho de conta nem firma** (ordem dele) — isso é
+combinado na entrega. **O admin passa pela MESMA porta** (`admin_*`): policy sem GRANT não
+escreve, e admin é `authenticated`.
+
+**🕳️ `giveaway_tickets` deixa o navegador inserir com `task` em TEXTO LIVRE** — o UNIQUE só
+impede repetir a mesma palavra, dava pra emitir bilhete infinito inventando nomes. Auditado:
+ninguém explorou. Fechado com CHECK de allowlist. **Nunca repetir esse desenho.**
+
+**🔗 `coupon_clicks.user_id` é quase sempre nulo e NÃO é bug** — só preenche se a pessoa
+estiver logada na hora de copiar, e copiar não exige login (8.300 cliques, 2 com usuário).
+A ponte é o **`anon_id`** (`mc_anon` do localStorage): `vincular_aparelho()` diz de quem é o
+aparelho e **adota os cliques órfãos**, inclusive antigos. Aparelho fica com o **primeiro
+dono**. ⚠️ **Não resolve VENDA**: as 845 conversões têm `sub_id` = nome de CAMPANHA, `ip`
+**vazio nas 845**, e payload `{before, after, amount}`.
+
+**💰 O FINANCEIRO SÓ ENXERGA 4 FIRMAS:** apex, bulenox, funded-futures-family e blueguardian
+(parada há 27 dias). **tradeday e fundednext têm ZERO registros, nunca entraram** — eu disse
+"554 cliques e zero venda" e era **defeito do meu levantamento**, li tabela que nunca teve
+esses dados. ⚠️ FundedNext: "Not Payable, 2 issues", $13,98 travados.
+
+**📧 E-MAIL:** base cortada de 24.519 → **750** (lista importada do Bruno Marques removida,
+backup em `data/backup/`). Teto de ~500/dia = **soma dos free tiers** (Brevo ~295 + Resend
+100 + SendGrid 100). **Gmail NÃO resolve** (mesmos 500/dia, SPF do domínio só autoriza
+ImprovMX, viola os termos). 🐛 O orçamento de Resend/SendGrid **nunca descontava**: filtrava
+`provider=eq.resend` mas disparo em massa grava `auto`, e somava `recipients` (tamanho da
+FILA, não o enviado). Agora soma `brevo_response.providers.<provider>`.
+
+**🏗️ SITE NOVO = 4 rotas de vitrine:** `/novo` `/novo-lp` `/novo-admin` `/novo-conta`.
+O arquivo do Design **não é um site** — é pacote fechado (HTML como string JSON + assets
+base64 + React de CDN). Desempacotar com **`scripts/desempacota-design.mjs`**.
+⚠️ **3 armadilhas já tratadas no script:** assets vêm **GZIPADOS** (ignorar o campo
+`compressed` põe 446 placeholders `{{ }}` na tela); **Git Bash converte argumento iniciado em
+`/` em caminho de disco** (usar `MSYS_NO_PATHCONV=1`); o `x-import` do `.jsx` é buscado na
+raiz. **Tudo com dado de demonstração** — o próprio LEIA-ME diz "referência visual, não
+código de produção".
+
 ## 🔒🔒 LEI 30/jul — NUNCA ECOAR VALOR DE SEGREDO (vazei TRÊS num dia só)
 
 `VERCEL_TOKEN`, `MC_TG_SECRET` (o antigo **e** o novo) e o `TELEGRAM_BOT_TOKEN` saíram inteiros
