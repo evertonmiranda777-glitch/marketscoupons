@@ -71,11 +71,14 @@ create unique index if not exists uq_point_ledger_tarefa_rep
   where motivo = 'task_rep';
 
 -- ─────────────────────────────────────────────────────────────── premios
+-- ⚠️ O PREMIO NAO DECLARA TAMANHO DE CONTA NEM NOME DE FIRMA (ordem do Everton, 01/08/2026).
+-- Ele nao controla qual firma vai liberar a conta nem quando. Anunciar "100K da firma X"
+-- vira divida se a firma mudar de ideia , e promessa de produto que nao se cumpre e o mesmo
+-- risco da Lei #0 (publicidade enganosa), so que com o cliente ja tendo "pago" em esforco.
+-- Firma e tamanho sao combinados na ENTREGA, olho no olho, fora do catalogo.
 create table if not exists public.point_rewards (
   slug          text primary key,
   label         text not null,
-  firm_id       text,
-  account_size  int,
   custo_pontos  int  not null check (custo_pontos > 0),
   estoque       int,                                  -- null = ilimitado
   ativo         boolean not null default true,
@@ -83,15 +86,10 @@ create table if not exists public.point_rewards (
 );
 
 comment on table public.point_rewards is
-  'Catalogo de resgate. Conta de prop firm: custo real zero pro Everton (as firmas dao conta), valor percebido alto.';
+  'Catalogo de resgate. NAO guarda tamanho de conta nem firma de proposito: isso e combinado na entrega. Custo real zero pro Everton (as firmas dao conta), valor percebido alto.';
 
-insert into public.point_rewards (slug, label, account_size, custo_pontos, ordem) values
-  ('acc-5k',   '5K Account',   5000,    50, 1),
-  ('acc-10k',  '10K Account',  10000,  100, 2),
-  ('acc-25k',  '25K Account',  25000,  200, 3),
-  ('acc-50k',  '50K Account',  50000,  350, 4),
-  ('acc-100k', '100K Account', 100000, 600, 5),
-  ('acc-150k', '150K Account', 150000, 850, 6)
+insert into public.point_rewards (slug, label, custo_pontos, ordem) values
+  ('trading-account', 'Trading Account', 100, 1)
 on conflict (slug) do nothing;
 
 -- ─────────────────────────────────────────────────────────────── resgates
