@@ -197,6 +197,14 @@
   ],
   "routes": [
     {
+      "src": "/novo-lp",
+      "dest": "/novo-lp/index.html"
+    },
+    {
+      "src": "/novo-admin",
+      "dest": "/novo-admin/index.html"
+    },
+    {
       "src": "/novo",
       "dest": "/novo/index.html"
     },
