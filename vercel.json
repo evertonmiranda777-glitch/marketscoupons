@@ -197,6 +197,10 @@
   ],
   "routes": [
     {
+      "src": "/novo",
+      "dest": "/novo/index.html"
+    },
+    {
       "src": "/goat",
       "status": 301,
       "headers": {
