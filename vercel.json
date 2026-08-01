@@ -197,6 +197,10 @@
   ],
   "routes": [
     {
+      "src": "/novo-conta",
+      "dest": "/novo-conta/index.html"
+    },
+    {
       "src": "/novo-lp",
       "dest": "/novo-lp/index.html"
     },

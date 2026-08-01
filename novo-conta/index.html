@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/novo-conta/assets/6ae7c5ee-929b-4da7-a36a-240e2b6a0077.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/novo-conta/assets/85d6b9c9-9307-43f3-964b-28f9982697f1.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/novo-conta/assets/4dbbb750-c321-4838-aa77-1f2e4fe04cbc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/novo-conta/assets/43bfbece-f5dc-4197-9813-24018e762000.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/novo-conta/assets/d607d0b9-898a-4645-85fa-e278b307e160.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/novo-conta/assets/7490a0ee-037b-41c7-b223-7adb836fce31.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/novo-conta/assets/e930658b-3ee6-43df-9538-815def48cfd0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/novo-conta/assets/b4b5444b-5dac-4191-b4b1-740c3be043fb.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/novo-conta/assets/85d6b9c9-9307-43f3-964b-28f9982697f1.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/novo-conta/assets/4dbbb750-c321-4838-aa77-1f2e4fe04cbc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/novo-conta/assets/43bfbece-f5dc-4197-9813-24018e762000.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/novo-conta/assets/d607d0b9-898a-4645-85fa-e278b307e160.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/novo-conta/assets/7490a0ee-037b-41c7-b223-7adb836fce31.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/novo-conta/assets/e930658b-3ee6-43df-9538-815def48cfd0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/novo-conta/assets/b4b5444b-5dac-4191-b4b1-740c3be043fb.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/novo-conta/assets/85d6b9c9-9307-43f3-964b-28f9982697f1.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/novo-conta/assets/4dbbb750-c321-4838-aa77-1f2e4fe04cbc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/novo-conta/assets/43bfbece-f5dc-4197-9813-24018e762000.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/novo-conta/assets/d607d0b9-898a-4645-85fa-e278b307e160.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/novo-conta/assets/7490a0ee-037b-41c7-b223-7adb836fce31.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/novo-conta/assets/e930658b-3ee6-43df-9538-815def48cfd0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/novo-conta/assets/b4b5444b-5dac-4191-b4b1-740c3be043fb.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/novo-conta/assets/85d6b9c9-9307-43f3-964b-28f9982697f1.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/novo-conta/assets/4dbbb750-c321-4838-aa77-1f2e4fe04cbc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/novo-conta/assets/43bfbece-f5dc-4197-9813-24018e762000.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/novo-conta/assets/d607d0b9-898a-4645-85fa-e278b307e160.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/novo-conta/assets/7490a0ee-037b-41c7-b223-7adb836fce31.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/novo-conta/assets/e930658b-3ee6-43df-9538-815def48cfd0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/novo-conta/assets/b4b5444b-5dac-4191-b4b1-740c3be043fb.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/novo-conta/assets/85d6b9c9-9307-43f3-964b-28f9982697f1.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/novo-conta/assets/4dbbb750-c321-4838-aa77-1f2e4fe04cbc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/novo-conta/assets/43bfbece-f5dc-4197-9813-24018e762000.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/novo-conta/assets/d607d0b9-898a-4645-85fa-e278b307e160.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/novo-conta/assets/7490a0ee-037b-41c7-b223-7adb836fce31.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/novo-conta/assets/e930658b-3ee6-43df-9538-815def48cfd0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/novo-conta/assets/b4b5444b-5dac-4191-b4b1-740c3be043fb.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/novo-conta/assets/85d6b9c9-9307-43f3-964b-28f9982697f1.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/novo-conta/assets/4dbbb750-c321-4838-aa77-1f2e4fe04cbc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/novo-conta/assets/43bfbece-f5dc-4197-9813-24018e762000.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/novo-conta/assets/d607d0b9-898a-4645-85fa-e278b307e160.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/novo-conta/assets/7490a0ee-037b-41c7-b223-7adb836fce31.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/novo-conta/assets/e930658b-3ee6-43df-9538-815def48cfd0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/novo-conta/assets/b4b5444b-5dac-4191-b4b1-740c3be043fb.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070a06; }
+  ::selection { background: rgba(191,255,0,0.3); color: #070a06; }
+  a { color: #bfff00; text-decoration: none; }
+  a:hover { color: #d4ff4d; }
+  input, select, textarea { font-family: 'Inter', system-ui, sans-serif; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: rgba(191,255,0,0.5) !important; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #0b0f0c; }
+  ::-webkit-scrollbar-thumb { background: #1e2620; border-radius: 5px; }
+  @keyframes ac-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 900px) {
+    div[data-shell="1"] { grid-template-columns: 1fr !important; }
+    aside[data-side="1"] { position: static !important; height: auto !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07) !important; padding: 12px !important; }
+    div[data-sidenav="1"] { flex-direction: row !important; overflow-x: auto !important; gap: 6px !important; padding-bottom: 4px !important; }
+    div[data-sidenav="1"] > div { flex: 0 0 auto !important; }
+    div[data-sidenav="1"] button { white-space: nowrap !important; }
+    div[data-sidefoot="1"] { display: none !important; }
+    div[data-main="1"] { padding: 20px 16px 70px !important; }
+    div[data-ovtop="1"] { grid-template-columns: 1fr !important; }
+    div[data-favgrid="1"] { grid-template-columns: 1fr !important; }
+    div[data-taskgrid="1"] { grid-template-columns: 1fr !important; }
+    div[data-sumgrid="1"] { grid-template-columns: 1fr 1fr !important; }
+    div[data-profgrid="1"] { grid-template-columns: 1fr !important; }
+    div[data-refgrid="1"] { grid-template-columns: 1fr !important; }
+    div[data-ledger="1"] { grid-template-columns: 1fr 74px !important; }
+    div[data-ledger="1"] > span:nth-child(2) { display: none !important; }
+    h1[data-h1="1"] { font-size: 26px !important; }
+  }
+</style>
+</helmet>
+<div data-shell="1" style="font-family: 'Inter', system-ui, sans-serif; background: #070a06; color: #E7ECEF; min-height: 100vh; display: grid; grid-template-columns: 236px 1fr; letter-spacing: -0.011em;">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside data-side="1" style="border-right: 1px solid rgba(255,255,255,0.07); background: #090c08; padding: 18px 12px; display: flex; flex-direction: column; gap: 4px; position: sticky; top: 0; height: 100vh; overflow-y: auto;">
+    <div style="display: flex; align-items: center; gap: 9px; padding: 4px 8px 18px;">
+      <img src="/novo-conta/assets/469f84ed-8428-4c4d-b90a-aed61cb7471b.png" style="width: 28px; height: 28px; object-fit: contain;">
+      <div>
+        <div style="font-weight: 800; font-size: 13.5px; color: #F4F8F9; line-height: 1.1;">Markets Coupons</div>
+        <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: #bfff00;">MY ACCOUNT</div>
+      </div>
+    </div>
+
+    <div data-sidenav="1" style="display: flex; flex-direction: column; gap: 3px;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+        <div>
+          <button sc-camel-on-click="{{ n.onClick }}" style="{{ n.style }}">
+            <span style="display: flex; align-items: center; justify-content: center; width: 17px; height: 17px; flex-shrink: 0;">{{ n.icon }}</span>
+            <span style="flex: 1; text-align: left;">{{ n.label }}</span>
+            <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="{{ n.badgeStyle }}">{{ n.badge }}</span>
+            </sc-if>
+          </button>
+        </div>
+      </sc-for>
+    </div>
+
+    <div data-sidefoot="1" style="margin-top: auto; padding-top: 14px;">
+      <div style="padding: 14px; border-radius: 13px; background: linear-gradient(180deg, rgba(191,255,0,0.08), rgba(11,15,12,0.6)); border: 1px solid rgba(191,255,0,0.25);">
+        <div style="font-size: 10px; font-weight: 800; letter-spacing: 0.1em; color: #8a94a0; text-transform: uppercase; margin-bottom: 8px;">Your points</div>
+        <div style="display: flex; align-items: baseline; gap: 7px;">
+          <span style="font-weight: 800; font-size: 24px; color: #bfff00; line-height: 1; font-variant-numeric: tabular-nums;">{{ balance }}</span>
+          <span style="font-size: 11.5px; color: #7c8791;">{{ tierLabel }}</span>
+        </div>
+        <div style="height: 5px; border-radius: 3px; background: rgba(255,255,255,0.07); overflow: hidden; margin-top: 10px;"><div style="{{ tierBarStyle }}"></div></div>
+        <div style="font-size: 10.5px; color: #6b7580; margin-top: 6px;">{{ tierHint }}</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main style="min-width: 0;">
+    <div data-main="1" style="padding: 28px 30px 70px;">
+
+      <!-- ============ OVERVIEW ============ -->
+      <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+      <div style="animation: ac-rise .2s ease both;">
+
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 26px;">
+          <div>
+            <h1 data-h1="1" style="font-weight: 800; font-size: 32px; letter-spacing: -0.03em; color: #F4F8F9; margin: 0 0 6px;">Welcome back, {{ firstName }}</h1>
+            <div style="display: flex; align-items: center; gap: 9px; font-size: 13px; color: #8a94a0;">
+              Member ID
+              <span style="display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-weight: 700; color: #c4ccd2; font-variant-numeric: tabular-nums;">{{ memberId }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div data-ovtop="1" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-bottom: 16px;">
+
+          <!-- points card -->
+          <div style="padding: 24px; border-radius: 16px; background: radial-gradient(120% 100% at 0% 0%, rgba(191,255,0,0.12), rgba(15,20,9,0.9) 60%); border: 1px solid rgba(191,255,0,0.28);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px;">
+              <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #8a94a0; text-transform: uppercase;">Your points</span>
+              <span style="{{ tierPillStyle }}">{{ tierLabel }}</span>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px;">
+              <span style="font-weight: 800; font-size: 52px; letter-spacing: -0.04em; color: #bfff00; line-height: 1; font-variant-numeric: tabular-nums;">{{ balance }}</span>
+              <span style="font-size: 13px; color: #8a94a0;">{{ earnedLabel }}</span>
+            </div>
+            <div style="height: 8px; border-radius: 4px; background: rgba(255,255,255,0.07); overflow: hidden; margin-bottom: 8px;"><div style="{{ tierBarStyle }}"></div></div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; color: #7c8791; margin-bottom: 20px;">
+              <span>{{ tierHint }}</span>
+              <span style="font-variant-numeric: tabular-nums;">{{ tierCounter }}</span>
+            </div>
+            <button sc-camel-on-click="{{ goRedeem }}" style="{{ redeemBtnStyle }}">{{ redeemBtnLabel }}</button>
+          </div>
+
+          <!-- reward card -->
+          <div style="position: relative; padding: 24px; border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column;">
+            <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #8a94a0; text-transform: uppercase; margin-bottom: 16px;">Reward</div>
+            <sc-for list="{{ rewards }}" as="rw" hint-placeholder-count="1">
+              <div style="display: flex; flex-direction: column; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                  <span style="width: 52px; height: 52px; flex-shrink: 0; border-radius: 14px; background: rgba(191,255,0,0.1); border: 1px solid rgba(191,255,0,0.25); display: flex; align-items: center; justify-content: center; color: #bfff00;">
+                    <svg width="24" height="24" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
+                  </span>
+                  <div style="min-width: 0;">
+                    <div style="font-weight: 800; font-size: 19px; color: #F4F8F9;">{{ rw.label }}</div>
+                    <div style="font-size: 12.5px; color: #8a94a0;">{{ rw.costLabel }}</div>
+                  </div>
+                </div>
+                <p style="font-size: 12.5px; line-height: 1.6; color: #8a94a0; margin: 0 0 18px;">Firm and account size are arranged with our team when your request is approved.</p>
+                <button sc-camel-on-click="{{ rw.onRedeem }}" disabled="{{ rw.disabled }}" style="{{ rw.btnStyle }}">{{ rw.btnLabel }}</button>
+                <sc-if value="{{ rw.shortLabel }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size: 11.5px; color: #7c8791; margin-top: 10px; text-align: center;">{{ rw.shortLabel }}</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- pending redemption notice -->
+        <sc-if value="{{ hasPending }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: flex-start; gap: 11px; padding: 15px 18px; border-radius: 13px; background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.24); margin-bottom: 16px;">
+            <span style="color: #fbbf24; flex-shrink: 0; display: flex; margin-top: 1px;"><svg width="17" height="17" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-weight: 700; font-size: 14px; color: #F4F8F9; margin-bottom: 3px;">Request under review</div>
+              <div style="font-size: 12.5px; line-height: 1.5; color: #d8c9a0;">{{ pendingText }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- tasks -->
+        <div style="border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); overflow: hidden; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+            <span style="font-weight: 700; font-size: 15px; color: #F4F8F9;">Earn points</span>
+            <span style="font-size: 12px; color: #7c8791; font-variant-numeric: tabular-nums;">{{ tasksDoneLabel }}</span>
+          </div>
+          <div data-taskgrid="1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.05);">
+            <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="6">
+              <div style="{{ t.rowStyle }}">
+                <span style="{{ t.checkStyle }}">
+                  <sc-if value="{{ t.done }}" hint-placeholder-val="{{ false }}">
+                    <svg width="13" height="13" sc-camel-view-box="0 0 24 24" fill="none" stroke="#070a06" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                  </sc-if>
+                </span>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="{{ t.labelStyle }}">{{ t.label }}</div>
+                  <sc-if value="{{ t.repeatLabel }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size: 11px; color: #6b7580; margin-top: 2px;">{{ t.repeatLabel }}</div>
+                  </sc-if>
+                </div>
+                <span style="{{ t.pointStyle }}">{{ t.points }}</span>
+                <button sc-camel-on-click="{{ t.onAction }}" style="{{ t.btnStyle }}">{{ t.btnLabel }}</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- favorites + summary -->
+        <div data-ovtop="1" style="display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px;">
+          <div style="padding: 22px; border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px;">
+              <span style="font-weight: 700; font-size: 15px; color: #F4F8F9;">Favorite firms</span>
+              <button sc-camel-on-click="{{ goFavorites }}" style="height: 32px; padding: 0 14px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #c4ccd2; cursor: pointer; font-family: inherit; font-weight: 600; font-size: 12px;" style-hover="border-color: rgba(191,255,0,0.4); color: #bfff00;">Edit</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <sc-for list="{{ favGroups }}" as="fg" hint-placeholder-count="3">
+                <div>
+                  <div style="font-size: 10px; font-weight: 800; letter-spacing: 0.1em; color: #6b7580; text-transform: uppercase; margin-bottom: 9px;">{{ fg.market }}</div>
+                  <sc-if value="{{ fg.hasFirms }}" hint-placeholder-val="{{ true }}">
+                    <div style="display: flex; align-items: center;">
+                      <sc-for list="{{ fg.firms }}" as="ff" hint-placeholder-count="3">
+                        <span style="{{ ff.style }}">{{ ff.logoEl }}</span>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ fg.empty }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size: 12.5px; color: #55605a;">None selected yet</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="padding: 22px; border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
+            <div style="font-weight: 700; font-size: 15px; color: #F4F8F9; margin-bottom: 16px;">Summary</div>
+            <div data-sumgrid="1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <sc-for list="{{ summary }}" as="sm" hint-placeholder-count="2">
+                <div style="padding: 16px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); text-align: center;">
+                  <div style="font-weight: 800; font-size: 24px; color: {{ sm.color }}; line-height: 1; font-variant-numeric: tabular-nums;">{{ sm.value }}</div>
+                  <div style="font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase; margin-top: 7px;">{{ sm.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ============ MY POINTS ============ -->
+      <sc-if value="{{ isPoints }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: ac-rise .2s ease both;">
+        <h1 data-h1="1" style="font-weight: 800; font-size: 32px; letter-spacing: -0.03em; color: #F4F8F9; margin: 0 0 22px;">My points</h1>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px;">
+          <sc-for list="{{ pointStats }}" as="ps" hint-placeholder-count="3">
+            <div style="padding: 18px; border-radius: 13px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
+              <div style="font-size: 10px; font-weight: 800; letter-spacing: 0.08em; color: #7c8791; text-transform: uppercase; margin-bottom: 10px;">{{ ps.label }}</div>
+              <div style="font-weight: 800; font-size: 26px; color: {{ ps.color }}; line-height: 1; font-variant-numeric: tabular-nums;">{{ ps.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); overflow: hidden; margin-bottom: 18px;">
+          <div style="padding: 17px 22px; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: 700; font-size: 15px; color: #F4F8F9;">Redemptions</div>
+          <sc-if value="{{ hasRedemptions }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ redemptions }}" as="rd" hint-placeholder-count="2">
+              <div style="display: flex; align-items: center; gap: 14px; padding: 15px 22px; border-bottom: 1px solid rgba(255,255,255,0.035);">
+                <span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; background: rgba(191,255,0,0.08); border: 1px solid rgba(191,255,0,0.2); display: flex; align-items: center; justify-content: center; color: #bfff00;"><svg width="17" height="17" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg></span>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-weight: 700; font-size: 14px; color: #F4F8F9;">{{ rd.label }}</div>
+                  <div style="font-size: 12px; color: #7c8791; font-variant-numeric: tabular-nums;">{{ rd.dateLabel }}</div>
+                </div>
+                <span style="font-size: 13px; color: #8a94a0; font-variant-numeric: tabular-nums;">{{ rd.cost }}</span>
+                <span style="{{ rd.statusStyle }}">{{ rd.status }}</span>
+              </div>
+              <sc-if value="{{ rd.note }}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 0 22px 15px 72px; font-size: 12.5px; line-height: 1.5; color: #d8a5a5; margin-top: -6px;">{{ rd.note }}</div>
+              </sc-if>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noRedemptions }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 40px 22px; text-align: center; font-size: 13px; color: #55605a;">No redemptions yet</div>
+          </sc-if>
+        </div>
+
+        <div style="border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); overflow: hidden;">
+          <div style="padding: 17px 22px; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: 700; font-size: 15px; color: #F4F8F9;">Points history</div>
+          <sc-for list="{{ ledger }}" as="lg" hint-placeholder-count="6">
+            <div data-ledger="1" style="display: grid; grid-template-columns: 1fr 130px 74px; gap: 12px; align-items: center; padding: 14px 22px; border-bottom: 1px solid rgba(255,255,255,0.035);">
+              <span style="font-size: 13.5px; color: #E7ECEF; min-width: 0;">{{ lg.label }}</span>
+              <span style="font-size: 12px; color: #6b7580; font-variant-numeric: tabular-nums;">{{ lg.dateLabel }}</span>
+              <span style="{{ lg.deltaStyle }}">{{ lg.delta }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ============ MY REVIEWS ============ -->
+      <sc-if value="{{ isReviews }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: ac-rise .2s ease both;">
+        <h1 data-h1="1" style="font-weight: 800; font-size: 32px; letter-spacing: -0.03em; color: #F4F8F9; margin: 0 0 8px;">My reviews</h1>
+        <p style="font-size: 14px; color: #8a94a0; margin: 0 0 22px;">{{ reviewPointsNote }}</p>
+
+        <div style="display: flex; gap: 9px; margin-bottom: 16px;">
+          <sc-for list="{{ reviewTabs }}" as="rt" hint-placeholder-count="2">
+            <button sc-camel-on-click="{{ rt.onClick }}" style="{{ rt.style }}">{{ rt.label }}<span style="{{ rt.countStyle }}">{{ rt.count }}</span></button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ hasReviewRows }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <sc-for list="{{ reviewRows }}" as="rv" hint-placeholder-count="3">
+              <div style="padding: 18px; border-radius: 14px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
+                <div style="display: flex; align-items: flex-start; gap: 13px;">
+                  <span style="width: 38px; height: 38px; flex-shrink: 0; border-radius: 10px; background: #000; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden;">{{ rv.logoEl }}</span>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 5px;">
+                      <span style="font-weight: 700; font-size: 14px; color: #F4F8F9;">{{ rv.firm }}</span>
+                      <sc-if value="{{ rv.stars }}" hint-placeholder-val="{{ true }}"><span style="font-size: 12px; color: #fbbf24;">{{ rv.stars }}</span></sc-if>
+                      <span style="font-size: 11.5px; color: #55605a;">{{ rv.when }}</span>
+                    </div>
+                    <sc-if value="{{ rv.text }}" hint-placeholder-val="{{ true }}">
+                      <p style="font-size: 13px; line-height: 1.6; color: #c8d0d6; margin: 0;">{{ rv.text }}</p>
+                    </sc-if>
+                  </div>
+                  <div style="flex-shrink: 0;">{{ rv.actionEl }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noReviewRows }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 60px 22px; border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); text-align: center;">
+            <div style="font-size: 14px; color: #8a94a0; margin-bottom: 6px;">Nothing here yet</div>
+            <div style="font-size: 12.5px; color: #55605a;">Reviews you write show up on this page.</div>
+          </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ============ FAVORITES ============ -->
+      <sc-if value="{{ isFavorites }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: ac-rise .2s ease both;">
+        <h1 data-h1="1" style="font-weight: 800; font-size: 32px; letter-spacing: -0.03em; color: #F4F8F9; margin: 0 0 8px;">Favorite firms</h1>
+        <p style="font-size: 14px; color: #8a94a0; margin: 0 0 22px;">Pick the firms you follow. We alert you first when their coupon changes.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <sc-for list="{{ favEditGroups }}" as="fe" hint-placeholder-count="3">
+            <div style="padding: 20px; border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px;">
+                <span style="font-weight: 700; font-size: 14.5px; color: #F4F8F9;">{{ fe.market }}</span>
+                <span style="font-size: 11.5px; color: #7c8791; font-variant-numeric: tabular-nums;">{{ fe.countLabel }}</span>
+              </div>
+              <div data-favgrid="1" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <sc-for list="{{ fe.firms }}" as="fi" hint-placeholder-count="6">
+                  <button sc-camel-on-click="{{ fi.onToggle }}" style="{{ fi.style }}">
+                    <span style="width: 26px; height: 26px; flex-shrink: 0; border-radius: 7px; background: #000; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden;">{{ fi.logoEl }}</span>
+                    <span style="flex: 1; text-align: left; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ fi.name }}</span>
+                    <sc-if value="{{ fi.on }}" hint-placeholder-val="{{ false }}">
+                      <span style="width: 17px; height: 17px; flex-shrink: 0; border-radius: 999px; background: #bfff00; display: flex; align-items: center; justify-content: center;"><svg width="11" height="11" sc-camel-view-box="0 0 24 24" fill="none" stroke="#070a06" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+                    </sc-if>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ============ REFER A FRIEND ============ -->
+      <sc-if value="{{ isRefer }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: ac-rise .2s ease both;">
+        <h1 data-h1="1" style="font-weight: 800; font-size: 32px; letter-spacing: -0.03em; color: #F4F8F9; margin: 0 0 8px;">Refer a friend</h1>
+        <p style="font-size: 14px; color: #8a94a0; margin: 0 0 22px;">{{ referPointsNote }}</p>
+
+        <div data-refgrid="1" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px;">
+          <div style="padding: 22px; border-radius: 16px; background: radial-gradient(120% 100% at 0% 0%, rgba(191,255,0,0.1), rgba(15,20,9,0.9) 60%); border: 1px solid rgba(191,255,0,0.25);">
+            <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #8a94a0; text-transform: uppercase; margin-bottom: 12px;">Your invite link</div>
+            <div style="display: flex; align-items: center; gap: 9px; padding: 13px 15px; border-radius: 11px; background: rgba(0,0,0,0.3); border: 1px dashed rgba(191,255,0,0.35); margin-bottom: 12px;">
+              <span style="flex: 1; min-width: 0; font-size: 13px; font-weight: 600; color: #bfff00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums;">{{ referLink }}</span>
+            </div>
+            <button sc-camel-on-click="{{ copyReferLink }}" style="{{ referBtnStyle }}">{{ referBtnLabel }}</button>
+            <div style="font-size: 11.5px; line-height: 1.5; color: #7c8791; margin-top: 12px;">Points are credited once your friend creates an account and confirms their email.</div>
+            <button sc-camel-on-click="{{ simulateReferral }}" style="width: 100%; height: 38px; margin-top: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.14); color: #6b7580; cursor: pointer; font-family: inherit; font-weight: 600; font-size: 12px;" style-hover="border-color: rgba(191,255,0,0.35); color: #bfff00;">Preview: a friend signs up, +{{ referTaskPoints }}</button>
+          </div>
+
+          <div style="border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); overflow: hidden;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 20px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+              <span style="font-weight: 700; font-size: 15px; color: #F4F8F9;">Friends who joined</span>
+              <span style="font-size: 12px; color: #7c8791; font-variant-numeric: tabular-nums;">{{ referCount }}</span>
+            </div>
+            <sc-if value="{{ hasReferrals }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ referrals }}" as="rf" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.035);">
+                  <span style="{{ rf.avStyle }}">{{ rf.initial }}</span>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 13.5px; font-weight: 600; color: #E7ECEF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ rf.name }}</div>
+                    <div style="font-size: 11.5px; color: #6b7580;">{{ rf.when }}</div>
+                  </div>
+                  <span style="{{ rf.statusStyle }}">{{ rf.status }}</span>
+                </div>
+              </sc-for>
+            </sc-if>
+            <sc-if value="{{ noReferrals }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 46px 20px; text-align: center; font-size: 13px; color: #55605a;">No one has joined with your link yet</div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ============ HELP ============ -->
+      <sc-if value="{{ isHelp }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: ac-rise .2s ease both; max-width: 820px;">
+        <h1 data-h1="1" style="font-weight: 800; font-size: 32px; letter-spacing: -0.03em; color: #F4F8F9; margin: 0 0 22px;">Help</h1>
+
+        <div style="border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); overflow: hidden; margin-bottom: 16px;">
+          <div style="padding: 17px 22px; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: 700; font-size: 15px; color: #F4F8F9;">Common questions</div>
+          <div style="padding: 10px;">
+            <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="6">
+              <div style="{{ q.wrapStyle }}">
+                <button sc-camel-on-click="{{ q.onClick }}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 15px 14px; background: transparent; border: none; cursor: pointer; text-align: left; font-family: inherit; font-weight: 600; font-size: 14px; color: #F4F8F9;">
+                  {{ q.q }}
+                  <span style="{{ q.iconStyle }}"><svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+                </button>
+                <div style="{{ q.answerStyle }}">{{ q.a }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding: 22px; border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
+          <div style="font-weight: 700; font-size: 15px; color: #F4F8F9; margin-bottom: 6px;">Still need help</div>
+          <p style="font-size: 13px; line-height: 1.6; color: #8a94a0; margin: 0 0 18px;">Ask Max, our assistant, or reach the team on Telegram. We answer every message.</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button sc-camel-on-click="{{ openMax }}" style="display: flex; align-items: center; gap: 9px; height: 44px; padding: 0 20px; border-radius: 11px; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; color: #070a06; cursor: pointer; font-family: inherit; font-weight: 800; font-size: 14px;" style-hover="filter: brightness(1.06);">
+              <img src="/novo-conta/assets/469f84ed-8428-4c4d-b90a-aed61cb7471b.png" style="width: 20px; height: 20px; object-fit: contain;">Ask Max
+            </button>
+            <a href="https://t.me/marketcouponss" style="display: flex; align-items: center; gap: 9px; height: 44px; padding: 0 20px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #E7ECEF; cursor: pointer; font-family: inherit; font-weight: 600; font-size: 14px;" style-hover="border-color: rgba(191,255,0,0.4); color: #bfff00;">
+              <svg width="17" height="17" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>Telegram
+            </a>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ============ PROFILE ============ -->
+      <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+      <div style="animation: ac-rise .2s ease both; max-width: 900px;">
+        <h1 data-h1="1" style="font-weight: 800; font-size: 32px; letter-spacing: -0.03em; color: #F4F8F9; margin: 0 0 22px;">Profile</h1>
+
+        <sc-if value="{{ profileIncomplete }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; align-items: flex-start; gap: 11px; padding: 15px 18px; border-radius: 13px; background: rgba(191,255,0,0.06); border: 1px solid rgba(191,255,0,0.25); margin-bottom: 16px;">
+            <span style="color: #bfff00; flex-shrink: 0; display: flex; margin-top: 1px;"><svg width="17" height="17" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg></span>
+            <div style="flex: 1; min-width: 0; font-size: 13px; line-height: 1.55; color: #c8d0d6;">{{ profileNudge }}</div>
+          </div>
+        </sc-if>
+
+        <div data-profgrid="1" style="display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px;">
+          <div style="padding: 22px; border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
+            <div style="font-weight: 700; font-size: 15px; color: #F4F8F9; margin-bottom: 18px;">Personal information</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <label style="display: block;"><span style="display: block; font-size: 11.5px; font-weight: 600; color: #8a94a0; margin-bottom: 6px;">First name</span><input value="Everton" style="width: 100%; height: 40px; padding: 0 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #E7ECEF; font-size: 13.5px;"></label>
+              <label style="display: block;"><span style="display: block; font-size: 11.5px; font-weight: 600; color: #8a94a0; margin-bottom: 6px;">Last name</span><input value="Pinto" style="width: 100%; height: 40px; padding: 0 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #E7ECEF; font-size: 13.5px;"></label>
+            </div>
+            <label style="display: block; margin-bottom: 12px;"><span style="display: block; font-size: 11.5px; font-weight: 600; color: #8a94a0; margin-bottom: 6px;">Email</span><input value="everton@marketscoupons.com" disabled="{{ true }}" style="width: 100%; height: 40px; padding: 0 13px; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); color: #6b7580; font-size: 13.5px;"></label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <label style="display: block;"><span style="display: block; font-size: 11.5px; font-weight: 600; color: #8a94a0; margin-bottom: 6px;">Country</span><input value="Brazil" style="width: 100%; height: 40px; padding: 0 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #E7ECEF; font-size: 13.5px;"></label>
+              <label style="display: block;"><span style="display: block; font-size: 11.5px; font-weight: 600; color: #8a94a0; margin-bottom: 6px;">Language</span><input value="English" style="width: 100%; height: 40px; padding: 0 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #E7ECEF; font-size: 13.5px;"></label>
+            </div>
+            <label sc-camel-on-click="{{ toggleOptin }}" style="display: flex; align-items: flex-start; gap: 11px; cursor: pointer; padding: 13px 14px; border-radius: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); margin-bottom: 18px;">
+              <span style="{{ optinBoxStyle }}">
+                <sc-if value="{{ optin }}" hint-placeholder-val="{{ true }}">
+                  <svg width="12" height="12" sc-camel-view-box="0 0 24 24" fill="none" stroke="#070a06" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                </sc-if>
+              </span>
+              <span style="flex: 1; min-width: 0;">
+                <span style="display: block; font-size: 13px; font-weight: 600; color: #E7ECEF;">Email me new coupons and bigger discounts</span>
+                <span style="display: block; font-size: 11.5px; color: #7c8791; margin-top: 2px;">{{ optinPointsNote }}</span>
+              </span>
+            </label>
+            <button sc-camel-on-click="{{ saveProfile }}" style="width: 100%; height: 44px; border-radius: 11px; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; color: #070a06; cursor: pointer; font-family: inherit; font-weight: 800; font-size: 14.5px;" style-hover="filter: brightness(1.06);">Save changes</button>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="padding: 22px; border-radius: 16px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
+              <div style="font-weight: 700; font-size: 15px; color: #F4F8F9; margin-bottom: 18px;">Change password</div>
+              <label style="display: block; margin-bottom: 12px;"><span style="display: block; font-size: 11.5px; font-weight: 600; color: #8a94a0; margin-bottom: 6px;">Current password</span><input type="password" style="width: 100%; height: 40px; padding: 0 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #E7ECEF; font-size: 13.5px;"></label>
+              <label style="display: block; margin-bottom: 12px;"><span style="display: block; font-size: 11.5px; font-weight: 600; color: #8a94a0; margin-bottom: 6px;">New password</span><input type="password" style="width: 100%; height: 40px; padding: 0 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #E7ECEF; font-size: 13.5px;"></label>
+              <label style="display: block; margin-bottom: 18px;"><span style="display: block; font-size: 11.5px; font-weight: 600; color: #8a94a0; margin-bottom: 6px;">Confirm new password</span><input type="password" style="width: 100%; height: 40px; padding: 0 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #E7ECEF; font-size: 13.5px;"></label>
+              <button style="width: 100%; height: 42px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #E7ECEF; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 13.5px;" style-hover="border-color: rgba(191,255,0,0.4); color: #bfff00;">Change password</button>
+            </div>
+
+            <div style="padding: 22px; border-radius: 16px; background: linear-gradient(180deg, #140c0c, #0b0f0c); border: 1px solid rgba(239,68,68,0.22);">
+              <div style="font-weight: 700; font-size: 15px; color: #F4F8F9; margin-bottom: 6px;">Delete account</div>
+              <p style="font-size: 12.5px; line-height: 1.55; color: #8a7070; margin: 0 0 16px;">Your points and redemption history go with it. This cannot be undone.</p>
+              <button style="height: 40px; padding: 0 18px; border-radius: 10px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); color: #f87171; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 13px;" style-hover="background: rgba(239,68,68,0.16);">Delete my account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+  </main>
+
+  <!-- ===== REDEEM CONFIRM ===== -->
+  <sc-if value="{{ redeemOpen }}" hint-placeholder-val="{{ false }}">
+    <div sc-camel-on-click="{{ closeRedeem }}" style="position: fixed; inset: 0; z-index: 85; background: rgba(3,5,3,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div sc-camel-on-click="{{ stopProp }}" style="width: 100%; max-width: 420px; padding: 26px; border-radius: 18px; background: #0b0f0c; border: 1px solid rgba(191,255,0,0.3); animation: ac-rise .18s ease both;">
+        <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(191,255,0,0.1); border: 1px solid rgba(191,255,0,0.25); display: flex; align-items: center; justify-content: center; color: #bfff00; margin-bottom: 16px;">
+          <svg width="24" height="24" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
+        </div>
+        <div style="font-weight: 800; font-size: 19px; color: #F4F8F9; margin-bottom: 8px;">{{ redeemTitle }}</div>
+        <p style="font-size: 13.5px; line-height: 1.6; color: #a8b2bb; margin: 0 0 18px;">Your request goes to our team for review. Firm and account size are arranged with you once it is approved.</p>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); margin-bottom: 18px; font-size: 13px;">
+          <span style="color: #8a94a0;">Points after redeeming</span>
+          <span style="font-weight: 800; color: #bfff00; font-variant-numeric: tabular-nums;">{{ redeemAfter }}</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button sc-camel-on-click="{{ confirmRedeem }}" style="flex: 1; height: 44px; border-radius: 11px; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; color: #070a06; cursor: pointer; font-family: inherit; font-weight: 800; font-size: 14px;">Confirm request</button>
+          <button sc-camel-on-click="{{ closeRedeem }}" style="height: 44px; padding: 0 20px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #c4ccd2; cursor: pointer; font-family: inherit; font-weight: 600; font-size: 14px;">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="{{ toastStyle }}">{{ toast }}</div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  // ────────────────────────────────────────────────────────────────
+  // API. Everything on screen comes from ?action=me. No number is
+  // written into the markup, so changing a value in the database
+  // changes the screen with no deploy.
+  //
+  //   const { data: { session } } = await supabase.auth.getSession();
+  //   const h = { Authorization: 'Bearer ' + session.access_token };
+  //   const me = await (await fetch(API + '?action=me', { headers: h })).json();
+  //   const { extrato } = await (await fetch(API + '?action=extrato', { headers: h })).json();
+  //   this.setState({ me, extrato });
+  //
+  // Balance is never computed here. Points are never written here.
+  // ────────────────────────────────────────────────────────────────
+  API = 'https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/points';
+
+  state = {
+    route: 'overview', reviewTab: 'published', faqOpen: 0,
+    redeemOpen: false, redeemSlug: null, toast: null, toastTone: 'ok',
+    optin: false, copied: false, claimedRefs: [], referred: [],
+    favs: { forex: ['ftmo'], futures: ['apex', 'bulenox'], crypto: [] },
+
+    // Shape of GET ?action=me. Replace with the live payload.
+    me: {
+      member_id: 'MC-4F2A',
+      full_name: 'Everton Pinto',
+      saldo: 30,
+      ganho_total: 30,
+      tier: 'bronze',
+      // tiers drives the progress bar. Ask the backend to include it,
+      // otherwise the bar has to guess where the next tier starts.
+      tiers: [
+        { key: 'bronze', label: 'Bronze', min: 0 },
+        { key: 'prata', label: 'Silver', min: 100 },
+        { key: 'ouro', label: 'Gold', min: 300 },
+      ],
+      tarefas: [
+        { key: 'complete_profile', points: 10, repeatable: false, label_en: 'Complete your profile', url: null, feita: true },
+        { key: 'follow_instagram', points: 10, repeatable: false, label_en: 'Follow us on Instagram', url: 'https://instagram.com/marketscoupons', feita: true },
+        { key: 'join_telegram', points: 10, repeatable: false, label_en: 'Join our Telegram', url: 'https://t.me/marketcouponss', feita: true },
+        { key: 'marketing_optin', points: 10, repeatable: false, label_en: 'Turn on coupon emails', url: null, feita: false },
+        { key: 'write_review', points: 20, repeatable: true, label_en: 'Write a review', url: null, feita: false },
+        { key: 'refer_friend', points: 25, repeatable: true, label_en: 'Refer a friend', url: null, feita: false },
+      ],
+      premios: [
+        { slug: 'trading-account', label: 'Trading Account', custo_pontos: 100, estoque: null, ativo: true },
+      ],
+      resgates: [],
+      cupons_copiados: 12,
+      reviews_publicadas: 0,
+      indicados: [],
+      invite_code: 'MC-4F2A',
+    },
+
+    // GET ?action=extrato is its own call, last 100 entries.
+    extrato: [
+      { delta: 10, task_key: 'join_telegram', motivo: 'task', nota: null, created_at: '2026-07-29T14:12:00Z' },
+      { delta: 10, task_key: 'follow_instagram', motivo: 'task', nota: null, created_at: '2026-07-29T14:08:00Z' },
+      { delta: 10, task_key: 'complete_profile', motivo: 'task', nota: null, created_at: '2026-07-28T09:31:00Z' },
+    ],
+  };
+
+  firms = [
+    { slug:'apex', name:'Apex Trader Funding', logo:'apex.webp', market:'futures' },
+    { slug:'bulenox', name:'Bulenox', logo:'bulenox.webp', market:'futures' },
+    { slug:'funded-futures-family', name:'Funded Futures Family', logo:'funded-futures-family.png', market:'futures' },
+    { slug:'tradeday', name:'TradeDay', logo:'tradeday.webp', market:'futures' },
+    { slug:'e2t', name:'Earn2Trade', logo:'e2t.webp', market:'futures' },
+    { slug:'alpha', name:'Alpha Futures', logo:'alpha.webp', market:'futures' },
+    { slug:'ftmo', name:'FTMO', logo:'ftmo.webp', market:'forex' },
+    { slug:'fundednext', name:'FundedNext', logo:'fn.webp', market:'forex' },
+    { slug:'the5ers', name:'The5ers', logo:'the5ers.webp', market:'forex' },
+    { slug:'fundingpips', name:'Funding Pips', logo:'fundingpips.webp', market:'forex' },
+    { slug:'brightfunded', name:'BrightFunded', logo:'brightfunded.webp', market:'crypto' },
+    { slug:'e8', name:'E8 Markets', logo:'e8.webp', market:'crypto' },
+  ];
+
+  ic(path) {
+    return React.createElement('svg', {
+      width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+      strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round',
+      dangerouslySetInnerHTML: { __html: path },
+    });
+  }
+
+  logoImg(file) {
+    return React.createElement('img', { src: './novo-conta/assets/logos/' + file, style: { width: '100%', height: '100%', objectFit: 'contain', padding: '3px' } });
+  }
+
+  tag(text, color, bg, border) {
+    return React.createElement('span', { style: {
+      display: 'inline-flex', alignItems: 'center', fontSize: '11px', fontWeight: 700,
+      padding: '4px 10px', borderRadius: '6px', color, background: bg,
+      border: '1px solid ' + border, whiteSpace: 'nowrap',
+    } }, text);
+  }
+
+  navDefs = [
+    { key:'overview', label:'Overview', icon:'<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>' },
+    { key:'points', label:'My points', icon:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h6M9 14h6"/>' },
+    { key:'reviews', label:'My reviews', icon:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/>' },
+    { key:'favorites', label:'Favorites', icon:'<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/>' },
+    { key:'refer', label:'Refer a friend', icon:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/>' },
+    { key:'help', label:'Help', icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/>' },
+    { key:'profile', label:'Profile', icon:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
+  ];
+
+  taskLabels = {
+    complete_profile: { action: 'Complete', route: 'profile' },
+    follow_instagram: { action: 'Follow' },
+    join_telegram: { action: 'Join' },
+    marketing_optin: { action: 'Turn on', route: 'profile' },
+    write_review: { action: 'Write', route: 'reviews' },
+    refer_friend: { action: 'Invite', route: 'refer' },
+  };
+
+  faqData = [
+    { q: 'How do I earn points?', a: 'Complete the tasks on your Overview. Writing a review and referring a friend can be done more than once, so those are the two that keep paying.' },
+    { q: 'What can I redeem points for?', a: 'A Trading Account. The firm and the account size are arranged with our team after your request is approved, because availability changes week to week.' },
+    { q: 'How long does a redemption take?', a: 'Your request arrives as pending. We confirm availability with a firm and get back to you. You can follow the status on the My points page.' },
+    { q: 'Does redeeming lower my tier?', a: 'No. Your tier is based on everything you have ever earned, not on your current balance, so spending points never moves you down.' },
+    { q: 'A task says completed but I did not get points', a: 'Points are credited once per task. If the task was already counted, it stays marked as completed and the balance does not change again.' },
+    { q: 'What happens if my request is declined?', a: 'Your points are returned automatically and you see the reason on the My points page. Nothing is lost.' },
+  ];
+
+  toastMsg(m, tone) {
+    this.setState({ toast: m, toastTone: tone || 'ok' });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: null }), 2400);
+  }
+
+  // POST ?action=claim { task_key }
+  // Repeatable tasks (write_review, refer_friend) also need "ref", the id of the
+  // review or of the referred user. Without it the API answers ref_obrigatoria.
+  // 409 ja_creditada is not a failure: the task is already counted, so mark it
+  // done and leave the balance alone.
+  //
+  //   const r = await fetch(API + '?action=claim', {
+  //     method: 'POST', headers: { ...h, 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(t.repeatable ? { task_key: t.key, ref } : { task_key: t.key }),
+  //   });
+  //   if (r.status === 409) return this.markDone(t.key);       // already credited
+  //   if (r.status === 400) return this.toastMsg('Could not credit this task', 'warn');
+  //   const { saldo, tier } = await r.json();
+  //   this.setState({ me: { ...this.state.me, saldo, tier } });
+  //
+  markDone(key) {
+    const me = this.state.me;
+    this.setState({ me: { ...me, tarefas: me.tarefas.map(x => x.key === key ? { ...x, feita: true } : x) } });
+  }
+
+  claimTask(t) {
+    const cfg = this.taskLabels[t.key] || {};
+    // Repeatable tasks are credited from the page that owns the ref, not from here.
+    if (t.repeatable) { this.setState({ route: cfg.route }); return; }
+    if (t.feita) { this.markDone(t.key); return; }
+    if (t.url) { try { window.open(t.url, '_blank'); } catch (e) {} }
+    if (cfg.route) { this.setState({ route: cfg.route }); return; }
+    const me = this.state.me;
+    const next = { ...me, tarefas: me.tarefas.map(x => x.key === t.key ? { ...x, feita: true } : x) };
+    next.saldo = me.saldo + t.points;
+    next.ganho_total = me.ganho_total + t.points;
+    this.setState({
+      me: next,
+      extrato: [{ delta: t.points, task_key: t.key, motivo: 'task', nota: null, created_at: new Date().toISOString() }, ...this.state.extrato],
+    });
+    this.toastMsg('+' + t.points + ' points');
+  }
+
+  // POST ?action=claim { task_key, ref } for the repeatable ones.
+  // The ref is what makes a repeat unique: same ref twice returns 409 ja_creditada,
+  // which is not a failure, it means the credit already happened.
+  claimWithRef(taskKey, ref) {
+    const key = taskKey + ':' + ref;
+    if (this.state.claimedRefs.indexOf(key) >= 0) {   // 409 ja_creditada
+      this.toastMsg('Already credited', 'warn');
+      return;
+    }
+    const me = this.state.me;
+    const t = (me.tarefas || []).find(x => x.key === taskKey);
+    if (!t) return;
+    const next = { ...me };
+    next.saldo = me.saldo + t.points;
+    next.ganho_total = me.ganho_total + t.points;
+    if (taskKey === 'write_review') next.reviews_publicadas = (me.reviews_publicadas || 0) + 1;
+    this.setState({
+      me: next,
+      claimedRefs: [...this.state.claimedRefs, key],
+      extrato: [{ delta: t.points, task_key: taskKey, motivo: 'task', nota: null, created_at: new Date().toISOString() }, ...this.state.extrato],
+    });
+    this.toastMsg('+' + t.points + ' points');
+  }
+
+  // POST ?action=redeem { reward_slug }
+  // The request is born pending. Errors to handle: saldo_insuficiente,
+  // sem_estoque, premio_inativo.
+  confirmRedeem() {
+    const me = this.state.me;
+    const rw = me.premios.find(p => p.slug === this.state.redeemSlug);
+    if (!rw) { this.setState({ redeemOpen: false }); return; }
+    if (!rw.ativo) { this.setState({ redeemOpen: false }); this.toastMsg('This reward is not available right now', 'warn'); return; }
+    if (rw.estoque !== null && rw.estoque <= 0) { this.setState({ redeemOpen: false }); this.toastMsg('Out of stock right now', 'warn'); return; }
+    if (me.saldo < rw.custo_pontos) { this.setState({ redeemOpen: false }); this.toastMsg('Not enough points', 'warn'); return; }
+    const next = { ...me };
+    next.saldo = me.saldo - rw.custo_pontos;
+    next.resgates = [{ id: Date.now(), reward_slug: rw.slug, custo_pontos: rw.custo_pontos, status: 'pendente', created_at: new Date().toISOString() }, ...me.resgates];
+    this.setState({
+      me: next, redeemOpen: false, redeemSlug: null,
+      extrato: [{ delta: -rw.custo_pontos, task_key: null, motivo: 'redeem', nota: rw.label, created_at: new Date().toISOString() }, ...this.state.extrato],
+    });
+    this.toastMsg('Request sent for review');
+  }
+
+  toggleFav(market, slug) {
+    this.setState(s => {
+      const cur = s.favs[market] || [];
+      const on = cur.indexOf(slug) >= 0;
+      return { favs: { ...s.favs, [market]: on ? cur.filter(x => x !== slug) : [...cur, slug] } };
+    });
+  }
+
+  fmtDate(iso) {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ', ' +
+             d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+    } catch (e) { return ''; }
+  }
+
+  renderVals() {
+    const s = this.state;
+    const me = s.me;
+
+    // tier, straight from the API. Derive the label from tiers whenever the
+    // locally credited total has already passed the next threshold, so the
+    // prototype never renders a state the API would not return.
+    const tiers = me.tiers || [];
+    const reached = tiers.filter(t => me.ganho_total >= t.min);
+    const cur = reached.length ? reached[reached.length - 1] : (tiers[0] || { label: me.tier, min: 0 });
+    const idx = tiers.indexOf(cur);
+    const nxt = tiers[idx + 1] || null;
+    const span = nxt ? (nxt.min - cur.min) : 1;
+    const into = Math.max(0, me.ganho_total - cur.min);
+    const pct = nxt ? Math.min(100, Math.round(into / span * 100)) : 100;
+
+    const reward = (me.premios || []).find(p => p.ativo) || null;
+    const outOfStock = !!(reward && reward.estoque !== null && reward.estoque <= 0);
+    const short = reward ? Math.max(0, reward.custo_pontos - me.saldo) : 0;
+    const canRedeem = !!reward && !outOfStock && me.saldo >= reward.custo_pontos;
+
+    const tasksDone = (me.tarefas || []).filter(t => t.feita && !t.repeatable).length;
+    const tasksTotal = (me.tarefas || []).filter(t => !t.repeatable).length;
+
+    const pending = (me.resgates || []).filter(r => r.status === 'pendente');
+
+    const statusMap = {
+      pendente: ['Under review', '#fbbf24', 'rgba(251,191,36,0.1)', 'rgba(251,191,36,0.24)'],
+      aprovado: ['Approved', '#60a5fa', 'rgba(96,165,250,0.1)', 'rgba(96,165,250,0.24)'],
+      entregue: ['Delivered', '#34d399', 'rgba(52,211,153,0.1)', 'rgba(52,211,153,0.24)'],
+      recusado: ['Declined', '#f87171', 'rgba(239,68,68,0.1)', 'rgba(239,68,68,0.24)'],
+    };
+
+    const markets = [
+      { key: 'forex', label: 'Forex' },
+      { key: 'futures', label: 'Futures' },
+      { key: 'crypto', label: 'Crypto' },
+    ];
+
+    const writeTask = (me.tarefas || []).find(t => t.key === 'write_review');
+    const referTask = (me.tarefas || []).find(t => t.key === 'refer_friend');
+    const optinTask = (me.tarefas || []).find(t => t.key === 'marketing_optin');
+    const profileTask = (me.tarefas || []).find(t => t.key === 'complete_profile');
+
+    const reviewsPublished = (s.claimedRefs || []).filter(k => k.indexOf('write_review:') === 0).map(k => {
+      const name = k.split(':')[1];
+      const f = this.firms.find(x => x.name === name) || this.firms[0];
+      return { firm: name, logo: f.logo, stars: '★★★★★', text: 'Your review is live on the ' + name + ' page.', when: 'Just now', pending: false };
+    });
+    const reviewsPending = this.firms.slice(0, 2)
+      .filter(f => (s.claimedRefs || []).indexOf('write_review:' + f.name) < 0)
+      .map(f => ({ firm: f.name, logo: f.logo, stars: '', text: '', when: 'Not written yet', pending: true }));
+    const reviewRows = s.reviewTab === 'published' ? reviewsPublished : reviewsPending;
+
+    return {
+      navItems: this.navDefs.map(n => {
+        const active = s.route === n.key;
+        return {
+          label: n.label, icon: this.ic(n.icon),
+          badge: (n.key === 'points' && pending.length) ? String(pending.length) : '',
+          badgeStyle: 'font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:5px;background:rgba(251,191,36,0.16);color:#fbbf24;',
+          onClick: () => this.setState({ route: n.key }),
+          style: 'display:flex;align-items:center;gap:10px;width:100%;padding:10px 10px;border-radius:9px;border:none;cursor:pointer;font-family:inherit;font-weight:' + (active ? '700' : '500') + ';font-size:13px;text-align:left;transition:all .13s;color:' + (active ? '#bfff00' : '#c4ccd2') + ';background:' + (active ? 'rgba(191,255,0,0.09)' : 'transparent') + ';',
+        };
+      }),
+
+      isOverview: s.route === 'overview',
+      isPoints: s.route === 'points',
+      isReviews: s.route === 'reviews',
+      isFavorites: s.route === 'favorites',
+      isRefer: s.route === 'refer',
+      isHelp: s.route === 'help',
+      isProfile: s.route === 'profile',
+
+      firstName: (me.full_name || '').split(' ')[0],
+      memberId: me.member_id,
+      balance: me.saldo,
+      earnedLabel: 'of ' + me.ganho_total + ' earned',
+      tierLabel: cur.label,
+      tierPillStyle: 'font-size:11px;font-weight:800;letter-spacing:0.06em;padding:5px 11px;border-radius:999px;text-transform:uppercase;background:rgba(191,255,0,0.12);color:#bfff00;border:1px solid rgba(191,255,0,0.3);',
+      tierBarStyle: 'height:100%;border-radius:4px;width:' + pct + '%;background:linear-gradient(90deg,#7bbd00,#bfff00);',
+      tierHint: nxt ? ('Next tier: ' + nxt.label) : 'Top tier reached',
+      tierCounter: nxt ? (Math.min(me.ganho_total, nxt.min) + ' / ' + nxt.min) : '',
+
+      rewards: reward ? [{
+        label: reward.label,
+        costLabel: reward.custo_pontos + ' points',
+        disabled: !canRedeem,
+        onRedeem: () => canRedeem && this.setState({ redeemOpen: true, redeemSlug: reward.slug }),
+        btnLabel: outOfStock ? 'Out of stock' : (canRedeem ? 'Redeem' : 'Not enough points'),
+        btnStyle: 'width:100%;height:46px;border-radius:12px;font-family:inherit;font-weight:800;font-size:14.5px;border:none;transition:all .15s;' + (canRedeem ? 'background:linear-gradient(180deg,#d4ff4d,#bfff00);color:#070a06;cursor:pointer;' : 'background:rgba(255,255,255,0.04);color:#55605a;cursor:not-allowed;border:1px solid rgba(255,255,255,0.08);'),
+        shortLabel: outOfStock ? 'Come back soon, we restock regularly' : (canRedeem ? '' : (short + ' points to go')),
+      }] : [],
+
+      goRedeem: () => canRedeem ? this.setState({ redeemOpen: true, redeemSlug: reward.slug }) : this.setState({ route: 'points' }),
+      redeemBtnLabel: canRedeem ? 'Redeem now' : 'View points history',
+      redeemBtnStyle: canRedeem
+        ? 'width:100%;height:44px;border-radius:11px;background:linear-gradient(180deg,#d4ff4d,#bfff00);border:none;color:#070a06;cursor:pointer;font-family:inherit;font-weight:800;font-size:14px;'
+        : 'width:100%;height:44px;border-radius:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:#E7ECEF;cursor:pointer;font-family:inherit;font-weight:700;font-size:14px;',
+
+      hasPending: pending.length > 0,
+      pendingText: pending.length ? ('Your ' + (me.premios[0] || {}).label + ' request is with our team. We will contact you to arrange the firm and account size.') : '',
+
+      tasksDoneLabel: tasksDone + ' of ' + tasksTotal + ' one time tasks done',
+      tasks: (me.tarefas || []).map(t => {
+        const cfg = this.taskLabels[t.key] || {};
+        const done = t.feita && !t.repeatable;
+        return {
+          label: t.label_en,
+          points: '+' + t.points,
+          done,
+          repeatLabel: t.repeatable ? 'Repeats every time' : '',
+          rowStyle: 'display:flex;align-items:center;gap:12px;padding:15px 22px;background:#0b0f0c;',
+          checkStyle: 'width:22px;height:22px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;border:1px solid ' + (done ? 'transparent;background:#bfff00;' : 'rgba(255,255,255,0.14);background:rgba(255,255,255,0.03);'),
+          labelStyle: 'font-size:13.5px;font-weight:600;color:' + (done ? '#6b7580' : '#E7ECEF') + ';' + (done ? 'text-decoration:line-through;' : ''),
+          pointStyle: 'flex-shrink:0;font-size:12.5px;font-weight:800;padding:4px 10px;border-radius:7px;font-variant-numeric:tabular-nums;background:' + (done ? 'rgba(255,255,255,0.04);color:#55605a;' : 'rgba(191,255,0,0.1);color:#bfff00;'),
+          onAction: () => this.claimTask(t),
+          btnLabel: done ? 'Done' : (cfg.action || 'Go'),
+          btnStyle: 'flex-shrink:0;height:32px;padding:0 14px;border-radius:8px;font-family:inherit;font-weight:700;font-size:12px;transition:all .13s;border:1px solid ' + (done ? 'transparent;background:transparent;color:#55605a;cursor:default;' : 'rgba(191,255,0,0.35);background:rgba(191,255,0,0.08);color:#bfff00;cursor:pointer;'),
+        };
+      }),
+
+      favGroups: markets.map(m => {
+        const slugs = s.favs[m.key] || [];
+        return {
+          market: m.label,
+          hasFirms: slugs.length > 0,
+          empty: slugs.length === 0,
+          firms: slugs.map((sl, i) => {
+            const f = this.firms.find(x => x.slug === sl);
+            return {
+              logoEl: f ? this.logoImg(f.logo) : null,
+              style: 'width:34px;height:34px;flex-shrink:0;border-radius:9px;background:#000;border:2px solid #0b0f0c;display:flex;align-items:center;justify-content:center;overflow:hidden;' + (i > 0 ? 'margin-left:-8px;' : ''),
+            };
+          }),
+        };
+      }),
+      goFavorites: () => this.setState({ route: 'favorites' }),
+
+      summary: [
+        { label: 'Coupons copied', value: me.cupons_copiados, color: '#bfff00' },
+        { label: 'Reviews written', value: me.reviews_publicadas, color: '#F4F8F9' },
+      ],
+
+      // ---- my points
+      pointStats: [
+        { label: 'Current balance', value: me.saldo, color: '#bfff00' },
+        { label: 'Total earned', value: me.ganho_total, color: '#F4F8F9' },
+        { label: 'Tier', value: cur.label, color: '#F4F8F9' },
+      ],
+      hasRedemptions: (me.resgates || []).length > 0,
+      noRedemptions: (me.resgates || []).length === 0,
+      redemptions: (me.resgates || []).map(r => {
+        const st = statusMap[r.status] || statusMap.pendente;
+        const rw = (me.premios || []).find(p => p.slug === r.reward_slug);
+        return {
+          label: rw ? rw.label : r.reward_slug,
+          dateLabel: this.fmtDate(r.created_at),
+          cost: '-' + r.custo_pontos,
+          status: st[0],
+          statusStyle: 'flex-shrink:0;font-size:11px;font-weight:700;padding:5px 11px;border-radius:7px;color:' + st[1] + ';background:' + st[2] + ';border:1px solid ' + st[3] + ';',
+          note: r.status === 'recusado' && r.nota ? ('Reason: ' + r.nota) : '',
+        };
+      }),
+      ledger: (s.extrato || []).map(e => {
+        const t = (me.tarefas || []).find(x => x.key === e.task_key);
+        let label = e.nota || (t ? t.label_en : '');
+        if (!label) label = e.motivo === 'redeem' ? 'Redemption' : 'Adjustment';
+        return {
+          label,
+          dateLabel: this.fmtDate(e.created_at),
+          delta: (e.delta > 0 ? '+' : '') + e.delta,
+          deltaStyle: 'text-align:right;font-weight:800;font-size:13.5px;font-variant-numeric:tabular-nums;color:' + (e.delta > 0 ? '#bfff00' : '#f87171') + ';',
+        };
+      }),
+
+      // ---- reviews
+      reviewPointsNote: writeTask ? ('Each review you write is worth ' + writeTask.points + ' points.') : '',
+      reviewTabs: [
+        { k: 'published', l: 'Published', n: reviewsPublished.length },
+        { k: 'pending', l: 'Waiting for you', n: reviewsPending.length },
+      ].map(t => ({
+        label: t.l, count: t.n,
+        onClick: () => this.setState({ reviewTab: t.k }),
+        style: 'display:flex;align-items:center;gap:8px;height:38px;padding:0 15px;border-radius:9px;cursor:pointer;font-family:inherit;font-weight:600;font-size:12.5px;transition:all .13s;border:1px solid ' + (s.reviewTab === t.k ? 'rgba(191,255,0,0.4);background:rgba(191,255,0,0.09);color:#bfff00;' : 'rgba(255,255,255,0.09);background:rgba(255,255,255,0.03);color:#8a94a0;'),
+        countStyle: 'font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;background:' + (s.reviewTab === t.k ? 'rgba(191,255,0,0.18);color:#bfff00;' : 'rgba(255,255,255,0.06);color:#6b7580;'),
+      })),
+      hasReviewRows: reviewRows.length > 0,
+      noReviewRows: reviewRows.length === 0,
+      reviewRows: reviewRows.map(r => ({
+        firm: r.firm, logoEl: this.logoImg(r.logo), stars: r.stars, text: r.text, when: r.when,
+        actionEl: r.pending && writeTask
+          ? React.createElement('button', {
+              onClick: () => this.claimWithRef('write_review', r.firm),
+              style: { height: '34px', padding: '0 15px', borderRadius: '9px', background: 'rgba(191,255,0,0.08)', border: '1px solid rgba(191,255,0,0.35)', color: '#bfff00', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 700, fontSize: '12px', whiteSpace: 'nowrap' },
+            }, 'Write, +' + writeTask.points)
+          : null,
+      })),
+
+      // ---- favorites editor
+      favEditGroups: markets.map(m => {
+        const slugs = s.favs[m.key] || [];
+        const list = this.firms.filter(f => f.market === m.key);
+        return {
+          market: m.label,
+          countLabel: slugs.length + ' of ' + list.length + ' selected',
+          firms: list.map(f => {
+            const on = slugs.indexOf(f.slug) >= 0;
+            return {
+              name: f.name, logoEl: this.logoImg(f.logo), on,
+              onToggle: () => this.toggleFav(m.key, f.slug),
+              style: 'display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;cursor:pointer;font-family:inherit;transition:all .13s;border:1px solid ' + (on ? 'rgba(191,255,0,0.4);background:rgba(191,255,0,0.07);color:#F4F8F9;' : 'rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:#c4ccd2;'),
+            };
+          }),
+        };
+      }),
+
+      // ---- refer
+      referPointsNote: referTask ? ('You get ' + referTask.points + ' points for every friend who joins with your link.') : '',
+      referLink: 'marketscoupons.com/?ref=' + me.invite_code,
+      copyReferLink: () => {
+        try { navigator.clipboard && navigator.clipboard.writeText('https://marketscoupons.com/?ref=' + me.invite_code); } catch (e) {}
+        this.setState({ copied: true });
+        clearTimeout(this._c);
+        this._c = setTimeout(() => this.setState({ copied: false }), 1800);
+      },
+      referBtnLabel: s.copied ? 'Link copied' : 'Copy invite link',
+      referBtnStyle: 'width:100%;height:44px;border-radius:11px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:14px;transition:all .15s;' + (s.copied ? 'background:rgba(191,255,0,0.16);color:#bfff00;border:1px solid rgba(191,255,0,0.4);' : 'background:linear-gradient(180deg,#d4ff4d,#bfff00);color:#070a06;'),
+      referCount: (s.referred || []).length,
+      hasReferrals: (s.referred || []).length > 0,
+      noReferrals: (s.referred || []).length === 0,
+      referrals: (s.referred || []).map(r => ({
+        name: r.name, when: r.when, initial: (r.name || '?')[0].toUpperCase(),
+        avStyle: 'width:32px;height:32px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;background:rgba(191,255,0,0.12);color:#bfff00;',
+        status: r.confirmed ? 'Counted' : 'Waiting',
+        statusStyle: 'flex-shrink:0;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;' + (r.confirmed ? 'background:rgba(52,211,153,0.1);color:#34d399;' : 'background:rgba(251,191,36,0.1);color:#fbbf24;'),
+      })),
+      // A friend signing up is what creates the ref. The credit is claimed with it:
+      //   POST ?action=claim { task_key: 'refer_friend', ref: friendUserId }
+      simulateReferral: () => {
+        const names = ['Marina Torres', 'James Whitfield', 'Dwi Pratama', 'Sofia Ramirez'];
+        const n = names[(s.referred || []).length % names.length];
+        const id = 'friend-' + Date.now();
+        this.setState({ referred: [...(s.referred || []), { name: n, when: 'Just now', confirmed: true, id }] });
+        this.claimWithRef('refer_friend', id);
+      },
+      referTaskPoints: referTask ? referTask.points : '',
+
+      // ---- help
+      faqs: this.faqData.map((f, i) => {
+        const open = s.faqOpen === i;
+        return {
+          q: f.q, a: f.a,
+          onClick: () => this.setState({ faqOpen: open ? -1 : i }),
+          wrapStyle: 'border-radius:12px;margin-bottom:6px;overflow:hidden;transition:all .15s;background:' + (open ? 'rgba(191,255,0,0.04)' : 'transparent') + ';border:1px solid ' + (open ? 'rgba(191,255,0,0.22)' : 'transparent') + ';',
+          iconStyle: 'flex-shrink:0;display:flex;color:#bfff00;transition:transform .2s ease;transform:rotate(' + (open ? '45deg' : '0deg') + ');',
+          answerStyle: 'font-size:13.5px;line-height:1.65;color:#a8b2bb;transition:all .22s ease;overflow:hidden;' + (open ? 'max-height:220px;opacity:1;padding:0 14px 15px;' : 'max-height:0;opacity:0;padding:0 14px;'),
+        };
+      }),
+      openMax: () => this.toastMsg('Opens the Max chat'),
+
+      // ---- profile
+      optin: s.optin,
+      optinBoxStyle: 'width:20px;height:20px;flex-shrink:0;margin-top:1px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .13s;border:1px solid ' + (s.optin ? 'transparent;background:#bfff00;' : 'rgba(255,255,255,0.2);background:rgba(255,255,255,0.04);'),
+      toggleOptin: () => {
+        const on = !this.state.optin;
+        this.setState({ optin: on });
+        // Turning it on for the first time credits marketing_optin.
+        //   POST ?action=claim { task_key: 'marketing_optin' }
+        const t = (me.tarefas || []).find(x => x.key === 'marketing_optin');
+        if (on && t && !t.feita) {
+          const next = { ...me, tarefas: me.tarefas.map(x => x.key === 'marketing_optin' ? { ...x, feita: true } : x) };
+          next.saldo = me.saldo + t.points;
+          next.ganho_total = me.ganho_total + t.points;
+          this.setState({
+            me: next,
+            extrato: [{ delta: t.points, task_key: 'marketing_optin', motivo: 'task', nota: null, created_at: new Date().toISOString() }, ...this.state.extrato],
+          });
+          this.toastMsg('+' + t.points + ' points');
+        }
+      },
+      optinPointsNote: optinTask && !optinTask.feita ? ('Worth ' + optinTask.points + ' points the first time you turn it on') : 'You can turn this off at any time',
+      profileIncomplete: !!(profileTask && !profileTask.feita),
+      profileNudge: profileTask ? ('Finish your profile and earn ' + profileTask.points + ' points.') : '',
+      saveProfile: () => this.toastMsg('Profile saved'),
+
+      // ---- redeem modal
+      redeemOpen: s.redeemOpen,
+      redeemTitle: reward ? ('Redeem ' + reward.label) : '',
+      redeemAfter: reward ? (me.saldo - reward.custo_pontos) : '',
+      closeRedeem: () => this.setState({ redeemOpen: false, redeemSlug: null }),
+      confirmRedeem: () => this.confirmRedeem(),
+      stopProp: (e) => e.stopPropagation(),
+
+      toast: s.toast,
+      toastStyle: 'position:fixed;left:50%;transform:translateX(-50%);bottom:28px;z-index:95;padding:13px 22px;border-radius:999px;font-weight:800;font-size:13.5px;box-shadow:0 16px 40px rgba(0,0,0,0.4);' + (s.toastTone === 'warn' ? 'background:#fbbf24;color:#221701;' : 'background:#bfff00;color:#070a06;'),
+    };
+  }
+}
+</script>
+
+
+</body></html>
