@@ -595,9 +595,13 @@
     div[style*="aspect-ratio: 9/16"] { max-width: 260px !important; margin: 0 auto !important; }
 
     /* hero image: portrait crop on phones */
+    /* CORRIGIDO 01/08/2026 , as tres regras se contradiziam e o resultado era o oposto do
+       que o proprio comentario acima pede. A 2a linha reacendia a imagem DEITADA (2752x1536,
+       feita pro desktop) e a 3a apagava a EM PE (1792x2400, feita pro celular). No telefone
+       a foto deitada entrava numa caixa de 417x519 com object-fit:cover e a raposa virava
+       uma tirinha fina. A imagem de celular ja vinha com o enquadramento pronto (82% 30%). */
     img[data-hero="wide"] { display: none !important; }
-    img[data-hero="wide"] { display: block !important; object-position: 50% 32% !important; }
-    img[data-hero="tall"] { display: none !important; }
+    img[data-hero="tall"] { display: block !important; object-position: 82% 30% !important; }
     section[style*="min-height: 620px"] { min-height: 520px !important; padding: 0 !important; }
     [data-heromedia="1"] { position: absolute !important; inset: 0 !important; order: 0 !important; height: auto !important; margin: 0 !important; border-radius: 0 !important; overflow: hidden !important; }
     [data-heroinner="1"] { order: 1 !important; padding: 0 16px !important; pointer-events: none !important; }
