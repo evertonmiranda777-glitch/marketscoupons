@@ -7441,6 +7441,19 @@ async function loadUserSession(user) {
   await loadUserFavs();
   applyF();
   _sessionLoading = false;
+  // PONTE APARELHO -> USUARIO. Diz de quem e este aparelho e ADOTA os cliques orfaos dele,
+  // inclusive os antigos. Sem isso a atribuicao fica em 0,02%: `coupon_clicks.user_id` so
+  // era preenchido quando a pessoa estava logada NA HORA de copiar, e copiar cupom nao
+  // exige login , medido em 31/07/2026, 8.300 cliques e 2 com usuario.
+  // O user_id sai de auth.uid() DENTRO da funcao, nunca daqui.
+  try {
+    if (db && typeof MC_ANON !== 'undefined' && MC_ANON) {
+      db.rpc('vincular_aparelho', { p_anon: MC_ANON }).then(function (r) {
+        var n = r && r.data && r.data.atribuidos;
+        if (n) console.log('[atribuicao] ' + n + ' cliques deste aparelho ligados a conta');
+      }, function () {});
+    }
+  } catch (e) {}
   try {window.dispatchEvent(new CustomEvent('mc:user-loaded'));} catch (e) {}
 }
 
