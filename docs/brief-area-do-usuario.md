@@ -152,7 +152,88 @@ Os valores saem do banco na chamada `me`. **Não escreva nenhum desses números 
 
 ---
 
-## 5. Ainda não existe no backend
+## 5. No admin: tela de resgates (faz parte da entrega)
+
+Sem esta tela o sistema não fecha. O usuário pede a conta e o Everton recebe o pedido sem
+ter onde clicar. Entra como módulo novo do admin, ao lado de "Usuários e leads".
+
+### Lista de pedidos
+
+Colunas: **usuário** (nome, e-mail, ID de membro) · **prêmio** · **pontos gastos** ·
+**situação** · **data do pedido**.
+
+Filtro por situação, com **Pendente** aberto por padrão — é o que exige ação.
+
+### Situações, nesta ordem
+
+| Situação | O que significa | Ação disponível |
+|---|---|---|
+| **Pendente** | acabou de pedir, ninguém olhou | Aprovar · Recusar |
+| **Aprovado** | Everton confirmou com a firma, ainda não entregou | Marcar como entregue |
+| **Entregue** | conta na mão do usuário | nenhuma, é final |
+| **Recusado** | não deu, pontos devolvidos | nenhuma, é final |
+
+### Regras duras
+
+**1. Recusar exige motivo escrito.** Campo obrigatório. O motivo aparece pro usuário — pessoa
+que juntou 100 pontos e levou "não" sem explicação não volta.
+
+**2. Recusar devolve os pontos sozinho.** Já é automático no banco, junto com o estoque.
+A tela **não** deve somar nem devolver ponto por conta própria: só chama a ação e relê o
+saldo. Se a tela mexer no saldo, vai divergir do extrato.
+
+**3. Entregue e Recusado não voltam atrás.** Sem botão de desfazer. Se errou, o Everton
+lança um ajuste manual no extrato, que fica registrado com autor e motivo.
+
+**4. Aviso de pendente à espera.** Contador no menu, como o "2" que já aparece em Firmas.
+Pedido parado é cliente esperando.
+
+**5. Nunca mostrar tamanho de conta nem firma no pedido.** Nem no admin. Isso é combinado
+na entrega, e o campo não existe na tabela (ver regra 3 da seção 2).
+
+### API do admin
+
+Mesma base. O admin **não escreve na tabela** — passa pela mesma porta do usuário. A
+permissão é conferida no banco (`profiles.is_admin`), não pela lista de e-mails do
+`admin.html`, que é só aparência e vive no navegador.
+
+```
+GET  ?action=admin_resgates              → { pendentes, resgates[] }
+GET  ?action=admin_resgates&status=pendente
+POST ?action=admin_situacao   { id, status: "aprovado"|"entregue"|"recusado", nota }
+POST ?action=admin_ajuste     { user_id, delta, nota }
+```
+
+Cada resgate já vem com `usuario: { email, full_name }` — não precisa buscar à parte.
+
+`admin_situacao` com `"recusado"` **exige** `nota` e devolve pontos e estoque sozinho.
+Tentar mudar algo já entregue ou recusado volta `409 situacao_final`.
+
+`admin_ajuste` é a correção manual: `delta` positivo ou negativo, `nota` obrigatória. Fica
+no extrato registrando quem fez.
+
+Se a chamada voltar `403 nao_autorizado`, a conta não é admin no banco — não é bug de tela.
+
+---
+
+## 6. Os valores são do Everton, não seus
+
+A economia hoje:
+
+- as 4 tarefas de uma vez só somam **40 pontos**
+- review vale **20**, indicação vale **25**, e as duas repetem
+- a conta custa **100 pontos**
+
+Ou seja: **ninguém resgata só marcando as tarefas fáceis.** Precisa escrever review ou
+trazer amigo, que é o que dá trabalho e é o que vale pro negócio. Foi de propósito.
+
+Mas os números são calibráveis e o Everton pode mudar a qualquer momento, sem publicar nada
+— é uma linha no banco. **Por isso nenhum número desses pode estar escrito na tela.** Puxe
+sempre da chamada `me`, inclusive o custo do resgate e a barra de progresso do tier.
+
+---
+
+## 7. Ainda não existe no backend
 
 Peça ao Everton antes de desenhar em cima:
 

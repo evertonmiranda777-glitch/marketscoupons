@@ -143,6 +143,100 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ extrato: data ?? [] }), { headers: H });
     }
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // ADMIN , aprovar / entregar / recusar resgate.
+    //
+    // Passa por aqui, e nao por escrita direta na tabela, DE PROPOSITO. A policy de admin
+    // existe (pt_redemp_admin), mas o GRANT de UPDATE foi revogado pra `authenticated`, e
+    // admin e authenticated , entao nem ele escreve pela tabela. Isso e' bom: mantem UMA
+    // porta so pra qualquer mudanca de saldo, com o mesmo registro no extrato.
+    //
+    // A checagem e' profiles.is_admin no BANCO, nunca a allowlist de e-mail do admin.html
+    // (aquela e' so UX e vive no cliente).
+    // ══════════════════════════════════════════════════════════════════════════
+    if (acao.startsWith("admin_")) {
+      const { data: perfil } = await admin.from("profiles").select("is_admin").eq("id", uid).maybeSingle();
+      if (!perfil?.is_admin) {
+        return new Response(JSON.stringify({ erro: "nao_autorizado" }), { status: 403, headers: H });
+      }
+
+      // lista de pedidos, com quem pediu
+      if (acao === "admin_resgates") {
+        const status = url.searchParams.get("status");
+        let q = admin.from("point_redemptions")
+          .select("id,user_id,reward_slug,custo_pontos,status,nota_admin,created_at,updated_at")
+          .order("created_at", { ascending: false }).limit(200);
+        if (status) q = q.eq("status", status);
+        const { data: pedidos } = await q;
+
+        // junta nome/e-mail , a tabela guarda so o uuid
+        const ids = [...new Set((pedidos ?? []).map((p: Record<string, unknown>) => p.user_id))];
+        const { data: perfis } = ids.length
+          ? await admin.from("profiles").select("id,email,full_name").in("id", ids)
+          : { data: [] };
+        const porId = new Map((perfis ?? []).map((p: Record<string, unknown>) => [p.id, p]));
+
+        const { count: pendentes } = await admin.from("point_redemptions")
+          .select("id", { count: "exact", head: true }).eq("status", "pendente");
+
+        return new Response(JSON.stringify({
+          pendentes: pendentes ?? 0,
+          resgates: (pedidos ?? []).map((p: Record<string, unknown>) => ({
+            ...p,
+            usuario: porId.get(p.user_id) ?? null,
+          })),
+        }), { headers: H });
+      }
+
+      // muda a situacao do pedido
+      if (acao === "admin_situacao" && req.method === "POST") {
+        const body = await req.json().catch(() => ({}));
+        const id = Number(body?.id);
+        const novo = String(body?.status || "");
+        const nota = body?.nota ? String(body.nota) : null;
+        if (!id || !["aprovado", "entregue", "recusado"].includes(novo)) {
+          return new Response(JSON.stringify({ erro: "parametros_invalidos" }), { status: 400, headers: H });
+        }
+
+        // recusar devolve ponto e estoque , logica no banco, numa transacao so
+        if (novo === "recusado") {
+          if (!nota) return new Response(JSON.stringify({ erro: "motivo_obrigatorio" }), { status: 400, headers: H });
+          const { data, error } = await admin.rpc("recusar_resgate", { p_id: id, p_nota: nota });
+          if (error) return new Response(JSON.stringify({ erro: "falha", detalhe: error.message }), { status: 500, headers: H });
+          const r = data as Record<string, unknown>;
+          return new Response(JSON.stringify(r), { status: r?.ok ? 200 : 400, headers: H });
+        }
+
+        // entregue e recusado sao FINAIS: nao se volta atras. Correcao vira ajuste manual
+        // no extrato, que fica registrado , sobrescrever apagaria o historico.
+        const { data: atual } = await admin.from("point_redemptions").select("status").eq("id", id).maybeSingle();
+        if (!atual) return new Response(JSON.stringify({ erro: "resgate_inexistente" }), { status: 404, headers: H });
+        if (atual.status === "entregue" || atual.status === "recusado") {
+          return new Response(JSON.stringify({ erro: "situacao_final", situacao: atual.status }), { status: 409, headers: H });
+        }
+
+        const { error } = await admin.from("point_redemptions")
+          .update({ status: novo, nota_admin: nota, updated_at: new Date().toISOString() }).eq("id", id);
+        if (error) return new Response(JSON.stringify({ erro: "falha", detalhe: error.message }), { status: 500, headers: H });
+        return new Response(JSON.stringify({ ok: true, status: novo }), { headers: H });
+      }
+
+      // ajuste manual de pontos (correcao, bonus). Fica no extrato com o motivo.
+      if (acao === "admin_ajuste" && req.method === "POST") {
+        const body = await req.json().catch(() => ({}));
+        const alvo = String(body?.user_id || "");
+        const delta = Number(body?.delta);
+        const nota = String(body?.nota || "");
+        if (!alvo || !Number.isInteger(delta) || delta === 0 || !nota) {
+          return new Response(JSON.stringify({ erro: "parametros_invalidos" }), { status: 400, headers: H });
+        }
+        const { error } = await admin.from("point_ledger")
+          .insert({ user_id: alvo, delta, motivo: "admin", ref: uid, nota });
+        if (error) return new Response(JSON.stringify({ erro: "falha", detalhe: error.message }), { status: 500, headers: H });
+        return new Response(JSON.stringify({ ok: true }), { headers: H });
+      }
+    }
+
     return new Response(JSON.stringify({ erro: "acao_desconhecida" }), { status: 400, headers: H });
   } catch (e) {
     return new Response(JSON.stringify({ erro: "excecao", detalhe: String(e).slice(0, 200) }), { status: 500, headers: H });
