@@ -36,6 +36,8 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
+import { createWorker } from 'tesseract.js';
 import { chromium } from 'playwright';
 
 const ROOT = path.join(import.meta.dirname, '..');
@@ -192,11 +194,11 @@ async function lerCru(url, saco) {
     // preco no JSON embutido.
     for (const m of html.matchAll(/[$€£]\s?(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{1,2})?|\d{1,5}(?:[.,]\d{1,2})?)/g)) {
       const v = num(m[1]);
-      if (v !== null && v > 5 && v < 20000) saco.precos.add(String(v));
+      if (v !== null && v > 5 && v < 20000) { saco.precos.add(String(v)); saco.precosHtml.add(String(v)); }
     }
     for (const m of html.matchAll(/"(?:[a-z_]*(?:price|amount|cost|fee|total|value)[a-z_]*)"\s*:\s*"?(\d{1,5}(?:[.,]\d{1,2})?)"?/gi)) {
       const v = num(m[1]);
-      if (v !== null && v > 5 && v < 20000) saco.precos.add(String(v));
+      if (v !== null && v > 5 && v < 20000) { saco.precos.add(String(v)); saco.precosHtml.add(String(v)); }
     }
     for (const m of html.matchAll(/\b([A-Z][A-Z0-9_-]{3,24})\b/g)) {
       const c = m[1];
@@ -218,6 +220,47 @@ async function doBanco() {
   return m;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// OCR do screenshot , a camada que le a TELA COMO O CLIENTE VE.
+//
+// Por que tesseract.js e nao um servico: roda igual aqui e no runner, sem chave de API e
+// sem custo. A chave do Google esta 401/403 nesta conta desde 01/08, e depender dela seria
+// trocar uma camada de validacao por uma dependencia que ja falhou.
+//
+// Pre-tratamento importa MAIS que o motor: o site e escuro (texto claro em fundo preto) e
+// o tesseract foi treinado em papel. Cinza + NEGATIVO + normalizacao + dobro do tamanho
+// leva a leitura de quase nada pra ~9k caracteres. Medido em 03/08 no print da TradeDay:
+// 31 precos e o cupom TDNEW lidos direto da imagem, 26s por pagina.
+async function lerScreenshot(arq) {
+  const meta = await sharp(arq).metadata();
+  // pagina inteira passa de 12.000px de altura; fatiar evita estourar memoria no runner
+  const ALTURA_FATIA = 4000;
+  const fatias = Math.max(1, Math.ceil((meta.height || 1) / ALTURA_FATIA));
+  let texto = '';
+  const worker = await createWorker('eng');
+  try {
+    for (let f = 0; f < fatias; f++) {
+      const top = f * ALTURA_FATIA;
+      const alt = Math.min(ALTURA_FATIA, (meta.height || 0) - top);
+      if (alt <= 10) continue;
+      const buf = await sharp(arq)
+        .extract({ left: 0, top, width: meta.width, height: alt })
+        .grayscale().negate().normalise()
+        .resize({ width: Math.min(2200, (meta.width || 1440) * 2) })
+        .png().toBuffer();
+      const { data } = await worker.recognize(buf);
+      texto += String.fromCharCode(10) + (data.text || '');
+    }
+  } finally { await worker.terminate(); }
+
+  const precos = new Set();
+  for (const m of texto.matchAll(/\$\s?(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{1,2})?|\d{1,5}(?:[.,]\d{1,2})?)/g)) {
+    const v = num(m[1]);
+    if (v !== null && v > 5 && v < 20000) precos.add(String(v));
+  }
+  return { texto, precos };
+}
+
 async function main() {
   const banco = await doBanco();
   const alvos = SO_FIRMA ? { [SO_FIRMA]: FIRMAS[SO_FIRMA] } : FIRMAS;
@@ -236,7 +279,10 @@ async function main() {
     if (!browser.isConnected()) browser = await chromium.launch();
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36' });
     const page = await ctx.newPage();
-    const saco = { precos: new Set(), cuponsHtml: new Set() };
+    // Cada fonte no SEU balde. Antes caiam todas em `saco.precos`, o que dava UMA camada
+    // disfarcada de tres , se o HTML achasse, o conjunto ja "confirmava", mesmo com o XHR
+    // mudo. Separado, HTML e XHR podem se contradizer, que e o ponto de cruzar fonte.
+    const saco = { precos: new Set(), precosHtml: new Set(), precosXhr: new Set(), precosShot: new Set(), cuponsHtml: new Set(), textoShot: '' };
     // XHR = a aba Network do F12
     page.on('response', async (resp) => {
       try {
@@ -247,11 +293,11 @@ async function main() {
         // simbolo de moeda. Payload de API tem id, timestamp e contador aos montes.
         for (const m of t.matchAll(/"(?:[a-z_]*(?:price|amount|cost|fee|total|value)[a-z_]*)"\s*:\s*"?(\d{1,5}(?:[.,]\d{1,2})?)"?/gi)) {
           const v = num(m[1]);
-          if (v !== null && v > 5 && v < 20000) saco.precos.add(String(v));
+          if (v !== null && v > 5 && v < 20000) { saco.precos.add(String(v)); saco.precosXhr.add(String(v)); }
         }
         for (const m of t.matchAll(/[$€£]\s?(\d{1,5}(?:[.,]\d{1,2})?)/g)) {
           const v = num(m[1]);
-          if (v !== null && v > 5 && v < 20000) saco.precos.add(String(v));
+          if (v !== null && v > 5 && v < 20000) { saco.precos.add(String(v)); saco.precosXhr.add(String(v)); }
         }
       } catch (_) {}
     });
@@ -277,11 +323,25 @@ async function main() {
         c.prazo.forEach((x) => dom.prazo.add(x));
         c.taxa.forEach((x) => dom.taxa.add(x));
         c.tamanhos.forEach((x) => dom.tamanhos.add(x));
-        // screenshot e a 3a confirmacao, mas se ela falhar (fonte que nao carrega, pagina
-        // gigante) NAO pode derrubar a firma inteira , as outras 2 camadas seguem valendo.
+        // ═══ SCREENSHOT , e o JUIZ, nao um anexo (ordem do Everton, 03/08/2026).
+        // "o screenshot ser o validador. Pq ele printa a tela onde tem as infos de planos,
+        // tamanho de conta, valor, cupom e etc".
+        // Ate hoje ele era so gravado em disco: NENHUM codigo lia a imagem, e mesmo assim
+        // o veredito imprimia "+shot", como se tivesse confirmado. Isso era inflar entrega.
+        // Agora ele passa por OCR e ENTRA na comparacao , e a unica camada que enxerga o
+        // que o cliente enxerga, inclusive preco desenhado em canvas/imagem, que nao existe
+        // no DOM nem em XHR nenhum.
+        const arqShot = path.join(SHOTS, cfg.urls.length > 1 ? `${slug}-${i + 1}.png` : `${slug}.png`);
         try {
-          await page.screenshot({ path: path.join(SHOTS, cfg.urls.length > 1 ? `${slug}-${i + 1}.png` : `${slug}.png`), fullPage: true });
+          await page.screenshot({ path: arqShot, fullPage: true });
         } catch (e) { linha.shotFalhou = true; }
+        if (!linha.shotFalhou) {
+          try {
+            const lido = await lerScreenshot(arqShot);
+            saco.textoShot += String.fromCharCode(10) + lido.texto;
+            lido.precos.forEach((v) => saco.precosShot.add(v));
+          } catch (e) { linha.ocrFalhou = String(e).slice(0, 120); }
+        }
       }
       // as duas camadas concordam? se sim, para de tentar.
       const _ok = [...dom.precos].map((v) => String(num(v))).filter((v) => v !== 'null');
@@ -321,9 +381,18 @@ async function main() {
           (db.prices || []).map((p) => p.o).filter(Boolean).map((v) => num(v)).filter((v) => v !== null)
         )].map(String);
         const domNum = new Set([...dom.precos].map((v) => String(num(v))));
+        // QUATRO fontes independentes. Antes eram duas ("tela" e "dado"), e "dado" ja era
+        // HTML+JSON+XHR somados no mesmo Set , ou seja, uma camada disfarcada de tres.
         const confTela = doBancoPrecos.filter((v) => domNum.has(v));
+        const confHtml = doBancoPrecos.filter((v) => saco.precosHtml.has(v));
+        const confXhr  = doBancoPrecos.filter((v) => saco.precosXhr.has(v));
+        const confShot = doBancoPrecos.filter((v) => saco.precosShot.has(v));
         const confDado = doBancoPrecos.filter((v) => saco.precos.has(v));
-        linha.cruzamento = { doBanco: doBancoPrecos.length, naTela: confTela.length, noDado: confDado.length };
+        linha.cruzamento = {
+          doBanco: doBancoPrecos.length,
+          naTela: confTela.length, noHtml: confHtml.length,
+          noXhr: confXhr.length, noShot: confShot.length,
+        };
 
         if (!doBancoPrecos.length) {
           linha.veredito = 'SEM PRECO NO BANCO';
@@ -339,19 +408,54 @@ async function main() {
           const OK = 0.8;
           const camadas = [
             { nome: 'tela', achou: dom.precos.size, conf: confTela.length },
-            { nome: 'dado', achou: saco.precos.size, conf: confDado.length },
+            { nome: 'html', achou: saco.precosHtml.size, conf: confHtml.length },
+            { nome: 'xhr', achou: saco.precosXhr.size, conf: confXhr.length },
           ];
+          // O SCREENSHOT E O JUIZ, nao mais um voto igual aos outros. Ele e a unica camada
+          // que le o que o CLIENTE ve , inclusive preco desenhado em canvas ou imagem, que
+          // nao aparece em DOM nem em XHR. Quando ele consegue ler, a palavra e dele.
+          const juiz = {
+            leu: saco.precosShot.size >= Math.max(3, doBancoPrecos.length * 0.3),
+            conf: confShot.length,
+            bate: confShot.length >= Math.ceil(doBancoPrecos.length * OK),
+          };
           const operante = camadas.filter((c) => c.achou >= Math.max(5, doBancoPrecos.length * 0.5));
           const confirmam = operante.filter((c) => c.conf >= Math.ceil(doBancoPrecos.length * OK));
           const contradizem = operante.filter((c) => c.conf < Math.ceil(doBancoPrecos.length * 0.25));
           const detalhe = camadas.map((c) => `${c.nome} ${c.conf}/${doBancoPrecos.length}`).join(', ');
 
-          if (confirmam.length && !contradizem.length) {
-            // pelo menos uma forma confirmou e nenhuma outra desmente: validado.
-            linha.veredito = `VALIDADO (${confirmam.map((c) => c.nome).join('+')}+shot)`;
+          const detShot = juiz.leu ? `shot ${juiz.conf}/${doBancoPrecos.length}` : 'shot ilegivel';
+
+          if (juiz.leu) {
+            // ═══ O SCREENSHOT LEU: A PALAVRA E DELE.
+            // Ele mostra a pagina como o cliente ve. Se o preco do banco esta la, esta
+            // certo, mesmo que DOM e XHR nao tenham achado (preco em canvas, imagem, ou
+            // dentro de componente que so pinta na tela).
+            if (juiz.bate) {
+              const acompanham = confirmam.map((c) => c.nome);
+              linha.veredito = `VALIDADO POR SHOT${acompanham.length ? ' (+' + acompanham.join('+') + ')' : ' (so o shot enxergou)'}`;
+              if (!acompanham.length) {
+                linha.reportar.push(`so o screenshot achou o preco do banco (${detalhe}, ${detShot}) , o dado provavelmente esta em canvas/imagem`);
+              }
+            } else if (confirmam.length) {
+              // Fontes de dado dizem que bate, mas a TELA IMPRESSA nao mostra esse preco.
+              // Isso e o caso perigoso: valor que existe no codigo e nao chega ao cliente.
+              linha.veredito = 'JUIZ DESMENTE AS FONTES';
+              linha.reportar.push(`${confirmam.map((c) => c.nome).join('+')} confirmam mas o screenshot NAO mostra esse preco (${detalhe}, ${detShot}) , nada gravado, olhar a imagem`);
+              linha.gravar = [];
+            } else {
+              linha.veredito = 'PRECO MUDOU NO SITE';
+              linha.reportar.push(`nenhuma fonte acha o preco do banco, nem a tela impressa (${detalhe}, ${detShot}) , provavelmente mudou`);
+              linha.gravar = [];
+            }
+          } else if (confirmam.length && !contradizem.length) {
+            // Sem juiz (OCR nao leu): volta a valer o acordo entre as fontes de dado, mas
+            // o veredito DIZ que foi sem juiz , antes ele mentia escrevendo "+shot".
+            linha.veredito = `VALIDADO SEM JUIZ (${confirmam.map((c) => c.nome).join('+')})`;
+            linha.reportar.push(`screenshot ilegivel; validado so pelas fontes de dado (${detalhe})`);
           } else if (confirmam.length && contradizem.length) {
-            linha.veredito = 'CAMADAS SE CONTRADIZEM';
-            linha.reportar.push(`${confirmam[0].nome} confirma e ${contradizem[0].nome} desmente (${detalhe}) , nada gravado, olhar o screenshot`);
+            linha.veredito = 'FONTES SE CONTRADIZEM';
+            linha.reportar.push(`${confirmam[0].nome} confirma e ${contradizem[0].nome} desmente (${detalhe}, ${detShot}) , nada gravado, olhar o screenshot`);
             linha.gravar = [];
           } else if (!operante.length) {
             linha.veredito = 'INCONCLUSIVO';

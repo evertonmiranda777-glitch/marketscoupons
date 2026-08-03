@@ -45,10 +45,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Instalar Playwright (so o Chromium)
+      - name: Instalar Playwright (so o Chromium) e o OCR
         run: |
-          npm install playwright@1.49.0 --no-save
+          npm install playwright@1.49.0 tesseract.js@5 sharp --no-save
           npx playwright install --with-deps chromium
+
+      # ⚠️ O OCR do screenshot come memoria: pagina de firma passa de 12.000px de altura e o
+      # runner tem 7GB. Em teste local a the5ers morreu com ERR_INSUFFICIENT_RESOURCES
+      # quando navegador e tesseract disputaram RAM. O script ja fatia a imagem em 4.000px;
+      # este teto extra de heap evita o resto.
+      - name: Espaco de memoria pro Node
+        run: echo "NODE_OPTIONS=--max-old-space-size=5120" >> $GITHUB_ENV
 
       # 1) VIGIA: vai no site e COLHE o que esta ativo (cupom, promo, prazo, taxa).
       #    Mantem cupom da Markets, so troca generico, e nao escreve estrutura nova.
