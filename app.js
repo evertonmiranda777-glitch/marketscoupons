@@ -1365,7 +1365,7 @@ let _cmsTexts = {}; // DB overrides loaded from cms_texts
 let _siteSettings = {}; // site_settings key-value from Supabase
 function t(key) {
   // Prioridade: I18N (sobrescrito por tabela `i18n` no Supabase, que é onde o admin edita) → cms_texts (fallback legacy) → I18N.en → key literal
-  const i18nVal = I18N[_currentLang] && I18N[_currentLang][key] || I18N.en[key];
+  const i18nVal = I18N[_currentLang] && I18N[_currentLang][key] || (I18N.en || {})[key];
   if (i18nVal) return i18nVal;
   if (_cmsTexts[key]) return _cmsTexts[key][_currentLang] || _cmsTexts[key].en || _cmsTexts[key].pt || key;
   return key;
@@ -5247,7 +5247,7 @@ function qfinish() {
     let rec = FIRMS.find((f) => f.id === sorted[0][0]);
     if (!rec) rec = FIRMS[0];
     if (!rec) return;
-    document.getElementById('q-res-content').innerHTML = `<div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="display:inline-flex;align-items:center;gap:8px;vertical-align:middle;color:${rec.color};">${firmIco(rec, '28px', '11px')} ${rec.name}</span></div><div class="qr-desc">${((_I18N$_currentLang = I18N[_currentLang]) === null || _I18N$_currentLang === void 0 ? void 0 : _I18N$_currentLang['firm_desc_' + rec.id]) || ((_I18N$en = I18N.en) === null || _I18N$en === void 0 ? void 0 : _I18N$en['firm_desc_' + rec.id]) || I18N.pt['firm_desc_' + rec.id] || rec.desc || ''}</div><div style="display:flex;gap:12px;justify-content:center;margin-top:8px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;"><a href="${rec.link}" target="_blank" style="text-decoration:none;display:flex;flex:1;"><button class="btn-gold" style="width:100%;white-space:nowrap;">${t('quiz_comecar_agora')}</button></a><button class="q-restart" style="flex:1;white-space:nowrap;" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
+    document.getElementById('q-res-content').innerHTML = `<div class="qr-title">${t('quiz_resultado_firma_ideal')} <span style="display:inline-flex;align-items:center;gap:8px;vertical-align:middle;color:${rec.color};">${firmIco(rec, '28px', '11px')} ${rec.name}</span></div><div class="qr-desc">${((_I18N$_currentLang = I18N[_currentLang]) === null || _I18N$_currentLang === void 0 ? void 0 : _I18N$_currentLang['firm_desc_' + rec.id]) || ((_I18N$en = I18N.en) === null || _I18N$en === void 0 ? void 0 : _I18N$en['firm_desc_' + rec.id]) || (I18N.pt || {})['firm_desc_' + rec.id] || rec.desc || ''}</div><div style="display:flex;gap:12px;justify-content:center;margin-top:8px;width:100%;max-width:360px;margin-left:auto;margin-right:auto;"><a href="${rec.link}" target="_blank" style="text-decoration:none;display:flex;flex:1;"><button class="btn-gold" style="width:100%;white-space:nowrap;">${t('quiz_comecar_agora')}</button></a><button class="q-restart" style="flex:1;white-space:nowrap;" onclick="qreset()">${t('quiz_recomecar')}</button></div>`;
     track('quiz_complete', { recommended_firm: rec.id, market_pref: market, priority });
     // Removido fbq Lead, quiz não indica intenção de compra. Inflava denominador.
   }, 300);

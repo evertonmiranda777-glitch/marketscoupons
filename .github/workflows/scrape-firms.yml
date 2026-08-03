@@ -13,8 +13,12 @@
 # Adotar valor automaticamente a partir de raspagem sem historico de acerto seria repetir o
 # erro de 30/07 com outro nome. Liga a escrita depois de umas semanas de relatorio limpo.
 #
-# Nao usa SUPABASE_SERVICE_ROLE_KEY: ela ignora RLS e abre o banco inteiro. Le pela Edge
-# Function `firms-check` com o FIRMS_CHECK_TOKEN, mesmo caminho do check_links.
+# 🔑 LE COM A CHAVE PUBLICA (anon). Preco, desconto e cupom ja sao publicos no site , nao ha
+# o que proteger, e service role em CI e proibido (ignora RLS = abre o banco inteiro).
+#
+# ⚠️ ESTE JOB NUNCA RODOU VERDE. Ele passava `secrets.SUPABASE_READONLY_KEY`, um nome que EU
+# INVENTEI e que nunca foi cadastrado , resultado: "SUPABASE_SERVICE_ROLE_KEY obrigatorio",
+# exit 2, toda segunda, desde que foi criado. Corrigido em 03/08/2026.
 
 name: Raspagem de precos das firmas
 
@@ -52,7 +56,7 @@ jobs:
         id: vigia
         env:
           FIRMS_CHECK_TOKEN: ${{ secrets.FIRMS_CHECK_TOKEN }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_READONLY_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: node scripts/vigia-firmas.mjs
         continue-on-error: true
 
@@ -62,7 +66,7 @@ jobs:
         id: raspagem
         env:
           FIRMS_CHECK_TOKEN: ${{ secrets.FIRMS_CHECK_TOKEN }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_READONLY_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: node scripts/scrape-firms.mjs
         continue-on-error: true
 

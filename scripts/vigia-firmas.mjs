@@ -45,7 +45,14 @@ const RELATORIO = path.join(ROOT, 'data', 'vigia-report.json');
 
 const ESCREVER = process.argv.includes('--write');
 const SO_FIRMA = (process.argv.find((a) => a.startsWith('--firm=')) || '').split('=')[1];
-const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
+// LEITURA COM A CHAVE PUBLICA (anon), de proposito.
+// Este script SO LE preco, desconto e cupom de cms_firms , dado que ja esta impresso no
+// site pra qualquer visitante. Nao existe motivo pra service role aqui, e existe motivo
+// forte contra: ela IGNORA RLS, ou seja, abre o banco inteiro pra dentro do CI. A lei do
+// projeto (28/07) e "service role NAO entra em CI, nunca".
+// O job falhava desde sempre com "SUPABASE_SERVICE_ROLE_KEY obrigatorio" porque o workflow
+// passava `secrets.SUPABASE_READONLY_KEY`, um nome que EU inventei e que nunca existiu.
+const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 // ── CUPOM EXCLUSIVO DA MARKETS = INTOCAVEL ────────────────────────────────────
 // Trocar um desses por um codigo publico do site = o cliente compra e a comissao vai
@@ -200,7 +207,7 @@ async function lerCru(url, saco) {
 }
 
 async function doBanco() {
-  if (!KEY) throw new Error('SUPABASE_SERVICE_ROLE_KEY obrigatorio');
+  if (!KEY) throw new Error('SUPABASE_ANON_KEY obrigatorio (a chave publica basta: este script so LE)');
   const cols = 'id,name,coupon,discount,discount_type,disc_note,promo_label,promo_ends_at,has_activation_fee,prices,detail_types,detail_plans,active';
   const r = await fetch(`${SB}/rest/v1/cms_firms?active=eq.true&select=${cols}`, { headers: { apikey: KEY, Authorization: `Bearer ${KEY}` } });
   if (!r.ok) throw new Error(`REST ${r.status}`);

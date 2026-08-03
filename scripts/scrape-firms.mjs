@@ -42,7 +42,14 @@ const RELATORIO = path.join(ROOT, 'data', 'scrape-report.json');
 
 const ESCREVER = process.argv.includes('--write');
 const SO_FIRMA = (process.argv.find((a) => a.startsWith('--firm=')) || '').split('=')[1];
-const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
+// LEITURA COM A CHAVE PUBLICA (anon), de proposito.
+// Este script SO LE preco, desconto e cupom de cms_firms , dado que ja esta impresso no
+// site pra qualquer visitante. Nao existe motivo pra service role aqui, e existe motivo
+// forte contra: ela IGNORA RLS, ou seja, abre o banco inteiro pra dentro do CI. A lei do
+// projeto (28/07) e "service role NAO entra em CI, nunca".
+// O job falhava desde sempre com "SUPABASE_SERVICE_ROLE_KEY obrigatorio" porque o workflow
+// passava `secrets.SUPABASE_READONLY_KEY`, um nome que EU inventei e que nunca existiu.
+const KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 // ── Config por firma. `url` e o que abrir; `esperar` e o seletor/tempo ate a tabela de
 // preco existir; `abas` sao cliques opcionais pra trocar de plano.
@@ -199,7 +206,7 @@ async function tirarShot(page, slug) {
 }
 
 async function precosDoBanco() {
-  if (!KEY) throw new Error('SUPABASE_SERVICE_ROLE_KEY obrigatorio');
+  if (!KEY) throw new Error('SUPABASE_ANON_KEY obrigatorio (a chave publica basta: este script so LE)');
   const r = await fetch(`${SB}/rest/v1/cms_firms?active=eq.true&select=id,prices,discount,coupon`, {
     headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
   });
