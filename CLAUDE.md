@@ -1,5 +1,70 @@
 # MarketsCoupons, Contexto do Projeto
 
+## 🔌 LEI 04/ago — SITE NOVO: DOIS COMANDOS, NUNCA UM
+
+```
+node scripts/desempacota-design.mjs <arquivo> novo /novo   # MSYS_NO_PATHCONV=1 no Git Bash
+node scripts/pluga-site-novo.mjs
+```
+
+O desempacotador **REESCREVE `novo/index.html` do zero** a cada entrega do Design. Sem o
+segundo comando, **as 26 ligações somem EM SILÊNCIO** — a página continua abrindo, só volta a
+mostrar dado inventado. Cada remendo é idempotente e **FALHA ALTO** se a âncora sumir.
+
+**⚠️ MARCADOR DE VÁRIAS LINHAS PRECISA DE `\r?\n`** — o arquivo do Design vem com quebra de
+linha do Windows, e marcador com `\n` simples nunca casa (passa como "já aplicado" sem rodar).
+
+**Rotas:** `/novo` `/novo-lp` `/novo-admin` `/novo-conta`.
+**Ligado:** firmas · calendário · heatmap · análise (NQ) · GEX · blog · guias · awards · compare.
+**Falta:** Platforms · Indicators · Position Size · Quiz · notificação do iPhone.
+
+**Armadilhas do build do Design:**
+- **`homeStatic()` CONGELA** (`if (this._homeStatic) return this._homeStatic`) e roda ANTES do
+  fetch voltar → toda ligação precisa de `self._homeStatic = null` antes do setState.
+- **`cms_firms.type` está em PORTUGUÊS** ("Futuros") e o site é EN-default.
+- **`attention_zone` é objeto multilíngue**, não string → vira "[object Object]".
+- **Hero do celular veio errado 2 entregas seguidas** (mostra a foto deitada, esconde a em pé).
+  O arrasto do Everton mira `data-hero="wide"` — o remendo faz valer pras duas.
+
+## ✂️ LEI 04/ago — SÓ TROCO DADO, NÃO MEXO EM MARCAÇÃO
+
+Quebrei a página **3 vezes num dia** recortando HTML: `map` duplicado, `avStyle` órfão, e o
+cartão do heatmap fundido com o texto (engoli `</div>`, `<div>` e o rótulo). **Nenhuma quebra
+veio de ligar dado.**
+
+Quando a marcação for inevitável: **contar as tags** e extrair o script pra `node --check`
+**ANTES** de publicar. Conferir no console depois do deploy é tarde.
+
+**E quando o problema é o dado, troco o dado — não redesenho de brinde.** Achatei o mini
+heatmap num 2×2 "de bônus" e ficou pior que o original.
+
+## 📉 LEI 04/ago — ANÁLISE DIÁRIA (316 membros usam)
+
+**Vinha quebrada há 14 dias e ninguém sabia** — só 4 dias tinham os 4 ativos. Os membros
+reportaram antes de nós percebermos. Causa: `Promise.all` nos 4 juntos (cada um puxando 4 APIs
+gratuitas), sem repetição, e `success: results.length > 0` — **1 de 4 devolvia "deu certo"**.
+
+**Agora:** pares + 2 tentativas + rebusca do histórico. Incompleto = HTTP 206 + `disparo_falhas`.
+**⚠️ SÉRIE PURA NÃO CABE** — 4 chamadas ao Gemini enfileiradas dão ~140s e estouram o limite
+(`WORKER_RESOURCE_LIMIT` 546). O `gex-calculator` faz série porque usa **uma fonte só**.
+
+**Acertividade existe:** 182 de 210 alvos avaliados. **O modelo acerta o NÍVEL** (gatilho do NQ
+65%, ES 55%) **e o alvo não chega** (18-38%) — porque o alvo ficava a 134-198% da faixa
+INTEIRA do dia, e o placar mede **uma sessão**. Calibrado pra 0.8-1.2 ATR.
+
+**⚠️ ESCREVER A REGRA NO PROMPT NÃO ADIANTOU** (piorou: NQ 134%→283%). Regra em texto é pedido,
+não garantia — a validação foi pro **código**.
+
+**⚠️ TwelveData é gratuita e tem limite por minuto/dia.** Testar a função 5× em 20min queima a
+cota e dá "no data" nos 4 ativos — que **não é defeito do código**.
+
+## 🚨 LEI 04/ago — TODA ENTREGA DO DESIGN PASSA POR FILTRO DE COMPLIANCE
+
+O pacote vinha com chat falso do Live Room dizendo **"Long ES 5620"**, **"TP1 hit"**, **"FVG on
+the 15m"** — entrada e take profit, proibidos em superfície pública. O Live Room é "conteúdo
+exclusivo VIP, **nunca sinais**". Também vinha com preço/cupom chumbado e números de mercado
+inventados ao lado da palavra "real time".
+
 ## 🔴🔴🔴 LEI 01/ago — O REPO ESTÁ NO GITHUB, E ERA PÚBLICO
 
 `github.com/evertonmiranda777-glitch/marketscoupons`, **público desde 30/03/2026**. Eu
