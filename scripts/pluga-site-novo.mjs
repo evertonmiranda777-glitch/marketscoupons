@@ -354,9 +354,10 @@ remendo('chamada do blog', 'this._mcLigarBlog();',
   '    this._mcLigarCalendario();\n    this._mcLigarBlog();');
 
 // usa os artigos reais quando chegarem; ate la, os do pacote
-remendo('homeGuides ao vivo', '_mcBlog ||',
-  'homeGuides: [',
-  'homeGuides: this._mcBlog || [');
+// ⚠️ NAO existe mais remendo 'homeGuides ao vivo'. Eu tinha enchido a secao
+// "Guides & Education" com posts do BLOG , sao coisas diferentes, e o remendo
+// desfazia a correcao a cada rodada. Os guias agora sao os 3 canonicos, com titulo
+// lido dos arquivos en/guides/*.html. O blog continua ligado na SUA secao.
 
 // ─────────────────────────────────────────────── 12. logo nova no navegador
 // fox-lime.png (handoff/Logo) com transparencia de verdade, entao fica bem em aba clara e
@@ -436,21 +437,21 @@ remendo('ordem das firmas', 'MC_ORDEM(',
   '      self.firms = linhas.map(function (f) {',
   '      self.firms = MC_ORDEM(linhas.map(function (f) {');
 
-// fecha o MC_ORDEM( aberto acima. Se ficar sem fechar, e erro de sintaxe e a pagina
-// INTEIRA some , nao so a ordem. Ja aconteceu, por isso o marcador e' explicito.
-if (d.includes('MC_ORDEM(linhas.map') && !d.includes("velha.dd || '';
-        };
-      }));")) {
-  const de = "velha.dd || '';
-        };
-      });";
-  if (!d.includes(de)) { console.error('
-✗ nao achei o fechamento do map das firmas'); process.exit(1); }
-  d = d.replace(de, "velha.dd || '';
-        };
-      }));");
-  feitos.push('fecha a ordenacao');
-} else pulados.push('fecha a ordenacao');
+// fecha o MC_ORDEM( aberto acima. Sem fechar e erro de sintaxe e a pagina INTEIRA some ,
+// nao so a ordem. Ja aconteceu, por isso a checagem e explicita.
+//
+// ⚠️ USA REGEX COM \r?\n: o arquivo do Design vem com quebra de linha do WINDOWS
+// (\r\n) e todo marcador de varias linhas escrito com \n simples NUNCA casa. Perdi tempo
+// achando que o remendo tinha sido aplicado quando ele nem rodava.
+{
+  const jaFechado = /velha\.dd \|\| ''\r?\n\s*\};\r?\n\s*\}\)\);/;
+  const aberto    = /(velha\.dd \|\| ''\r?\n\s*\};\r?\n\s*\})(\);)/;
+  if (d.includes('MC_ORDEM(linhas.map') && !jaFechado.test(d)) {
+    if (!aberto.test(d)) { console.error('\u2717 nao achei o fechamento do map das firmas'); process.exit(1); }
+    d = d.replace(aberto, '$1)$2');
+    feitos.push('fecha a ordenacao');
+  } else pulados.push('fecha a ordenacao');
+}
 
 remendo('funcao de ordem', 'function MC_ORDEM',
   'function MC_REVIEWS(id) {',
