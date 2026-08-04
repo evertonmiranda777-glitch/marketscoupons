@@ -1091,7 +1091,7 @@
   <!-- 3 · HEATMAP & GEX -->
   <section style="border-top: 1px solid rgba(255,255,255,0.06);"><div data-homesec="1" data-cardfirst="1" style="max-width: 1240px; margin: 0 auto; padding: 84px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;">
     <div style="padding: 22px; border-radius: 20px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;"><span style="font-size: 13px; font-weight: 700; color: #d7dde2;">Markets today</span><span style="font-size: 11px; color: #7c8791;">real time</span></div>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;"><span style="font-size: 13px; font-weight: 700; color: #d7dde2;">Heatmap &middot; US stocks</span><span style="font-size: 11px; color: #7c8791;">real time</span></div>
       <!-- MINI HEATMAP , dado REAL da analise diaria (tabela daily_analysis), nao mock.
            Vinha com 9 quadradinhos de porcentagem inventada (+2.1%, +0.8, -1.2...). Numero
            de mercado inventado ao lado da palavra "real time" e informacao falsa: o trader
@@ -1125,15 +1125,15 @@
   <section style="border-top: 1px solid rgba(255,255,255,0.06);"><div data-homesec="1" data-cardfirst="1" style="max-width: 1240px; margin: 0 auto; padding: 84px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;">
     <div style="padding: 22px; border-radius: 20px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
-        <div><div style="font-weight: 700; font-size: 16px; color: #F4F8F9;">ES · S&amp;P 500 Futures</div><div style="font-size: 13px; color: #8a94a0; margin-top: 2px; font-variant-numeric: tabular-nums;">5,621.50 <span style="color:#34d399;">+0.42%</span></div></div>
-        <span style="font-weight: 800; font-size: 12px; letter-spacing: 0.04em; padding: 6px 12px; border-radius: 999px; background: rgba(191,255,0,0.12); color: #bfff00; border: 1px solid rgba(191,255,0,0.3);">BULLISH</span>
+        <div><div style="font-weight: 700; font-size: 16px; color: #F4F8F9;">{{ anaTitulo }}</div><div style="font-size: 13px; color: #8a94a0; margin-top: 2px; font-variant-numeric: tabular-nums;">{{ anaPreco }} <span style="color:{{ anaCor }};">{{ anaVar }}</span></div></div>
+        <span style="{{ anaSeloStyle }}">{{ anaVies }}</span>
       </div>
-      <p style="font-size: 13.5px; line-height: 1.55; color: #a8b2bb; margin: 0 0 18px;">Macro tariffs weigh on global markets. ES testing support at 5580 after the selloff. 4H FVG as the zone of interest. FOMC minutes confirm a rate pause.</p>
+      <p style="font-size: 13.5px; line-height: 1.55; color: #a8b2bb; margin: 0 0 18px;">{{ anaTexto }}</p>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <div style="padding: 12px; border-radius: 11px; background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.2);"><div style="font-size: 10.5px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Support 1</div><div style="font-weight: 800; font-size: 17px; color: #34d399; margin-top: 3px; font-variant-numeric: tabular-nums;">5,580</div></div>
-        <div style="padding: 12px; border-radius: 11px; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2);"><div style="font-size: 10.5px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Resistance 1</div><div style="font-weight: 800; font-size: 17px; color: #f87171; margin-top: 3px; font-variant-numeric: tabular-nums;">5,650</div></div>
-        <div style="padding: 12px; border-radius: 11px; background: rgba(255,255,255,0.03);"><div style="font-size: 10.5px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Support 2</div><div style="font-weight: 800; font-size: 17px; color: #d7dde2; margin-top: 3px; font-variant-numeric: tabular-nums;">5,540</div></div>
-        <div style="padding: 12px; border-radius: 11px; background: rgba(255,255,255,0.03);"><div style="font-size: 10.5px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Resistance 2</div><div style="font-weight: 800; font-size: 17px; color: #d7dde2; margin-top: 3px; font-variant-numeric: tabular-nums;">5,700</div></div>
+        <div style="padding: 12px; border-radius: 11px; background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.2);"><div style="font-size: 10.5px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Support 1</div><div style="font-weight: 800; font-size: 17px; color: #34d399; margin-top: 3px; font-variant-numeric: tabular-nums;">{{ anaS1 }}</div></div>
+        <div style="padding: 12px; border-radius: 11px; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2);"><div style="font-size: 10.5px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Resistance 1</div><div style="font-weight: 800; font-size: 17px; color: #f87171; margin-top: 3px; font-variant-numeric: tabular-nums;">{{ anaR1 }}</div></div>
+        <div style="padding: 12px; border-radius: 11px; background: rgba(255,255,255,0.03);"><div style="font-size: 10.5px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Support 2</div><div style="font-weight: 800; font-size: 17px; color: #d7dde2; margin-top: 3px; font-variant-numeric: tabular-nums;">{{ anaS2 }}</div></div>
+        <div style="padding: 12px; border-radius: 11px; background: rgba(255,255,255,0.03);"><div style="font-size: 10.5px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Resistance 2</div><div style="font-weight: 800; font-size: 17px; color: #d7dde2; margin-top: 3px; font-variant-numeric: tabular-nums;">{{ anaR2 }}</div></div>
       </div>
       <div style="display: flex; gap: 7px; margin-top: 16px;"><span style="font-size: 11px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.05); color: #9aa4ad;">SMC</span><span style="font-size: 11px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.05); color: #9aa4ad;">Macro</span><span style="font-size: 11px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.05); color: #9aa4ad;">FOMC</span></div>
     </div>
@@ -3028,6 +3028,16 @@ class Component extends DCLogic {
         return t > 0 ? (Math.floor(t / 1000) + 'K+') : '';
       })(this.firms),
       awCategorias: String(MC_AWARDS(this.firms || []).length),
+      // Previa da analise , NQ real de daily_analysis
+      anaTitulo: (this._mcAna || {}).titulo || 'NQ · Nasdaq 100',
+      anaPreco: (this._mcAna || {}).preco || '',
+      anaVar: (this._mcAna || {}).variacao || '',
+      anaCor: (this._mcAna || {}).corVar || '#34d399',
+      anaVies: (this._mcAna || {}).vies || '',
+      anaSeloStyle: (function (v) { return 'font-weight:800;font-size:12px;letter-spacing:0.04em;padding:6px 12px;border-radius:999px;' + (v === 'BULLISH' ? 'background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.3);' : (v === 'BEARISH' ? 'background:rgba(248,113,113,0.12);color:#f87171;border:1px solid rgba(248,113,113,0.3);' : 'background:rgba(191,255,0,0.12);color:#bfff00;border:1px solid rgba(191,255,0,0.3);')); })((this._mcAna || {}).vies),
+      anaTexto: (this._mcAna || {}).texto || '',
+      anaS1: (this._mcAna || {}).s1 || '', anaS2: (this._mcAna || {}).s2 || '',
+      anaR1: (this._mcAna || {}).r1 || '', anaR2: (this._mcAna || {}).r2 || '',
       miniHeat: this._mcMini || [
         { nome:'S&P 500', pct:'', style:'border-radius:8px;background:rgba(255,255,255,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#7c8791;' },
         { nome:'Nasdaq', pct:'', style:'border-radius:8px;background:rgba(255,255,255,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#7c8791;' },
@@ -3199,43 +3209,89 @@ class Component extends DCLogic {
 
   // MERCADO , alimenta a amostra do heatmap na home com a analise diaria real.
   // So a AMOSTRA: o heatmap de verdade e o widget do TradingView na pagina propria.
+  // ANALISE + GAMMA do NQ , a previa da home mostrava ES 5,621.50 com texto inventado
+  // ("Macro tariffs weigh on global markets..."). Analise de mercado inventada e o pior tipo
+  // de dado falso num site de trading: o cara confere o preco no proprio grafico.
+  _mcLigarAnalise() {
+    if (this._mcAnaBuscou) return;
+    this._mcAnaBuscou = true;
+    var self = this;
+    var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    var H = { headers: { apikey: AN, Authorization: 'Bearer ' + AN } };
+    var SB = 'https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/';
+    Promise.all([
+      fetch(SB + 'daily_analysis?asset=eq.NQ&select=*&order=date.desc&limit=1', H).then(function (r) { return r.ok ? r.json() : []; }),
+      fetch(SB + 'gex_levels?ticker=eq.NQ&select=*&order=date.desc&limit=1', H).then(function (r) { return r.ok ? r.json() : []; })
+    ]).then(function (res) {
+      var a = (res[0] || [])[0], g = (res[1] || [])[0];
+      if (a) {
+        // attention_zone e MULTILINGUE no banco (objeto {en,es,pt...}), nao string.
+        // Sem tratar, a tela mostraria "[object Object]".
+        var z = a.attention_zone;
+        var txt = (z && typeof z === 'object') ? (z.en || z.pt || '') : (z || '');
+        self._mcAna = {
+          titulo: (a.asset || 'NQ') + ' · ' + (a.asset_name || 'Nasdaq 100'),
+          preco: Number(a.last_price).toLocaleString('en-US', { maximumFractionDigits: 2 }),
+          variacao: ((a.change_pct > 0 ? '+' : '') + a.change_pct + '%'),
+          corVar: (a.change_pct >= 0 ? '#34d399' : '#f87171'),
+          vies: String(a.bias || '').toUpperCase(),
+          texto: String(txt).slice(0, 240),
+          s1: a.support_1, s2: a.support_2, r1: a.resistance_1, r2: a.resistance_2
+        };
+      }
+      if (g) self._mcGex = g;
+      self._homeStatic = null;
+      self.setState({ _mcAna: 1 });
+    }).catch(function () {});
+  }
+
+  // MINI HEATMAP DA HOME , mapa de ACOES de verdade (NVDA, AAPL, GOOGL, META...), que e o
+  // que a secao promete. Vinha com 9 quadradinhos de porcentagem INVENTADA ao lado da
+  // palavra "real time".
+  //
+  // A variacao NAO existe pronta em lugar nenhum: eu CALCULO a partir do `spot_price` de
+  // gex_levels, comparando o registro mais recente de cada papel com o anterior. E fechamento
+  // contra fechamento, dado do proprio Everton, sem depender de API de terceiro.
+  // ⚠️ Papel com um registro so fica DE FORA , sem dois pontos no tempo nao ha variacao, e
+  // inventar zero seria mentir que o papel nao andou.
   _mcLigarMercado() {
     if (this._mcMercBuscou) return;
     this._mcMercBuscou = true;
     var self = this;
     var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
-    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/daily_analysis' +
-      '?select=asset,asset_name,change_pct,date&order=date.desc&limit=40',
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/gex_levels' +
+      '?select=date,ticker,spot_price&order=date.desc&limit=140',
       { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (rows) {
         if (!rows || !rows.length) return;
-        // so o registro MAIS RECENTE de cada ativo , a tabela guarda historico e sem isto
-        // a amostra misturaria o fechamento de hoje com o de tres dias atras
-        var visto = {}, lista = [];
-        rows.forEach(function (r) {
-          if (visto[r.asset]) return;
-          visto[r.asset] = 1; lista.push(r);
+        var por = {};
+        rows.forEach(function (r) { (por[r.ticker] = por[r.ticker] || []).push(r); });
+        var FORA = { ES: 1, NQ: 1, SPY: 1, QQQ: 1, GLD: 1 };   // indice e ETF nao sao "acao"
+        var NOME = { NVDA:'NVDA', AAPL:'AAPL', GOOGL:'GOOGL', META:'META',
+                     MSFT:'MSFT', AMZN:'AMZN', TSLA:'TSLA' };
+        var lista = [];
+        Object.keys(por).forEach(function (t) {
+          if (FORA[t]) return;
+          var v = por[t];
+          if (v.length < 2 || !v[0].spot_price || !v[1].spot_price) return;
+          var p = (Number(v[0].spot_price) / Number(v[1].spot_price) - 1) * 100;
+          lista.push({ t: NOME[t] || t, p: p });
         });
-        var NOME = { ES: 'S&P 500', NQ: 'Nasdaq', CL: 'Oil', GC: 'Gold', YM: 'Dow', RTY: 'Russell' };
-        // o de MAIOR movimento fica no bloco grande (span 2 linhas + fonte maior), os
-        // outros tres em volta , e o desenho original do Design, so que com dado real
-        var ord = lista.slice(0, 4).sort(function (a, b) {
-          return Math.abs(parseFloat(b.change_pct) || 0) - Math.abs(parseFloat(a.change_pct) || 0);
-        });
-        self._mcMini = ord.map(function (r, i) {
-          var p = parseFloat(r.change_pct) || 0;
-          var forte = Math.min(0.55, 0.18 + Math.abs(p) * 0.12);
-          var fundo = p >= 0 ? 'rgba(191,255,0,' + forte + ')' : 'rgba(239,68,68,' + (forte + 0.05) + ')';
+        if (!lista.length) return;
+        // maior movimento (pra cima ou pra baixo) no bloco grande, como num heatmap de verdade
+        lista.sort(function (a, b) { return Math.abs(b.p) - Math.abs(a.p); });
+        self._mcMini = lista.slice(0, 9).map(function (r, i) {
+          var forte = Math.min(0.6, 0.14 + Math.abs(r.p) * 0.09);
+          var fundo = r.p >= 0 ? 'rgba(191,255,0,' + forte + ')' : 'rgba(239,68,68,' + (forte + 0.06) + ')';
           var grande = i === 0;
           return {
-            nome: NOME[r.asset] || r.asset_name || r.asset,
-            pct: (p > 0 ? '+' : '') + p.toFixed(2) + '%',
+            nome: r.t,
+            pct: (r.p > 0 ? '+' : '') + r.p.toFixed(2) + '%',
             style: 'border-radius:8px;background:' + fundo + ';display:flex;flex-direction:column;' +
-                   'align-items:center;justify-content:center;gap:3px;color:' +
-                   (p >= 0 ? '#070a06' : '#fff') + ';font-size:' + (grande ? '13px' : '11px') + ';' +
-                   (grande ? 'grid-row:span 2;' : '') +
-                   (i === 3 ? 'grid-column:span 2;' : '')
+                   'align-items:center;justify-content:center;gap:2px;color:' +
+                   (r.p >= 0 ? '#070a06' : '#fff') + ';font-size:' + (grande ? '13px' : '10.5px') + ';' +
+                   (grande ? 'grid-row:span 2;' : '')
           };
         });
         self._homeStatic = null;
@@ -3294,6 +3350,7 @@ class Component extends DCLogic {
     this._mcLigarCalendario();
     this._mcLigarBlog();
     this._mcLigarMercado();
+    this._mcLigarAnalise();
     const s = this.state;
     const isCatalog = s.route === 'firms';
     const reviewsMap = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K', aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K', brightfunded:'0.9K', ftmo:'43.5K', the5ers:'5.8K', goat:'0.7K', alpha:'4.6K', topone:'4.1K', myfundedfutures:'8.2K', tradeify:'1.1K', takeprofit:'6.3K', legends:'0.5K', lucid:'0.4K' };
