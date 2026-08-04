@@ -390,10 +390,54 @@ Deno.serve(async function(req:Request){
   var etfMap:Record<string,any[]>={};
   ASSETS.forEach((A,i)=>{if(raw[i])etfMap[A.sym]=raw[i];});
   var dynMults=await calcMultipliers(etfMap);
-  var outcomes=await Promise.all(ASSETS.map((A,i)=>processAsset(A,raw[i],dynMults,today,vix,cal,news,gexCtx)));
-
+  // ══════════════════════════════════════════════════════════════════════════
+  // EM SERIE E COM NOVA TENTATIVA (04/08/2026).
+  //
+  // O PROBLEMA: so 4 dos ultimos 14 dias vinham com os 4 ativos. Os membros do Telegram
+  // (316) reportaram falta de ativo antes de nos percebermos. Tres defeitos somados:
+  //   1. Promise.all disparava os 4 JUNTOS, cada um puxando Yahoo + TwelveData + Finnhub +
+  //      Gemini. Rajada em API gratuita = bloqueio, e a Yahoo e a mais sensivel.
+  //   2. Falha nao era repetida , o ativo simplesmente nao entrava naquele dia.
+  //   3. `success: results.length>0` , UM ativo de quatro ja devolvia "deu certo", e o erro
+  //      ficava num campo que ninguem le.
+  //
+  // O gex-calculator faz 12 tickers EM SERIE, de uma fonte so, e da 12/12 ha 14 dias
+  // seguidos. Copiei o desenho: serie + espera entre ativos + ate 3 tentativas.
   var results:any[]=[], errors:string[]=[];
-  outcomes.forEach(o=>{if(o.result)results.push(o.result);if(o.error)errors.push(o.error);});
-  console.log("Done:"+results.length+"/4");
-  return new Response(JSON.stringify({success:results.length>0,date:today,processed:results.length,results,errors:errors.length?errors:undefined},null,2),{headers:{"Content-Type":"application/json","Connection":"keep-alive"}});
+  for (var i=0;i<ASSETS.length;i++){
+    var A=ASSETS[i], o:any=null;
+    for (var tent=1;tent<=3;tent++){
+      o=await processAsset(A,raw[i],dynMults,today,vix,cal,news,gexCtx);
+      if(o && o.result) break;
+      if(tent<3){
+        // espera crescente: 3s, 9s. Bloqueio de rajada solta sozinho nesse intervalo.
+        console.log(A.ticker+" falhou (tentativa "+tent+"), repetindo");
+        await new Promise(r=>setTimeout(r,tent*3000));
+        // busca o historico de novo , pode ter sido ELE que falhou, nao o processamento
+        try{ var nr=await fetchTS(A.sym); if(nr) raw[i]=nr; }catch(e){}
+      }
+    }
+    if(o && o.result) results.push(o.result); else if(o && o.error) errors.push(o.error);
+    if(i<ASSETS.length-1) await new Promise(r=>setTimeout(r,1500));   // respira entre ativos
+  }
+
+  var completo = results.length===ASSETS.length;
+  console.log("Done:"+results.length+"/"+ASSETS.length);
+
+  // ⚠️ INCOMPLETO AGORA E FALHA DE VERDADE. Antes devolvia sucesso com 1 de 4 e ninguem
+  // ficava sabendo , o Everton descobria pelo site, ou pior, pelos membros reclamando.
+  // Registra em `disparo_falhas`, que ja e varrida de 30 em 30 min e vira alerta.
+  if(!completo){
+    try{
+      var faltando = ASSETS.map(a=>a.ticker).filter(t=>!results.some((r:any)=>(r.asset||r.ticker)===t));
+      await db.from("disparo_falhas").insert({
+        url:"daily-analysis", status_code:206,
+        corpo:"analise incompleta em "+today+": "+results.length+"/"+ASSETS.length+
+              " , faltou "+faltando.join(", ")+(errors.length?(" | "+errors.join(" ; ")):"")
+      });
+    }catch(e){}
+  }
+
+  return new Response(JSON.stringify({success:completo,date:today,processed:results.length,esperado:ASSETS.length,results,errors:errors.length?errors:undefined},null,2),
+    {status: completo?200:206, headers:{"Content-Type":"application/json","Connection":"keep-alive"}});
 });
