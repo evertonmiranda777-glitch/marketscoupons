@@ -219,6 +219,97 @@ remendo('arrastar do hero (2)', "tall\"]{object-position:' + pos.x",
   `'@media (max-width:960px){img[data-hero="wide"]{object-position:' + pos.x + '% ' + pos.y + '% !important;}}';`,
   `'@media (max-width:960px){img[data-hero="wide"],img[data-hero="tall"]{object-position:' + pos.x + '% ' + pos.y + '% !important;}}';`);
 
+// ─────────────────────────────────────────────── 8. Awards da home, calculados
+// LEI DO PROJETO (20/jul): "AWARDS 100% DATA-DRIVEN , NUNCA voltar a chumbar firma/valor".
+// O build veio com os 3 vencedores escritos a mao (bulenox/apex/fff). Firma nova entrando
+// no cms_firms jamais apareceria, e o dia que uma delas saisse do ar o premio continuaria
+// no site. Agora sai do proprio `this.firms`, que ja e o banco:
+//   Best Overall  -> maior nota
+//   Best Futures  -> maior nota entre as de futuros
+//   Best Discount -> maior desconto  (era "Best Payout", que eu NAO tenho como medir:
+//                    payout de verdade exige dado de saque da firma, que nao existe aqui.
+//                    Categoria que eu nao consigo apurar vira alegacao inventada.)
+remendo('awards da home', 'MC_AWARDS',
+  `homeAwards: [
+        { place:'1', rank:'Winner', category:'Best Overall', slug:'bulenox' },
+        { place:'2', rank:'Runner-up', category:'Best for Futures', slug:'apex' },
+        { place:'3', rank:'Third', category:'Best Payout', slug:'funded-futures-family' },
+      ]`,
+  `homeAwards: MC_AWARDS(this.firms)`);
+
+const AWARDS_FN = `// Vencedores calculados, nunca escritos. Ver remendo 8.
+function MC_AWARDS(firms) {
+  var lista = (firms || []).filter(function (f) { return f && f.id; });
+  var nota = function (f) { return parseFloat(f.rating) || 0; };
+  var desc = function (f) { return parseFloat(String(f.discount).replace('%', '')) || 0; };
+  var melhor = function (arr, chave) {
+    return arr.slice().sort(function (a, b) { return chave(b) - chave(a); })[0];
+  };
+  var futuros = lista.filter(function (f) { return /futur/i.test(f.type || ''); });
+  var geral = melhor(lista, nota);
+  var fut = melhor(futuros.length ? futuros : lista, nota);
+  var dsc = melhor(lista, desc);
+  // sem repetir firma nos 3 lugares: premio que da tudo pra mesma nao informa nada
+  var usados = {};
+  var escolher = function (cand, arr, chave) {
+    var op = arr.slice().sort(function (a, b) { return chave(b) - chave(a); });
+    for (var i = 0; i < op.length; i++) if (!usados[op[i].id]) { usados[op[i].id] = 1; return op[i]; }
+    return cand;
+  };
+  var c1 = escolher(geral, lista, nota);
+  var c2 = escolher(fut, futuros.length ? futuros : lista, nota);
+  var c3 = escolher(dsc, lista, desc);
+  return [
+    { place: '1', rank: 'Winner',    category: 'Best Overall',      slug: c1 && c1.id },
+    { place: '2', rank: 'Runner-up', category: 'Best for Futures',  slug: c2 && c2.id },
+    { place: '3', rank: 'Third',     category: 'Biggest Discount',  slug: c3 && c3.id },
+  ];
+}
+
+const MC_HEAT = {`;
+remendo('funcao dos awards', 'function MC_AWARDS', 'const MC_HEAT = {', AWARDS_FN);
+
+// ─────────────────────────────────────────────── 9. contagem de reviews dos Awards
+// Dois problemas visiveis na tela: (1) os Awards liam um mapa de SO 4 firmas, entao
+// vencedor fora dele saia como "★ 4.9 · reviews", com a palavra solta e nenhum numero;
+// (2) o mapa grande (19 firmas) usa `alpha` e `topone`, mas o banco usa `alphafutures` e
+// `toponefutures` , as chaves nunca casavam.
+// Agora usa o mapa grande com apelido de id, e quando nao souber a contagem NAO escreve
+// "reviews" sozinho: mostra so a nota. Rotulo sem numero e pior que rotulo nenhum.
+remendo('reviews dos awards', 'MC_REVIEWS(',
+  `const rv = { apex:'19.4K reviews', bulenox:'1.6K reviews', 'funded-futures-family':'2.1K reviews', tradeday:'1.3K reviews' }[f.id] || 'reviews';`,
+  `const rv = MC_REVIEWS(f.id);`);
+
+remendo('funcao de reviews', 'function MC_REVIEWS',
+  'function MC_AWARDS(firms) {',
+  `// Contagem de reviews com apelido de id. Ver remendo 9.
+function MC_REVIEWS(id) {
+  // ⚠️ mapa PROPRIO de proposito. Eu tinha recebido \`reviewsMap\` por parametro, mas ela e
+  // declarada dentro de renderVals() e o homeStatic() NAO a enxerga , deu
+  // "ReferenceError: reviewsMap is not defined" e derrubou a home inteira no ar.
+  var M = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K',
+    aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K',
+    brightfunded:'0.9K', ftmo:'43.5K', the5ers:'5.8K', goat:'0.7K', alphafutures:'4.6K',
+    toponefutures:'4.1K', cti:'1.2K', e8:'2.4K', fundingpips:'12.1K', futureselite:'0.6K',
+    blueguardian:'1.9K' };
+  var v = M[id];
+  return v ? (' · ' + v + ' reviews') : '';   // separador junto: sem numero, sem ponto orfao
+}
+
+function MC_AWARDS(firms) {`);
+
+// ─────────────────────────────────────────────── 10. o separador solto
+// O molde escreve "★ {{rating}} · {{reviews}}" com o "·" LITERAL. Quando a firma nao tem
+// contagem, sobrava "★ 4.9 ·" com o ponto orfao pendurado. O separador passa a fazer parte
+// do valor: existe contagem, existe ponto; nao existe, nao aparece nada.
+remendo('separador dos reviews', '{{ ha.rating }}{{ ha.reviews }}',
+  '{{ ha.rating }} · {{ ha.reviews }}',
+  '{{ ha.rating }}{{ ha.reviews }}');
+
+remendo('separador dos reviews (lista)', '{{ r.rating }}★</span>{{ r.reviews }}',
+  '{{ r.rating }}★</span> · {{ r.reviews }}',
+  '{{ r.rating }}★</span>{{ r.reviews }}');
+
 // ─────────────────────────────────────────────── fim
 fs.writeFileSync(ARQ, d);
 const tags = { ab: (d.match(/<sc-for/g) || []).length, fe: (d.match(/<\/sc-for>/g) || []).length };

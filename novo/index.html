@@ -1279,7 +1279,7 @@
           <div style="font-size: 12px; font-weight: 800; color: #bfff00; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px;">{{ ha.category }}</div>
           <div style="display: flex; align-items: center; gap: 12px;">
             <span style="width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: #000; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden;">{{ ha.logoEl }}</span>
-            <div style="min-width: 0;"><div style="font-weight: 800; font-size: 17px; color: #F4F8F9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ ha.name }}</div><div style="font-size: 12.5px; color: #8a94a0;"><span style="color: #fbbf24;">★</span> {{ ha.rating }} · {{ ha.reviews }}</div></div>
+            <div style="min-width: 0;"><div style="font-weight: 800; font-size: 17px; color: #F4F8F9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ ha.name }}</div><div style="font-size: 12.5px; color: #8a94a0;"><span style="color: #fbbf24;">★</span> {{ ha.rating }}{{ ha.reviews }}</div></div>
           </div>
         </div>
       </sc-for>
@@ -1765,7 +1765,7 @@
         <div data-awdrow="1" sc-camel-on-click="{{ r.onOpen }}" style="display: flex; align-items: center; gap: 16px; padding: 15px 22px; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer;" style-hover="background: rgba(255,255,255,0.03);">
           <span style="width: 24px; flex-shrink: 0; text-align: center; font-weight: 700; font-size: 14px; color: #7c8791;">{{ r.rank }}</span>
           <span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; background: #0a0d07; display: flex; align-items: center; justify-content: center; overflow: hidden;">{{ r.logoEl }}</span>
-          <div data-awdinfo="1" style="flex: 1; min-width: 0;"><div style="font-weight: 700; font-size: 15px; color: #F4F8F9;">{{ r.name }}</div><div style="font-size: 12px; color: #8a94a0;"><span style="color: #fbbf24;">{{ r.rating }}★</span> · {{ r.reviews }}</div></div>
+          <div data-awdinfo="1" style="flex: 1; min-width: 0;"><div style="font-weight: 700; font-size: 15px; color: #F4F8F9;">{{ r.name }}</div><div style="font-size: 12px; color: #8a94a0;"><span style="color: #fbbf24;">{{ r.rating }}★</span>{{ r.reviews }}</div></div>
           <span data-awddisc="1" style="font-weight: 800; font-size: 15px; color: #bfff00;">{{ r.discount }} OFF</span>
           <sc-if value="{{ r.hasCoupon }}" hint-placeholder-val="{{ true }}"><span style="{{ r.couponStyle }}">{{ r.coupon }}</span></sc-if>
         </div>
@@ -2610,6 +2610,46 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:1400},&quot;heroFoxY&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:32,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;heroFoxX&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:50,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;heroBannerH&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:280,&quot;min&quot;:180,&quot;max&quot;:420,&quot;step&quot;:10,&quot;unit&quot;:&quot;px&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
 // Opções dos 4 controles do heatmap. Valores idênticos aos que o app.js do site atual usa.
+// Vencedores calculados, nunca escritos. Ver remendo 8.
+// Contagem de reviews com apelido de id. Ver remendo 9.
+function MC_REVIEWS(id) {
+  var M = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K',
+    aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K',
+    brightfunded:'0.9K', ftmo:'43.5K', the5ers:'5.8K', goat:'0.7K', alphafutures:'4.6K',
+    toponefutures:'4.1K', cti:'1.2K', e8:'2.4K', fundingpips:'12.1K', futureselite:'0.6K',
+    blueguardian:'1.9K' };
+  var v = M[id];
+  return v ? (' · ' + v + ' reviews') : '';
+}
+
+function MC_AWARDS(firms) {
+  var lista = (firms || []).filter(function (f) { return f && f.id; });
+  var nota = function (f) { return parseFloat(f.rating) || 0; };
+  var desc = function (f) { return parseFloat(String(f.discount).replace('%', '')) || 0; };
+  var melhor = function (arr, chave) {
+    return arr.slice().sort(function (a, b) { return chave(b) - chave(a); })[0];
+  };
+  var futuros = lista.filter(function (f) { return /futur/i.test(f.type || ''); });
+  var geral = melhor(lista, nota);
+  var fut = melhor(futuros.length ? futuros : lista, nota);
+  var dsc = melhor(lista, desc);
+  // sem repetir firma nos 3 lugares: premio que da tudo pra mesma nao informa nada
+  var usados = {};
+  var escolher = function (cand, arr, chave) {
+    var op = arr.slice().sort(function (a, b) { return chave(b) - chave(a); });
+    for (var i = 0; i < op.length; i++) if (!usados[op[i].id]) { usados[op[i].id] = 1; return op[i]; }
+    return cand;
+  };
+  var c1 = escolher(geral, lista, nota);
+  var c2 = escolher(fut, futuros.length ? futuros : lista, nota);
+  var c3 = escolher(dsc, lista, desc);
+  return [
+    { place: '1', rank: 'Winner',    category: 'Best Overall',      slug: c1 && c1.id },
+    { place: '2', rank: 'Runner-up', category: 'Best for Futures',  slug: c2 && c2.id },
+    { place: '3', rank: 'Third',     category: 'Biggest Discount',  slug: c3 && c3.id },
+  ];
+}
+
 const MC_HEAT = {
   fonte: [ {v:'SPX500', l:'S&P 500'}, {v:'AllUSA', l:'All US stocks'},
            {v:'NASDAQ100', l:'Nasdaq 100'}, {v:'Crypto', l:'Crypto'} ],
@@ -2993,13 +3033,9 @@ class Component extends DCLogic {
         { title:'Order Flow and Delta: institutional reading', lvl:'ADVANCED', lvlColor:'#f87171', read:'15 min read', icon:'ti-table', imgBg:'linear-gradient(135deg,#2a1414,#0b0f0c)' },
       ].map(g => ({ ...g, onClick: () => this.setState({ route: 'blog' }) })),
 
-      homeAwards: [
-        { place:'1', rank:'Winner', category:'Best Overall', slug:'bulenox' },
-        { place:'2', rank:'Runner-up', category:'Best for Futures', slug:'apex' },
-        { place:'3', rank:'Third', category:'Best Payout', slug:'funded-futures-family' },
-      ].map((a, i) => {
+      homeAwards: MC_AWARDS(this.firms).map((a, i) => {
         const f = this.firms.find(x => x.id === a.slug) || this.firms[i];
-        const rv = { apex:'19.4K reviews', bulenox:'1.6K reviews', 'funded-futures-family':'2.1K reviews', tradeday:'1.3K reviews' }[f.id] || 'reviews';
+        const rv = MC_REVIEWS(f.id);
         return {
           place: a.place, rank: a.rank, category: a.category,
           name: f.name, logoEl: this.logoImg(f.logo), rating: f.rating, reviews: rv,
