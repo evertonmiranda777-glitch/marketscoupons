@@ -403,14 +403,28 @@ remendo('calendario da home', 'this._mcCalHome ||',
 
 remendo('monta calendario da home', '_mcCalHome =',
   '        self._homeStatic = null; self.setState({ _mcCal: 1 });',
-  `        // previa da home: so os de impacto alto, na ordem em que acontecem
-        self._mcCalHome = self.calData
-          .filter(function (e) { return e.impact === 'high'; })
-          .slice(0, 4)
-          .map(function (e) {
-            return { time: e.time, ccy: e.ccy, name: e.name,
-                     actual: e.actual || '—', forecast: e.forecast || '—', impact: 'High' };
-          });
+  `        // PREVIA DA HOME , 3 eventos DE HOJE, com cascata de importancia (ordem do
+        // Everton, 03/08): pega os de 3 estrelas; se o dia nao tiver, cai pra 2; se nao
+        // tiver, cai pra 1. Dia parado sem cascata deixaria a secao VAZIA na home, que e
+        // pior que mostrar um evento pequeno.
+        // ⚠️ O molde le `stars` e `starColor`, NAO `impact` , eu tinha mandado `impact` e a
+        // coluna IMPACT ficou VAZIA na tela. So vi no print que o Everton mandou.
+        var ESTRELA = { high: '★★★', medium: '★★', low: '★' };
+        var COR = { high: '#f87171', medium: '#fbbf24', low: '#8a94a0' };
+        var deHoje = self.calData.filter(function (e) { return e.day === 'today'; });
+        var base = deHoje.length ? deHoje : self.calData;
+        var escolha = [];
+        ['high', 'medium', 'low'].forEach(function (nivel) {
+          if (escolha.length >= 3) return;
+          base.filter(function (e) { return e.impact === nivel; })
+              .slice(0, 3 - escolha.length)
+              .forEach(function (e) { escolha.push(e); });
+        });
+        self._mcCalHome = escolha.slice(0, 3).map(function (e) {
+          return { time: e.time, ccy: e.ccy, name: e.name,
+                   actual: e.actual || '—', forecast: e.forecast || '—',
+                   stars: ESTRELA[e.impact] || '★', starColor: COR[e.impact] || '#8a94a0' };
+        });
         self._homeStatic = null; self.setState({ _mcCal: 1 });`);
 
 // ─────────────────────────────────────────────── 15. ordem das firmas na home
