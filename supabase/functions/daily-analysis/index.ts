@@ -297,13 +297,39 @@ ESTRUTURA (3 idiomas: {pt,en,es}). Max 3-4 frases DENSAS por campo:
 
 3. SCENARIO_BULL: "Gatilho: rompimento acima de X (justificativa). Alvo 1: Y (justificativa). Alvo 2: Z. Stop: W (justificativa). Probabilidade: N%."
 
-REGRAS RIGIDAS DE SIZING (obrigatorias):
-- STOP: distancia trigger→stop DEVE ser >= 1.5 x ATR (ATR ja fornecido acima). Stops apertados demais batem em ruido intraday. ANCORAR o stop num swing low/high estrutural real, EMA50 ou Put/Call Wall, NUNCA num nivel arbitrario "redondo".
-- TRIGGER: NUNCA colocar o trigger exatamente num numero psicologico redondo (26900, 27000, 6600). Usar swing high+1 tick ou swing high-1 tick, ou confirmacao de rompimento (ex: fechamento M15 acima do high). Numeros redondos sao zonas de reversao, mercado respeita e vira.
-- ALVO 1: >= 1.5x o risco (trigger-stop). Alvo 2: >= 2.5x. Se a estrutura nao permite essa relacao, PROBABILIDADE cai e confidence tambem.
-- Cada numero deve estar ancorado num nivel estrutural listado (swing, EMA, pivot, GEX). Se for arbitrario, nao usar.`+(gexBlock?" Use Call Wall como resistencia e HVL como referencia.":"")+`
+REGRAS RIGIDAS DE SIZING (obrigatorias) , CALIBRADAS EM 04/08/2026 PELO HISTORICO REAL:
 
-4. SCENARIO_BEAR: Mesmo formato e MESMAS regras rigidas de sizing (stop >= 1.5 ATR, trigger off-round, R:R >= 1.5 T1 / 2.5 T2, ancoragem estrutural).`+(gexBlock?" Use Put Wall como suporte e Zero Gamma como nivel-chave.":"")+`
+⚠️ ESTA ANALISE E DE UM PREGAO, E E COBRADA NUM PREGAO. O placar mede maxima e minima
+DAQUELE DIA. As regras antigas pediam stop >= 1.5 ATR e alvo 1 >= 1.5x o risco, o que
+jogava o alvo 1 a 2.25 ATR do gatilho , medido em 182 dias, isso deu uma distancia de
+134% (NQ) a 198% (CL) da FAIXA INTEIRA do dia. Ou seja: pra bater o alvo, o preco tinha
+que andar quase o dobro de tudo que ele anda num dia, e ainda partindo do gatilho.
+Resultado: o gatilho acertava (NQ 65%, ES 55%) e o alvo 1 nao chegava (18% a 38%).
+Nao era leitura errada, era geometria impossivel.
+
+- ALVO 1: distancia gatilho→alvo1 DEVE ficar entre 0.8 e 1.2 x ATR. Tem que ser alcancavel
+  DENTRO DA SESSAO. Alvo bonito que o dia nao alcanca nao serve pra quem opera no dia.
+- ALVO 2: entre 1.6 e 2.2 x ATR do gatilho. E' o desdobramento, nao a expectativa base.
+- STOP: entre 0.7 e 1.0 x ATR do gatilho. Continua ANCORADO em swing low/high real, EMA50
+  ou Put/Call Wall , nunca num numero redondo arbitrario. Com alvo mais perto, stop de
+  1.5 ATR quebraria a relacao risco/retorno: o objetivo e R:R >= 1.0 no alvo 1 e >= 2.0 no
+  alvo 2. Se a estrutura nao permitir isso, ABAIXE a probabilidade e a confidence , nao
+  estique o alvo pra fechar a conta.
+- SIMETRIA DOS GATILHOS (obrigatorio): a distancia da abertura ate o gatilho de ALTA e ate o
+  de BAIXA nao pode diferir mais que 1.5x uma da outra. Medido em 182 dias: no NQ o gatilho
+  de baixa ficava a -315 enquanto o de alta ficava a +117 (2.7x mais longe), e por isso o
+  cenario de baixa disparava em 17% dos dias contra 65% do de alta. Onde os dois ficaram
+  simetricos (CL, GC) as taxas ficaram parelhas. Gatilho longe demais de um lado nao e
+  leitura de tendencia, e nivel colocado torto: o cenario simplesmente nunca e testado.
+  So fuja da simetria com justificativa ESTRUTURAL explicita (ex: unico swing valido, Put
+  Wall distante) , e nesse caso diga qual e' na justificativa.
+- TRIGGER: NUNCA num numero psicologico redondo (26900, 27000, 6600). Usar swing high+1 tick
+  ou swing low-1 tick, ou confirmacao de rompimento (ex: fechamento M15 acima do high).
+  Numeros redondos sao zonas de reversao, mercado respeita e vira.
+- Cada numero deve estar ancorado num nivel estrutural listado (swing, EMA, pivot, GEX). Se
+  for arbitrario, nao usar.`+(gexBlock?" Use Call Wall como resistencia e HVL como referencia.":"")+`
+
+4. SCENARIO_BEAR: Mesmo formato e MESMAS regras rigidas de sizing (alvo1 0.8-1.2 ATR, alvo2 1.6-2.2 ATR, stop 0.7-1.0 ATR, gatilhos SIMETRICOS, trigger off-round, ancoragem estrutural).`+(gexBlock?" Use Put Wall como suporte e Zero Gamma como nivel-chave.":"")+`
 
 5. NEWS_IMPACT: Conecte CADA evento/noticia a ESTE ativo com mecanismo de transmissao. Ex: "Pedidos de Bens Duraveis abaixo do esperado (-1.4% vs -0.5%) → sinal de desaceleracao industrial → Fed pode cortar juros mais cedo → positivo pra NQ (growth se beneficia de juros menores)".
 
@@ -339,6 +365,63 @@ JSON puro (sem markdown, sem code blocks):
     if(cand?.finishReason==="MAX_TOKENS"&&!txt)throw new Error("truncated (max_tokens)");
     if(!txt)throw new Error("empty; finish="+(cand?.finishReason)+" "+JSON.stringify(data).slice(0,200));
     var analysis=JSON.parse(txt.replace(/```json/g,"").replace(/```/g,"").trim());
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // GEOMETRIA CONFERIDA NO CODIGO, NAO PEDIDA NO PROMPT (04/08/2026).
+    //
+    // Eu tinha escrito as faixas novas no prompt e conferido o resultado: NAO ADIANTOU.
+    // Em 3 dos 4 ativos o alvo ficou MAIS longe do que antes (NQ foi de 134% pra 283% da
+    // faixa do dia) e a simetria seguiu rompida em tres (ES 26x, NQ 24x, GC 6.4x).
+    // Regra em texto e PEDIDO, nao garantia. Aqui e' garantia.
+    //
+    // O que se corrige e' so a DISTANCIA. O gatilho continua vindo do modelo, ancorado em
+    // swing/EMA/GEX , e ele que carrega a leitura estrutural. Alvo e stop sao derivados.
+    var _atrM = /ATR:([\d.]+)/.exec(String(ind));   // `indicators()` devolve STRING, nao array
+    var ATRv = _atrM ? parseFloat(_atrM[1]) : 0;
+    var ajustes:string[]=[];
+    if (ATRv > 0) {
+      var faixa=function(v:number, dist:number, min:number, max:number, sinal:number, nome:string){
+        // dist = |v - gatilho| desejado dentro de [min,max]*ATR
+        var lo=min*ATRv, hi=max*ATRv;
+        if(dist>=lo && dist<=hi) return null;
+        var novo=v + sinal*(dist<lo?lo:hi);
+        ajustes.push(nome+" "+dist.toFixed(1)+"->"+(dist<lo?lo:hi).toFixed(1));
+        return novo;
+      };
+      var bt=parseFloat(analysis.bull_trigger), st=parseFloat(analysis.bear_trigger);
+      // ALTA: alvo acima do gatilho, stop abaixo
+      if(isFinite(bt)){
+        var n1=faixa(bt, Math.abs(parseFloat(analysis.bull_target_1)-bt), 0.8, 1.2, +1, "bullT1");
+        if(n1!=null) analysis.bull_target_1=n1;
+        var n2=faixa(bt, Math.abs(parseFloat(analysis.bull_target_2)-bt), 1.6, 2.2, +1, "bullT2");
+        if(n2!=null) analysis.bull_target_2=n2;
+        var ns=faixa(bt, Math.abs(bt-parseFloat(analysis.bull_stop)), 0.7, 1.0, -1, "bullStop");
+        if(ns!=null) analysis.bull_stop=ns;
+      }
+      // BAIXA: alvo abaixo do gatilho, stop acima
+      if(isFinite(st)){
+        var m1=faixa(st, Math.abs(st-parseFloat(analysis.bear_target_1)), 0.8, 1.2, -1, "bearT1");
+        if(m1!=null) analysis.bear_target_1=m1;
+        var m2=faixa(st, Math.abs(st-parseFloat(analysis.bear_target_2)), 1.6, 2.2, -1, "bearT2");
+        if(m2!=null) analysis.bear_target_2=m2;
+        var ms=faixa(st, Math.abs(parseFloat(analysis.bear_stop)-st), 0.7, 1.0, +1, "bearStop");
+        if(ms!=null) analysis.bear_stop=ms;
+      }
+      // SIMETRIA , o gatilho longe demais de um lado nunca e' testado. Medido em 182 dias:
+      // NQ disparava 65% na alta e 17% na baixa so por causa disso.
+      if(isFinite(bt)&&isFinite(st)){
+        var dA=bt-last, dB=last-st;
+        if(dA>0 && dB>0){
+          var razao=Math.max(dA,dB)/Math.min(dA,dB);
+          if(razao>1.5){
+            var alvoD=Math.min(dA,dB)*1.5;
+            if(dA>dB){ analysis.bull_trigger=last+alvoD; ajustes.push("simBull "+dA.toFixed(0)+"->"+alvoD.toFixed(0)); }
+            else     { analysis.bear_trigger=last-alvoD; ajustes.push("simBear "+dB.toFixed(0)+"->"+alvoD.toFixed(0)); }
+          }
+        }
+      }
+      if(ajustes.length) console.log(A.ticker+" geometria corrigida: "+ajustes.join(", "));
+    }
 
     function eo(v:any):any{if(v==null)return null;if(typeof v==="string"){var o:any={};LANGS.forEach(l=>o[l]=v);return o;}return v;}
 
@@ -403,23 +486,35 @@ Deno.serve(async function(req:Request){
   //
   // O gex-calculator faz 12 tickers EM SERIE, de uma fonte so, e da 12/12 ha 14 dias
   // seguidos. Copiei o desenho: serie + espera entre ativos + ate 3 tentativas.
+  // ⚠️ EM PARES, NAO EM FILA , corrigido em 04/08 depois de estourar o limite.
+  // Eu tinha posto os 4 em SERIE copiando o gex-calculator, e a funcao morreu com
+  // WORKER_RESOURCE_LIMIT (546): 4 chamadas ao Gemini enfileiradas dao ~140s e o teto da
+  // edge function fica logo ali. Troquei falha parcial por timeout , piorei.
+  // Par a par: metade do tempo da fila, e ainda evita a rajada de 4 que derrubava a Yahoo.
   var results:any[]=[], errors:string[]=[];
-  for (var i=0;i<ASSETS.length;i++){
-    var A=ASSETS[i], o:any=null;
-    for (var tent=1;tent<=3;tent++){
-      o=await processAsset(A,raw[i],dynMults,today,vix,cal,news,gexCtx);
-      if(o && o.result) break;
-      if(tent<3){
-        // espera crescente: 3s, 9s. Bloqueio de rajada solta sozinho nesse intervalo.
-        console.log(A.ticker+" falhou (tentativa "+tent+"), repetindo");
-        await new Promise(r=>setTimeout(r,tent*3000));
-        // busca o historico de novo , pode ter sido ELE que falhou, nao o processamento
-        try{ var nr=await fetchTS(A.sym); if(nr) raw[i]=nr; }catch(e){}
-      }
+  var faltam = ASSETS.map((A,i)=>({A,i}));
+  for (var tent=1; tent<=2 && faltam.length; tent++){
+    var restantes:any[]=[];
+    for (var k=0; k<faltam.length; k+=2){
+      var par = faltam.slice(k,k+2);
+      var outs = await Promise.all(par.map(function(p:any){
+        return processAsset(p.A,raw[p.i],dynMults,today,vix,cal,news,gexCtx);
+      }));
+      outs.forEach(function(o:any,j:number){
+        if(o && o.result) results.push(o.result);
+        else { par[j].ultimoErro = (o && o.error) || "sem retorno"; restantes.push(par[j]); }
+      });
+      if (k+2 < faltam.length) await new Promise(r=>setTimeout(r,800));
     }
-    if(o && o.result) results.push(o.result); else if(o && o.error) errors.push(o.error);
-    if(i<ASSETS.length-1) await new Promise(r=>setTimeout(r,1500));   // respira entre ativos
+    faltam = restantes;
+    if (faltam.length && tent<2){
+      console.log("repetindo: "+faltam.map(function(p:any){return p.A.ticker;}).join(","));
+      await new Promise(r=>setTimeout(r,2500));
+      // rebusca o historico , pode ter sido ELE que falhou, nao o processamento
+      for (const p of faltam){ try{ var nr=await fetchTS(p.A.sym); if(nr) raw[p.i]=nr; }catch(e){} }
+    }
   }
+  faltam.forEach(function(p:any){ errors.push(p.A.ticker+" apos 2 tentativas: "+(p.ultimoErro||"?")); });
 
   var completo = results.length===ASSETS.length;
   console.log("Done:"+results.length+"/"+ASSETS.length);
