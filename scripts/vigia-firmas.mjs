@@ -123,6 +123,29 @@ const num = (s) => {
 // ── colheita: cupom, desconto, prazo e sinal de taxa de ativacao ──────────────
 function colherDaPagina(moeda) {
   const txt = document.body.innerText || '';
+
+  // TOTAL JA PAGO A TRADERS , as firmas exibem isso na home como prova social
+  // ("$27,314,022 paid to traders", "Millions Paid to Traders", "Real-Time Payouts: $22M").
+  // O Everton pediu em 03/08. So aceito numero ANCORADO em palavra de payout: numero solto
+  // grande na pagina pode ser tamanho de conta, volume negociado ou profit target.
+  // Guardo o TRECHO junto pra conferencia humana , numero de payout sem contexto e
+  // exatamente o tipo de dado que eu ja errei antes.
+  const payout = (() => {
+    const rx = new RegExp('([^' + String.fromCharCode(92) + 'n]{0,70}?)([$€£]\s?\d{1,3}(?:[.,]\d{3})+(?:\.\d+)?|\d{1,3}(?:[.,]\d{3})+\s?(?:million|mi|M)\b)([^' + String.fromCharCode(92) + 'n]{0,70})', 'gi');
+    let melhor = null;
+    for (const m of txt.matchAll(rx)) {
+      const volta = (m[1] + ' ' + m[3]).toLowerCase();
+      if (!/(paid|payout|payouts|withdraw|rewards? paid|paid out|to traders)/.test(volta)) continue;
+      // descarta o que claramente nao e total pago
+      if (/(target|drawdown|balance|account size|buying power|volume)/.test(volta)) continue;
+      const bruto = m[2].replace(/[^0-9.,]/g, '');
+      let n = parseFloat(bruto.replace(/\.(?=\d{3})/g, '').replace(/,/g, ''));
+      if (/million|mi|M/i.test(m[2])) n = n * 1e6;
+      if (!isFinite(n) || n < 100000) continue;      // abaixo de 100 mil nao e "total pago"
+      if (!melhor || n > melhor.valor) melhor = { valor: n, trecho: (m[1] + m[2] + m[3]).trim().slice(0, 130) };
+    }
+    return melhor;
+  })();
   const sif = moeda === '€' ? '€' : '\\$';
 
   // CUPOM: token maiusculo perto de palavra de cupom, ou valor pre-preenchido no campo.
@@ -174,7 +197,7 @@ function colherDaPagina(moeda) {
   // TAMANHOS de conta oferecidos
   const tamanhos = [...new Set((txt.match(/\$?\s?\d{1,3}\s?[Kk]\b/g) || []).map((s) => s.replace(/\s/g, '').toUpperCase()))];
 
-  return {
+  return { payout,
     cupons: [...cupons], pcts: [...pcts], precos, prazo: [...new Set(prazo)].slice(0, 6),
     taxa: [...new Set(taxa)].slice(0, 4), tamanhos: tamanhos.slice(0, 20),
   };

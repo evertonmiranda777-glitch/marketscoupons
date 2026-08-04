@@ -2617,6 +2617,15 @@
 // Opções dos 4 controles do heatmap. Valores idênticos aos que o app.js do site atual usa.
 // Vencedores calculados, nunca escritos. Ver remendo 8.
 // Contagem de reviews com apelido de id. Ver remendo 9.
+// Desconto decrescente + FundedNext presa em 3o. Ver remendo 15.
+function MC_ORDEM(fs) {
+  var n = function (f) { return parseFloat(String(f.discount).replace('%', '')) || 0; };
+  var lista = fs.slice().sort(function (a, b) { return n(b) - n(a); });
+  var i = lista.findIndex(function (f) { return f.id === 'fn'; });
+  if (i > -1) { var fn = lista.splice(i, 1)[0]; lista.splice(Math.min(2, lista.length), 0, fn); }
+  return lista;
+}
+
 function MC_REVIEWS(id) {
   var M = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K',
     aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K',
@@ -3075,7 +3084,7 @@ class Component extends DCLogic {
       if (!linhas || !linhas.length) return;   // banco fora: fica a demo, NUNCA esvazia a tela
       var antigas = {};
       (self.firms || []).forEach(function (f) { antigas[f.id] = f; });
-      self.firms = linhas.map(function (f) {
+      self.firms = MC_ORDEM(linhas.map(function (f) {
         var velha = antigas[f.id] || {};
         var pr = (f.prices || [])[0] || {};
         var vit = f.discount_type === 'lifetime';
@@ -3101,7 +3110,7 @@ class Component extends DCLogic {
           split: f.split || velha.split || '',
           dd: f.drawdown || velha.dd || ''
         };
-      });
+      }));
       try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}
       self._homeStatic = null; self.setState({ _mcBanco: 1 });
     }).catch(function (e) { try { window.__mcBanco.erro = String(e).slice(0, 120); } catch (_) {} });

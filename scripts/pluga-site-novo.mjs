@@ -413,6 +413,36 @@ remendo('monta calendario da home', '_mcCalHome =',
           });
         self._homeStatic = null; self.setState({ _mcCal: 1 });`);
 
+// ─────────────────────────────────────────────── 15. ordem das firmas na home
+// Vinha na ordem do `sort_order` do banco, e o resultado era FTMO com 19% na frente da
+// Earn2Trade com 50% , exatamente o oposto do que a secao promete ("BEST DEALS RIGHT NOW").
+// Agora e DESCONTO DECRESCENTE, com a FundedNext FIXADA em 3o: ordem direta do Everton em
+// 08/jul, que vale no site atual (helper `pinFN` no app.js). Se um dia cair, cai nos dois.
+remendo('ordem das firmas', 'MC_ORDEM(',
+  '      self.firms = linhas.map(function (f) {',
+  '      self.firms = MC_ORDEM(linhas.map(function (f) {');
+
+remendo('fecha a ordenacao', "velha.dd || '';
+        };
+      }));",
+  `      });
+      try { window.__mcBanco.ok = true;`,
+  `      }));
+      try { window.__mcBanco.ok = true;`);
+
+remendo('funcao de ordem', 'function MC_ORDEM',
+  'function MC_REVIEWS(id) {',
+  `// Desconto decrescente + FundedNext presa em 3o. Ver remendo 15.
+function MC_ORDEM(fs) {
+  var n = function (f) { return parseFloat(String(f.discount).replace('%', '')) || 0; };
+  var lista = fs.slice().sort(function (a, b) { return n(b) - n(a); });
+  var i = lista.findIndex(function (f) { return f.id === 'fn'; });
+  if (i > -1) { var fn = lista.splice(i, 1)[0]; lista.splice(Math.min(2, lista.length), 0, fn); }
+  return lista;
+}
+
+function MC_REVIEWS(id) {`);
+
 // ─────────────────────────────────────────────── fim
 fs.writeFileSync(ARQ, d);
 const tags = { ab: (d.match(/<sc-for/g) || []).length, fe: (d.match(/<\/sc-for>/g) || []).length };
