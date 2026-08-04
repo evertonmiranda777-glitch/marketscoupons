@@ -1322,7 +1322,7 @@
     <div data-heatgrid="1" style="height: 560px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07);">
       <iframe id="mc-heatmap" title="Market heat map" loading="lazy"
         style="width: 100%; height: 100%; border: 0; display: block;"
-        src="https://www.tradingview.com/embed-widget/stock-heatmap/?locale=en#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22sector%22%2C%22locale%22%3A%22en%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Atrue%2C%22isDataSetEnabled%22%3Atrue%2C%22isZoomEnabled%22%3Atrue%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D"></iframe>
+        src="{{ heatUrl }}"></iframe>
     </div>
     <div data-heatlegend="1" style="display: flex; align-items: center; justify-content: center; gap: 2px; margin-top: 18px;">
       <sc-for list="{{ heatLegend }}" as="l" hint-placeholder-count="7"><div style="display: flex; flex-direction: column; align-items: center; gap: 4px;"><span style="width: 54px; height: 8px; background: {{ l.color }};"></span><span style="font-size: 10px; color: #7c8791;">{{ l.label }}</span></div></sc-for>
@@ -2325,8 +2325,20 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:1400},&quot;heroFoxY&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:32,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;heroFoxX&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:50,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;heroBannerH&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:280,&quot;min&quot;:180,&quot;max&quot;:420,&quot;step&quot;:10,&quot;unit&quot;:&quot;px&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+// Opcoes dos 4 controles do heatmap. Valores sao os que o widget do TradingView aceita,
+// os mesmos que o site atual ja usa em app.js (dataSource/blockSize/blockColor/grouping).
+const MC_HEAT = {
+  fonte: [ {v:'SPX500', l:'S&P 500'}, {v:'AllUSA', l:'All US stocks'},
+           {v:'NASDAQ100', l:'Nasdaq 100'}, {v:'Crypto', l:'Crypto'} ],
+  tam:   [ {v:'market_cap_basic', l:'Market cap'}, {v:'volume', l:'Volume'},
+           {v:'Value.Traded', l:'Traded value'} ],
+  cor:   [ {v:'change', l:'Change 1D %'}, {v:'Perf.W', l:'Change 1W %'},
+           {v:'Perf.1M', l:'Change 1M %'}, {v:'Perf.YTD', l:'Change YTD %'} ],
+  grupo: [ {v:'sector', l:'Sector'}, {v:'no_group', l:'No grouping'} ],
+};
+
 class Component extends DCLogic {
-  state = { route: 'specials', toast: null, copied: null, cookieOpen: true, chatOpen: false, detail: null, dType: 0, dSize: 0, dVariant: 0, dPack: 0, dPlatform: 0, market: 'all', sort: 'rating', homeFaqOpen: 0, maxHidden: false, mobileMenu: false, authed: false, gexTicker: 'ES', gexDate: 'all', gexView: 'chart', blogFilter: 'all', posUnlocked: false, posAcct: 50000, posRisk: 1.5, posStop: 25, posTick: 12.5, quizStep: 0, quizAns: [null,null,null,null,null], appOs: 'ios', authSlide: 0, favs: [], catFilters: { futures: true, forex: true, plus80: true, mid: true, less: true, favOnly: false }, lang: 'EN', langOpen: false, cmp: [null, null, null], calImpact: 'all', calCcy: 'all', calStars: [] };
+  state = { heatFonte: 0, heatTam: 0, heatCor: 0, heatGrupo: 0, route: 'specials', toast: null, copied: null, cookieOpen: true, chatOpen: false, detail: null, dType: 0, dSize: 0, dVariant: 0, dPack: 0, dPlatform: 0, market: 'all', sort: 'rating', homeFaqOpen: 0, maxHidden: false, mobileMenu: false, authed: false, gexTicker: 'ES', gexDate: 'all', gexView: 'chart', blogFilter: 'all', posUnlocked: false, posAcct: 50000, posRisk: 1.5, posStop: 25, posTick: 12.5, quizStep: 0, quizAns: [null,null,null,null,null], appOs: 'ios', authSlide: 0, favs: [], catFilters: { futures: true, forex: true, plus80: true, mid: true, less: true, favOnly: false }, lang: 'EN', langOpen: false, cmp: [null, null, null], calImpact: 'all', calCcy: 'all', calStars: [] };
 
   // Demo data modeled on cms_firms shape. Official coupons per spec 0.6.
   // Prices/discounts mirror the live site; real build binds to cms_firms at runtime.
@@ -2761,8 +2773,33 @@ class Component extends DCLogic {
       isHome: s.route === 'specials',
       showDeals: s.route === 'specials' || s.route === 'firms',
       isHeatmap: s.route === 'heatmap',
-      heatTabs: [{k:'sp',label:'S&P 500 Index'},{k:'cap',label:'Market cap'},{k:'chg',label:'Change 1D %'},{k:'sec',label:'Sector'}].map(t => ({
-        label: t.label, onClick: () => {},
+      heatUrl: (function () {
+        var cfg = {
+          dataSource: MC_HEAT.fonte[s.heatFonte].v,
+          blockSize: MC_HEAT.tam[s.heatTam].v,
+          blockColor: MC_HEAT.cor[s.heatCor].v,
+          grouping: MC_HEAT.grupo[s.heatGrupo].v,
+          locale: 'en', colorTheme: 'dark', hasTopBar: false,
+          isDataSetEnabled: false, isZoomEnabled: true, hasSymbolTooltip: true,
+          width: '100%', height: '100%'
+        };
+        var base = MC_HEAT.fonte[s.heatFonte].v === 'Crypto'
+          ? 'https://www.tradingview.com/embed-widget/crypto-coins-heatmap/?locale=en#'
+          : 'https://www.tradingview.com/embed-widget/stock-heatmap/?locale=en#';
+        return base + encodeURIComponent(JSON.stringify(cfg));
+      })(),
+      heatTabs: [
+        // ⚠️ Os 4 botoes vinham com `onClick: () => {}` , enfeite. Sao os controles do
+        // widget: indice, tamanho do bloco, cor e agrupamento. Cada clique AVANCA a opcao
+        // e reconstroi a URL do iframe. O rotulo mostra o valor ATUAL, senao o usuario
+        // clica e nao sabe no que mexeu.
+        { k:'heatFonte', label: MC_HEAT.fonte[s.heatFonte].l, n: MC_HEAT.fonte.length },
+        { k:'heatTam',   label: MC_HEAT.tam[s.heatTam].l,     n: MC_HEAT.tam.length },
+        { k:'heatCor',   label: MC_HEAT.cor[s.heatCor].l,     n: MC_HEAT.cor.length },
+        { k:'heatGrupo', label: MC_HEAT.grupo[s.heatGrupo].l, n: MC_HEAT.grupo.length },
+      ].map(t => ({
+        label: t.label,
+        onClick: () => this.setState(function (st) { var o = {}; o[t.k] = ((st[t.k] || 0) + 1) % t.n; return o; }),
         style: 'display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#c4ccd2;font-family:inherit;font-weight:600;font-size:12.5px;cursor:pointer;',
       })),
       heatLegend: [{v:-5.5,label:'-5.5%'},{v:-3.5,label:'-3.5%'},{v:-1.5,label:'-1.5%'},{v:0,label:'0%'},{v:1.5,label:'1.5%'},{v:3.5,label:'3.5%'},{v:5.5,label:'5.5%'}].map(l => ({ label: l.label, color: this.heatColor(l.v) })),
