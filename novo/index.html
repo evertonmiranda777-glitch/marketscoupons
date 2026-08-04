@@ -1152,7 +1152,7 @@
           <span style="font-weight: 700; color: {{ hc.splitColor }};">{{ hc.split }}</span>
         </div>
       </sc-for>
-      <div style="margin-top: 6px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.03); font-size: 13px; color: #a8b2bb; text-align: center;"><span style="color: #bfff00; font-weight: 800;">Bulenox</span> is the best value for a 100K account</div>
+      <div style="margin-top: 6px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.03); font-size: 13px; color: #a8b2bb; text-align: center;"><span style="color: #bfff00; font-weight: 800;">Apex</span> has the biggest discount and is our most chosen firm</div>
     </div>
     <div>
       <div style="font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; color: #bfff00; text-transform: uppercase; margin-bottom: 12px;">Compare &amp; Quiz</div>
@@ -1291,9 +1291,9 @@
       </sc-for>
     </div>
     <div style="display: flex; justify-content: center; gap: 44px; margin-top: 44px; flex-wrap: wrap;">
-      <div><div style="font-weight: 800; font-size: 26px; color: #F4F8F9;">19</div><div style="font-size: 13px; color: #8a94a0;">Firms analyzed</div></div>
-      <div><div style="font-weight: 800; font-size: 26px; color: #F4F8F9;">210K+</div><div style="font-size: 13px; color: #8a94a0;">Reviews considered</div></div>
-      <div><div style="font-weight: 800; font-size: 26px; color: #F4F8F9;">8</div><div style="font-size: 13px; color: #8a94a0;">Award categories</div></div>
+      <div><div style="font-weight: 800; font-size: 26px; color: #F4F8F9;">{{ awFirmas }}</div><div style="font-size: 13px; color: #8a94a0;">Firms analyzed</div></div>
+      <div><div style="font-weight: 800; font-size: 26px; color: #F4F8F9;">{{ awReviews }}</div><div style="font-size: 13px; color: #8a94a0;">Reviews considered</div></div>
+      <div><div style="font-weight: 800; font-size: 26px; color: #F4F8F9;">{{ awCategorias }}</div><div style="font-size: 13px; color: #8a94a0;">Award categories</div></div>
     </div>
   </div></section>
 
@@ -3004,6 +3004,19 @@ class Component extends DCLogic {
   homeStatic() {
     if (this._homeStatic) return this._homeStatic;
     this._homeStatic = {
+      // Numeros do rodape dos Awards , eram 19 / 210K+ / 8, todos chumbados. O pior era
+      // "8 Award categories" mostrando TRES: numero que a propria tela desmente logo acima.
+      awFirmas: String((this.firms || []).length),
+      awReviews: (function (fs) {
+        var t = 0;
+        (fs || []).forEach(function (f) {
+          var v = MC_REVIEWS(f.id).match(/([\d.]+)K/);
+          if (v) t += parseFloat(v[1]) * 1000;
+        });
+        // arredonda pra baixo no milhar: prometer menos do que se tem nunca vira problema
+        return t > 0 ? (Math.floor(t / 1000) + 'K+') : '';
+      })(this.firms),
+      awCategorias: String(MC_AWARDS(this.firms || []).length),
       miniHeat: this._mcMini || [
         { nome:'S&P 500', pct:'', style:'border-radius:8px;background:rgba(255,255,255,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#7c8791;' },
         { nome:'Nasdaq', pct:'', style:'border-radius:8px;background:rgba(255,255,255,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#7c8791;' },
@@ -3021,7 +3034,7 @@ class Component extends DCLogic {
         starColor: e.impact === 'High' ? '#f87171' : (e.impact === 'Medium' ? '#fbbf24' : '#6b7580'),
       })),
 
-      homeCompare: ['bulenox','apex','tradeday'].map((sl, i) => {
+      homeCompare: ['apex','bulenox','funded-futures-family'].map((sl, i) => {
         const f = this.firms.find(x => x.id === sl) || this.firms[i];
         const win = i === 0;
         return {
@@ -3034,12 +3047,17 @@ class Component extends DCLogic {
       }),
 
       homeChat: [
-        { who:'Trader01', msg:'Long ES 5620', c:'#3b82f6' },
-        { who:'Maria', msg:'NQ broke the OB', c:'#a855f7' },
-        { who:'Carlos', msg:'TP1 hit', c:'#f97316' },
-        { who:'Ana', msg:'FVG on the 15m', c:'#10b981' },
+        // ⚠️ COMPLIANCE , o pacote vinha com "Long ES 5620", "TP1 hit", "FVG on the 15m":
+        // isso e SINAL DE OPERACAO (entrada e take profit), proibido em toda superficie
+        // publica pela regra do projeto, e o Live Room tem que ser "conteudo exclusivo VIP,
+        // nunca sinais". Eram nomes inventados dando sinal falso numa tela publica.
+        // Texto trocado por conversa de SALA DE ESTUDO, sem preco, sem entrada, sem alvo.
+        { who:'Member', msg:'Session starting now', c:'#3b82f6' },
+        { who:'Member', msg:'Question about the NQ structure', c:'#a855f7' },
+        { who:'Host', msg:'Sharing the screen', c:'#f97316' },
+        { who:'Member', msg:'Thanks for the breakdown', c:'#34d399' },
       ].map(m => ({
-        who: m.who, msg: m.msg, initial: m.who[0],
+        ...m,
         avStyle: 'width:22px;height:22px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;background:' + m.c + ';',
       })),
 
@@ -3048,10 +3066,20 @@ class Component extends DCLogic {
         { name:'NinjaTrader', desc:'Pro execution for futures', price:'$99', unit:'lifetime', logo:'ninjatrader.webp' },
       ].map(p => ({ ...p, logoEl: this.logoImg(p.logo) })),
 
-      homeGuides: this._mcBlog || [
-        { title:'Your First Prop Firm: Complete Guide 2026', lvl:'BEGINNER', lvlColor:'#34d399', read:'12 min read', icon:'ti-target-arrow', imgBg:'linear-gradient(135deg,#12321f,#0b0f0c)' },
-        { title:'Trailing vs Static Drawdown: which to pick', lvl:'INTERMEDIATE', lvlColor:'#fbbf24', read:'8 min read', icon:'ti-chart-line', imgBg:'linear-gradient(135deg,#2a2410,#0b0f0c)' },
-        { title:'Order Flow and Delta: institutional reading', lvl:'ADVANCED', lvlColor:'#f87171', read:'15 min read', icon:'ti-table', imgBg:'linear-gradient(135deg,#2a1414,#0b0f0c)' },
+      homeGuides: [
+        // ⚠️ A secao chama "Guides & Education" e eu tinha enchido com posts do BLOG , sao
+        // coisas diferentes. Sao os 3 guias canonicos, na ordem em que o iniciante deve ler.
+        // Titulo lido dos ARQUIVOS en/guides/*.html, nao traduzido de cabeca: cms_guides
+        // guarda so o PT ("O que e uma Prop Firm?") e o site e EN-default.
+        { title:'What is a Prop Firm? Complete Guide 2026', lvl:'BEGINNER', lvlColor:'#34d399',
+          read:'', icon:'ti-target-arrow', imgBg:'linear-gradient(135deg,#12321f,#0b0f0c)',
+          href:'/en/guides/o-que-e-uma-prop-firm' },
+        { title:'How to Pass the Prop Firm Challenge in 2026', lvl:'PRACTICAL', lvlColor:'#fbbf24',
+          read:'', icon:'ti-chart-line', imgBg:'linear-gradient(135deg,#0f2a36,#0b0f0c)',
+          href:'/en/guides/como-passar-no-desafio' },
+        { title:'Drawdown Management in Prop Firms', lvl:'INTERMEDIATE', lvlColor:'#f87171',
+          read:'', icon:'ti-shield-half', imgBg:'linear-gradient(135deg,#2a1414,#0b0f0c)',
+          href:'/en/guides/gerenciamento-drawdown' },
       ].map(g => ({ ...g, onClick: () => this.setState({ route: 'blog' }) })),
 
       homeAwards: MC_AWARDS(this.firms).map((a, i) => {
