@@ -407,7 +407,7 @@ remendo('monta calendario da home', '_mcCalHome =',
         // Everton, 03/08): pega os de 3 estrelas; se o dia nao tiver, cai pra 2; se nao
         // tiver, cai pra 1. Dia parado sem cascata deixaria a secao VAZIA na home, que e
         // pior que mostrar um evento pequeno.
-        // ⚠️ O molde le `stars` e `starColor`, NAO `impact` , eu tinha mandado `impact` e a
+        // ⚠️ O molde le stars e starColor, NAO impact , eu tinha mandado impact e a
         // coluna IMPACT ficou VAZIA na tela. So vi no print que o Everton mandou.
         var ESTRELA = { high: '★★★', medium: '★★', low: '★' };
         var COR = { high: '#f87171', medium: '#fbbf24', low: '#8a94a0' };
@@ -436,13 +436,21 @@ remendo('ordem das firmas', 'MC_ORDEM(',
   '      self.firms = linhas.map(function (f) {',
   '      self.firms = MC_ORDEM(linhas.map(function (f) {');
 
-remendo('fecha a ordenacao', "velha.dd || '';
+// fecha o MC_ORDEM( aberto acima. Se ficar sem fechar, e erro de sintaxe e a pagina
+// INTEIRA some , nao so a ordem. Ja aconteceu, por isso o marcador e' explicito.
+if (d.includes('MC_ORDEM(linhas.map') && !d.includes("velha.dd || '';
         };
-      }));",
-  `      });
-      try { window.__mcBanco.ok = true;`,
-  `      }));
-      try { window.__mcBanco.ok = true;`);
+      }));")) {
+  const de = "velha.dd || '';
+        };
+      });";
+  if (!d.includes(de)) { console.error('
+✗ nao achei o fechamento do map das firmas'); process.exit(1); }
+  d = d.replace(de, "velha.dd || '';
+        };
+      }));");
+  feitos.push('fecha a ordenacao');
+} else pulados.push('fecha a ordenacao');
 
 remendo('funcao de ordem', 'function MC_ORDEM',
   'function MC_REVIEWS(id) {',
@@ -456,6 +464,23 @@ function MC_ORDEM(fs) {
 }
 
 function MC_REVIEWS(id) {`);
+
+// ─────────────────────────────────────────────── 16. menu cortado no desktop
+// O Everton mandou o print: a barra terminava em "Awards" e o "Live Room" nao aparecia.
+// Medido em 1440px: .mc-navwrap tem 1583px de largura e 1661px de conteudo , 77px sobrando.
+// Ela tem overflow-x:auto, entao ROLA, mas sem nenhuma pista visual: parece cortado.
+// 15 itens com padding 8px 11px. Tirando 3px de cada lado libera 90px, mais que os 77 que
+// faltam, e a diferenca e imperceptivel. Preferi apertar a esconder item do menu.
+if (!d.includes('mc-navwrap > *')) {
+  const CSS = `<style>
+    /* cabe os 15 itens ate 1400px sem rolagem escondida , ver remendo 16 */
+    @media (min-width: 1100px) {
+      .mc-navwrap > * { padding-left: 8px !important; padding-right: 8px !important; }
+    }
+  </style>`;
+  d = d.replace('</head>', CSS + String.fromCharCode(10) + '</head>');
+  feitos.push('menu completo no desktop');
+} else pulados.push('menu completo no desktop');
 
 // ─────────────────────────────────────────────── fim
 fs.writeFileSync(ARQ, d);

@@ -1092,11 +1092,16 @@
            confere no celular e perde a confianca na pagina toda.
            Sao 4 blocos porque sao 4 os ativos que a analise cobre , prefiro 4 verdadeiros a
            9 bonitos. -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 66px; gap: 5px;">
+      <!-- Formato ORIGINAL do Design (1 bloco grande + menores), com dado REAL.
+           Eu tinha achatado num 2x2 e ficou feio , o desenho dele era melhor. O que estava
+           errado era so o CONTEUDO: 9 quadradinhos com porcentagem inventada ao lado da
+           palavra "real time". Agora sao 4 ativos de verdade da daily_analysis, e o maior
+           bloco fica com o de maior movimento do dia. -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; grid-auto-rows: 44px; gap: 5px;">
         <sc-for list="{{ miniHeat }}" as="h" hint-placeholder-count="4">
           <div style="{{ h.style }}">
-            <span style="font-size: 11px; font-weight: 700; opacity: .75;">{{ h.nome }}</span>
-            <span style="font-size: 15px; font-weight: 800;">{{ h.pct }}</span>
+            <span style="font-size: 10px; font-weight: 700; opacity: .7; line-height: 1;">{{ h.nome }}</span>
+            <span style="font-weight: 800; line-height: 1.1;">{{ h.pct }}</span>
           </div>
         </sc-for>
       </div>
@@ -3207,16 +3212,24 @@ class Component extends DCLogic {
           visto[r.asset] = 1; lista.push(r);
         });
         var NOME = { ES: 'S&P 500', NQ: 'Nasdaq', CL: 'Oil', GC: 'Gold', YM: 'Dow', RTY: 'Russell' };
-        self._mcMini = lista.slice(0, 4).map(function (r) {
+        // o de MAIOR movimento fica no bloco grande (span 2 linhas + fonte maior), os
+        // outros tres em volta , e o desenho original do Design, so que com dado real
+        var ord = lista.slice(0, 4).sort(function (a, b) {
+          return Math.abs(parseFloat(b.change_pct) || 0) - Math.abs(parseFloat(a.change_pct) || 0);
+        });
+        self._mcMini = ord.map(function (r, i) {
           var p = parseFloat(r.change_pct) || 0;
           var forte = Math.min(0.55, 0.18 + Math.abs(p) * 0.12);
           var fundo = p >= 0 ? 'rgba(191,255,0,' + forte + ')' : 'rgba(239,68,68,' + (forte + 0.05) + ')';
+          var grande = i === 0;
           return {
             nome: NOME[r.asset] || r.asset_name || r.asset,
             pct: (p > 0 ? '+' : '') + p.toFixed(2) + '%',
             style: 'border-radius:8px;background:' + fundo + ';display:flex;flex-direction:column;' +
-                   'align-items:center;justify-content:center;gap:2px;color:' +
-                   (p >= 0 ? '#070a06' : '#fff') + ';'
+                   'align-items:center;justify-content:center;gap:3px;color:' +
+                   (p >= 0 ? '#070a06' : '#fff') + ';font-size:' + (grande ? '13px' : '11px') + ';' +
+                   (grande ? 'grid-row:span 2;' : '') +
+                   (i === 3 ? 'grid-column:span 2;' : '')
           };
         });
         self._homeStatic = null;
