@@ -1460,7 +1460,7 @@
     <div style="text-align: center; margin-bottom: 30px;">
       <h1 style="font-weight: 900; font-size: 44px; letter-spacing: -0.035em; color: #F4F8F9; margin: 0 0 14px;">Daily Market Analysis</h1>
       <p style="font-size: 15.5px; line-height: 1.55; color: #a8b2bb; margin: 0 auto 16px; max-width: 620px;">Updated every weekday at 5:00 AM ET. Directional bias, attention zones, news impact, and macro context for the main futures.</p>
-      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #8a94a0;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #34d399;"></span>Updated on Friday, July 17, 2026, 05:00 AM ET</div>
+      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #8a94a0;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #34d399;"></span>Updated on {{ dataHoje }}, 05:00 AM ET</div>
     </div>
 
     <div style="position: relative;">
@@ -1523,7 +1523,7 @@
       <div style="display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 999px; background: rgba(191,255,0,0.1); border: 1px solid rgba(191,255,0,0.28); font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #bfff00; margin-bottom: 18px;"><i class="ti ti-clock" style="font-size: 14px;"></i>UPDATED DAILY</div>
       <h1 style="font-weight: 900; font-size: 44px; letter-spacing: -0.035em; color: #F4F8F9; margin: 0 0 14px;"><span style="color: #bfff00;">Gamma</span> Exposure (GEX)</h1>
       <p style="font-size: 15.5px; line-height: 1.55; color: #a8b2bb; margin: 0 auto 16px; max-width: 640px;">Track market maker Gamma Exposure levels across major indices and stocks. See where the largest options concentrations are and how they affect price movement.</p>
-      <div style="font-size: 13px; color: #8a94a0;">Last updated: <span style="color: #E7ECEF; font-weight: 600;">Friday, July 17, 2026</span>, 04:27 AM ET · Updated every business day at 5:00 AM ET.</div>
+      <div style="font-size: 13px; color: #8a94a0;">Last updated: <span style="color: #E7ECEF; font-weight: 600;">{{ dataHoje }}</span>, 04:27 AM ET · Updated every business day at 5:00 AM ET.</div>
     </div>
 
     <div style="position: relative;">
@@ -2636,6 +2636,17 @@ function MC_ORDEM(fs) {
   return lista;
 }
 
+// Data de hoje por extenso, em ingles. As tres datas do pacote estavam CHUMBADAS em
+// "Friday, July 17, 2026" , tres semanas atras, e uma delas aparece pra QUALQUER visitante
+// logo abaixo do titulo do GEX ("Last updated"). Data velha em pagina que promete
+// "updated every business day" destroi a confianca no dado inteiro.
+function MC_DATA() {
+  try {
+    return new Date().toLocaleDateString('en-US',
+      { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  } catch (e) { return ''; }
+}
+
 function MC_REVIEWS(id) {
   var M = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K',
     aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K',
@@ -3015,6 +3026,7 @@ class Component extends DCLogic {
     this._homeStatic = {
       // Numeros do rodape dos Awards , eram 19 / 210K+ / 8, todos chumbados. O pior era
       // "8 Award categories" mostrando TRES: numero que a propria tela desmente logo acima.
+      dataHoje: MC_DATA(),
       awFirmas: String((this.firms || []).length),
       awReviews: (function (fs) {
         var t = 0;
@@ -3238,6 +3250,53 @@ class Component extends DCLogic {
         };
       }
       if (g) self._mcGex = g;
+      // CARDS DO GEX , NQ e ES com nivel REAL de gex_levels e barras do top_strikes.
+      // A demo trazia niveis inventados (NQ zero gamma 29,027, put 29,000...) e as barras
+      // eram `20 + ((i*37) % 70)` , ou seja, largura por FORMULA, sem relacao com gamma
+      // nenhum. Grafico de gamma inventado num site que vende leitura de gamma e o pior
+      // lugar possivel pra dado falso.
+      fetch(SB + 'gex_levels?ticker=in.(NQ,ES)&select=*&order=date.desc&limit=8', H)
+        .then(function (r) { return r.ok ? r.json() : []; })
+        .then(function (gs) {
+          if (!gs || !gs.length) return;
+          var vistos = {}, cards = [];
+          var fmt = function (n) { return n == null ? '' : Number(n).toLocaleString('en-US', { maximumFractionDigits: 0 }); };
+          gs.forEach(function (x) {
+            if (vistos[x.ticker] || cards.length >= 2) return;
+            vistos[x.ticker] = 1;
+            var pos = Number(x.total_gex) >= 0;
+            // barras: strikes reais, largura proporcional ao MAIOR gamma absoluto
+            var ts = (x.top_strikes || []).slice(0, 14);
+            var maior = ts.reduce(function (m, s) { return Math.max(m, Math.abs(Number(s.gex) || 0)); }, 1);
+            var bars = ts.map(function (s) {
+              var call = (Number(s.gex) || 0) >= 0;
+              var w = Math.max(6, Math.round(Math.abs(Number(s.gex) || 0) / maior * 100));
+              return { strike: Number(s.strike).toLocaleString('en-US'),
+                justify: call ? 'justify-content:flex-start' : 'justify-content:flex-end',
+                barStyle: 'height:11px;border-radius:3px;width:' + w + '%;background:' + (call ? '#34d399' : '#f87171') + ';' };
+            });
+            cards.push({
+              sym: x.ticker,
+              desc: x.ticker === 'NQ' ? 'Nasdaq 100 Futures' : 'S&P 500 Futures',
+              spot: fmt(x.spot_price),
+              regime: pos ? 'Positive Gamma' : 'Negative Gamma',
+              regimeStyle: 'padding:5px 12px;border-radius:8px;font-size:12px;font-weight:700;background:' +
+                (pos ? 'rgba(52,211,153,0.14);color:#34d399;' : 'rgba(239,68,68,0.14);color:#f87171;'),
+              total: (Number(x.total_gex) > 0 ? '+' : '') + fmt(x.total_gex) + 'M',
+              totalColor: pos ? '#34d399' : '#f87171',
+              levels: [
+                { k:'Zero Gamma', v:fmt(x.zero_gamma), sub:'Gamma Flip',  color:'#fbbf24' },
+                { k:'Put Wall',   v:fmt(x.put_wall),   sub:'Support',     color:'#34d399' },
+                { k:'Call Wall',  v:fmt(x.call_wall),  sub:'Resistance',  color:'#f87171' },
+                { k:'HVL',        v:fmt(x.hvl),        sub:'Price Magnet',color:'#22d3ee' },
+                { k:'Vol Trigger',v:fmt(x.vol_trigger),sub:'Vol. Trigger',color:'#fb923c' },
+                { k:'Max Pain',   v:fmt(x.max_pain),   sub:'Max Pain',    color:'#a78bfa' },
+              ],
+              bars: bars.length ? bars : undefined
+            });
+          });
+          if (cards.length) { self._mcGexCards = cards; self._homeStatic = null; self.setState({ _mcGex: 1 }); }
+        }).catch(function () {});
       self._homeStatic = null;
       self.setState({ _mcAna: 1 });
     }).catch(function () {});
@@ -3433,7 +3492,7 @@ class Component extends DCLogic {
           stars: stars[e.impact], starColor: starColor[e.impact],
         });
         return [
-          { key:'today', label:'Today, Friday, July 17, 2026', events: filtered.filter(e => e.day==='today').map(mk) },
+          { key:'today', label:'Today, ' + MC_DATA(), events: filtered.filter(e => e.day==='today').map(mk) },
           { key:'week', label:'This week', events: filtered.filter(e => e.day==='week').map(mk) },
         ].filter(g => g.events.length);
       })(),
@@ -3611,7 +3670,7 @@ class Component extends DCLogic {
           return { strike: (spot + (7 - i) * 100).toLocaleString(), justify: call ? 'justify-content:flex-start' : 'justify-content:flex-end',
             barStyle: 'height:11px;border-radius:3px;width:' + w + '%;background:' + (call ? '#34d399' : '#f87171') + ';' };
         });
-        return [
+        return this._mcGexCards || [
           { sym:'NQ', desc:'Nasdaq 100 Futures', spot:'29,026', regime:'Positive Gamma', regimeStyle:'padding:5px 12px;border-radius:8px;font-size:12px;font-weight:700;background:rgba(52,211,153,0.14);color:#34d399;', total:'+711M', totalColor:'#34d399',
             levels:[{k:'Zero Gamma',v:'29,027',sub:'Gamma Flip',color:'#fbbf24'},{k:'Put Wall',v:'29,000',sub:'Support',color:'#34d399'},{k:'Call Wall',v:'29,200',sub:'Resistance',color:'#f87171'},{k:'HVL',v:'28,000',sub:'Price Magnet',color:'#22d3ee'},{k:'Vol Trigger',v:'29,000',sub:'Vol. Trigger',color:'#fb923c'},{k:'Max Pain',v:'29,000',sub:'Max Pain',color:'#a78bfa'}], bars: mk(29000) },
           { sym:'ES', desc:'S&P 500 Futures', spot:'7,534', regime:'Negative Gamma', regimeStyle:'padding:5px 12px;border-radius:8px;font-size:12px;font-weight:700;background:rgba(239,68,68,0.14);color:#f87171;', total:'-29374M', totalColor:'#f87171',
