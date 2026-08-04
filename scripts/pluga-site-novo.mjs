@@ -310,6 +310,109 @@ remendo('separador dos reviews (lista)', '{{ r.rating }}★</span>{{ r.reviews }
   '{{ r.rating }}★</span> · {{ r.reviews }}',
   '{{ r.rating }}★</span>{{ r.reviews }}');
 
+// ─────────────────────────────────────────────── 11. blog da home
+// Os 3 cards vinham com titulos inventados. Existem 70 artigos reais em blog_posts.
+// Busca junto com as firmas pra nao abrir uma 3a conexao no carregamento.
+remendo('blog da home', '_mcLigarBlog',
+  '  _mcLigarCalendario() {',
+  `  // BLOG AO VIVO , 3 artigos reais de blog_posts (EN, ativos, mais recentes).
+  _mcLigarBlog() {
+    if (this._mcBlogBuscou) return;
+    this._mcBlogBuscou = true;
+    var self = this;
+    var AN = '${ANON}';
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
+      '?select=title,slug,category,level,read_time&lang=eq.en&active=eq.true&order=id.desc&limit=3',
+      { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (ps) {
+        if (!ps || !ps.length) return;
+        var cor = { beginner: '#34d399', intermediate: '#fbbf24', advanced: '#f87171' };
+        var fundo = ['linear-gradient(135deg,#12321f,#0b0f0c)',
+                     'linear-gradient(135deg,#0f2a36,#0b0f0c)',
+                     'linear-gradient(135deg,#2a1414,#0b0f0c)'];
+        self._mcBlog = ps.map(function (b, i) {
+          var lv = String(b.level || '').toLowerCase();
+          return {
+            title: b.title, slug: b.slug,
+            lvl: (lv || 'guide').toUpperCase(),
+            lvlColor: cor[lv] || '#8a94a0',
+            // read_time ja vem em minutos; o campo do banco as vezes traz "44 min",
+            // por isso limpo antes , senao sai "44 min min" na tela, como estava no admin
+            read: String(b.read_time || '').replace(/\s*min.*$/i, '') + ' min read',
+            icon: 'ti-article', imgBg: fundo[i % 3]
+          };
+        });
+        self.setState({ _mcBlogPronto: 1 });
+      }).catch(function () {});
+  }
+
+  _mcLigarCalendario() {`);
+
+remendo('chamada do blog', 'this._mcLigarBlog();',
+  '    this._mcLigarCalendario();',
+  '    this._mcLigarCalendario();\n    this._mcLigarBlog();');
+
+// usa os artigos reais quando chegarem; ate la, os do pacote
+remendo('homeGuides ao vivo', '_mcBlog ||',
+  'homeGuides: [',
+  'homeGuides: this._mcBlog || [');
+
+// ─────────────────────────────────────────────── 12. logo nova no navegador
+// fox-lime.png (handoff/Logo) com transparencia de verdade, entao fica bem em aba clara e
+// escura. Sem isto o /novo pedia /favicon.ico e tomava 404 em toda visita.
+// ⚠️ O manifest.json da RAIZ segue apontando pro "M" dourado de proposito: ele e do site
+// ATUAL, que ainda e dourado. Trocar agora poria logo limao em site dourado e mudaria o
+// icone de quem ja instalou o app. Vira junto com o site.
+if (!d.includes('rel="icon"')) {
+  const TAGS = `<link rel="icon" type="image/png" sizes="32x32" href="/novo/assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/novo/assets/icons/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/novo/assets/icons/icon-180.png">
+<meta name="theme-color" content="#070a06">
+`;
+  d = d.replace('<html><head>', '<html><head>' + String.fromCharCode(10) + TAGS);
+  feitos.push('logo no navegador');
+} else pulados.push('logo no navegador');
+
+// ─────────────────────────────────────────────── 13. o cache que congelava a home
+// ⚠️ ACHADO TARDE, e explica por que o blog continuava de mentira mesmo com o fetch
+// voltando 200: `homeStatic()` guarda o resultado na PRIMEIRA chamada
+//     homeStatic() { if (this._homeStatic) return this._homeStatic; ... }
+// e ela roda ANTES das buscas assincronas voltarem. Ou seja, a home inteira , blog,
+// calendario da home e AWARDS , ficava congelada no dado de demonstracao, e o setState
+// nao adiantava nada porque devolvia sempre o objeto velho.
+// Cada ligacao agora joga o cache fora antes de redesenhar.
+['self.setState({ _mcBanco: 1 });',
+ 'self.setState({ _mcCal: 1 });',
+ 'self.setState({ _mcBlogPronto: 1 });'].forEach(function (linha) {
+  if (d.includes('self._homeStatic = null; ' + linha)) return;
+  if (!d.includes(linha)) { console.error('✗ não achei: ' + linha); process.exit(1); }
+  d = d.replace(linha, 'self._homeStatic = null; ' + linha);
+  feitos.push('invalida cache (' + linha.slice(17, 25) + ')');
+});
+
+// ─────────────────────────────────────────────── 14. calendario DA HOME
+// A home tem o proprio array (`homeCalendar`, dentro do homeStatic), separado do `calData`
+// da pagina cheia. Eu tinha ligado so o segundo, entao a previa da home continuava com
+// "Non-Farm Payrolls 142K/190K" chumbado enquanto a pagina interna ja mostrava o real.
+// Agora as duas bebem da mesma fonte: 4 eventos de MAIOR IMPACTO, que e o que a previa
+// promete ("Next high-impact event").
+remendo('calendario da home', 'this._mcCalHome ||',
+  'homeCalendar: [',
+  'homeCalendar: this._mcCalHome || [');
+
+remendo('monta calendario da home', '_mcCalHome =',
+  '        self._homeStatic = null; self.setState({ _mcCal: 1 });',
+  `        // previa da home: so os de impacto alto, na ordem em que acontecem
+        self._mcCalHome = self.calData
+          .filter(function (e) { return e.impact === 'high'; })
+          .slice(0, 4)
+          .map(function (e) {
+            return { time: e.time, ccy: e.ccy, name: e.name,
+                     actual: e.actual || '—', forecast: e.forecast || '—', impact: 'High' };
+          });
+        self._homeStatic = null; self.setState({ _mcCal: 1 });`);
+
 // ─────────────────────────────────────────────── fim
 fs.writeFileSync(ARQ, d);
 const tags = { ab: (d.match(/<sc-for/g) || []).length, fe: (d.match(/<\/sc-for>/g) || []).length };

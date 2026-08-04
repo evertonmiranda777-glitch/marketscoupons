@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html><head>
+<link rel="icon" type="image/png" sizes="32x32" href="/novo/assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/novo/assets/icons/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/novo/assets/icons/icon-180.png">
+<meta name="theme-color" content="#070a06">
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="/novo/assets/09c03f2f-5a32-4dfb-8a97-2bb519f3e53b.js"></script>
@@ -2989,7 +2994,7 @@ class Component extends DCLogic {
   homeStatic() {
     if (this._homeStatic) return this._homeStatic;
     this._homeStatic = {
-      homeCalendar: [
+      homeCalendar: this._mcCalHome || [
         { time:'09:30', ccy:'USD', name:'Non-Farm Payrolls', actual:'142K', forecast:'190K', impact:'High' },
         { time:'11:00', ccy:'USD', name:'ISM Manufacturing PMI', actual:'48.1', forecast:'48.5', impact:'High' },
         { time:'11:30', ccy:'USD', name:'Crude Oil Inventories', actual:'-2.4M', forecast:'-1.2M', impact:'Medium' },
@@ -3027,7 +3032,7 @@ class Component extends DCLogic {
         { name:'NinjaTrader', desc:'Pro execution for futures', price:'$99', unit:'lifetime', logo:'ninjatrader.webp' },
       ].map(p => ({ ...p, logoEl: this.logoImg(p.logo) })),
 
-      homeGuides: [
+      homeGuides: this._mcBlog || [
         { title:'Your First Prop Firm: Complete Guide 2026', lvl:'BEGINNER', lvlColor:'#34d399', read:'12 min read', icon:'ti-target-arrow', imgBg:'linear-gradient(135deg,#12321f,#0b0f0c)' },
         { title:'Trailing vs Static Drawdown: which to pick', lvl:'INTERMEDIATE', lvlColor:'#fbbf24', read:'8 min read', icon:'ti-chart-line', imgBg:'linear-gradient(135deg,#2a2410,#0b0f0c)' },
         { title:'Order Flow and Delta: institutional reading', lvl:'ADVANCED', lvlColor:'#f87171', read:'15 min read', icon:'ti-table', imgBg:'linear-gradient(135deg,#2a1414,#0b0f0c)' },
@@ -3098,13 +3103,45 @@ class Component extends DCLogic {
         };
       });
       try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}
-      self.setState({ _mcBanco: 1 });
+      self._homeStatic = null; self.setState({ _mcBanco: 1 });
     }).catch(function (e) { try { window.__mcBanco.erro = String(e).slice(0, 120); } catch (_) {} });
   }
 
   // CALENDÁRIO AO VIVO , mesma edge function que o site atual usa há meses.
   // A demo trazia eventos de JUNHO chumbados. Evento econômico com data velha é pior que
   // nenhum: o trader confere e perde a confiança no resto da página.
+  // BLOG AO VIVO , 3 artigos reais de blog_posts (EN, ativos, mais recentes).
+  _mcLigarBlog() {
+    if (this._mcBlogBuscou) return;
+    this._mcBlogBuscou = true;
+    var self = this;
+    var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
+      '?select=title,slug,category,level,read_time&lang=eq.en&active=eq.true&order=id.desc&limit=3',
+      { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (ps) {
+        if (!ps || !ps.length) return;
+        var cor = { beginner: '#34d399', intermediate: '#fbbf24', advanced: '#f87171' };
+        var fundo = ['linear-gradient(135deg,#12321f,#0b0f0c)',
+                     'linear-gradient(135deg,#0f2a36,#0b0f0c)',
+                     'linear-gradient(135deg,#2a1414,#0b0f0c)'];
+        self._mcBlog = ps.map(function (b, i) {
+          var lv = String(b.level || '').toLowerCase();
+          return {
+            title: b.title, slug: b.slug,
+            lvl: (lv || 'guide').toUpperCase(),
+            lvlColor: cor[lv] || '#8a94a0',
+            // read_time ja vem em minutos; o campo do banco as vezes traz "44 min",
+            // por isso limpo antes , senao sai "44 min min" na tela, como estava no admin
+            read: String(b.read_time || '').replace(/s*min.*$/i, '') + ' min read',
+            icon: 'ti-article', imgBg: fundo[i % 3]
+          };
+        });
+        self._homeStatic = null; self.setState({ _mcBlogPronto: 1 });
+      }).catch(function () {});
+  }
+
   _mcLigarCalendario() {
     if (this._mcCalBuscou) return;
     this._mcCalBuscou = true;
@@ -3129,13 +3166,22 @@ class Component extends DCLogic {
             dir: (a != null && f != null) ? (a > f ? 'up' : (a < f ? 'down' : '')) : ''
           };
         });
-        self.setState({ _mcCal: 1 });
+        // previa da home: so os de impacto alto, na ordem em que acontecem
+        self._mcCalHome = self.calData
+          .filter(function (e) { return e.impact === 'high'; })
+          .slice(0, 4)
+          .map(function (e) {
+            return { time: e.time, ccy: e.ccy, name: e.name,
+                     actual: e.actual || '—', forecast: e.forecast || '—', impact: 'High' };
+          });
+        self._homeStatic = null; self.setState({ _mcCal: 1 });
       }).catch(function () {});
   }
 
   renderVals() {
     this._mcLigarBanco();
     this._mcLigarCalendario();
+    this._mcLigarBlog();
     const s = this.state;
     const isCatalog = s.route === 'firms';
     const reviewsMap = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K', aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K', brightfunded:'0.9K', ftmo:'43.5K', the5ers:'5.8K', goat:'0.7K', alpha:'4.6K', topone:'4.1K', myfundedfutures:'8.2K', tradeify:'1.1K', takeprofit:'6.3K', legends:'0.5K', lucid:'0.4K' };
