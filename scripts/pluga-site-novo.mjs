@@ -483,6 +483,36 @@ if (!d.includes('mc-navwrap > *')) {
   feitos.push('menu completo no desktop');
 } else pulados.push('menu completo no desktop');
 
+// ─────────────────────────────────────────────── 17. as prévias da home
+// Análise diária (NQ real), GEX (níveis reais), mini heatmap, fita do Live Room,
+// plataformas, calculadora de posição e quiz.
+//
+// ⚠️ POR QUE ESTES ESTÃO NUM ARQUIVO E NÃO ESCRITOS AQUI: são 26 trocas, várias delas de
+// blocos longos de HTML. Escrever à mão foi exatamente como quebrei a página 3× (contei o
+// `</div>` errado). A tabela `remendos-previas.json` foi GERADA comparando o arquivo
+// desempacotado limpo com o que está no ar, então é fiel por construção, não por digitação.
+// Cada entrada tem âncora comprovadamente ÚNICA no arquivo limpo.
+//
+// Regenerar depois de mexer no /novo na mão: desempacota numa pasta temporária, roda este
+// script nela, e faz o diff contra novo/index.html.
+const PREVIAS = JSON.parse(fs.readFileSync('scripts/remendos-previas.json', 'utf8'));
+let novasPrevias = 0, jaPrevias = 0;
+for (const p of PREVIAS) {
+  // "já aplicado" = o texto FINAL inteiro está lá. Usei um trecho curto antes e 7 remendos
+  // ficaram de fora calados: o trecho curto já existia no arquivo limpo do Design.
+  if (d.includes(p.para)) { jaPrevias++; continue; }
+  const n = d.split(p.de).length - 1;
+  if (n !== 1) {
+    console.error(`\n✗ ÂNCORA DAS PRÉVIAS ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}:`);
+    console.error(p.de.slice(0, 200));
+    console.error('\nO Design mexeu nesse trecho. Regere a tabela (ver comentário do remendo 17).');
+    process.exit(1);
+  }
+  d = d.replace(p.de, p.para);
+  novasPrevias++;
+}
+feitos.push(`prévias da home (${novasPrevias} aplicadas, ${jaPrevias} já estavam)`);
+
 // ─────────────────────────────────────────────── fim
 fs.writeFileSync(ARQ, d);
 const tags = { ab: (d.match(/<sc-for/g) || []).length, fe: (d.match(/<\/sc-for>/g) || []).length };

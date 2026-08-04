@@ -1190,7 +1190,7 @@
     <div style="padding: 22px; border-radius: 20px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07); box-shadow: 0 30px 60px rgba(0,0,0,0.4);">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
         <div style="display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; border-radius: 999px; background: #ef4444; animation: mc-pulse 1.4s infinite;"></span><span style="font-size: 12px; font-weight: 800; letter-spacing: 0.08em; color: #ef4444;">LIVE</span><span style="font-size: 13px; color: #8a94a0;">ES / NQ, NY session</span></div>
-        <div style="text-align: right; font-variant-numeric: tabular-nums;"><span style="font-weight: 800; font-size: 16px; color: #F4F8F9;">5,621.50</span> <span style="font-size: 12.5px; color: #34d399;">+0.42%</span></div>
+        <div style="text-align: right; font-variant-numeric: tabular-nums;"><span style="font-weight: 800; font-size: 16px; color: #F4F8F9;">{{ esPreco }}</span> <span style="font-size: 12.5px; color: {{ esCor }};">{{ esVar }}</span></div>
       </div>
       <div style="border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); overflow: hidden;">
         <div style="padding: 9px 14px; font-size: 12px; font-weight: 700; color: #8a94a0; border-bottom: 1px solid rgba(255,255,255,0.06);">VIP Chat</div>
@@ -1244,7 +1244,7 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
           <div><div style="font-size: 11px; color: #7c8791; margin-bottom: 5px;">Account</div><div style="font-weight: 700; font-size: 14px; color: #E7ECEF; padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.04); font-variant-numeric: tabular-nums;">$50,000</div></div>
           <div><div style="font-size: 11px; color: #7c8791; margin-bottom: 5px;">Risk %</div><div style="font-weight: 700; font-size: 14px; color: #E7ECEF; padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.04); font-variant-numeric: tabular-nums;">1.5%</div></div>
-          <div><div style="font-size: 11px; color: #7c8791; margin-bottom: 5px;">Stop</div><div style="font-weight: 700; font-size: 14px; color: #E7ECEF; padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.04); font-variant-numeric: tabular-nums;">25 pts</div></div>
+          <div><div style="font-size: 11px; color: #7c8791; margin-bottom: 5px;">Stop (ES)</div><div style="font-weight: 700; font-size: 14px; color: #E7ECEF; padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.04); font-variant-numeric: tabular-nums;">5 pts</div></div>
         </div>
         <div style="display: flex; gap: 10px; margin-top: 14px;">
           <div style="flex: 1; padding: 11px; border-radius: 11px; background: rgba(191,255,0,0.07); border: 1px solid rgba(191,255,0,0.25); text-align: center;"><div style="font-size: 11px; color: #7c8791;">Contracts</div><div style="font-weight: 800; font-size: 18px; color: #bfff00; font-variant-numeric: tabular-nums;">3.0</div></div>
@@ -1253,7 +1253,7 @@
       </div>
       <div style="padding: 20px; border-radius: 18px; background: linear-gradient(180deg, #0f1409, #0b0f0c); border: 1px solid rgba(255,255,255,0.07);">
         <div style="font-size: 13px; font-weight: 700; color: #d7dde2; margin-bottom: 12px;">Quiz · Your ideal firm</div>
-        <div style="font-size: 14px; color: #c4ccd2; margin-bottom: 12px;">Which market do you trade?</div>
+        <div style="font-size: 14px; color: #c4ccd2; margin-bottom: 12px;">Which market do you prefer to trade in?</div>
         <div style="display: flex; gap: 8px;">
           <span style="flex: 1; text-align: center; padding: 9px; border-radius: 10px; font-size: 12.5px; background: rgba(191,255,0,0.12); border: 1px solid rgba(191,255,0,0.35); color: #bfff00; font-weight: 700;">Futures</span>
           <span style="flex: 1; text-align: center; padding: 9px; border-radius: 10px; font-size: 12.5px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #9aa4ad;">Forex</span>
@@ -2648,13 +2648,16 @@ function MC_DATA() {
 }
 
 function MC_REVIEWS(id) {
+  // ⚠️ mapa PROPRIO de proposito. Eu tinha recebido `reviewsMap` por parametro, mas ela e
+  // declarada dentro de renderVals() e o homeStatic() NAO a enxerga , deu
+  // "ReferenceError: reviewsMap is not defined" e derrubou a home inteira no ar.
   var M = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K',
     aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K',
     brightfunded:'0.9K', ftmo:'43.5K', the5ers:'5.8K', goat:'0.7K', alphafutures:'4.6K',
     toponefutures:'4.1K', cti:'1.2K', e8:'2.4K', fundingpips:'12.1K', futureselite:'0.6K',
     blueguardian:'1.9K' };
   var v = M[id];
-  return v ? (' · ' + v + ' reviews') : '';
+  return v ? (' · ' + v + ' reviews') : '';   // separador junto: sem numero, sem ponto orfao
 }
 
 function MC_AWARDS(firms) {
@@ -3039,6 +3042,9 @@ class Component extends DCLogic {
       })(this.firms),
       awCategorias: String(MC_AWARDS(this.firms || []).length),
       // Previa da analise , NQ real de daily_analysis
+      esPreco: (this._mcEs || {}).preco || '--',
+      esVar:   (this._mcEs || {}).variacao || '',
+      esCor:   (this._mcEs || {}).cor || '#8a94a0',
       anaTitulo: (this._mcAna || {}).titulo || 'NQ · Nasdaq 100',
       anaPreco: (this._mcAna || {}).preco || '',
       anaVar: (this._mcAna || {}).variacao || '',
@@ -3093,8 +3099,13 @@ class Component extends DCLogic {
       })),
 
       homePlatforms: [
-        { name:'TradingView', desc:"World's most-used charting platform", price:'$12.95', unit:'per month', logo:'tradingview.webp' },
-        { name:'NinjaTrader', desc:'Pro execution for futures', price:'$99', unit:'lifetime', logo:'ninjatrader.webp' },
+        // PRECO ERA FALSO: o pacote anunciava NinjaTrader "$99 lifetime" , $99 e o plano MENSAL,
+        // o vitalicio custa $1.499 (ninjatrader.com/pricing, lido 04/08). E "$12.95/mo" nao e
+        // nenhum plano da TradingView. Como a previa e chamariz, mostro o que as DUAS tem de
+        // graca e da pra checar: TradingView plano Basic (1 grafico, 2 indicadores) e
+        // NinjaTrader sem mensalidade (grafico, backtest e simulador sem limite de tempo).
+        { name:'TradingView', desc:"World's most-used charting platform", price:'Free', unit:'Basic plan', logo:'tradingview.webp' },
+        { name:'NinjaTrader', desc:'Charts, backtesting & unlimited sim', price:'Free', unit:'no monthly fee', logo:'ninjatrader.webp' },
       ].map(p => ({ ...p, logoEl: this.logoImg(p.logo) })),
 
       homeGuides: [
@@ -3231,9 +3242,17 @@ class Component extends DCLogic {
     var SB = 'https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/';
     Promise.all([
       fetch(SB + 'daily_analysis?asset=eq.NQ&select=*&order=date.desc&limit=1', H).then(function (r) { return r.ok ? r.json() : []; }),
-      fetch(SB + 'gex_levels?ticker=eq.NQ&select=*&order=date.desc&limit=1', H).then(function (r) { return r.ok ? r.json() : []; })
+      fetch(SB + 'gex_levels?ticker=eq.NQ&select=*&order=date.desc&limit=1', H).then(function (r) { return r.ok ? r.json() : []; }),
+      fetch(SB + 'daily_analysis?asset=eq.ES&select=last_price,change_pct&order=date.desc&limit=1', H).then(function (r) { return r.ok ? r.json() : []; })
     ]).then(function (res) {
       var a = (res[0] || [])[0], g = (res[1] || [])[0];
+      // Fita do Live Room: o pacote trazia ES 5,621.50 fixo , 2.100 pontos abaixo do real.
+      var e = (res[2] || [])[0];
+      if (e) self._mcEs = {
+        preco: Number(e.last_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+        variacao: (e.change_pct > 0 ? '+' : '') + e.change_pct + '%',
+        cor: e.change_pct >= 0 ? '#34d399' : '#f87171'
+      };
       if (a) {
         // attention_zone e MULTILINGUE no banco (objeto {en,es,pt...}), nao string.
         // Sem tratar, a tela mostraria "[object Object]".

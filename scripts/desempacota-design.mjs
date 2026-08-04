@@ -60,8 +60,26 @@ for (const l of linhas) {
 }
 if (!html) { console.error('ERRO: nao achei o HTML real dentro do pacote'); process.exit(1); }
 
+// ⚠️ Este apagao ja me custou 11 imagens no ar (04/08): as logos das firmas, os icones da
+// aba e o fundo do auth NAO vem no pacote do Design , foram postas depois, a mao, e estao
+// commitadas. Rodar o desempacotador levava as tres pastas junto e a home ia pro ar com
+// 404 em toda logo. Agora elas sao guardadas antes e devolvidas depois.
+const PRESERVAR = ['assets/logos', 'assets/icons', 'assets/auth'];
+const guardado = {};
+for (const rel of PRESERVAR) {
+  const p = path.join(DEST, rel);
+  if (fs.existsSync(p)) guardado[rel] = fs.readdirSync(p).map(f => ({ f, buf: fs.readFileSync(path.join(p, f)) }));
+}
+
 fs.rmSync(DEST, { recursive: true, force: true });
 fs.mkdirSync(path.join(DEST, 'assets'), { recursive: true });
+
+for (const [rel, arqs] of Object.entries(guardado)) {
+  const p = path.join(DEST, rel);
+  fs.mkdirSync(p, { recursive: true });
+  for (const a of arqs) fs.writeFileSync(path.join(p, a.f), a.buf);
+  console.log(`preservado: ${rel} (${arqs.length} arquivos , nao vem do Design)`);
+}
 
 const mapa = {};
 let gzipados = 0;
