@@ -498,9 +498,12 @@ if (!d.includes('mc-navwrap > *')) {
 const PREVIAS = JSON.parse(fs.readFileSync('scripts/remendos-previas.json', 'utf8'));
 let novasPrevias = 0, jaPrevias = 0;
 for (const p of PREVIAS) {
-  // "já aplicado" = o texto FINAL inteiro está lá. Usei um trecho curto antes e 7 remendos
-  // ficaram de fora calados: o trecho curto já existia no arquivo limpo do Design.
-  if (d.includes(p.para)) { jaPrevias++; continue; }
+  // "já aplicado" = a marca está lá. A marca é um trecho ADICIONADO por este remendo que
+  // não existe em lugar nenhum do arquivo limpo , provado na geração da tabela.
+  // ⚠️ Duas tentativas anteriores falharam calado: usar um trecho curto qualquer deixou 7
+  // remendos de fora, e usar o texto final inteiro fez a 2ª rodada DUPLICAR o MC_DATA e o
+  // rodapé dos Awards (numa inserção pura, o contexto sobrevive e a âncora casa de novo).
+  if (d.includes(p.marca)) { jaPrevias++; continue; }
   const n = d.split(p.de).length - 1;
   if (n !== 1) {
     console.error(`\n✗ ÂNCORA DAS PRÉVIAS ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}:`);

@@ -1043,17 +1043,17 @@
       <x-import component-from-global-scope="IOSDevice" from="/novo/assets/9256664f-c298-4750-b132-b09cb81a3e55.jsx" dark="{{ true }}" time="" height="{{ 700 }}" hint-size="402px,700px">
         <div style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start; padding: 62px 12px 20px; background: radial-gradient(120% 60% at 50% 10%, #2a3a14 0%, #16200d 42%, #0a0f07 100%);">
           <div style="text-align: center;">
-            <div style="font-size: 18px; font-weight: 500; color: #F4F8F9; letter-spacing: -0.01em;">Friday, 31 July</div>
-            <div style="font-size: 70px; font-weight: 300; color: #F4F8F9; letter-spacing: -0.045em; line-height: 1.02; margin-top: 2px;">15:25</div>
+            <div style="font-size: 18px; font-weight: 500; color: #F4F8F9; letter-spacing: -0.01em;">{{ lockData }}</div>
+            <div style="font-size: 70px; font-weight: 300; color: #F4F8F9; letter-spacing: -0.045em; line-height: 1.02; margin-top: 2px;">{{ lockHora }}</div>
           </div>
           <div style="display: flex; align-items: flex-start; gap: 11px; padding: 13px 14px; border-radius: 20px; background: rgba(28,32,26,0.86); backdrop-filter: blur(16px); box-shadow: 0 8px 28px rgba(0,0,0,0.5); margin-top: 34px;">
             <span style="width: 38px; height: 38px; flex-shrink: 0; border-radius: 10px; background: #0a0d07; border: 1px solid rgba(191,255,0,0.35); display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="/novo/assets/820c5b18-f34d-4c25-b7da-35c5d5772f52.png" style="width: 26px; height: 26px; object-fit: contain;"></span>
             <div style="flex: 1; min-width: 0;">
               <div style="display: flex; align-items: flex-start; gap: 8px;">
-                <div style="flex: 1; min-width: 0; font-size: 13.5px; font-weight: 700; color: #F4F8F9; line-height: 1.3;">New code: MARKET<br>from Markets Coupons</div>
+                <div style="flex: 1; min-width: 0; font-size: 13.5px; font-weight: 700; color: #F4F8F9; line-height: 1.3;">New code: {{ notifCode }}<br>from Markets Coupons</div>
                 <span style="font-size: 11.5px; color: #9aa4ad; flex-shrink: 0;">now</span>
               </div>
-              <div style="font-size: 13px; color: #d7dde2; line-height: 1.35; margin-top: 2px;">100K account now $59.00, tap to copy<br>NO ACTIVATION FEE</div>
+              <div style="font-size: 13px; color: #d7dde2; line-height: 1.35; margin-top: 2px;">{{ notifLinha }}</div>
             </div>
           </div>
         </div>
@@ -2640,6 +2640,33 @@ function MC_ORDEM(fs) {
 // "Friday, July 17, 2026" , tres semanas atras, e uma delas aparece pra QUALQUER visitante
 // logo abaixo do titulo do GEX ("Last updated"). Data velha em pagina que promete
 // "updated every business day" destroi a confianca no dado inteiro.
+// Tela de bloqueio do iPhone: o pacote trazia "Friday, 31 July" e "15:25" chumbados, e o
+// aviso dizia "100K account now $59.00 / NO ACTIVATION FEE" , essa era a promo de taxa de
+// ativacao da Apex, que ACABOU em 21/07. Preco de promo vencida numa peca publica e
+// propaganda enganosa, mesmo sendo ilustracao. Data, hora, cupom e oferta agora sao reais.
+function MC_LOCK() {
+  try {
+    var n = new Date();
+    return {
+      data: n.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }),
+      hora: n.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })
+    };
+  } catch (e) { return { data: '', hora: '' }; }
+}
+
+// Cupom e oferta da firma de MAIOR desconto do momento , nunca escritos a mao.
+function MC_NOTIF(firms) {
+  var f = (firms || []).slice().sort(function (a, b) {
+    return (parseInt(b.discount, 10) || 0) - (parseInt(a.discount, 10) || 0);
+  })[0];
+  if (!f || !f.coupon) return { code: 'MARKET', linha: 'Exclusive coupons, tap to copy' };
+  var pct = parseInt(f.discount, 10) || 0;
+  return {
+    code: String(f.coupon).toUpperCase(),
+    linha: f.name + (pct ? ' ' + pct + '% OFF' : '') + ', tap to copy'
+  };
+}
+
 function MC_DATA() {
   try {
     return new Date().toLocaleDateString('en-US',
@@ -3029,6 +3056,10 @@ class Component extends DCLogic {
     this._homeStatic = {
       // Numeros do rodape dos Awards , eram 19 / 210K+ / 8, todos chumbados. O pior era
       // "8 Award categories" mostrando TRES: numero que a propria tela desmente logo acima.
+      lockData: MC_LOCK().data,
+      lockHora: MC_LOCK().hora,
+      notifCode: MC_NOTIF(this.firms).code,
+      notifLinha: MC_NOTIF(this.firms).linha,
       dataHoje: MC_DATA(),
       awFirmas: String((this.firms || []).length),
       awReviews: (function (fs) {
