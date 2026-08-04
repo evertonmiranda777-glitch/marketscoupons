@@ -1314,17 +1314,15 @@
       <div style="flex: 1;"></div>
       <sc-for list="{{ heatTabs }}" as="t" hint-placeholder-count="4"><button data-heattab="1" sc-camel-on-click="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button></sc-for>
     </div>
-    <div data-heatgrid="1" style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; height: 560px;">
-      <sc-for list="{{ heatSectors }}" as="sec" hint-placeholder-count="6">
-        <div style="{{ sec.wrapStyle }}">
-          <div style="font-size: 11px; font-weight: 700; color: #c4ccd2; padding: 2px 2px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ sec.name }}</div>
-          <div style="flex: 1; display: flex; flex-wrap: wrap; gap: 3px; align-content: flex-start;">
-            <sc-for list="{{ sec.tiles }}" as="t" hint-placeholder-count="6">
-              <div style="{{ t.style }}"><div style="font-weight: 800; font-size: {{ t.symSize }}; color: #fff; line-height: 1;">{{ t.sym }}</div><div style="font-weight: 700; font-size: {{ t.pctSize }}; color: rgba(255,255,255,0.85); margin-top: 3px;">{{ t.pct }}</div></div>
-            </sc-for>
-          </div>
-        </div>
-      </sc-for>
+    <!-- HEATMAP DE VERDADE , widget do TradingView, mesma fonte que o site atual usa.
+         A grade que veio no pacote era MOCK: 6 setores e ~40 acoes com variacao inventada
+         (NVDA -2.40, AAPL +1.76...). Numero de mercado inventado na tela nao e "placeholder
+         bonito", e informacao falsa , o trader confere no celular e perde a confianca no
+         resto da pagina. As abas WORLD/USA/CRYPTO trocam o dataSource do widget. -->
+    <div data-heatgrid="1" style="height: 560px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07);">
+      <iframe id="mc-heatmap" title="Market heat map" loading="lazy"
+        style="width: 100%; height: 100%; border: 0; display: block;"
+        src="https://www.tradingview.com/embed-widget/stock-heatmap/?locale=en#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockColor%22%3A%22change%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22grouping%22%3A%22sector%22%2C%22locale%22%3A%22en%22%2C%22colorTheme%22%3A%22dark%22%2C%22hasTopBar%22%3Atrue%2C%22isDataSetEnabled%22%3Atrue%2C%22isZoomEnabled%22%3Atrue%2C%22hasSymbolTooltip%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D"></iframe>
     </div>
     <div data-heatlegend="1" style="display: flex; align-items: center; justify-content: center; gap: 2px; margin-top: 18px;">
       <sc-for list="{{ heatLegend }}" as="l" hint-placeholder-count="7"><div style="display: flex; flex-direction: column; align-items: center; gap: 4px;"><span style="width: 54px; height: 8px; background: {{ l.color }};"></span><span style="font-size: 10px; color: #7c8791;">{{ l.label }}</span></div></sc-for>
@@ -2636,6 +2634,49 @@ class Component extends DCLogic {
   //
   // A chave usada e a ANON, publica por design: ela ja vive no HTML do site atual, o
   // navegador precisa dela, e quem protege o dado e o RLS.
+  // ══════════════════════════════════════════════════════════════════════════
+  // CALENDARIO ECONOMICO AO VIVO , mesma fonte que o site atual ja usa ha meses
+  // (edge function `economic-calendar`). Sem chave: e' publica.
+  // A demo trazia 20 eventos de JUNHO chumbados; evento economico com data velha e pior
+  // que nenhum, porque o trader confere e perde a confianca no resto da pagina.
+  _mcLigarCalendario() {
+    if (this._mcCalBuscou) return;
+    this._mcCalBuscou = true;
+    var self = this;
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/functions/v1/economic-calendar')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var ev = j && j.events;
+        if (!ev || !ev.length) return;              // sem dado: fica a demo, nao esvazia
+        var hoje = new Date().toISOString().slice(0, 10);
+        var imp = { 3: 'high', 2: 'medium', 1: 'low' };
+        var num = function (v) {
+          if (v == null) return null;
+          var n = parseFloat(String(v).replace(/[^0-9.-]/g, ''));
+          return isNaN(n) ? null : n;
+        };
+        self.calData = ev.slice(0, 60).map(function (e, i) {
+          var a = num(e.actual), f = num(e.forecast);
+          return {
+            id: i + 1,
+            day: e.date === hoje ? 'today' : 'week',
+            time: e.time || '',
+            ccy: e.currency || '',
+            name: e.event || '',
+            period: e.reference || '',
+            actual: e.actual || '',
+            forecast: e.forecast || '',
+            previous: e.previous || '',
+            impact: imp[e.importance] || 'low',
+            // seta so quando da pra comparar de verdade; sem numero, sem seta
+            dir: (a != null && f != null) ? (a > f ? 'up' : (a < f ? 'down' : '')) : ''
+          };
+        });
+        self.setState({ _mcCal: Date.now() });
+      })
+      .catch(function () { /* mantem a demo */ });
+  }
+
   _mcLigarBanco() {
     if (this._mcJaBuscou) return;
     this._mcJaBuscou = true;
@@ -2691,6 +2732,7 @@ class Component extends DCLogic {
 
   renderVals() {
     this._mcLigarBanco();
+    this._mcLigarCalendario();
     const s = this.state;
     const isCatalog = s.route === 'firms';
     const reviewsMap = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K', aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K', brightfunded:'0.9K', ftmo:'43.5K', the5ers:'5.8K', goat:'0.7K', alpha:'4.6K', topone:'4.1K', myfundedfutures:'8.2K', tradeify:'1.1K', takeprofit:'6.3K', legends:'0.5K', lucid:'0.4K' };
