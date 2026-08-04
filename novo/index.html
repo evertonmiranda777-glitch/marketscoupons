@@ -2623,7 +2623,74 @@ class Component extends DCLogic {
     return this._homeStatic;
   }
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // LIGACAO COM O BANCO , troca o `firms` de DEMONSTRACAO pelo cms_firms ao vivo.
+  //
+  // O build do Design diz no proprio comentario: "Demo data modeled on cms_firms shape...
+  // real build binds to cms_firms at runtime". Isto e o runtime.
+  //
+  // ⚠️ CUPOM E PRECO NUNCA FICAM ESCRITOS AQUI. A lei do projeto e que dado de afiliado so
+  // vive na tabela , cupom em arquivo apodrece e chega errado no cliente (foi assim que o
+  // bot mandou digitar "E8", que paga ZERO comissao). O array de demo que veio no pacote
+  // tem 6 cupons chumbados; a partir daqui eles sao ignorados.
+  //
+  // A chave usada e a ANON, publica por design: ela ja vive no HTML do site atual, o
+  // navegador precisa dela, e quem protege o dado e o RLS.
+  _mcLigarBanco() {
+    if (this._mcJaBuscou) return;
+    this._mcJaBuscou = true;
+    // rastro de diagnostico: a instancia vive em escopo fechado do runtime, entao sem isto
+    // nao da pra saber daqui de fora se a ligacao rodou, falhou ou nem foi chamada.
+    try { window.__mcBanco = { chamado: true, quando: Date.now() }; } catch (e) {}
+    var SB = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+    var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    var cols = 'id,name,discount,discount_type,coupon,rating,prices,split,drawdown,sort_order,active,type';
+    var self = this;
+    fetch(SB + '/rest/v1/cms_firms?active=eq.true&select=' + cols + '&order=sort_order.asc', {
+      headers: { apikey: AN, Authorization: 'Bearer ' + AN }
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (linhas) {
+      try { window.__mcBanco.linhas = linhas ? linhas.length : 0; } catch (e) {}
+      if (!linhas || !linhas.length) return;   // banco fora do ar: fica a demo, nao esvazia a tela
+      var antigas = {};
+      (self.firms || []).forEach(function (f) { antigas[f.id] = f; });
+      var vivas = linhas.map(function (f) {
+        var velha = antigas[f.id] || {};
+        var pr = (f.prices || [])[0] || {};
+        var vit = f.discount_type === 'lifetime';
+        return {
+          id: f.id,
+          name: f.name || velha.name || f.id,
+          // ⚠️ `cms_firms.type` esta em PORTUGUES ('Futuros', 'Forex/Futuros') porque o
+          // admin e' PT. O site e' EN-default , sem esta traducao o card ingles exibe
+          // "Futuros" pro visitante da India, que e' 75% do trafego.
+          type: (function (v) {
+            var m = { 'Futuros': 'Futures', 'Forex/Futuros': 'Forex/Futures',
+                      'Forex': 'Forex', 'Cripto': 'Crypto', 'Acoes': 'Stocks', 'Ações': 'Stocks' };
+            return m[v] || v || velha.type || 'Futures';
+          })(f.type),
+          initials: velha.initials || String(f.name || f.id).slice(0, 2).toUpperCase(),
+          logo: velha.logo || (f.id + '.webp'),
+          color: velha.color || '#bfff00',
+          discount: f.discount ? (f.discount + '%') : '',
+          // ⚠️ oferta vitalicia NAO exibe prazo em lugar nenhum (lei de 28/07)
+          discNote: f.discount ? (vit ? 'OFF LIFETIME' : 'OFF') : '',
+          discColor: velha.discColor || '#bfff00',
+          coupon: f.coupon || '',                       // sem cupom e estado VALIDO (ex: FTMO)
+          rating: f.rating != null ? String(f.rating) : (velha.rating || ''),
+          priceNow: pr.n || '',
+          priceOld: pr.o || '',
+          split: f.split || velha.split || '',
+          dd: f.drawdown || velha.dd || ''
+        };
+      });
+      self.firms = vivas;
+      try { window.__mcBanco.ok = true; window.__mcBanco.qtd = vivas.length; } catch (e) {}
+      self.setState({ _mcBanco: Date.now() });   // forca o redesenho
+    }).catch(function (e) { try { window.__mcBanco.erro = String(e).slice(0,120); } catch (_) {} });
+  }
+
   renderVals() {
+    this._mcLigarBanco();
     const s = this.state;
     const isCatalog = s.route === 'firms';
     const reviewsMap = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K', aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K', brightfunded:'0.9K', ftmo:'43.5K', the5ers:'5.8K', goat:'0.7K', alpha:'4.6K', topone:'4.1K', myfundedfutures:'8.2K', tradeify:'1.1K', takeprofit:'6.3K', legends:'0.5K', lucid:'0.4K' };
