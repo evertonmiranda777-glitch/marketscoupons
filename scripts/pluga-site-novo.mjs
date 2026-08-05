@@ -472,14 +472,62 @@ function MC_REVIEWS(id) {`);
 // Ela tem overflow-x:auto, entao ROLA, mas sem nenhuma pista visual: parece cortado.
 // 15 itens com padding 8px 11px. Tirando 3px de cada lado libera 90px, mais que os 77 que
 // faltam, e a diferenca e imperceptivel. Preferi apertar a esconder item do menu.
+//
+// ⚠️ CORRIGIDO 05/08 , meu diagnostico de 04/08 estava ERRADO. Eu disse que a barra "rola,
+// so nao avisa". Medido de novo: os itens tem flex-shrink:1, entao ela NAO rola , os itens
+// ENCOLHEM e o texto do ultimo fica cortado no meio ("Live Ro..."). Apertar padding so
+// adiava: eu tinha ganho 28px e o Everton continuou vendo cortado no zoom dele.
+// Agora sao tres coisas:
+//   1. flex-shrink:0 , item nunca encolhe, entao texto nunca corta pela metade;
+//   2. a barra rola de verdade, com a rolagem escondida (ela some no Mac e fica feia no PC);
+//   3. um esmaecido na borda direita QUANDO ha mais coisa , sem isso rolagem sem barra
+//      vira conteudo invisivel, que e pior que cortado.
+// 15 itens nao cabem em notebook nem espremendo. Preferi rolar a esconder item do menu.
 if (!d.includes('mc-navwrap > *')) {
   const CSS = `<style>
-    /* cabe os 15 itens ate 1400px sem rolagem escondida , ver remendo 16 */
     @media (min-width: 1100px) {
       .mc-navwrap > * { padding-left: 8px !important; padding-right: 8px !important; }
     }
+    .mc-navwrap { scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; }
+    .mc-navwrap::-webkit-scrollbar { display: none; }
+    .mc-navwrap > * { flex-shrink: 0 !important; }
+    .mc-navfade { position: relative; }
+    .mc-navfade::after {
+      content: ''; position: absolute; top: 0; right: 0; bottom: 10px; width: 64px;
+      pointer-events: none; opacity: 0; transition: opacity .18s;
+      background: linear-gradient(90deg, rgba(10,13,7,0), rgba(10,13,7,.94) 72%);
+    }
+    .mc-navfade.mc-tem-mais::after { opacity: 1; }
   </style>`;
+  const JS = `<script>
+  // pista de "tem mais pra direita" no menu. Ver remendo 16.
+  (function () {
+    function liga() {
+      var w = document.querySelector('.mc-navwrap');
+      if (!w || !w.parentElement) return false;
+      var p = w.parentElement;
+      p.classList.add('mc-navfade');
+      function ver() {
+        p.classList.toggle('mc-tem-mais', w.scrollWidth - w.scrollLeft - w.clientWidth > 4);
+      }
+      w.addEventListener('scroll', ver, { passive: true });
+      addEventListener('resize', ver);
+      ver();
+      return true;
+    }
+    // ⚠️ NAO basta ligar uma vez. O runtime do Design REMONTA a barra a cada troca de
+    // pagina e a classe some junto , foi assim que a 1a versao subiu sem o esmaecido:
+    // o CSS estava la, o JS tinha rodado, e a marca ja tinha sido apagada quando eu medi.
+    liga();
+    var esperando = 0;
+    new MutationObserver(function () {
+      if (esperando) return;
+      esperando = setTimeout(function () { esperando = 0; liga(); }, 120);
+    }).observe(document.body, { childList: true, subtree: true });
+  })();
+  </scr` + `ipt>`;
   d = d.replace('</head>', CSS + String.fromCharCode(10) + '</head>');
+  d = d.replace('</body>', JS + String.fromCharCode(10) + '</body>');
   feitos.push('menu completo no desktop');
 } else pulados.push('menu completo no desktop');
 
