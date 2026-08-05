@@ -593,6 +593,28 @@ if (!d.includes('mc-navwrap > *')) {
       'TradingView': 'https://tradingview.com/?aff_id=164855',
       'NinjaTrader': 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO'
     };
+    // ── PAINEL DE CADASTRO / LOGIN ──────────────────────────────────────────────
+    // O Everton: "nao rola ate em cima". O painel tem 1073px de conteudo e na tela dele
+    // (zoom 125%, sobram ~778px) faltam ~300px, entao ele ROLA , mas abria ja rolado,
+    // com o titulo "Create Account" cortado, e a roda do mouse escapava pra pagina de
+    // tras em vez de mover o painel. Duas coisas: volta pro topo ao abrir, e prende a
+    // rolagem dentro do painel (overscroll-behavior) pra roda nao vazar.
+    function ajustaPainelAuth() {
+      var ds = document.querySelectorAll('div');
+      for (var i = 0; i < ds.length; i++) {
+        var e = ds[i];
+        if (e.__mcAuth) continue;
+        var st = e.getAttribute('style') || '';
+        if (st.indexOf('max-width: 340px') < 0 || st.indexOf('overflow-y: auto') < 0) continue;
+        e.__mcAuth = 1;
+        e.style.overscrollBehavior = 'contain';
+        e.scrollTop = 0;
+        // o runtime anima a entrada (translateX): reposiciona depois que assentar
+        setTimeout(function () { e.scrollTop = 0; }, 60);
+        setTimeout(function () { e.scrollTop = 0; }, 320);
+      }
+    }
+
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -634,7 +656,7 @@ if (!d.includes('mc-navwrap > *')) {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ajustaPainelAuth(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </scr` + `ipt>`;
