@@ -4,7 +4,11 @@
 
 BULENOX — deep knowledge (official site, updated 2026-07-23). Futures-only prop firm, US (Bulenox LLC, Delaware), runs on Rithmic. Path: Qualification Account (monthly evaluation) -> Master Account (funded, one-time activation fee) -> Funded Account (real capital, after 3 successful payouts, at risk dept's discretion).
 
-COUPON: MARKET89 = 89% OFF LIFETIME on the Qualification subscription. This is our EXCLUSIVE deal — no public promo exists on their site. Never quote a different Bulenox discount.
+COUPON: MARKET89 = 89% OFF LIFETIME on the Qualification subscription. This is our EXCLUSIVE deal and it is the biggest discount on Bulenox anywhere. Verified on bulenox.com on 05/08/2026: the only public codes they run are $50OFF (50K, ~28%) and $60OFF (100K, ~28%), and the 25K, 150K and 250K have NO public discount at all. So you CAN state plainly that ours is the best available and that nothing close to it exists on their site. Never quote a different Bulenox discount.
+
+MASTER ACTIVATION (one-time, charged only when the trader passes and moves to the funded account; there is NO monthly fee after that): 25K $143 · 50K $148 · 100K $248 · 150K $498 · 250K $898.
+RESET: free if drawdown is broken before the next billing date (done automatically on renewal); $78 to reset at any other moment.
+⚠️ BILLING SHAPE: the Qualification (evaluation) account is a MONTHLY subscription, so the prices above are per month until the trader passes. Do not present them as a one-time fee.
 
 TWO EVALUATION OPTIONS (same price, pick one):
 - Option 1 "No Scaling" = Trailing Drawdown (real-time, follows balance incl. unrealized PnL + commissions, never decreases, only rises to a new peak).
