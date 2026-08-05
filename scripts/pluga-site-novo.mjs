@@ -548,13 +548,15 @@ if (!d.includes('mc-navwrap > *')) {
     // deploys achando que era nome errado de propriedade. Entao o destino e amarrado
     // aqui pelo ROTULO, que e estavel, e reaplicado a cada remontagem.
     // Links identicos aos do site no ar (app.js PLATFORMS_LANGS).
+    // ⚠️ SO ESTAS DUAS. Eu tinha adicionado Rithmic, Tradovate, MT5 e WealthCharts
+    // porque vi 6 no array PLATFORMS_LANGS do app.js , e NAO OLHEI A TELA. O site no ar
+    // filtra por PLAT_ACTIVE = {ninjatrader, tradingview}, que e a whitelist de PARCERIA
+    // ATIVA (esta escrito no comentario do proprio renderPlatforms). As outras 4 estao no
+    // array como catalogo, nao como oferta. O site novo foi feito EM CIMA do que existe
+    // de verdade , nao invento pagina.
     var PLAT = {
-      'TradingView':   'https://tradingview.com/?aff_id=164855',
-      'NinjaTrader':   'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
-      'Rithmic':       'https://rithmic.com',
-      'Tradovate':     'https://tradovate.com',
-      'MetaTrader 5':  'https://metatrader5.com',
-      'WealthCharts':  'https://wealthcharts.com'
+      'TradingView': 'https://tradingview.com/?aff_id=164855',
+      'NinjaTrader': 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO'
     };
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
@@ -619,6 +621,14 @@ if (!d.includes('mc-navwrap > *')) {
 // Regenerar depois de mexer no /novo na mão: desempacota numa pasta temporária, roda este
 // script nela, e faz o diff contra novo/index.html.
 const PREVIAS = JSON.parse(fs.readFileSync('scripts/remendos-previas.json', 'utf8'));
+// ⚠️ Tabela vazia = geração quebrada. Sem esta guarda o script "roda bem", o deploy sobe e
+// o site perde TODAS as ligações em silêncio , exatamente o que aconteceu em 05/08.
+if (!Array.isArray(PREVIAS) || PREVIAS.length < 30) {
+  console.error(`
+✗ remendos-previas.json tem ${PREVIAS.length} entradas (esperado 30+).`);
+  console.error('  Publicar assim tira as prévias do ar. Regere a tabela antes.');
+  process.exit(1);
+}
 let novasPrevias = 0, jaPrevias = 0;
 for (const p of PREVIAS) {
   // "já aplicado" = a marca está lá. A marca é um trecho ADICIONADO por este remendo que
@@ -626,7 +636,11 @@ for (const p of PREVIAS) {
   // ⚠️ Duas tentativas anteriores falharam calado: usar um trecho curto qualquer deixou 7
   // remendos de fora, e usar o texto final inteiro fez a 2ª rodada DUPLICAR o MC_DATA e o
   // rodapé dos Awards (numa inserção pura, o contexto sobrevive e a âncora casa de novo).
-  if (d.includes(p.marca)) { jaPrevias++; continue; }
+  // Remendo que só APAGA não tem marca própria (não acrescenta texto): a prova de que já
+  // rodou é a AUSÊNCIA do trecho removido. Sem tratar isso a geração da tabela abortava,
+  // e uma tabela vazia publica o site SEM NENHUMA ligação , foi o que eu acabei de fazer.
+  if (p.ausente !== undefined) { if (!d.includes(p.ausente)) { jaPrevias++; continue; } }
+  else if (d.includes(p.marca)) { jaPrevias++; continue; }
   const n = d.split(p.de).length - 1;
   if (n !== 1) {
     console.error(`\n✗ ÂNCORA DAS PRÉVIAS ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}:`);

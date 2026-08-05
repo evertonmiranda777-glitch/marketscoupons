@@ -4079,43 +4079,7 @@ class Component extends DCLogic {
           badge:'FREE AVAILABLE', badgeStyle:'padding:9px;text-align:center;font-size:11px;font-weight:800;letter-spacing:0.06em;color:#c8d0d6;background:rgba(255,255,255,0.06);',
           about:'Free futures platform with advanced backtesting, automation and an indicators marketplace. Accepted by most prop firms and built for serious execution.',
           features:['Free for EOD data','Advanced backtesting','Automation (NinjaScript)','Indicators marketplace','Multi-broker','Pro order flow'] },
-        // As 4 abaixo FALTAVAM , o site no ar lista SEIS. Rithmic e a padrao das prop firms
-        // (Apex, Bulenox, E2T) e Tradovate/WealthCharts sao as que aparecem nos proprios
-        // cards de firma desta pagina: sumir com elas deixa o visitante sem saber onde opera.
-        { name:'Rithmic', key:'rithmic', initials:'R', logo:'rithmic.webp', logoSrc:'./novo/assets/logos/rithmic.webp', tagline:'Order Execution', logoBg:'linear-gradient(135deg,#f97316,#9a3412)', price:'Via broker', priceNote:'', border:'rgba(255,255,255,0.08)',
-          badge:'PROP FIRMS STANDARD', badgeStyle:'padding:9px;text-align:center;font-size:11px;font-weight:800;letter-spacing:0.06em;color:#c8d0d6;background:rgba(255,255,255,0.06);',
-          about:'Low-latency data feed and order execution for futures. Industry standard for prop firms (Apex, Bulenox, Earn2Trade).',
-          features:['Ultra-low latency','CME/CBOT/NYMEX data','Order routing','Automation API','24/7 support'] },
-        { name:'Tradovate', key:'tradovate', initials:'TD', logo:'tradovate.webp', logoSrc:'./novo/assets/logos/tradovate.webp', tagline:'Trading Platform', logoBg:'linear-gradient(135deg,#06b6d4,#0e7490)', price:'Via broker', priceNote:'', border:'rgba(255,255,255,0.08)',
-          badge:'CLOUD-BASED', badgeStyle:'padding:9px;text-align:center;font-size:11px;font-weight:800;letter-spacing:0.06em;color:#c8d0d6;background:rgba(255,255,255,0.06);',
-          about:'Cloud-based futures platform. Modern interface, integrated data and support across devices.',
-          features:['Cloud-based','Modern interface','Integrated data','Mobile app','Advanced DOM'] },
-        { name:'MetaTrader 5', key:'mt5', initials:'M5', logo:'mt5.webp', logoSrc:'./novo/assets/logos/mt5.webp', tagline:'Forex & CFDs', logoBg:'linear-gradient(135deg,#22c55e,#15803d)', price:'Free', priceNote:'', border:'rgba(255,255,255,0.08)',
-          badge:'FOREX STANDARD', badgeStyle:'padding:9px;text-align:center;font-size:11px;font-weight:800;letter-spacing:0.06em;color:#c8d0d6;background:rgba(255,255,255,0.06);',
-          about:'The standard platform of the forex market. Technical indicators, EAs, backtesting and support from most forex prop firms.',
-          features:['100+ indicators','Expert Advisors (EAs)','Strategy Tester','Multiple brokers','Mobile app'] },
-        { name:'WealthCharts', key:'wealthcharts', initials:'WC', logo:'wealthcharts.webp', logoSrc:'./novo/assets/logos/wealthcharts.webp', tagline:'Charts & Analysis', logoBg:'linear-gradient(135deg,#f59e0b,#b45309)', price:'Via Apex', priceNote:'', border:'rgba(255,255,255,0.08)',
-          badge:'APEX PARTNER', badgeStyle:'padding:9px;text-align:center;font-size:11px;font-weight:800;letter-spacing:0.06em;color:#c8d0d6;background:rgba(255,255,255,0.06);',
-          about:'Charting and analysis platform used by Apex Trader Funding. Copy trading, order flow indicators and market analysis.',
-          features:['Apex copy trading','Order flow','Market analysis','Premium indicators','Apex integration'] },
-      ].map(function (pl) {
-        // ⚠️ O botao "View plans" estava MORTO: o markup liga em {{ c.onGet }} e os cards de
-        // plataforma nunca definiram onGet (o onGet que existe e o do card de FIRMA). Numa
-        // pagina cujo TradingView e NinjaTrader sao links de AFILIADO, botao morto = comissao
-        // jogada fora. Os destinos sao os MESMOS do site no ar (app.js PLATFORMS_LANGS).
-        var LINKS = {
-          tradingview:  'https://tradingview.com/?aff_id=164855',
-          ninjatrader:  'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
-          rithmic:      'https://rithmic.com',
-          tradovate:    'https://tradovate.com',
-          mt5:          'https://metatrader5.com',
-          wealthcharts: 'https://wealthcharts.com'
-        };
-        // ⚠️ o binding do markup e p.onOpen , eu tinha escrito onGet de cabeca e o botao
-        // continuou morto depois do 1o deploy. Conferir o NOME no markup, nao supor.
-        pl.onOpen = function () { window.open(LINKS[pl.key], '_blank', 'noopener'); };
-        return pl;
-      }).map(p => ({ ...p, logoEl: this.logoImg(p.logo), onOpen: () => this.openPlatform(p.key) })),
+      ].map(p => ({ ...p, logoEl: this.logoImg(p.logo), onOpen: () => this.openPlatform(p.key) })),
 
       platDetail: (() => {
         if (!s.platKey) return null;
@@ -4386,6 +4350,7 @@ class Component extends DCLogic {
     // deploys achando que era nome errado de propriedade. Entao o destino e amarrado
     // aqui pelo ROTULO, que e estavel, e reaplicado a cada remontagem.
     // Links identicos aos do site no ar (app.js PLATFORMS_LANGS).
+
     var PLAT = {
       'TradingView':   'https://tradingview.com/?aff_id=164855',
       'NinjaTrader':   'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
