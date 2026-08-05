@@ -3462,6 +3462,38 @@ class Component extends DCLogic {
       }).catch(function () {});
   }
 
+  _mcLigarNumeros() {
+    if (this._mcNumBuscou) return;
+    this._mcNumBuscou = true;
+    var self = this;
+    var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    var kf = function (n) {
+      if (n < 1000) return String(n) + '+';
+      var v = (n / 1000).toFixed(1);
+      if (v.slice(-2) === '.0') v = v.slice(0, -2);
+      return v + 'K+';
+    };
+    // ⚠️ UMA CHAMADA SO, e por RPC. Tentei contar coupon_clicks direto do navegador e
+    // voltava ZERO: o RLS nao deixa o anon ler essa tabela, entao a tela caia calada no
+    // numero escrito a mao. A funcao numeros_publicos() devolve so o AGREGADO (nenhuma linha,
+    // nenhum dado de pessoa) e e a unica porta que o anon tem pra esse total.
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/rpc/numeros_publicos', {
+      method: 'POST',
+      headers: { apikey: AN, Authorization: 'Bearer ' + AN, 'Content-Type': 'application/json' },
+      body: '{}'
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!j) return;
+      var n = {};
+      if (j.firmas) n.firmas = j.firmas + '+';
+      if (j.desconto_max) n.desconto = j.desconto_max + '%';
+      if (j.cupons_30d) n.cupons = kf(j.cupons_30d);
+      if (!Object.keys(n).length) return;
+      self._mcNum = n;
+      self._homeStatic = null;
+      self.setState({ _mcNum: 1 });
+    }).catch(function () {});
+  }
+
   _mcLigarCalendario() {
     if (this._mcCalBuscou) return;
     this._mcCalBuscou = true;
@@ -3514,6 +3546,7 @@ class Component extends DCLogic {
     this._mcLigarBlog();
     this._mcLigarMercado();
     this._mcLigarAnalise();
+    this._mcLigarNumeros();
     const s = this.state;
     const isCatalog = s.route === 'firms';
     const reviewsMap = { apex:'19.4K', bulenox:'1.6K', fn:'69.7K', 'funded-futures-family':'2.1K', aquafutures:'0.4K', blueberryfutures:'0.3K', e2t:'3.1K', tradeday:'1.3K', brightfunded:'0.9K', ftmo:'43.5K', the5ers:'5.8K', goat:'0.7K', alpha:'4.6K', topone:'4.1K', myfundedfutures:'8.2K', tradeify:'1.1K', takeprofit:'6.3K', legends:'0.5K', lucid:'0.4K' };
@@ -4205,10 +4238,10 @@ class Component extends DCLogic {
       })(),
 
       stats: [
-        { big:'18+', bigLabel:'Trading firms', numColor:'#bfff00', key:'firms' },
-        { big:'90%', bigLabel:'Max discount', numColor:'#F4F8F9', key:'specials' },
+        { big:(this._mcNum || {}).firmas || '18+', bigLabel:'Trading firms', numColor:'#bfff00', key:'firms' },
+        { big:(this._mcNum || {}).desconto || '90%', bigLabel:'Max discount', numColor:'#F4F8F9', key:'specials' },
         { big:'74K+', bigLabel:'Monthly views', numColor:'#F4F8F9', key:'quiz' },
-        { big:'2.7K+', bigLabel:'Codes copied / mo', numColor:'#F4F8F9', key:'specials' },
+        { big:(this._mcNum || {}).cupons || '2.7K+', bigLabel:'Codes copied / mo', numColor:'#F4F8F9', key:'specials' },
       ].map(st => ({ ...st, onClick: () => this.setState({ route: st.key }) })),
 
       firms: (isCatalog ? list : list.slice(0, 6)).map(f => {

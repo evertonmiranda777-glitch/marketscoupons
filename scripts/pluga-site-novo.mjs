@@ -625,6 +625,62 @@ if (!d.includes('mc-navwrap > *')) {
   feitos.push('menu completo no desktop');
 } else pulados.push('menu completo no desktop');
 
+// ─────────────────────────────────────────────── 16b. números do hero
+// "18+ firmas", "90% max discount" e "2.7K+ códigos copiados/mês" vinham ESCRITOS. Os três
+// estavam certos no dia da entrega (o de cupom bate exato com coupon_clicks: 2.714 em 30
+// dias), e é justamente por isso que era perigoso: número certo hoje apodrece sem avisar,
+// e isto é claim público na home que recebe anúncio.
+// "74K+ monthly views" fica escrito de propósito , é GA4, não tenho de onde ler no cliente.
+remendo('numeros do hero', '_mcLigarNumeros',
+  '  _mcLigarCalendario() {',
+  `  _mcLigarNumeros() {
+    if (this._mcNumBuscou) return;
+    this._mcNumBuscou = true;
+    var self = this;
+    var AN = '${ANON}';
+    var kf = function (n) {
+      if (n < 1000) return String(n) + '+';
+      var v = (n / 1000).toFixed(1);
+      if (v.slice(-2) === '.0') v = v.slice(0, -2);
+      return v + 'K+';
+    };
+    // ⚠️ UMA CHAMADA SO, e por RPC. Tentei contar coupon_clicks direto do navegador e
+    // voltava ZERO: o RLS nao deixa o anon ler essa tabela, entao a tela caia calada no
+    // numero escrito a mao. A funcao numeros_publicos() devolve so o AGREGADO (nenhuma linha,
+    // nenhum dado de pessoa) e e a unica porta que o anon tem pra esse total.
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/rpc/numeros_publicos', {
+      method: 'POST',
+      headers: { apikey: AN, Authorization: 'Bearer ' + AN, 'Content-Type': 'application/json' },
+      body: '{}'
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!j) return;
+      var n = {};
+      if (j.firmas) n.firmas = j.firmas + '+';
+      if (j.desconto_max) n.desconto = j.desconto_max + '%';
+      if (j.cupons_30d) n.cupons = kf(j.cupons_30d);
+      if (!Object.keys(n).length) return;
+      self._mcNum = n;
+      self._homeStatic = null;
+      self.setState({ _mcNum: 1 });
+    }).catch(function () {});
+  }
+
+  _mcLigarCalendario() {`);
+
+remendo('chamada dos numeros', 'this._mcLigarNumeros();',
+  '    this._mcLigarBlog();',
+  '    this._mcLigarBlog();' + String.fromCharCode(10) + '    this._mcLigarNumeros();');
+
+remendo('numeros do hero ao vivo', '(this._mcNum || {}).firmas',
+  `        { big:'18+', bigLabel:'Trading firms', numColor:'#bfff00', key:'firms' },
+        { big:'90%', bigLabel:'Max discount', numColor:'#F4F8F9', key:'specials' },
+        { big:'74K+', bigLabel:'Monthly views', numColor:'#F4F8F9', key:'quiz' },
+        { big:'2.7K+', bigLabel:'Codes copied / mo', numColor:'#F4F8F9', key:'specials' },`,
+  `        { big:(this._mcNum || {}).firmas || '18+', bigLabel:'Trading firms', numColor:'#bfff00', key:'firms' },
+        { big:(this._mcNum || {}).desconto || '90%', bigLabel:'Max discount', numColor:'#F4F8F9', key:'specials' },
+        { big:'74K+', bigLabel:'Monthly views', numColor:'#F4F8F9', key:'quiz' },
+        { big:(this._mcNum || {}).cupons || '2.7K+', bigLabel:'Codes copied / mo', numColor:'#F4F8F9', key:'specials' },`);
+
 // ─────────────────────────────────────────────── 17. as prévias da home
 // Análise diária (NQ real), GEX (níveis reais), mini heatmap, fita do Live Room,
 // plataformas, calculadora de posição e quiz.
