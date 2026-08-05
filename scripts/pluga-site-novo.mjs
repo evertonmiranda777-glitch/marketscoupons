@@ -604,14 +604,25 @@ if (!d.includes('mc-navwrap > *')) {
       for (var i = 0; i < ds.length; i++) {
         var e = ds[i];
         if (e.__mcAuth) continue;
-        var st = e.getAttribute('style') || '';
-        if (st.indexOf('max-width: 340px') < 0 || st.indexOf('overflow-y: auto') < 0) continue;
+        var cs = getComputedStyle(e);
+        if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') continue;
+        if (e.scrollHeight <= e.clientHeight + 2) continue;      // nao transborda, nada a fazer
+        if (e.clientHeight > window.innerHeight + 4) continue;   // e a pagina, nao um painel
+        var t = e.textContent || '';
+        if (!/Sign up with Google|Create Account|Welcome back|Log in to/i.test(t)) continue;
         e.__mcAuth = 1;
+        // ⚠️ ESTE E O DEFEITO DE VERDADE. O painel e um flex column com
+        // justify-content:center. Quando o conteudo passa da altura da caixa, o excesso
+        // sobra dos DOIS lados e a parte de CIMA fica FORA da area rolavel , some e nao
+        // volta com scroll nenhum. E o "nao rola ate em cima" do print: o titulo
+        // "Create Account" cortado e inalcancavel. Centralizar so pode valer quando cabe.
+        if (cs.justifyContent === 'center') e.style.justifyContent = 'flex-start';
         e.style.overscrollBehavior = 'contain';
         e.scrollTop = 0;
-        // o runtime anima a entrada (translateX): reposiciona depois que assentar
-        setTimeout(function () { e.scrollTop = 0; }, 60);
-        setTimeout(function () { e.scrollTop = 0; }, 320);
+        (function (el) {
+          setTimeout(function () { el.scrollTop = 0; }, 60);
+          setTimeout(function () { el.scrollTop = 0; }, 320);
+        })(e);
       }
     }
 
