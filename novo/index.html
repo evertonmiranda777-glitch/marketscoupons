@@ -17,14 +17,20 @@
        ficou sem cara , o Everton mandou o print. Medindo direito: o ícone custa 16px + 6
        de vão, mas o vão, o padding e a fonte juntos devolvem quase o mesmo SEM apagar
        nada. Aperto em degraus, ícone SEMPRE visível até 1280px. */
+    /* ⚠️ O RECUO DA BARRA NAO SE MEXE. Eu tinha baixado de 26px pra 16px pra ganhar
+       espaco e o menu ficou 16px A ESQUERDA DO LOGO , o Everton mandou o print. O
+       cabecalho tem 32px de cada lado e o logo comeca exatamente em 32: a barra alinha
+       nos 32 tambem. E nem precisava do aperto: sobravam 136px. Quem cede espaco sao os
+       ITENS (vao e padding), nunca a margem da pagina. */
+    .mc-navwrap { padding-left: 32px !important; padding-right: 32px !important; }
     @media (max-width: 1749px) {
-      .mc-navwrap { padding-left: 16px !important; padding-right: 16px !important; gap: 1px !important; }
-      .mc-navwrap > * { gap: 4px !important; padding: 8px 6px !important; font-size: 12.5px !important; }
-      .mc-navwrap > * > i.ti { font-size: 13px !important; }
+      .mc-navwrap { gap: 1px !important; }
+      .mc-navwrap > * { gap: 5px !important; padding: 8px 8px !important; font-size: 13px !important; }
+      .mc-navwrap > * > i.ti { font-size: 14px !important; }
     }
     @media (max-width: 1449px) {
-      .mc-navwrap > * { gap: 3px !important; padding: 8px 5px !important; font-size: 12px !important; }
-      .mc-navwrap > * > i.ti { font-size: 12px !important; }
+      .mc-navwrap > * { gap: 4px !important; padding: 8px 6px !important; font-size: 12.5px !important; }
+      .mc-navwrap > * > i.ti { font-size: 13px !important; }
     }
     /* abaixo de 1280px nem apertando cabe: aí sim o ícone sai, que é melhor que rolar */
     @media (max-width: 1279px) {
