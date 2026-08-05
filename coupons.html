@@ -776,33 +776,34 @@ const FIRMS = [
     types: ['Velocity', 'Premier Plus EOD', 'Premier Plus Intraday', 'Prime EOD', 'S2F'],
     plans: {
       'Velocity': [
-        {size:'$25K', orig:'$79', disc:'$16/mo', target:'$2,500', dd:'Intraday $1,250', pos:'3 minis / 30 micros', consistency:'40%', minDays:'3', popular:true},
-        {size:'$50K', orig:'$125', disc:'$25/mo', target:'$4,000', dd:'Intraday $2,250', pos:'5 minis / 50 micros', consistency:'40%', minDays:'3'},
-        {size:'$100K', orig:'$225', disc:'$45/mo', target:'$7,000', dd:'Intraday $3,250', pos:'10 minis / 100 micros', consistency:'40%', minDays:'3'},
+        {size:'$25K', orig:'$79', disc:'$16', target:'$2,500', dd:'Intraday $1,250', pos:'3 minis / 30 micros', consistency:'40%', minDays:'3', popular:true},
+        {size:'$50K', orig:'$125', disc:'$25', target:'$4,000', dd:'Intraday $2,250', pos:'5 minis / 50 micros', consistency:'40%', minDays:'3'},
+        {size:'$100K', orig:'$225', disc:'$45', target:'$7,000', dd:'Intraday $3,250', pos:'10 minis / 100 micros', consistency:'40%', minDays:'3'},
+        {size:'$150K', orig:'$325', disc:'$65', target:'$10,000', dd:'Intraday $4,250', pos:'15 minis / 150 micros', consistency:'40%', minDays:'3'},
       ],
       'Premier Plus EOD': [
-        {size:'$25K', orig:'$119', disc:'$72/mo', target:'$1,500', dd:'EOD $750', pos:'—', minDays:'1'},
-        {size:'$50K', orig:'$159', disc:'$96/mo', target:'$3,000', dd:'EOD $1,500', pos:'—', minDays:'1', popular:true},
-        {size:'$100K', orig:'$249', disc:'$150/mo', target:'$6,000', dd:'EOD $2,500', pos:'—', minDays:'1'},
-        {size:'$150K', orig:'$459', disc:'$276/mo', target:'$9,000', dd:'EOD $4,000', pos:'—', minDays:'1'},
+        {size:'$25K', orig:'$144', disc:'$87', target:'$1,500', dd:'EOD $750', pos:'—', minDays:'1'},
+        {size:'$50K', orig:'$194', disc:'$117', target:'$3,000', dd:'EOD $1,500', pos:'—', minDays:'1', popular:true},
+        {size:'$100K', orig:'$299', disc:'$180', target:'$6,000', dd:'EOD $2,500', pos:'—', minDays:'1'},
+        {size:'$150K', orig:'$529', disc:'$318', target:'$9,000', dd:'EOD $4,000', pos:'—', minDays:'1'},
       ],
       'Premier Plus Intraday': [
-        {size:'$25K', orig:'$89', disc:'$54/mo', target:'$1,500', dd:'Intraday $1,000', pos:'—', minDays:'1'},
-        {size:'$50K', orig:'$119', disc:'$72/mo', target:'$3,000', dd:'Intraday $2,000', pos:'—', minDays:'1'},
-        {size:'$100K', orig:'$189', disc:'$114/mo', target:'$6,000', dd:'Intraday $3,000', pos:'—', minDays:'1'},
-        {size:'$150K', orig:'$259', disc:'$156/mo', target:'$9,000', dd:'Intraday $4,500', pos:'—', minDays:'1'},
+        {size:'$25K', orig:'$114', disc:'$69', target:'$1,500', dd:'Intraday $1,000', pos:'—', minDays:'1'},
+        {size:'$50K', orig:'$154', disc:'$93', target:'$3,000', dd:'Intraday $2,000', pos:'—', minDays:'1'},
+        {size:'$100K', orig:'$229', disc:'$138', target:'$6,000', dd:'Intraday $3,000', pos:'—', minDays:'1'},
+        {size:'$150K', orig:'$319', disc:'$192', target:'$9,000', dd:'Intraday $4,500', pos:'—', minDays:'1'},
       ],
       'Prime EOD': [
-        {size:'$25K', orig:'$129', disc:'$78/mo', target:'$1,250', dd:'EOD $1,000', pos:'3 minis / 30 micros', minDays:'1'},
-        {size:'$50K', orig:'$179', disc:'$108/mo', target:'$3,000', dd:'EOD $2,000', pos:'5 minis / 50 micros', minDays:'1'},
-        {size:'$100K', orig:'$279', disc:'$168/mo', target:'$6,000', dd:'EOD $3,000', pos:'10 minis / 100 micros', minDays:'1', popular:true},
-        {size:'$150K', orig:'$365', disc:'$219/mo', target:'$9,000', dd:'EOD $4,500', pos:'15 minis / 150 micros', minDays:'1'},
+        {size:'$25K', orig:'$144', disc:'$101', target:'$1,250', dd:'EOD $1,000', pos:'3 minis / 30 micros', minDays:'1'},
+        {size:'$50K', orig:'$204', disc:'$143', target:'$3,000', dd:'EOD $2,000', pos:'5 minis / 50 micros', minDays:'1'},
+        {size:'$100K', orig:'$319', disc:'$224', target:'$6,000', dd:'EOD $3,000', pos:'10 minis / 100 micros', minDays:'1', popular:true},
+        {size:'$150K', orig:'$425', disc:'$298', target:'$9,000', dd:'EOD $4,500', pos:'15 minis / 150 micros', minDays:'1'},
       ],
       'S2F': [
-        {size:'$25K', orig:'', disc:'$329', target:'Instant', dd:'EOD $1,000', pos:'1 mini / 10 micros', consistency:'25%', minDays:'7'},
-        {size:'$50K', orig:'', disc:'$469', target:'Instant', dd:'EOD $2,000', pos:'5 minis / 50 micros', consistency:'25%', minDays:'7'},
-        {size:'$100K', orig:'', disc:'$629', target:'Instant', dd:'EOD $3,000', pos:'10 minis / 100 micros', consistency:'25%', minDays:'7'},
-        {size:'$150K', orig:'', disc:'$734', target:'Instant', dd:'EOD $4,500', pos:'15 minis / 150 micros', consistency:'25%', minDays:'7'},
+        {size:'$25K', orig:'', disc:'$329', once:true, target:'Instant', dd:'EOD $1,000', pos:'1 mini / 10 micros', consistency:'25%', minDays:'7'},
+        {size:'$50K', orig:'', disc:'$469', once:true, target:'Instant', dd:'EOD $2,000', pos:'5 minis / 50 micros', consistency:'25%', minDays:'7'},
+        {size:'$100K', orig:'', disc:'$629', once:true, target:'Instant', dd:'EOD $3,000', pos:'10 minis / 100 micros', consistency:'25%', minDays:'7'},
+        {size:'$150K', orig:'', disc:'$734', once:true, target:'Instant', dd:'EOD $4,500', pos:'15 minis / 150 micros', consistency:'25%', minDays:'7'},
       ]
     },
     payouts: { pt: '24h após aprovação', en: '24h after approval', es: '24h tras aprobación', it: '24h dopo approvazione', fr: '24h après approbation', de: '24h nach Freigabe', ar: '24 ساعة بعد الموافقة', id: '24 jam setelah disetujui' },
@@ -817,25 +818,25 @@ const FIRMS = [
     types: ['Futures Flex', 'Stellar 2-Step', 'Futures Legacy', 'Futures Rapid'],
     plans: {
       'Futures Flex': [
-        {size:'$50K', orig:'$133.99', disc:'$69.99', target:'—', dd:'EOD Trail $1,500', pos:'—', minDays:'—'},
-        {size:'$100K', orig:'$249.99', disc:'$129.99', target:'—', dd:'EOD Trail $2,500', pos:'—', minDays:'—', popular:true},
-        {size:'$150K', orig:'$483.99', disc:'$249.99', target:'—', dd:'EOD Trail $4,000', pos:'—', minDays:'—'},
+        {size:'$50K', orig:'$133.99', disc:'$69.99', once:true, target:'—', dd:'EOD Trail $1,500', pos:'—', minDays:'—'},
+        {size:'$100K', orig:'$249.99', disc:'$129.99', once:true, target:'—', dd:'EOD Trail $2,500', pos:'—', minDays:'—', popular:true},
+        {size:'$150K', orig:'$483.99', disc:'$249.99', once:true, target:'—', dd:'EOD Trail $4,000', pos:'—', minDays:'—'},
       ],
       'Stellar 2-Step': [
-        {size:'$6K', orig:'$59.99', disc:'$44.99', target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
-        {size:'$15K', orig:'$119.99', disc:'$89.99', target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
-        {size:'$25K', orig:'$199.99', disc:'$149.99', target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5', popular:true},
-        {size:'$50K', orig:'$299.99', disc:'$224.99', target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
+        {size:'$6K', orig:'$59.99', disc:'$44.99', once:true, target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
+        {size:'$15K', orig:'$119.99', disc:'$89.99', once:true, target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
+        {size:'$25K', orig:'$199.99', disc:'$149.99', once:true, target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5', popular:true},
+        {size:'$50K', orig:'$299.99', disc:'$224.99', once:true, target:'8% / 5%', dd:'5% / 10%', pos:'—', minDays:'5'},
       ],
       'Futures Legacy': [
-        {size:'$25K', orig:'$79.99', disc:'$72.00', target:'—', dd:'EOD $1,000', pos:'—', minDays:'—'},
-        {size:'$50K', orig:'$199.99', disc:'$180.00', target:'—', dd:'EOD $2,000', pos:'—', minDays:'—'},
-        {size:'$100K', orig:'$239.99', disc:'$216.00', target:'—', dd:'EOD $3,000', pos:'—', minDays:'—'},
+        {size:'$25K', orig:'$79.99', disc:'$72.00', once:true, target:'—', dd:'EOD $1,000', pos:'—', minDays:'—'},
+        {size:'$50K', orig:'$199.99', disc:'$180.00', once:true, target:'—', dd:'EOD $2,000', pos:'—', minDays:'—'},
+        {size:'$100K', orig:'$239.99', disc:'$216.00', once:true, target:'—', dd:'EOD $3,000', pos:'—', minDays:'—'},
       ],
       'Futures Rapid': [
-        {size:'$25K', orig:'$159.98', disc:'$79.99', target:'—', dd:'EOD $1,000', pos:'—', minDays:'—'},
-        {size:'$50K', orig:'$299.98', disc:'$149.99', target:'—', dd:'EOD $2,000', pos:'—', minDays:'—'},
-        {size:'$100K', orig:'$499.98', disc:'$249.99', target:'—', dd:'EOD $2,500', pos:'—', minDays:'—'},
+        {size:'$25K', orig:'$159.98', disc:'$79.99', once:true, target:'—', dd:'EOD $1,000', pos:'—', minDays:'—'},
+        {size:'$50K', orig:'$299.98', disc:'$149.99', once:true, target:'—', dd:'EOD $2,000', pos:'—', minDays:'—'},
+        {size:'$100K', orig:'$499.98', disc:'$249.99', once:true, target:'—', dd:'EOD $2,500', pos:'—', minDays:'—'},
       ]
     },
     payouts: { pt: 'Recompensa em 5 dias', en: 'Reward in 5 days', es: 'Recompensa en 5 días', it: 'Ricompensa in 5 giorni', fr: 'Récompense en 5 jours', de: 'Auszahlung in 5 Tagen', ar: 'مكافأة في 5 أيام', id: 'Hadiah dalam 5 hari' },
@@ -844,26 +845,26 @@ const FIRMS = [
   },
   {
     id: 'tradeday', name: 'TradeDay', logo: '/img/Firms/108/tradeday.webp', coupon: null /* vem da tabela `firms` */,
-    discount: '50%', tag: 'fut', rating: '4.6', reviews: '1.3K',
+    discount: '55%', tag: 'fut', rating: '4.6', reviews: '1.3K',
     rangeAccounts: '$50K–$150K', split: '90%',
     url: null, urlExtra: 'utm_source=marketscoupons&utm_medium=bio&utm_campaign=ig_bio_tradeday' /* base vem da tabela `firms` */,
     accountTypes: ['QuickPay', 'FastPass'],
     types: ['Intraday', 'End of Day'],
     plans: {
       'Intraday': [
-        {size:'50K', orig:'$125', disc:'$62', target:'$3,000', dd:'Trail $2,000', pos:'5 contracts (50 micros)', resets:'$60', consistency:'30%', minDays:'5'},
-        {size:'100K', orig:'$230', disc:'$115', target:'$6,000', dd:'Trail $3,000', pos:'10 contracts (50 micros)', resets:'$110', consistency:'30%', minDays:'5', popular:true},
-        {size:'150K', orig:'$350', disc:'$175', target:'$9,000', dd:'Trail $4,500', pos:'15 contracts (50 micros)', resets:'$165', consistency:'30%', minDays:'5'},
+        {size:'50K', orig:'$131', disc:'$59', target:'$3,000', dd:'Trail $2,000', pos:'5 contracts (50 micros)', resets:'$60', consistency:'30%', minDays:'5'},
+        {size:'100K', orig:'$240', disc:'$108', target:'$6,000', dd:'Trail $3,000', pos:'10 contracts (50 micros)', resets:'$110', consistency:'30%', minDays:'5', popular:true},
+        {size:'150K', orig:'$360', disc:'$162', target:'$9,000', dd:'Trail $4,500', pos:'15 contracts (50 micros)', resets:'$165', consistency:'30%', minDays:'5'},
       ],
       'End of Day': [
-        {size:'50K', orig:'$175', disc:'$87', target:'$3,000', dd:'EOD $2,000', pos:'5 contracts (50 micros)', resets:'$85', consistency:'30%', minDays:'5'},
-        {size:'100K', orig:'$285', disc:'$142', target:'$6,000', dd:'EOD $3,000', pos:'10 contracts (50 micros)', resets:'$135', consistency:'30%', minDays:'5', popular:true},
-        {size:'150K', orig:'$395', disc:'$197', target:'$9,000', dd:'EOD $4,500', pos:'15 contracts (50 micros)', resets:'$195', consistency:'30%', minDays:'5'},
+        {size:'50K', orig:'$175', disc:'$79', target:'$3,000', dd:'EOD $2,000', pos:'5 contracts (50 micros)', resets:'$85', consistency:'30%', minDays:'5'},
+        {size:'100K', orig:'$285', disc:'$129', target:'$6,000', dd:'EOD $3,000', pos:'10 contracts (50 micros)', resets:'$135', consistency:'30%', minDays:'5', popular:true},
+        {size:'150K', orig:'$400', disc:'$180', target:'$9,000', dd:'EOD $4,500', pos:'15 contracts (50 micros)', resets:'$195', consistency:'30%', minDays:'5'},
       ],
     },
     payouts: { pt: 'Dia 1', en: 'Day 1', es: 'Día 1', it: 'Giorno 1', fr: 'Jour 1', de: 'Tag 1', ar: 'اليوم الأول' },
     platforms: 'NinjaTrader · Tradovate · TradingView · Jigsaw',
-    rules: { pt: ['Payouts desde o Dia 1','Sem regra de consistência ao fundar','Profit split até 90%','Cupom MARKETS 50% off'], en: ['Day 1 payouts','No consistency rule when funded','Profit split up to 90%','MARKETS coupon 50% off'] }
+    rules: { pt: ['Payouts desde o Dia 1','Sem regra de consistência ao fundar','Profit split até 90%','Cupom MARKETS 55% off'], en: ['Day 1 payouts','No consistency rule when funded','Profit split up to 90%','MARKETS coupon 55% off'] }
   }
 ];
 
@@ -941,13 +942,20 @@ const APEX_FEE_ENDS = 0;
 let FIRM_N = 18, DISC_MAX = 90;
 function _refreshLpStats(){
   try{
-    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/cms_firms?select=discount&active=eq.true', {
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/cms_firms?select=discount,rating&active=eq.true', {
       headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY }
     }).then(r=>r.json()).then(rows=>{
       if(Array.isArray(rows) && rows.length){
         FIRM_N = rows.length;
         const mx = Math.max(...rows.map(r=>parseInt(r.discount)||0));
         if(mx>0) DISC_MAX = mx;
+        // "4.7/5" era chumbado e a media real e menor , nota inflada em pagina de
+        // trafego pago e exatamente o tipo de claim que da processo.
+        const rs = rows.map(r=>parseFloat(r.rating)).filter(Boolean);
+        if (rs.length) {
+          const em = document.querySelector('.proof-rating em');
+          if (em) em.textContent = (rs.reduce((a,b)=>a+b,0)/rs.length).toFixed(1);
+        }
         applyStaticI18n();
       }
     }).catch(()=>{});
@@ -1155,7 +1163,9 @@ function renderFirms() {
         origEl.textContent = dispOrig || '';
         origEl.style.display = (dispOrig === dispDisc || !dispOrig) ? 'none' : 'block';
         discEl.textContent = dispDisc;
-        if (perEl) perEl.style.display = use5 ? 'none' : '';
+        // plano de taxa UNICA (S2F, FundedNext) nao tem mensalidade , mostrar "/mo"
+        // nele e inventar cobranca recorrente que nao existe.
+        if (perEl) perEl.style.display = (use5 || plan.once) ? 'none' : '';
         if (advEl) {
           if (use5 && eachP) {
             const singleP = naf ? plan.na : plan.disc;
