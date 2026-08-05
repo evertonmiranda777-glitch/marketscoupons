@@ -64,7 +64,7 @@ if (!html) { console.error('ERRO: nao achei o HTML real dentro do pacote'); proc
 // aba e o fundo do auth NAO vem no pacote do Design , foram postas depois, a mao, e estao
 // commitadas. Rodar o desempacotador levava as tres pastas junto e a home ia pro ar com
 // 404 em toda logo. Agora elas sao guardadas antes e devolvidas depois.
-const PRESERVAR = ['assets/logos', 'assets/icons', 'assets/auth'];
+const PRESERVAR = ['assets/logos', 'assets/icons', 'assets/auth', 'assets/reviewers'];
 const guardado = {};
 for (const rel of PRESERVAR) {
   const p = path.join(DEST, rel);

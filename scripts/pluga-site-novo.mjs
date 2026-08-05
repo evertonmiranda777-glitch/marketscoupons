@@ -31,11 +31,16 @@ if (!ANON) { console.error('não achei a anon key no index.html'); process.exit(
 const feitos = [];
 const pulados = [];
 
+// ⚠️ Toda troca passa por trocar(): no String.replace do JS, "$'" DENTRO do texto novo
+// significa "tudo depois da âncora" , e código com preço tem '$' pra todo lado. Foi assim
+// que o primeiro teste do pluga-lp DUPLICOU o rabo do arquivo. split/join não tem $.
+function trocar(txt, de, para) { return txt.split(de).join(para); }
+
 /** Aplica um remendo. `marca` = trecho que prova que já foi aplicado. */
 function remendo(nome, marca, de, para) {
   if (d.includes(marca)) { pulados.push(nome); return; }
   if (!d.includes(de)) { console.error(`\n✗ ÂNCORA SUMIU em "${nome}"\n   procurava: ${de.slice(0, 90)}…\n   o Design mudou essa seção. Conferir na mão antes de publicar.`); process.exit(1); }
-  d = d.replace(de, para);
+  d = trocar(d, de, para);
   feitos.push(nome);
 }
 
@@ -394,7 +399,7 @@ if (!d.includes('rel="icon"')) {
  'self.setState({ _mcBlogPronto: 1 });'].forEach(function (linha) {
   if (d.includes('self._homeStatic = null; ' + linha)) return;
   if (!d.includes(linha)) { console.error('✗ não achei: ' + linha); process.exit(1); }
-  d = d.replace(linha, 'self._homeStatic = null; ' + linha);
+  d = trocar(d, linha, 'self._homeStatic = null; ' + linha);
   feitos.push('invalida cache (' + linha.slice(17, 25) + ')');
 });
 
@@ -581,7 +586,7 @@ for (const p of PREVIAS) {
     console.error('\nO Design mexeu nesse trecho. Regere a tabela (ver comentário do remendo 17).');
     process.exit(1);
   }
-  d = d.replace(p.de, p.para);
+  d = trocar(d, p.de, p.para);
   novasPrevias++;
 }
 feitos.push(`prévias da home (${novasPrevias} aplicadas, ${jaPrevias} já estavam)`);

@@ -472,7 +472,7 @@
         <div style="display: flex; flex-direction: column; align-items: center; gap: 7px;"><i class="ti ti-calendar-event" style="font-size: 19px; color: #bfff00;"></i><span style="font-size: 11.5px; font-weight: 600; color: #c4ccd2; text-align: center;">Economic calendar</span></div>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 7px;"><i class="ti ti-broadcast" style="font-size: 19px; color: #bfff00;"></i><span style="font-size: 11.5px; font-weight: 600; color: #c4ccd2; text-align: center;">VIP Live Room</span></div>
       </div>
-      <button style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 11px; background: rgba(191,255,0,0.1); border: 1px solid rgba(191,255,0,0.35); color: #bfff00; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 14px;" style-hover="background: rgba(191,255,0,0.16);">Explore full site <i class="ti ti-arrow-right" style="font-size: 16px;"></i></button>
+      <button sc-camel-on-click="{{ goSite }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 11px; background: rgba(191,255,0,0.1); border: 1px solid rgba(191,255,0,0.35); color: #bfff00; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 14px;" style-hover="background: rgba(191,255,0,0.16);">Explore full site <i class="ti ti-arrow-right" style="font-size: 16px;"></i></button>
     </div>
 
     <!-- HERO -->
@@ -592,7 +592,7 @@
                     <div style="{{ lg.style }}"><sc-if value="{{ lg.popular }}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 800; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 999px; background: #bfff00; color: #070a06;">POPULAR</span></sc-if><div style="font-weight: 800; font-size: 14px; color: #F4F8F9;">{{ lg.size }}</div><div style="font-weight: 700; font-size: 13.5px; color: #d9ff8a; margin-top: 3px;">{{ lg.price }}</div><div style="font-size: 10.5px; color: #6b7580; text-decoration: line-through;">{{ lg.old }}</div></div>
                   </sc-for>
                 </div>
-                <button style="width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); color: #E7ECEF; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 14px;" style-hover="border-color: rgba(191,255,0,0.4); color: #bfff00;">View Legacy Accounts →</button>
+                <button sc-camel-on-click="{{ c.onLegacy }}" style="width: 100%; padding: 14px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14); color: #E7ECEF; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 14px;" style-hover="border-color: rgba(191,255,0,0.4); color: #bfff00;">View Legacy Accounts →</button>
               </div>
             </sc-if>
             <!-- coupon -->
@@ -600,7 +600,7 @@
               <span style="font-weight: 800; font-size: 17px; letter-spacing: 0.06em; color: #bfff00;">{{ c.coupon }}</span>
               <button sc-camel-on-click="{{ c.onCopy }}" style="{{ c.copyStyle }}">{{ c.copyLabel }}</button>
             </div>
-            <button style="display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 16px; border-radius: 12px; border: none; cursor: pointer; background: linear-gradient(180deg, #d4ff4d, #bfff00); color: #070a06; font-family: inherit; font-weight: 800; font-size: 15.5px;" style-hover="filter: brightness(1.06);">Buy with discount <i class="ti ti-chevron-right" style="font-size: 17px;"></i></button>
+            <button sc-camel-on-click="{{ c.onBuy }}" style="display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 16px; border-radius: 12px; border: none; cursor: pointer; background: linear-gradient(180deg, #d4ff4d, #bfff00); color: #070a06; font-family: inherit; font-weight: 800; font-size: 15.5px;" style-hover="filter: brightness(1.06);">Buy with discount <i class="ti ti-chevron-right" style="font-size: 17px;"></i></button>
           </div>
         </div>
       </sc-for>
@@ -623,7 +623,7 @@
             <svg width="15" height="15" sc-camel-view-box="0 0 24 23" fill="none"><path d="M12 0l2.9 8.9H24l-7.3 5.3 2.8 8.7L12 17.5 4.5 22.9l2.8-8.7L0 8.9h9.1L12 0Z" fill="{{ ts.fill }}"></path></svg>
           </sc-for>
         </span>
-        <span style="font-weight: 700; font-size: 12.5px; color: #E7ECEF; white-space: nowrap;">4.2 <span style="font-weight: 500; color: #8a94a0;">average of the firms we list</span></span>
+        <span style="font-weight: 700; font-size: 12.5px; color: #E7ECEF; white-space: nowrap;">{{ tpMedia }} <span style="font-weight: 500; color: #8a94a0;">average of the firms we list</span></span>
       </div>
     </div>
 
@@ -633,12 +633,12 @@
       <div style="font-size: 12.5px; color: #8a94a0; margin-bottom: 18px;">Alerts when a firm drops a new promo. No spam.</div>
       <div data-lpnews="1" style="display: flex; gap: 10px;">
         <input placeholder="you@email.com" style="flex: 1; min-width: 0; padding: 14px 16px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #E7ECEF; font-family: inherit; font-size: 14px; outline: none;">
-        <button style="padding: 14px 24px; border-radius: 11px; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; color: #070a06; font-family: inherit; font-weight: 800; font-size: 13.5px; letter-spacing: 0.04em; cursor: pointer; white-space: nowrap;" style-hover="filter: brightness(1.06);">SUBSCRIBE</button>
+        <button sc-camel-on-click="{{ lpSubscribe }}" style="padding: 14px 24px; border-radius: 11px; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; color: #070a06; font-family: inherit; font-weight: 800; font-size: 13.5px; letter-spacing: 0.04em; cursor: pointer; white-space: nowrap;" style-hover="filter: brightness(1.06);">SUBSCRIBE</button>
       </div>
     </div>
 
     <!-- SEE ALL -->
-    <button style="display: flex; align-items: center; gap: 12px; width: 100%; padding: 18px 20px; border-radius: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #F4F8F9; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 15px; text-align: left; margin-bottom: 16px;" style-hover="border-color: rgba(191,255,0,0.4);"><i class="ti ti-layout-grid" style="font-size: 19px; color: #bfff00;"></i><span style="flex: 1;">See all 18 firms on the site</span><i class="ti ti-chevron-right" style="font-size: 17px; color: #7c8791;"></i></button>
+    <button sc-camel-on-click="{{ goSite }}" data-allfirms="1" style="display: flex; align-items: center; gap: 12px; width: 100%; padding: 18px 20px; border-radius: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #F4F8F9; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 15px; text-align: left; margin-bottom: 16px;" style-hover="border-color: rgba(191,255,0,0.4);"><i class="ti ti-layout-grid" style="font-size: 19px; color: #bfff00;"></i><span style="flex: 1;">See all 18 firms on the site</span><i class="ti ti-chevron-right" style="font-size: 17px; color: #7c8791;"></i></button>
 
     <!-- APP ALERTS -->
     <div style="padding: 32px 24px; border-radius: 18px; background: radial-gradient(500px 300px at 50% 0%, rgba(191,255,0,0.03), transparent 65%), rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); text-align: center; margin-bottom: 24px;">
@@ -649,7 +649,7 @@
       <div style="display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: #bfff00; text-transform: uppercase; margin-bottom: 12px;"><i class="ti ti-bell" style="font-size: 15px;"></i>Coupon alerts in the app</div>
       <div style="font-weight: 900; font-size: 26px; line-height: 1.15; letter-spacing: -0.03em; color: #F4F8F9; margin-bottom: 12px;">The best coupon<br>hits the app <span style="color: #bfff00;">first</span></div>
       <p style="font-size: 14px; line-height: 1.55; color: #a8b2bb; margin: 0 auto 22px; max-width: 400px;">We ping you the moment a new coupon drops or a discount goes up. Free, and you can leave anytime.</p>
-      <button style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 28px; border-radius: 12px; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; color: #070a06; cursor: pointer; font-family: inherit; font-weight: 800; font-size: 15px;" style-hover="filter: brightness(1.06);"><i class="ti ti-bell" style="font-size: 17px;"></i>Enable alerts</button>
+      <button sc-camel-on-click="{{ goSite }}" data-alerts="1" style="display: inline-flex; align-items: center; gap: 9px; padding: 15px 28px; border-radius: 12px; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; color: #070a06; cursor: pointer; font-family: inherit; font-weight: 800; font-size: 15px;" style-hover="filter: brightness(1.06);"><i class="ti ti-bell" style="font-size: 17px;"></i>Enable alerts</button>
       <div style="font-size: 11.5px; color: #6b7580; margin-top: 14px;">iPhone and Android · 1 minute</div>
     </div>
 
@@ -764,7 +764,56 @@ class Component extends DCLogic {
     this._t = setTimeout(() => this.setState({ toast: null, copied: null }), 1800);
   }
 
+  _lpBanco() {
+    if (this._lpBuscou) return;
+    this._lpBuscou = true;
+    var self = this;
+    var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    var IDS = { apex: 'apex', bulenox: 'bulenox', fff: 'funded-futures-family', fn: 'fn', tradeday: 'tradeday' };
+    var kfmt = function (n) { n = parseInt(n, 10) || 0; return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K' : String(n); };
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/cms_firms?active=eq.true&select=id,discount,coupon,link,rating,trustpilot_reviews,prices',
+      { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (linhas) {
+        if (!linhas || !linhas.length) return;   // banco fora: fica o retrato, nunca esvazia
+        var por = {}; linhas.forEach(function (x) { por[x.id] = x; });
+        self._lpLinks = {};
+        // media REAL do rating das firmas listadas ("4.2" era chumbado; hoje da 4.37)
+        var rs = linhas.map(function (x) { return parseFloat(x.rating); }).filter(function (x) { return x; });
+        if (rs.length) self._lpMedia = (rs.reduce(function (a, b) { return a + b; }, 0) / rs.length).toFixed(1);
+        self.firms.forEach(function (f) {
+          var b = por[IDS[f.id]];
+          if (!b) return;
+          self._lpLinks[f.id] = b.link || '';
+          if (b.discount) f.discount = b.discount + '%';
+          if (b.coupon) f.coupon = b.coupon;
+          if (b.rating != null) f.rating = String(b.rating);
+          if (b.trustpilot_reviews) f.reviews = kfmt(b.trustpilot_reviews);
+          // preços: traduz cada linha do banco pra chave 'Tipo|Tamanho' que a LP usa
+          (b.prices || []).forEach(function (p) {
+            var a = String(p.a || ''), par = [p.n, p.o];
+            if (!p.n) return;
+            if (f.id === 'apex' && /^\d+K$/.test(a)) {
+              f.px['Intraday Trail|' + a] = [p.n, p.o];
+              if (p.n2) f.px['End of Day|' + a] = [p.n2, p.o2];
+            } else if (f.id === 'bulenox' && /^\d+K$/.test(a)) {
+              f.px['EOD DD|' + a] = par;
+            } else if (f.id === 'fff') {
+              var mV = a.match(/^(\d+K) Velocity/); if (mV) f.px['Velocity|$' + mV[1]] = par;
+            } else if (f.id === 'fn') {
+              var mF = a.match(/^(\$\d+K) Futures Flex/); if (mF) f.px['Futures Flex|' + mF[1]] = par;
+            } else if (f.id === 'tradeday') {
+              var mT = a.match(/^(\d+K) (Intraday|End of Day)/);
+              if (mT) f.px[(mT[2] === 'Intraday' ? 'Intraday' : 'End of Day') + '|' + mT[1]] = par;
+            }
+          });
+        });
+        self.setState({ _lpBanco: 1 });
+      }).catch(function () {});
+  }
+
   renderVals() {
+    this._lpBanco();
     const s = this.state;
     return {
       langCode: s.lang,
@@ -776,9 +825,26 @@ class Component extends DCLogic {
         style: 'display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:600;color:' + (l.code === s.lang ? '#bfff00' : '#c4ccd2') + ';background:' + (l.code === s.lang ? 'rgba(191,255,0,0.08)' : 'transparent') + ';',
       })),
       toast: s.toast,
+      // Botões que existiam SEM handler nenhum , numa LP de tráfego pago.
+      goSite: () => { location.href = '/novo'; },
+      goLegacy: () => { location.href = '/apex'; },
+      tpMedia: this._lpMedia || '4.4',
+      lpSubscribe: () => {
+        var inp = document.querySelector('input[placeholder="you@email.com"]');
+        var em = inp ? String(inp.value || '').trim().toLowerCase() : '';
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { this.setState({ toast: 'Enter a valid email' }); return; }
+        try {
+          fetch('/api/leads/volumefilter?action=subscribe', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: em, lang: 'en', source: 'novo-lp', tags: ['novo-lp-lead'] })
+          });
+        } catch (e) {}
+        if (inp) inp.value = '';
+        this.setState({ toast: 'Subscribed! Watch your inbox.' });
+      },
 
       tpFaces: [0,1,2,3].map(i => ({
-        imgEl: React.createElement('img', { src: './assets/reviewers/r' + (i+1) + '.png', style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' } }),
+        imgEl: React.createElement('img', { src: '/novo-lp/assets/reviewers/r' + (i+1) + '.png', style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' } }),
         style: 'width:38px;height:38px;flex-shrink:0;border-radius:999px;overflow:hidden;border:2px solid #070a06;background:#141a12;' + (i > 0 ? 'margin-left:-11px;' : ''),
       })),
       tpStars: [0,1,2,3,4].map(i => ({ fill: i < 4 ? '#FFB800' : '#6b7580' })),
@@ -818,11 +884,19 @@ class Component extends DCLogic {
           platforms: (f.specs.find(x => x.k === 'Platforms') || { v: '' }).v.split(' · '),
           perks: f.perks,
           hasLegacy: !!f.hasLegacy,
+          onLegacy: () => { location.href = '/apex'; },
           legacy: (f.legacy || []).map(l => ({
             size:l[0], price:l[1], old:l[2], popular: !!l[3],
             style: 'position:relative;padding:14px 8px;border-radius:12px;text-align:center;border:1px solid ' + (l[3] ? 'rgba(191,255,0,0.35);background:rgba(191,255,0,0.05);' : 'rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);'),
           })),
           onCopy: () => this.copy(f),
+          // comissão: abre o link de afiliado LIDO DO BANCO. Sem fallback escrito aqui ,
+          // link chumbado foi como a Aqua ficou 152 páginas anunciando domínio morto.
+          onBuy: () => {
+            var u = (this._lpLinks || {})[f.id];
+            if (u) window.open(u, '_blank', 'noopener');
+            else location.href = '/' + (f.id === 'fff' ? 'funded-futures-family' : f.id);
+          },
           copyLabel: isCopied ? 'COPIED' : 'COPY',
           copyStyle: 'flex-shrink:0;padding:10px 20px;border-radius:9px;cursor:pointer;font-family:inherit;font-weight:800;font-size:12.5px;letter-spacing:0.06em;border:1px solid ' + (isCopied ? 'transparent;background:#bfff00;color:#070a06;' : 'rgba(191,255,0,0.45);background:rgba(191,255,0,0.06);color:#bfff00;'),
         };
