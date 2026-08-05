@@ -56,6 +56,7 @@
     }
     .mc-navfade.mc-tem-mais::after { opacity: 1; }
   </style>
+<script src="/i18n-novo.js"></script>
 </head>
 <body>
 <x-dc>
@@ -4503,6 +4504,73 @@ class Component extends DCLogic {
       if (esperando) return;
       esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ajustaPainelAuth(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
+  })();
+  </script>
+<script>
+  (function () {
+    var LANG = 'EN';
+    var ORIG = new WeakMap();   // guarda o inglês pra poder VOLTAR ao trocar de idioma
+
+    function dic() { return window.MC_I18N_NOVO || {}; }
+
+    function traduzNo(n) {
+      var bruto = n.nodeValue;
+      if (bruto == null) return;
+      if (!ORIG.has(n)) {
+        var t = bruto.trim();
+        if (t.length < 3) return;
+        if (!dic()[t]) return;                 // não está no dicionário: fica em inglês
+        ORIG.set(n, bruto);
+      }
+      var orig = ORIG.get(n);
+      var chave = orig.trim();
+      var linha = dic()[chave];
+      var alvo = (LANG === 'EN' || !linha) ? chave : (linha[LANG.toLowerCase()] || chave);
+      var novo = orig.replace(chave, alvo);
+      if (n.nodeValue !== novo) n.nodeValue = novo;
+    }
+
+    function mcTraduzir() {
+      if (!window.MC_I18N_NOVO) return;
+      var it = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      var n;
+      while ((n = it.nextNode())) {
+        var pai = n.parentNode;
+        if (!pai) continue;
+        var tag = pai.nodeName;
+        if (tag === 'SCRIPT' || tag === 'STYLE') continue;
+        traduzNo(n);
+      }
+      // árabe lê da direita pra esquerda
+      document.documentElement.setAttribute('dir', LANG === 'AR' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute('lang', LANG.toLowerCase());
+    }
+
+    // o idioma escolhido vive no estado do runtime; leio pelo SELO do botão
+    function idiomaDaTela() {
+      var bs = document.querySelectorAll('button');
+      for (var i = 0; i < bs.length; i++) {
+        var t = (bs[i].textContent || '').trim();
+        if (/^(PT|EN|ES|IT|FR|DE|AR|ID)$/.test(t)) return t;
+      }
+      return LANG;
+    }
+
+    var esperando = 0;
+    function ciclo() {
+      var atual = idiomaDaTela();
+      if (atual !== LANG) { LANG = atual; try { localStorage.setItem('mc_novo_lang', LANG); } catch (e) {} }
+      mcTraduzir();
+    }
+
+    function agenda() {
+      if (esperando) return;
+      esperando = setTimeout(function () { esperando = 0; ciclo(); }, 80);
+    }
+
+    try { LANG = localStorage.getItem('mc_novo_lang') || 'EN'; } catch (e) {}
+    agenda();
+    new MutationObserver(agenda).observe(document.body, { childList: true, subtree: true, characterData: true });
   })();
   </script>
 </body></html>

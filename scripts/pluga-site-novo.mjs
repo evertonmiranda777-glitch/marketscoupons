@@ -732,6 +732,95 @@ remendo('numeros do hero ao vivo', '(this._mcNum || {}).firmas',
         { big:'74K+', bigLabel:'Monthly views', numColor:'#F4F8F9', key:'quiz' },
         { big:(this._mcNum || {}).cupons || '2.7K+', bigLabel:'Codes copied / mo', numColor:'#F4F8F9', key:'specials' },`);
 
+// ─────────────────────────────────────────────── 16c. idiomas
+// O seletor da casca do Design era DECORATIVO: trocava o selo de EN pra PT e não
+// traduzia nada. O site atual tem 8 idiomas há meses e 75% do tráfego vem da Índia.
+//
+// Traduz por NÓ DE TEXTO, comparando com o inglês exatamente como aparece na tela, e
+// reaplica depois de cada renderização do runtime. Sem chave inventada e sem tocar na
+// marcação , por isso sobrevive a uma entrega nova do Design.
+// ⚠️ O DICIONÁRIO MORA NA RAIZ, não em novo/: o desempacotador APAGA novo/ inteira a
+// cada entrega. Deixei ele lá na 1ª tentativa e sumiu no rebuild , 404 no ar. Mesmo
+// erro que já tinha custado as logos das firmas.
+// ⚠️ É ALLOWLIST: o que não está no dicionário fica em inglês. Nunca tradução
+// automática por cima, que traduziria nome de firma, cupom e preço.
+if (!d.includes('i18n-novo.js')) {
+  d = d.replace('</head>', '<script src="/i18n-novo.js"></scr' + 'ipt>' + String.fromCharCode(10) + '</head>');
+  feitos.push('carrega o dicionario');
+} else pulados.push('carrega o dicionario');
+
+if (!d.includes('mcTraduzir')) {
+  const TRAD = `<script>
+  (function () {
+    var LANG = 'EN';
+    var ORIG = new WeakMap();   // guarda o inglês pra poder VOLTAR ao trocar de idioma
+
+    function dic() { return window.MC_I18N_NOVO || {}; }
+
+    function traduzNo(n) {
+      var bruto = n.nodeValue;
+      if (bruto == null) return;
+      if (!ORIG.has(n)) {
+        var t = bruto.trim();
+        if (t.length < 3) return;
+        if (!dic()[t]) return;                 // não está no dicionário: fica em inglês
+        ORIG.set(n, bruto);
+      }
+      var orig = ORIG.get(n);
+      var chave = orig.trim();
+      var linha = dic()[chave];
+      var alvo = (LANG === 'EN' || !linha) ? chave : (linha[LANG.toLowerCase()] || chave);
+      var novo = orig.replace(chave, alvo);
+      if (n.nodeValue !== novo) n.nodeValue = novo;
+    }
+
+    function mcTraduzir() {
+      if (!window.MC_I18N_NOVO) return;
+      var it = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      var n;
+      while ((n = it.nextNode())) {
+        var pai = n.parentNode;
+        if (!pai) continue;
+        var tag = pai.nodeName;
+        if (tag === 'SCRIPT' || tag === 'STYLE') continue;
+        traduzNo(n);
+      }
+      // árabe lê da direita pra esquerda
+      document.documentElement.setAttribute('dir', LANG === 'AR' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute('lang', LANG.toLowerCase());
+    }
+
+    // o idioma escolhido vive no estado do runtime; leio pelo SELO do botão
+    function idiomaDaTela() {
+      var bs = document.querySelectorAll('button');
+      for (var i = 0; i < bs.length; i++) {
+        var t = (bs[i].textContent || '').trim();
+        if (/^(PT|EN|ES|IT|FR|DE|AR|ID)$/.test(t)) return t;
+      }
+      return LANG;
+    }
+
+    var esperando = 0;
+    function ciclo() {
+      var atual = idiomaDaTela();
+      if (atual !== LANG) { LANG = atual; try { localStorage.setItem('mc_novo_lang', LANG); } catch (e) {} }
+      mcTraduzir();
+    }
+
+    function agenda() {
+      if (esperando) return;
+      esperando = setTimeout(function () { esperando = 0; ciclo(); }, 80);
+    }
+
+    try { LANG = localStorage.getItem('mc_novo_lang') || 'EN'; } catch (e) {}
+    agenda();
+    new MutationObserver(agenda).observe(document.body, { childList: true, subtree: true, characterData: true });
+  })();
+  </scr` + `ipt>`;
+  d = d.replace('</body>', TRAD + String.fromCharCode(10) + '</body>');
+  feitos.push('tradutor');
+} else pulados.push('tradutor');
+
 // ─────────────────────────────────────────────── 17. as prévias da home
 // Análise diária (NQ real), GEX (níveis reais), mini heatmap, fita do Live Room,
 // plataformas, calculadora de posição e quiz.
