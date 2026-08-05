@@ -78,7 +78,17 @@ const LIGACOES = `  // ═══════════════════
       (self.firms || []).forEach(function (f) { antigas[f.id] = f; });
       self.firms = linhas.map(function (f) {
         var velha = antigas[f.id] || {};
-        var pr = (f.prices || [])[0] || {};
+        // ⚠️ O CARD TEM O ROTULO "100K" FIXO NA MARCACAO e eu pegava prices[0], que e o
+        // 25K , ou seja, tamanho de um plano com preco de OUTRO, na home que vai receber
+        // anuncio. Agora busco a linha marcada com pop (a 100K, que e a que o card anuncia);
+        // sem essa marca, procuro 100K pelo nome; so entao caio na primeira.
+        // A busca por NOME vem PRIMEIRO: a marca de "popular" nem sempre esta no 100K (na
+        // FFF esta no 25K Velocity, e o card mostrava "100K $16/mo", que e preco do 25K).
+        // Como o rotulo do card e 100K fixo, o preco tem que ser o do 100K, ponto.
+        var _px = f.prices || [];
+        var pr = _px.filter(function (x) { return /(^|[^\d])100K/i.test(String(x && x.a || '')); })[0]
+              || _px.filter(function (x) { return x && x.pop; })[0]
+              || _px[0] || {};
         var vit = f.discount_type === 'lifetime';
         return {
           id: f.id,

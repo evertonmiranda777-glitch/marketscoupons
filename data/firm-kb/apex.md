@@ -9,7 +9,8 @@ APEX 4.0 "A New Chapter" (since 2026-03-01): products are now Intraday Trail and
 COUPON: **MARKET** = the OFFICIAL partnership coupon on Apex (Everton confirmed 27/jul). NEVER replace it. The site also runs a public code SAVENOW (~90% off) - that one is NOT ours, never offer it. Note on how Apex pays: the commission rides on the affiliate LINK/cookie (apextraderfunding.com/member/aff/go/evertonmiranda), so always send the trader through our link AND give them MARKET.
 
 PRICES WITH COUPON (each account type has a Standard variant WITH a separate PA activation fee, and a No Activation Fee variant that costs more upfront but has $0 to activate):
-- Intraday Standard (1 acct): 25K $19.90 | 50K $24.90 | 100K $39.90 | 150K $59.90 (5-packs available, e.g. 100K 5-pack $175 = $35/acct).
+- Intraday Standard (1 acct): 25K $16.70 | 50K $24.90 | 100K $39.90 | 150K $59.90 (5-pack: 25K $74.95 = $14.99/acct | 50K $95 = $19 | 100K $175 = $35 | 150K $245 = $49).
+- PA activation fee, Standard variant only, paid once after passing (7-day window): Intraday 25K $69 | 50K $79 | 100K $99 | 150K $129. EOD 25K $99 | 50K $129 | 100K $139 | 150K $159.
 - Intraday No-Fee: 25K $69 | 50K $79 | 100K $59 | 150K $169 (the 100K is cheaper than the 50K — a real quirk on their site; 100K/150K No-Fee are single-plan only).
 - EOD Standard: 25K $39 | 50K $49 | 100K $79 | 150K $149 (5-packs available).
 - EOD No-Fee: 25K $99 | 50K $119 | 100K $59 | 150K $249.
