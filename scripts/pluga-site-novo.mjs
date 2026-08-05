@@ -538,6 +538,44 @@ if (!d.includes('mc-navwrap > *')) {
   const JS = `<script>
   // pista de "tem mais pra direita" no menu. Ver remendo 16.
   (function () {
+    // ── DESTINO DOS BOTOES DE PLATAFORMA ────────────────────────────────────────
+    // Os 6 cards da pagina Platforms tem "View plans · <nome> →" e o botao NAO LEVAVA
+    // A LUGAR NENHUM , sendo que TradingView e NinjaTrader sao links de AFILIADO, ou
+    // seja, comissao jogada fora em toda visita.
+    // ⚠️ POR QUE NAO DA PRA USAR O BINDING: o markup liga em {{ p.onOpen }}, mas o
+    // runtime do Design NAO passa funcao dentro dessa lista , ele instala um no-op
+    // (um kd(){} vazio). Descobri lendo o onclick do botao no ar depois de dois
+    // deploys achando que era nome errado de propriedade. Entao o destino e amarrado
+    // aqui pelo ROTULO, que e estavel, e reaplicado a cada remontagem.
+    // Links identicos aos do site no ar (app.js PLATFORMS_LANGS).
+    var PLAT = {
+      'TradingView':   'https://tradingview.com/?aff_id=164855',
+      'NinjaTrader':   'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',
+      'Rithmic':       'https://rithmic.com',
+      'Tradovate':     'https://tradovate.com',
+      'MetaTrader 5':  'https://metatrader5.com',
+      'WealthCharts':  'https://wealthcharts.com'
+    };
+    function ligaPlataformas() {
+      var bs = document.querySelectorAll('button');
+      for (var i = 0; i < bs.length; i++) {
+        var b = bs[i];
+        if (b.__mcPlat) continue;
+        // ⚠️ sem regex de proposito: a versao com \s escapado ja se perdeu uma vez na
+        // escrita e virou /View planss*/, que nao casa com nada e falha em SILENCIO.
+        var txt = (b.textContent || '');
+        if (txt.indexOf('View plans') < 0) continue;
+        var nome = null;
+        for (var k in PLAT) { if (txt.indexOf(k) >= 0) { nome = k; break; } }
+        if (!nome) continue;
+        b.__mcPlat = PLAT[nome];
+        b.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          window.open(this.__mcPlat, '_blank', 'noopener');
+        });
+      }
+    }
+
     function liga() {
       var w = document.querySelector('.mc-navwrap');
       if (!w || !w.parentElement) return false;
@@ -547,6 +585,7 @@ if (!d.includes('mc-navwrap > *')) {
         p.classList.toggle('mc-tem-mais', w.scrollWidth - w.scrollLeft - w.clientWidth > 4);
       }
       w.addEventListener('scroll', ver, { passive: true });
+      ligaPlataformas();
       addEventListener('resize', ver);
       ver();
       return true;
@@ -558,7 +597,7 @@ if (!d.includes('mc-navwrap > *')) {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </scr` + `ipt>`;
