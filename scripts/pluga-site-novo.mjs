@@ -82,11 +82,18 @@ const LIGACOES = `  // ═══════════════════
         // 25K , ou seja, tamanho de um plano com preco de OUTRO, na home que vai receber
         // anuncio. Agora busco a linha marcada com pop (a 100K, que e a que o card anuncia);
         // sem essa marca, procuro 100K pelo nome; so entao caio na primeira.
-        // A busca por NOME vem PRIMEIRO: a marca de "popular" nem sempre esta no 100K (na
-        // FFF esta no 25K Velocity, e o card mostrava "100K $16/mo", que e preco do 25K).
-        // Como o rotulo do card e 100K fixo, o preco tem que ser o do 100K, ponto.
+        // REGRA DO CARD (ordem do Everton): o rotulo e "100K" FIXO na casca do Design, e o
+        // preco tem que ser o do 100K MAIS BARATO daquela firma , e a conta grande que
+        // chama atencao, e o valor baixo que puxa o clique.
+        // Duas coisas quebravam isso antes: eu ligava prices[0] (o 25K na maioria, e o card
+        // dizia "Apex 100K $16.70"), e depois a marca de "popular" (na FFF ela esta no 25K).
+        // E mesmo pegando o 1o 100K ficava errado em 9 firmas , a E8 anunciava $440 tendo
+        // plano de $167. Agora e o MENOR entre as linhas de 100K.
         var _px = f.prices || [];
-        var pr = _px.filter(function (x) { return /(^|[^\d])100K/i.test(String(x && x.a || '')); })[0]
+        var _n = function (v) { var x = parseFloat(String(v || '').replace(/[^0-9.]/g, '')); return isFinite(x) ? x : null; };
+        var _cem = _px.filter(function (x) { return x && x.n && /(^|[^\d])100K/i.test(String(x.a || '')); })
+                      .sort(function (a, b) { return (_n(a.n) === null ? 1e9 : _n(a.n)) - (_n(b.n) === null ? 1e9 : _n(b.n)); });
+        var pr = _cem[0]
               || _px.filter(function (x) { return x && x.pop; })[0]
               || _px[0] || {};
         var vit = f.discount_type === 'lifetime';
