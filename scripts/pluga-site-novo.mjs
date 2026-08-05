@@ -61,7 +61,8 @@ const LIGACOES = `  // ═══════════════════
     try { window.__mcBanco = { chamado: true }; } catch (e) {}
     var SB = 'https://qfwhduvutfumsaxnuofa.supabase.co';
     var AN = '${ANON}';
-    var cols = 'id,name,discount,discount_type,coupon,rating,prices,split,drawdown,sort_order,active,type';
+    var cols = 'id,name,discount,discount_type,coupon,rating,prices,split,drawdown,sort_order,active,type' +
+      ',tags,min_days,scaling,news_trading,day1_payout,consistency,payout_speed';
     var self = this;
     fetch(SB + '/rest/v1/cms_firms?active=eq.true&select=' + cols + '&order=sort_order.asc', {
       headers: { apikey: AN, Authorization: 'Bearer ' + AN }
@@ -88,7 +89,12 @@ ${TRAD_TIPO}
           rating: f.rating != null ? String(f.rating) : (velha.rating || ''),
           priceNow: pr.n || '', priceOld: pr.o || '',
           split: f.split || velha.split || '',
-          dd: f.drawdown || velha.dd || ''
+          dd: f.drawdown || velha.dd || '',
+          // sinais que o QUIZ pontua e que os claims do modal conferem antes de afirmar
+          tags: f.tags || [], minDays: f.min_days, scaling: f.scaling || '',
+          newsTrading: !!f.news_trading, day1Payout: !!f.day1_payout,
+          consistency: f.consistency || '', payoutSpeed: f.payout_speed || '',
+          discNum: parseInt(f.discount, 10) || 0
         };
       });
       try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}
@@ -444,8 +450,11 @@ remendo('ordem das firmas', 'MC_ORDEM(',
 // (\r\n) e todo marcador de varias linhas escrito com \n simples NUNCA casa. Perdi tempo
 // achando que o remendo tinha sido aplicado quando ele nem rodava.
 {
-  const jaFechado = /velha\.dd \|\| ''\r?\n\s*\};\r?\n\s*\}\)\);/;
-  const aberto    = /(velha\.dd \|\| ''\r?\n\s*\};\r?\n\s*\})(\);)/;
+  // ancora na ultima linha do map (discNum) , era `velha.dd` e quebrou quando o map ganhou
+  // os campos do quiz. Ancorar em "ultima linha" e fragil por natureza: se mexer no map,
+  // conferir este fechamento junto.
+  const jaFechado = /discNum: parseInt\(f\.discount, 10\) \|\| 0\r?\n\s*\};\r?\n\s*\}\)\);/;
+  const aberto    = /(discNum: parseInt\(f\.discount, 10\) \|\| 0\r?\n\s*\};\r?\n\s*\})(\);)/;
   if (d.includes('MC_ORDEM(linhas.map') && !jaFechado.test(d)) {
     if (!aberto.test(d)) { console.error('\u2717 nao achei o fechamento do map das firmas'); process.exit(1); }
     d = d.replace(aberto, '$1)$2');

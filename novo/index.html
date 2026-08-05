@@ -1905,7 +1905,7 @@
             <sc-for list="{{ indicatorFeatures }}" as="ft" hint-placeholder-count="4"><div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #d7dde2;"><i class="ti ti-check" style="font-size: 14px; color: #bfff00;"></i>{{ ft }}</div></sc-for>
           </div>
           <div data-vfbtns="1" style="display: flex; gap: 12px;">
-            <button style="display: flex; align-items: center; gap: 9px; padding: 14px 24px; border-radius: 12px; border: none; cursor: pointer; background: linear-gradient(180deg, #d4ff4d, #bfff00); color: #0a0d07; font-family: inherit; font-weight: 800; font-size: 15px;" style-hover="filter: brightness(1.06);"><i class="ti ti-download" style="font-size: 18px;"></i>Download free</button>
+            <button sc-camel-on-click="{{ vfDownload }}" style="display: flex; align-items: center; gap: 9px; padding: 14px 24px; border-radius: 12px; border: none; cursor: pointer; background: linear-gradient(180deg, #d4ff4d, #bfff00); color: #0a0d07; font-family: inherit; font-weight: 800; font-size: 15px;" style-hover="filter: brightness(1.06);"><i class="ti ti-download" style="font-size: 18px;"></i>Download free</button>
             <button sc-camel-on-click="{{ goVolumeFilter }}" style="padding: 14px 24px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #E7ECEF; font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer;" style-hover="border-color: rgba(191,255,0,0.4);">View details</button>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 12.5px; color: #34d399;"><i class="ti ti-circle-check" style="font-size: 15px;"></i>No signup, no card, no email spam.</div>
@@ -2900,12 +2900,22 @@ class Component extends DCLogic {
       metrics: [{k:'Paid to traders',v:'$821M+'},{k:'Last 90 days',v:'$97M+'},{k:'Of profit (2026)',v:'100%'}],
       includes: ['No daily loss limit','No scaling rule','NinjaTrader license','Real-time data','Copy Trader (WealthCharts)','24/7 support'],
     },
+    // O texto padrao AFIRMAVA "one-step evaluation", "Reset available" e "News trading
+    // allowed" pra TODA firma , inventado, e falso em varias (FTMO e 2 etapas, varias
+    // proibem noticia). E "100K account from" usava o preco da MENOR conta. Cada claim
+    // agora so aparece se o campo do banco confirmar.
     _default: (f) => ({
-      flash: f.discount + ' OFF · 100K account from ' + f.priceNow + ' · Exclusive coupon inside',
+      flash: (f.discount ? f.discount + ' OFF · ' : '') + (f.priceNow ? 'Accounts from ' + f.priceNow + ' · ' : '') + (f.coupon ? 'Exclusive coupon inside' : 'Via our exclusive link'),
       trustpilot: 'reviews on Trustpilot',
-      about: f.name + ' is a ' + f.type + ' Prop Firm offering funded accounts after a one-step evaluation, with a ' + f.split + ' profit split and ' + f.dd + ' drawdown.',
-      metrics: [{k:'Profit split',v:f.split},{k:'Drawdown',v:f.dd},{k:'Max discount',v:f.discount}],
-      includes: ['Real-time data','No time limit','Reset available','News trading allowed','Scaling plan','Community support'],
+      about: f.name + ' is a ' + (f.type || 'Prop Firm') + ' offering funded accounts' + (f.split ? ', with a ' + f.split + ' profit split' : '') + (f.dd ? ' and ' + f.dd + ' drawdown' : '') + '.',
+      metrics: [{k:'Profit split',v:f.split||''},{k:'Drawdown',v:f.dd||''},{k:'Max discount',v:f.discount||''}],
+      includes: [
+        f.newsTrading ? 'News trading allowed' : null,
+        f.day1Payout ? 'Payout from day 1' : null,
+        f.scaling ? 'Scaling plan' : null,
+        f.minDays === 0 ? 'No minimum trading days' : null,
+        'Real-time data', 'Community support',
+      ].filter(Boolean),
     }),
   };  resolvePrice(f) {
     const p = this.planFor(f.id);
@@ -3192,7 +3202,8 @@ class Component extends DCLogic {
     try { window.__mcBanco = { chamado: true }; } catch (e) {}
     var SB = 'https://qfwhduvutfumsaxnuofa.supabase.co';
     var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
-    var cols = 'id,name,discount,discount_type,coupon,rating,prices,split,drawdown,sort_order,active,type';
+    var cols = 'id,name,discount,discount_type,coupon,rating,prices,split,drawdown,sort_order,active,type' +
+      ',tags,min_days,scaling,news_trading,day1_payout,consistency,payout_speed';
     var self = this;
     fetch(SB + '/rest/v1/cms_firms?active=eq.true&select=' + cols + '&order=sort_order.asc', {
       headers: { apikey: AN, Authorization: 'Bearer ' + AN }
@@ -3225,7 +3236,12 @@ class Component extends DCLogic {
           rating: f.rating != null ? String(f.rating) : (velha.rating || ''),
           priceNow: pr.n || '', priceOld: pr.o || '',
           split: f.split || velha.split || '',
-          dd: f.drawdown || velha.dd || ''
+          dd: f.drawdown || velha.dd || '',
+          // sinais que o QUIZ pontua e que os claims do modal conferem antes de afirmar
+          tags: f.tags || [], minDays: f.min_days, scaling: f.scaling || '',
+          newsTrading: !!f.news_trading, day1Payout: !!f.day1_payout,
+          consistency: f.consistency || '', payoutSpeed: f.payout_speed || '',
+          discNum: parseInt(f.discount, 10) || 0
         };
       }));
       try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}
@@ -3646,14 +3662,71 @@ class Component extends DCLogic {
       })),
       quizNext: () => { if (s.quizAns[s.quizStep] == null) { this.setState({ toast: 'Pick an option' }); return; } this.setState({ quizStep: s.quizStep + 1 }); },
       quizRestart: () => this.setState({ quizStep: 0, quizAns: [null,null,null,null,null] }),
-      quizResultName: (() => { const f = this.firms[0]; return f.name; })(),
-      quizResultDesc: 'Apex Trader Funding is one of the largest futures prop firms in the U.S. It is known for its aggressive rebates and flexible rules.',
+      // QUIZ DE VERDADE , antes as 5 respostas eram IGNORADAS: o resultado era sempre
+      // firms[0], com descricao chumbada da Apex (mentia quando a ordem mudasse).
+      // Pontuacao portada do site atual (app.js qfinish), sobre os campos do cms_firms.
+      quizResultName: (this._mcQuizW = (() => {
+        var fs = this.firms || [], a = s.quizAns || [];
+        if (!fs.length) return null;
+        var best = fs[0], bestS = -Infinity;
+        fs.forEach((f) => {
+          var sc = 0;
+          var fut = /Futures/i.test(f.type || ''), fx = /Forex/i.test(f.type || '');
+          var preco = parseFloat(String(f.priceNow || '').replace(/[^0-9.]/g, '')) || 0;
+          var sp = parseInt(f.split, 10) || 0;
+          var semMin = f.minDays != null && f.minDays <= 1;
+          var semConsist = !f.consistency || /^n/i.test(String(f.consistency));
+          if (a[0] === 0) sc += fut ? 3 : (fx ? -2 : 0);
+          else if (a[0] === 1) sc += fx ? 3 : (fut ? -2 : 0);
+          else if (a[0] === 2) sc += 1;
+          if (a[1] === 0) { if (f.id === 'ftmo' || f.id === 'e2t') sc += 2; if (semMin) sc += 1; }
+          else if (a[1] >= 2) { if (f.scaling) sc += 1; }
+          if (a[2] === 0) { if (preco && preco < 60) sc += 2; else if (preco && preco < 120) sc += 1; }
+          else if (a[2] === 3) { if (f.scaling) sc += 1; }
+          if (a[3] === 0 || a[3] === 1) { if (f.newsTrading) sc += 1; if (semMin) sc += 1; }
+          else if (a[3] === 2) { if (/EOD|end.of.day/i.test(f.dd || '')) sc += 2; }
+          else if (a[3] === 3) { if (semConsist) sc += 1; }
+          if (a[4] === 0) sc += Math.min((f.discNum || 0) / 20, 5);
+          else if (a[4] === 1) { if (sp >= 100) sc += 3; else if (sp >= 95) sc += 2; else if (sp >= 90) sc += 1; }
+          else if (a[4] === 2) { if (f.newsTrading) sc += 1; if (semConsist) sc += 1; if (semMin) sc += 1; }
+          else if (a[4] === 3) { if (f.day1Payout) sc += 2; if (semMin) sc += 2; if (String(f.payoutSpeed) === 'fast') sc += 1; }
+          if (sc > bestS) { bestS = sc; best = f; }
+        });
+        return best;
+      })(), ((this._mcQuizW || {}).name || '')),
+      quizResultDesc: (() => {
+        var w = this._mcQuizW; if (!w) return '';
+        // ⚠️ Claims SEPARADOS de proposito: "70% OFF using code MARKET" atribuiria o
+        // desconto ao cupom, e na The5ers o 70% e promo do SITE e o MARKET rende 5%.
+        // Ja confundi os dois em 28/07 e o desconto do banco nao e o que o cupom rende.
+        var pedacos = [];
+        if (w.discount) pedacos.push('up to ' + w.discount + ' OFF' + (w.discNote === 'OFF LIFETIME' ? ' lifetime' : ''));
+        pedacos.push(w.coupon ? 'exclusive code ' + w.coupon + ' inside' : 'tracked through our exclusive link');
+        if (w.split) pedacos.push(w.split + ' profit split');
+        return w.name + ' is the best match for your answers: ' + pedacos.join(' · ') + '.';
+      })(),
       quizResultBg: '#0a0d07',
-      quizResultLogo: this.logoImg(this.firms[0].logo),
-      quizOpenFirm: () => this.openFirm(this.firms[0]),
+      quizResultLogo: this.logoImg(((this._mcQuizW || this.firms[0]) || {}).logo),
+      quizOpenFirm: () => this.openFirm(this._mcQuizW || this.firms[0]),
       posLocked: !s.authed && !s.posUnlocked,
       posUnlocked: s.authed || s.posUnlocked,
-      unlockPosition: () => this.setState({ posUnlocked: true, toast: 'Calculator unlocked' }),
+      // O gate pedia nome e e-mail e JOGAVA FORA (nenhum fetch). Agora o lead vai pro
+      // mesmo endpoint das outras LPs, fire-and-forget , o destravar nao espera a rede.
+      unlockPosition: () => {
+        var nome = document.querySelector('input[placeholder="Your name"]');
+        var caixa = nome && nome.parentElement;
+        var mail = caixa && caixa.querySelector('input[placeholder="email@example.com"]');
+        var em = mail ? String(mail.value || '').trim().toLowerCase() : '';
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { this.setState({ toast: 'Enter a valid email' }); return; }
+        try {
+          fetch('/api/leads/volumefilter?action=subscribe', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: em, name: String(nome.value || '').trim().slice(0, 60),
+              lang: 'en', source: 'position-size', tags: ['position-size-lead'] })
+          });
+        } catch (e) {}
+        this.setState({ posUnlocked: true, toast: 'Calculator unlocked' });
+      },
       posInputs: [
         { label:'Account size', val:'$'+s.posAcct.toLocaleString(), raw:s.posAcct, min:5000, max:300000, step:5000, onInput:(e)=>this.setState({posAcct:+e.target.value}) },
         { label:'Risk %', val:s.posRisk+'%', raw:s.posRisk, min:0.25, max:5, step:0.25, onInput:(e)=>this.setState({posRisk:+e.target.value}) },
@@ -3841,6 +3914,14 @@ class Component extends DCLogic {
       isIndicators: s.route === 'indicators',
       isVolumeFilter: s.route === 'volumefilter',
       goVolumeFilter: () => this.setState({ route: 'volumefilter' }),
+      // "Download free" nao tinha handler NENHUM , botao morto. O zip e o mesmo que o
+      // site atual entrega (raiz do dominio, conferido 200 no ar).
+      vfDownload: () => {
+        var a = document.createElement('a');
+        a.href = '/MarketsCoupons-VolumeFilter-v1.0.zip';
+        a.setAttribute('download', '');
+        document.body.appendChild(a); a.click(); a.remove();
+      },
       vfProblems: [
         { n:'01', t:'Bought the breakout and the candle reversed the same second.' },
         { n:'02', t:'Entered the trend and price went sideways for 40 minutes.' },
@@ -4032,7 +4113,14 @@ class Component extends DCLogic {
           ctaLabel: p.cta,
           includes: p.includes,
           disclaimer: p.disclaimer,
-          onBuy: () => this.toastMsg('Opens the official ' + card + ' checkout'),
+          // O botao final de compra era um TOAST de mentira ("Opens the official checkout") ,
+          // visita interessada, zero comissao. Links de afiliado identicos aos do site atual
+          // (app.js PLATFORMS_LANGS); plataforma nao vive na tabela firms.
+          onBuy: () => {
+            var L = { tradingview: 'https://tradingview.com/?aff_id=164855',
+                      ninjatrader: 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO' };
+            if (L[s.platKey]) window.open(L[s.platKey], '_blank', 'noopener');
+          },
         };
       })(),
       closePlat: () => this.setState({ platKey: null }),
@@ -4191,7 +4279,10 @@ class Component extends DCLogic {
         }));
         const num = str => parseFloat(String(str).replace(/[^0-9.]/g, '')) || 0;
         const save = price ? ('$' + (num(price.o) - num(price.n)).toFixed(2).replace(/\.00$/, '')) : '';
-        const meta = this.firmMeta[f.id] || this.firmMeta._default(f);
+        // 'flash' vem SEMPRE do banco: a linha chumbada da Apex anunciava "$49 ALL-IN /
+        // PA $59 flat", promo que MORREU em 21/07. Preco de promo vencida em pagina
+        // publica e propaganda enganosa. Os textos custom (about/metrics) ficam.
+        const meta = Object.assign({}, this.firmMeta._default(f), this.firmMeta[f.id] || {}, { flash: this.firmMeta._default(f).flash });
         return {
           name:f.name, initials:f.initials, logo:f.logo, logoSrc: './novo/assets/logos/' + f.logo, logoEl: this.logoImg(f.logo), rating:f.rating, slug:f.id, typeUpper: f.type.toUpperCase(),
           bgSrc: (this.bgMap[f.id] ? './assets/checkout-bg/' + this.bgMap[f.id] + '?v=2' : null),
