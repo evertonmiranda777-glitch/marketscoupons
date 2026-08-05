@@ -492,14 +492,27 @@ function MC_REVIEWS(id) {`);
 //   3. um esmaecido na borda direita QUANDO ha mais coisa , sem isso rolagem sem barra
 //      vira conteudo invisivel, que e pior que cortado.
 // 15 itens nao cabem em notebook nem espremendo. Preferi rolar a esconder item do menu.
+//
+// ⚠️ 05/08, segunda correcao: apertar padding NUNCA ia resolver. Com o encolhimento
+// travado o conteudo natural da barra e 1.690px , faltavam 154px a 410px em qualquer
+// notebook, e padding devolve no maximo ~60. O que devolve de verdade sao os ICONES:
+// 16px + 6 de vao x 15 itens = ~330px. Abaixo de 1750px de tela os icones somem e os
+// rotulos ficam , medido no ar: cabe inteiro ate ~1100px. So abaixo disso rola (com o
+// esmaecido avisando). O Everton usa zoom 125%: 1920 fisicos = ~1536 de CSS, e era por
+// isso que "cabia pra mim e cortava pra ele".
 if (!d.includes('mc-navwrap > *')) {
   const CSS = `<style>
-    @media (min-width: 1100px) {
-      .mc-navwrap > * { padding-left: 8px !important; padding-right: 8px !important; }
-    }
     .mc-navwrap { scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; }
     .mc-navwrap::-webkit-scrollbar { display: none; }
     .mc-navwrap > * { flex-shrink: 0 !important; }
+    /* tela media: icone sai, rotulo fica , e ai os 15 itens cabem */
+    @media (max-width: 1749px) {
+      .mc-navwrap > * > i.ti { display: none; }
+      .mc-navwrap > * { padding-left: 7px !important; padding-right: 7px !important; }
+    }
+    @media (max-width: 1279px) {
+      .mc-navwrap > * { font-size: 12px !important; padding-left: 5px !important; padding-right: 5px !important; }
+    }
     .mc-navfade { position: relative; }
     .mc-navfade::after {
       content: ''; position: absolute; top: 0; right: 0; bottom: 10px; width: 64px;
