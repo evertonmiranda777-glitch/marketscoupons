@@ -23,6 +23,18 @@
        nos 32 tambem. E nem precisava do aperto: sobravam 136px. Quem cede espaco sao os
        ITENS (vao e padding), nunca a margem da pagina. */
     .mc-navwrap { padding-left: 32px !important; padding-right: 32px !important; }
+    /* BARRA DE ROLAGEM , o Everton mandou o print do cadastro com DUAS barras brancas.
+       Nao e defeito de layout: o painel do modal tem 1073px de conteudo em 1000px de
+       altura, entao rola mesmo, e o Windows desenha a barra CLARA por padrao. Num site
+       preto ela vira um risco branco no meio da tela. Deixo fina e escura (aparece,
+       porque sumir esconderia que ha mais conteudo abaixo do botao). Vale pra pagina
+       inteira, o Log in tem o mesmo painel. */
+    * { scrollbar-width: thin; scrollbar-color: rgba(191,255,0,0.28) transparent; }
+    *::-webkit-scrollbar { width: 8px; height: 8px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 8px; }
+    *::-webkit-scrollbar-thumb:hover { background: rgba(191,255,0,0.45); }
+    *::-webkit-scrollbar-corner { background: transparent; }
     @media (max-width: 1749px) {
       .mc-navwrap { gap: 1px !important; }
       .mc-navwrap > * { gap: 5px !important; padding: 8px 8px !important; font-size: 13px !important; }
