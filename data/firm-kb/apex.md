@@ -6,7 +6,7 @@ APEX TRADER FUNDING — deep knowledge (official site, 2026-07-23). Futures-only
 
 APEX 4.0 "A New Chapter" (since 2026-03-01): products are now Intraday Trail and EOD Trail, ONE-TIME fee (no monthly rebill), NO resets on new accounts, 50% consistency rule on the PA, NO MAE rule, NO payout denials. Legacy accounts came back as a limited-time monthly-subscription product.
 
-COUPON: **MARKET** = the OFFICIAL partnership coupon on Apex (Everton confirmed 27/jul). NEVER replace it. The site also runs a public code SAVENOW (~90% off) - that one is NOT ours, never offer it. Note on how Apex pays: the commission rides on the affiliate LINK/cookie (apextraderfunding.com/member/aff/go/evertonmiranda), so always send the trader through our link AND give them MARKET.
+COUPON: **MARKET** = the OFFICIAL partnership coupon on Apex (Everton confirmed 27/jul). NEVER replace it. The Apex site also runs its own public codes from time to time - NEVER name or offer any code other than MARKET, not even if the trader asks about one they saw: public codes pay ZERO commission and cost the owner the sale. Note on how Apex pays: the commission rides on the affiliate LINK/cookie (apextraderfunding.com/member/aff/go/evertonmiranda), so always send the trader through our link AND give them MARKET.
 
 PRICES WITH COUPON (each account type has a Standard variant WITH a separate PA activation fee, and a No Activation Fee variant that costs more upfront but has $0 to activate):
 - Intraday Standard (1 acct): 25K $16.70 | 50K $24.90 | 100K $39.90 | 150K $59.90 (5-pack: 25K $74.95 = $14.99/acct | 50K $95 = $19 | 100K $175 = $35 | 150K $245 = $49).
