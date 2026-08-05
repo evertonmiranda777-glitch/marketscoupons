@@ -510,13 +510,22 @@ if (!d.includes('mc-navwrap > *')) {
     .mc-navwrap { scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; }
     .mc-navwrap::-webkit-scrollbar { display: none; }
     .mc-navwrap > * { flex-shrink: 0 !important; }
-    /* tela media: icone sai, rotulo fica , e ai os 15 itens cabem */
+    /* ⚠️ 05/08, TERCEIRA tentativa. A segunda ESCONDIA o ícone abaixo de 1750px e o menu
+       ficou sem cara , o Everton mandou o print. Medindo direito: o ícone custa 16px + 6
+       de vão, mas o vão, o padding e a fonte juntos devolvem quase o mesmo SEM apagar
+       nada. Aperto em degraus, ícone SEMPRE visível até 1280px. */
     @media (max-width: 1749px) {
-      .mc-navwrap > * > i.ti { display: none; }
-      .mc-navwrap > * { padding-left: 7px !important; padding-right: 7px !important; }
+      .mc-navwrap { padding-left: 16px !important; padding-right: 16px !important; gap: 1px !important; }
+      .mc-navwrap > * { gap: 4px !important; padding: 8px 6px !important; font-size: 12.5px !important; }
+      .mc-navwrap > * > i.ti { font-size: 13px !important; }
     }
+    @media (max-width: 1449px) {
+      .mc-navwrap > * { gap: 3px !important; padding: 8px 5px !important; font-size: 12px !important; }
+      .mc-navwrap > * > i.ti { font-size: 12px !important; }
+    }
+    /* abaixo de 1280px nem apertando cabe: aí sim o ícone sai, que é melhor que rolar */
     @media (max-width: 1279px) {
-      .mc-navwrap > * { font-size: 12px !important; padding-left: 5px !important; padding-right: 5px !important; }
+      .mc-navwrap > * > i.ti { display: none; }
     }
     .mc-navfade { position: relative; }
     .mc-navfade::after {
