@@ -22,6 +22,18 @@
  * Traduzido por mim, à mão , nunca por Gemini/API (lei do projeto).
  * ────────────────────────────────────────────────────────────────────────────── */
 window.MC_I18N_NOVO = {
+  /* ── 3ª rodada (06/08): o que sobrou em inglês na varredura das 15 páginas.
+     O site é AMERICANO: o inglês continua sendo o padrão. Isto só entra quando o
+     visitante escolhe outro idioma. ⚠️ O subtítulo do hero termina em "from " e o
+     PREÇO vive num <span> separado (é outro nó de texto), por isso a chave tem o
+     espaço no fim e não inclui o valor , que agora vem do banco. */
+
+  'Exclusive codes for Apex, Bulenox, FTMO, FundedNext and more. A 100K account from': { pt:'Códigos exclusivos de Apex, Bulenox, FTMO, FundedNext e mais. Uma conta de 100K a partir de', es:'Códigos exclusivos de Apex, Bulenox, FTMO, FundedNext y más. Una cuenta de 100K desde', it:'Codici esclusivi di Apex, Bulenox, FTMO, FundedNext e altri. Un account da 100K a partire da', fr:'Codes exclusifs Apex, Bulenox, FTMO, FundedNext et plus. Un compte 100K à partir de', de:'Exklusive Codes für Apex, Bulenox, FTMO, FundedNext und mehr. Ein 100K-Konto ab', ar:'أكواد حصرية لـ Apex و Bulenox و FTMO و FundedNext وغيرها. حساب 100K ابتداءً من', id:'Kode eksklusif untuk Apex, Bulenox, FTMO, FundedNext dan lainnya. Akun 100K mulai dari' },
+  'See the whole market at a glance with the integrated heatmap. S&P 500, Nasdaq, Global and Crypto, all in real time.': { pt:'Veja o mercado inteiro de relance com o heatmap integrado. S&P 500, Nasdaq, Global e Cripto, tudo em tempo real.', es:'Mira todo el mercado de un vistazo con el heatmap integrado. S&P 500, Nasdaq, Global y Cripto, todo en tiempo real.', it:'Vedi tutto il mercato a colpo d’occhio con la heatmap integrata. S&P 500, Nasdaq, Global e Cripto, in tempo reale.', fr:'Voyez tout le marché d’un coup d’œil avec la heatmap intégrée. S&P 500, Nasdaq, Global et Crypto, en temps réel.', de:'Sieh den ganzen Markt auf einen Blick mit der integrierten Heatmap. S&P 500, Nasdaq, Global und Krypto, in Echtzeit.', ar:'شاهد السوق كاملًا بنظرة واحدة عبر خريطة الحرارة المدمجة. S&P 500 وناسداك والعالمي والعملات الرقمية، في الوقت الفعلي.', id:'Lihat seluruh pasar sekilas dengan heatmap terintegrasi. S&P 500, Nasdaq, Global dan Kripto, semua real time.' },
+  'Real TradingView heatmap with live data': { pt:'Heatmap real do TradingView com dado ao vivo', es:'Heatmap real de TradingView con datos en vivo', it:'Heatmap reale di TradingView con dati live', fr:'Vraie heatmap TradingView en données live', de:'Echte TradingView-Heatmap mit Live-Daten', ar:'خريطة حرارة حقيقية من TradingView ببيانات مباشرة', id:'Heatmap TradingView asli dengan data langsung' },
+  'Live TradingView chart embedded for each asset': { pt:'Gráfico do TradingView ao vivo em cada ativo', es:'Gráfico de TradingView en vivo en cada activo', it:'Grafico TradingView live per ogni asset', fr:'Graphique TradingView en direct pour chaque actif', de:'Live-TradingView-Chart für jeden Wert', ar:'رسم TradingView مباشر لكل أصل', id:'Grafik TradingView langsung untuk tiap aset' },
+  'Real Trustpilot scores and reviews for each firm': { pt:'Nota e avaliações reais do Trustpilot de cada firma', es:'Puntuación y reseñas reales de Trustpilot de cada firma', it:'Punteggio e recensioni reali di Trustpilot per ogni società', fr:'Note et avis Trustpilot réels pour chaque société', de:'Echte Trustpilot-Bewertungen für jede Firma', ar:'تقييمات Trustpilot حقيقية لكل شركة', id:'Skor dan ulasan Trustpilot asli tiap perusahaan' },
+
   /* ── 2ª rodada: o que o pente fino de 05/08 achou ainda em inglês ─────────
      ⚠️ NÃO entram aqui de propósito: título de artigo do blog e de guia (são
      CONTEÚDO do banco e já têm versão traduzida própria em /pt/blog e /pt/guides,

@@ -873,7 +873,7 @@
           <span style="width: 7px; height: 7px; border-radius: 999px; background: #bfff00; box-shadow: 0 0 8px #bfff00; animation: mc-pulse 1.8s infinite;"></span>VERIFIED · UPDATED DAILY
         </div>
         <h1 style="font-weight: 900; font-size: 78px; line-height: 0.92; letter-spacing: -0.045em; margin: 0 0 22px; color: #F4F8F9; text-wrap: balance;">Hunt the <span style="color: #bfff00;">biggest</span> trading deals</h1>
-        <p style="font-size: 18px; line-height: 1.55; color: #b8c0c8; margin: 0 0 34px; max-width: 480px; text-wrap: pretty;">Exclusive codes for Apex, Bulenox, FTMO, FundedNext and more. A 100K account from <span style="color: #F4F8F9; font-weight: 700;">$23.65</span>.</p>
+        <p style="font-size: 18px; line-height: 1.55; color: #b8c0c8; margin: 0 0 34px; max-width: 480px; text-wrap: pretty;">Exclusive codes for Apex, Bulenox, FTMO, FundedNext and more. A 100K account from <span style="color: #F4F8F9; font-weight: 700;" data-mc-min100k="1">$23.65</span>.</p>
         <div data-herocta="1" style="display: flex; gap: 14px; flex-wrap: wrap;">
           <button sc-camel-on-click="{{ goFirms }}" style="font-family: inherit; font-weight: 800; font-size: 16px; color: #0a0d07; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; padding: 16px 32px; border-radius: 999px; cursor: pointer; box-shadow: 0 10px 34px rgba(191,255,0,0.28);" style-hover="filter: brightness(1.05); transform: translateY(-1px);">Browse coupons</button>
           <button sc-camel-on-click="{{ goCompare }}" style="font-family: inherit; font-weight: 700; font-size: 16px; color: #F4F8F9; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.16); padding: 16px 30px; border-radius: 999px; cursor: pointer;" style-hover="background: rgba(255,255,255,0.1);">Compare firms</button>
@@ -3336,6 +3336,20 @@ class Component extends DCLogic {
       // ⚠️ ESTE REMENDO E SEPARADO DE PROPOSITO: o bloco acima ja estava aplicado, entao
       // editar o texto dele no pluga NAO reentra no HTML (a marca de "ja aplicado" pula).
       self._mcRodapeFirmas = self.firms.map(function (f) { return f.name; });
+      // O hero diz "A 100K account from $23.65" com o valor CHUMBADO (era o 100K da
+      // Bulenox). Se a Bulenox mudar de preco, a primeira frase do site mente. Agora
+      // e o MENOR 100K entre as firmas ativas , que e exatamente o que "from" promete.
+      try {
+        var _mm = null;
+        self.firms.forEach(function (f) {
+          var v = parseFloat(String(f.priceNow || '').replace(/[^0-9.]/g, ''));
+          if (isFinite(v) && v > 0 && (_mm === null || v < _mm)) _mm = v;
+        });
+        if (_mm !== null) {
+          var _el = document.querySelector('[data-mc-min100k]');
+          if (_el) _el.textContent = '$' + (_mm % 1 ? _mm.toFixed(2) : _mm);
+        }
+      } catch (_) {}
       self._homeStatic = null; self.setState({ _mcBanco: 1 });
     }).catch(function (e) { try { window.__mcBanco.erro = String(e).slice(0, 120); } catch (_) {} });
   }
