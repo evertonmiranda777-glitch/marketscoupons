@@ -1322,7 +1322,33 @@ remendo('analise da pagina', '_mcLigarAnalisePagina',
             biasStyle: 'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;' +
                        'font-weight:800;letter-spacing:0.06em;background:rgba(' + rgb + ',0.14);color:' + txt + ';',
             s1: a.support_1 != null ? String(a.support_1) : '',
-            r1: a.resistance_1 != null ? String(a.resistance_1) : ''
+            r1: a.resistance_1 != null ? String(a.resistance_1) : '',
+            // GRAFICO DE VERDADE. A casca desenhava uma caixa vazia escrita
+            // "TradingView chart · ES · 1h" , e a propria pagina promete logo acima
+            // "Live TradingView chart embedded for each asset". Era claim sem entrega.
+            // Simbolo de FUTURO CONTINUO da CME, que e o que a analise cobre.
+            chartUrl: (function (sym) {
+              // ⚠️ FUTURO DA CME NAO ABRE no widget gratuito , o TradingView devolve
+              // "The content is not available" (caixa branca no meio do card escuro).
+              // O proprio rodape desta pagina ja diz o certo: "Charts display real-time
+              // spot indices (NDX, SPX, GOLD, USOIL) that closely track the corresponding
+              // futures". Uso exatamente esses, entao o grafico abre E o aviso continua
+              // verdadeiro , nao invento que e o futuro.
+              // ⚠️ Nem todo simbolo abre no widget gratuito. Testado na tela:
+              // CME_MINI:ES1! e NASDAQ:NDX -> "The content is not available" (caixa
+              // branca). TVC:USOIL e TVC:GOLD abrem. Pros indices uso os feeds livres
+              // da FOREXCOM, que sao os mesmos spot citados no aviso do rodape.
+              var S = { ES: 'FOREXCOM:SPXUSD', NQ: 'FOREXCOM:NSXUSD', CL: 'TVC:USOIL', GC: 'TVC:GOLD' };
+              var cfg = {
+                symbol: S[sym] || 'FOREXCOM:SPXUSD',
+                interval: '60', timezone: 'Etc/UTC', theme: 'dark', style: '1',
+                locale: 'en', hide_top_toolbar: true, hide_legend: false,
+                allow_symbol_change: false, save_image: false,
+                backgroundColor: 'rgba(10,14,8,1)', gridColor: 'rgba(255,255,255,0.05)',
+                width: '100%', height: '100%'
+              };
+              return 'https://s.tradingview.com/widgetembed/?locale=en#' + encodeURIComponent(JSON.stringify(cfg));
+            })(a.asset)
           });
         });
         if (cards.length) self._mcAnaCards = cards;
@@ -1362,6 +1388,15 @@ for (const r of COMPL) {
   const n = d.split(r.de).length - 1;
   if (n !== 1) { console.error(`
 ✗ ANCORA de compliance ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}: ${r.nome}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
+const GRAF = JSON.parse(fs.readFileSync('scripts/remendos-grafico.json', 'utf8'));
+for (const r of GRAF) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`\n✗ ANCORA do grafico ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
   d = trocar(d, r.de, r.para);
   feitos.push(r.nome);
 }

@@ -1515,7 +1515,7 @@
               <div style="text-align: right;"><div style="font-weight: 800; font-size: 20px; color: #F4F8F9;">{{ a.price }}</div><div style="font-size: 13px; font-weight: 700; color: {{ a.chgColor }};">{{ a.chg }}</div></div>
             </div>
             <div style="padding: 0 22px 14px;"><span style="{{ a.biasStyle }}">{{ a.bias }}</span></div>
-            <div style="margin: 0 22px 16px; height: 180px; border-radius: 12px; background: linear-gradient(180deg, #0a0e08, #0d1119); border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; color: #46505a; font-size: 12px; gap: 8px;"><i class="ti ti-brand-tradingview" style="font-size: 18px; color: #bfff00;"></i>TradingView chart · {{ a.sym }} · 1h</div>
+            <div style="margin: 0 22px 16px; height: 180px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); background: #0a0e08;"><iframe src="{{ a.chartUrl }}" title="{{ a.sym }} chart" loading="lazy" style="width:100%;height:100%;border:0;display:block;"></iframe></div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 22px 20px;">
               <div style="padding: 12px 14px; border-radius: 11px; background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.16);"><div style="font-size: 10px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Support 1</div><div style="font-weight: 700; font-size: 15px; color: #34d399; margin-top: 3px;">{{ a.s1 }}</div></div>
               <div style="padding: 12px 14px; border-radius: 11px; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.16);"><div style="font-size: 10px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Resistance 1</div><div style="font-weight: 700; font-size: 15px; color: #f87171; margin-top: 3px;">{{ a.r1 }}</div></div>
@@ -3459,7 +3459,33 @@ class Component extends DCLogic {
             biasStyle: 'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;' +
                        'font-weight:800;letter-spacing:0.06em;background:rgba(' + rgb + ',0.14);color:' + txt + ';',
             s1: a.support_1 != null ? String(a.support_1) : '',
-            r1: a.resistance_1 != null ? String(a.resistance_1) : ''
+            r1: a.resistance_1 != null ? String(a.resistance_1) : '',
+            // GRAFICO DE VERDADE. A casca desenhava uma caixa vazia escrita
+            // "TradingView chart · ES · 1h" , e a propria pagina promete logo acima
+            // "Live TradingView chart embedded for each asset". Era claim sem entrega.
+            // Simbolo de FUTURO CONTINUO da CME, que e o que a analise cobre.
+            chartUrl: (function (sym) {
+              // ⚠️ FUTURO DA CME NAO ABRE no widget gratuito , o TradingView devolve
+              // "The content is not available" (caixa branca no meio do card escuro).
+              // O proprio rodape desta pagina ja diz o certo: "Charts display real-time
+              // spot indices (NDX, SPX, GOLD, USOIL) that closely track the corresponding
+              // futures". Uso exatamente esses, entao o grafico abre E o aviso continua
+              // verdadeiro , nao invento que e o futuro.
+              // ⚠️ Nem todo simbolo abre no widget gratuito. Testado na tela:
+              // CME_MINI:ES1! e NASDAQ:NDX -> "The content is not available" (caixa
+              // branca). TVC:USOIL e TVC:GOLD abrem. Pros indices uso os feeds livres
+              // da FOREXCOM, que sao os mesmos spot citados no aviso do rodape.
+              var S = { ES: 'FOREXCOM:SPXUSD', NQ: 'FOREXCOM:NSXUSD', CL: 'TVC:USOIL', GC: 'TVC:GOLD' };
+              var cfg = {
+                symbol: S[sym] || 'FOREXCOM:SPXUSD',
+                interval: '60', timezone: 'Etc/UTC', theme: 'dark', style: '1',
+                locale: 'en', hide_top_toolbar: true, hide_legend: false,
+                allow_symbol_change: false, save_image: false,
+                backgroundColor: 'rgba(10,14,8,1)', gridColor: 'rgba(255,255,255,0.05)',
+                width: '100%', height: '100%'
+              };
+              return 'https://s.tradingview.com/widgetembed/?locale=en#' + encodeURIComponent(JSON.stringify(cfg));
+            })(a.asset)
           });
         });
         if (cards.length) self._mcAnaCards = cards;

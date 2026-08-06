@@ -1,0 +1,8 @@
+[
+ {
+  "nome": "grafico real da analise",
+  "marca": "a.chartUrl",
+  "de": "<div style=\"margin: 0 22px 16px; height: 180px; border-radius: 12px; background: linear-gradient(180deg, #0a0e08, #0d1119); border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; color: #46505a; font-size: 12px; gap: 8px;\"><i class=\"ti ti-brand-tradingview\" style=\"font-size: 18px; color: #bfff00;\"></i>TradingView chart · {{ a.sym }} · 1h</div>",
+  "para": "<div style=\"margin: 0 22px 16px; height: 180px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); background: #0a0e08;\"><iframe src=\"{{ a.chartUrl }}\" title=\"{{ a.sym }} chart\" loading=\"lazy\" style=\"width:100%;height:100%;border:0;display:block;\"></iframe></div>"
+ }
+]
