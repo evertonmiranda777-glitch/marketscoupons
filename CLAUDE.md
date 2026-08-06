@@ -1,5 +1,78 @@
 # MarketsCoupons, Contexto do Projeto
 
+## 🔗🔗 REGRA PERMANENTE , APEX E BULENOX ANDAM JUNTAS. SEMPRE.
+
+Desde 30/03/2026 (dia 1 do site). **Não é efeito colateral de gatilho, não é coincidência,
+não é descoberta:** é regra do Everton. Promo, prazo, barra de aviso, contador, criativo,
+e-mail, Telegram , **o que vale pra uma vale pra outra**. O `trg_mirror_apex_bulenox_promo`
+existe pra GARANTIR isso, não é surpresa quando dispara.
+
+**PROIBIDO** perguntar "a Bulenox também?" ou relatar "a Bulenox pegou a mesma data sozinha".
+Ele já respondeu isso vezes demais. Mexeu na Apex → **a Bulenox vai junto, sem perguntar.**
+
+"E DESDE DESSE DIA EU TENHO QUE FALAR PRA VC QUE APEX E BULENOX ANDAM JUNTAS" (06/08/2026)
+
+
+## 💰 LEIS 06/ago — A LP PAGA, O TIMER E O MAX
+
+**🚨 A LP `/coupons` TEM PRECOS PROPRIOS, CHUMBADOS NO ARQUIVO.** Apliquei o relatorio de
+precos da Apex no `cms_firms` (**88 celulas, todas certas**) e respondi *"salvo no banco e no
+Max"*. A LP continuou anunciando **50K Intraday sem taxa por $49** , que e o preco do **EOD
+Standard**; o certo e **$790 → $79**. Eram 5 linhas da coluna No Activation Fee. **Ao aplicar
+dado de firma, a pergunta nao e "salvei no banco?" e sim "quais superficies tem copia
+PROPRIA?"**: `cms_firms` · **`coupons.html`** · `api/bot.js` · `app.js` (FIRM_ABOUT/
+CHECKOUT_FIRMS) · `telegram-creative` · `lib/email-render.js`. Conferir **por script, celula a
+celula** , achei as 5 em 30 segundos. ⚠️ **O 100K sem taxa ($59) e MAIS BARATO que o 50K
+($79)** , e o que o simulador oficial exibe, **nao "corrigir"**. Detalhe:
+[[feedback_lp_coupons_tem_precos_proprios]]
+
+**⏱️ CONTADOR EM FIRMA VITALICIA: LIBERADO NO SITE (ordem direta dele).** Eu bloqueava em
+**tres** lugares e so o primeiro dava mensagem de erro: (1) trigger `trg_guard_cms_firms`
+regra 2 , **removida**; (2) `app.js` `renderPromoTopbar` jogava lifetime fora do contador ,
+**removido** (sem isso ele salvava sem erro e **nao via timer nenhum**); (3) a firma aparecia
+2x na barra (contador + selo "Lifetime deal") , resolvido. **O que o codigo nunca pode e
+INVENTAR prazo** (`Date.now()+48h` chumbado foi o bug de 28/jul); prazo vem do `promo_ends_at`
+que o Everton preenche no admin. ⚠️ **Telegram e Max seguem SEM contador em vitalicia** ,
+canal publico nao tem retificacao.
+
+**🗣️ MAX , IDIOMA (o bug real nao era o que eu chutei):** pergunta em ingles voltava em
+portugues porque **dentro das instrucoes havia uma FRASE PRONTA EM PORTUGUES** ("So manjo de
+prop firms...") mandando responder aquilo pra qualquer pergunta fora de escopo, em qualquer
+idioma. **Instrucao com texto chumbado num idioma vaza pra resposta.** Descrever a resposta,
+nunca entregar a frase. Junto: faltava o **indonesio** no `LANG_NAMES` (site tem 8, Max sabia
+7) e a ordem final tinha valvula de escape. Hoje a regra de idioma e a **ULTIMA linha do
+prompt**, absoluta, e diz que exemplo em PT ensina ESTILO, nao idioma. **Medido: 8 idiomas ×
+3 tipos de pergunta = 24/24**, inclusive com a KB da Futures Elite (que esta em portugues).
+
+**🎟️ CUPOM A MAO NO PROMPT DO MAX:** 4 firmas (fn, the5ers, toponefutures, fff) tinham
+`coupon MARKET` escrito literalmente. Coincidiam com a tabela, mas e o padrao que ja trocou o
+cupom do E8 por um publico sem comissao. Agora `{{CUP:slug}}`, confirmado no ar.
+
+**🧪 TESTES DELE NA LP (06/ago, reversiveis, 1 linha cada):** `const LP_OFF =
+['funded-futures-family']` (comissao baixa, medir se a venda das outras sobe , ⚠️ a FFF era o
+**5o** cartao, nao o 2o) e `const LP_LEGACY = false` (o link `aff/go` da Apex **nao para na
+secao Legacy**, o cliente clicava e nao achava). Religar = lista vazia / `true`. **So na LP** ,
+firma segue no site, Max, banco, SEO e Telegram.
+
+**📊 SAIDA DA LP PRO SITE = 3 PORTAS**, todas mandando `select_content` com `location`
+distinto (`lp_coupons_logo` · `lp_coupons_more` · `lp_coupons_see_all`). Antes **nao era
+medido em lugar nenhum**: fora da allowlist do GA4 + tabela `events` desligada. ⚠️ **Nao mexer
+no `fixSeeAllLink`** , ele reescreve o href em runtime pra preservar a UTM REAL do visitante.
+
+**🖼️ TOPO DA LP:** logo dourada a esquerda + UM seletor "EN ▾" a direita (as 8 pilulas comiam
+a primeira dobra). ⚠️ **A logo continua DOURADA ate o site novo entrar no ar** (ordem dele).
+A barra usa `max-width:560px`, a **mesma coluna do conteudo** , dei 1180px e ela ficou com
+300px de vazio ate onde a pagina comeca. **Selo `.fr-nofee` centralizado nos 3 cartoes**;
+⚠️ a Apex usa texto PROPRIO com **OPTIONS/OPCOES** porque cobra ativacao em parte dos planos
+, nunca trocar pelo curto.
+
+**💡 DDL pela mgmt API com 403 `error code: 1010` = Cloudflare barrando por falta de
+`User-Agent`, NAO permissao.** Mandar o header resolve.
+
+**⚠️ Script que grava o arquivo no FIM:** se um `assert` falha no meio, **as trocas anteriores
+se perdem** e parece que nada rodou. Me pegou 2x hoje.
+
+
 ## 🔌 LEI 04/ago — SITE NOVO: DOIS COMANDOS, NUNCA UM
 
 ```

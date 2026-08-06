@@ -68,14 +68,14 @@ begin
     end if;
   end if;
 
-  -- ── 2. Oferta vitalicia nao tem prazo, por definicao ────────────────────────
-  -- Em 28/07 o canal publicou "89% OFF (vitalicio!)" e "Termina em 48h" na MESMA
-  -- mensagem, porque a firma era lifetime E tinha promo_ends_at.
-  if new.discount_type = 'lifetime' and new.promo_ends_at is not null then
-    raise exception
-      'firma "%" e discount_type=lifetime MAS tem promo_ends_at (%). Vitalicia nao tem prazo , ou zera o prazo, ou troca o tipo.',
-      new.id, new.promo_ends_at;
-  end if;
+  -- ── 2. Vitalicia COM prazo: LIBERADO (ordem do Everton, 06/08) ──────────────
+  -- Eu bloqueava. Estava errado bloquear: o timer e ferramenta de venda dele, e a
+  -- decisao do que anunciar e dele, nao minha.
+  -- O incidente de 28/07 ("89% OFF vitalicio!" + "Termina em 48h" na MESMA mensagem
+  -- do Telegram) continua impossivel, porque a guarda de verdade esta na PONTA que
+  -- publica, nao aqui: `telegram-bot` e `api/bot.js` ja recusam contador em firma
+  -- lifetime, e o app.js tambem. A barra do site mostra o prazo que o Everton pos.
+  -- Nao reintroduzir esta excecao sem ordem direta dele.
 
   -- ── 3. prices: preco final nunca pode ser >= preco cheio ────────────────────
   -- Bug recorrente do repo (Aqua 25K mostrava $125 e custava $50; TradeDay EOD 50K
@@ -108,4 +108,4 @@ create trigger trg_guard_cms_firms
   for each row execute function public.guard_cms_firms();
 
 comment on function public.guard_cms_firms() is
-  'Recusa escrita em cms_firms com dado que ja causou incidente publico: promo_label em portugues / com em-dash / com % ou codigo que contradiz as colunas, lifetime com prazo, e preco final maior que o cheio. Criado 30/07/2026. O que depende de fonte externa fica no check_firm_data.py.';
+  'Recusa escrita em cms_firms com dado que ja causou incidente publico: promo_label em portugues / com em-dash / com % ou codigo que contradiz as colunas, e preco final maior que o cheio. Criado 30/07/2026; a regra de lifetime-com-prazo foi REMOVIDA em 06/08/2026 por ordem do Everton. O que depende de fonte externa fica no check_firm_data.py.';

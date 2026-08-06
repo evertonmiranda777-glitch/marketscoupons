@@ -3028,11 +3028,16 @@ function renderPromoTopbar() {var _siteSettings2;
   // Master toggle via site_settings
   const enabled = typeof _siteSettings !== 'undefined' && ((_siteSettings2 = _siteSettings) === null || _siteSettings2 === void 0 ? void 0 : _siteSettings2.promo_topbar_enabled) !== undefined ? _siteSettings.promo_topbar_enabled === 'true' : true;
   if (!enabled) {hideBar();return;}
-  // COM prazo real = contador. Firma lifetime NUNCA entra aqui: prazo em oferta
-  // vitalicia e deadline inventado (Lei #0), e foi o que fez o Telegram publicar
-  // "89% OFF (vitalicio!)" e "Termina em 48h" na mesma mensagem em 28/07.
+  // COM prazo = contador. O prazo vem do `promo_ends_at`, que o Everton preenche no
+  // admin , NUNCA e inventado pelo codigo (foi prazo chumbado no codigo que fez o
+  // Telegram publicar "89% OFF vitalicio!" e "Termina em 48h" na mesma mensagem em
+  // 28/07; o `handleFlashPromo` carimbava Date.now()+48h sozinho).
+  // 06/08, ordem direta do Everton: firma lifetime COM prazo preenchido TAMBEM entra
+  // no contador. O contador e ferramenta de venda dele e a decisao do que anunciar e
+  // dele. Sem prazo preenchido, a vitalicia continua caindo no selo "Lifetime deal".
+  // ⚠️ O Telegram e o Max seguem SEM contador em vitalicia (canal publico nao tem
+  // retificacao) , nao replicar esta mudanca la sem ordem dele.
   const active = (FIRMS || []).filter((f) => {
-    if ((f.dtype || f.discount_type) === 'lifetime') return false;
     const end = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
     return end && end > Date.now();
   }).sort((a, b) => Date.parse(a.promo_ends_at) - Date.parse(b.promo_ends_at));
@@ -3042,7 +3047,9 @@ function renderPromoTopbar() {var _siteSettings2;
   // prazo seria jogar fora o melhor espaco da home. "Lifetime" vende MAIS que um
   // contador — o desconto nao acaba, e isso e' verdade.
   const vitalicias = (FIRMS || []).filter((f) =>
-  (f.dtype || f.discount_type) === 'lifetime' && f.show_promo_on_checkout && (f.discount || 0) > 0).
+  (f.dtype || f.discount_type) === 'lifetime' && f.show_promo_on_checkout && (f.discount || 0) > 0 &&
+  // ja esta no contador acima? nao repete o mesmo nome na barra.
+  !(f.promo_ends_at && Date.parse(f.promo_ends_at) > Date.now())).
   sort((a, b) => (b.discount || 0) - (a.discount || 0));
 
   if (!active.length && !vitalicias.length) {hideBar();return;}
