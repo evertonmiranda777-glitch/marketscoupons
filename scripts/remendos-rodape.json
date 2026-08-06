@@ -178,5 +178,23 @@
   "marca": "gexTickers: ['ES','NQ','SPY'",
   "de": "      gexTickers: (s.authed ? ['ES','NQ','SPY','QQQ','GLD','AAPL','TSLA','NVDA','MSFT','AMZN','META','GOOGL'] : ['ES','NQ']).map(t => ({",
   "para": "      gexTickers: ['ES','NQ','SPY','QQQ','GLD','AAPL','TSLA','NVDA','MSFT','AMZN','META','GOOGL'].map(t => ({"
+ },
+ {
+  "nome": "contexto macro da analise",
+  "marca": "if (ctx) notas.push({ t1: sym + ' · ' + R[6]",
+  "de": "          if (vol || vix || ctx) notas.push({ t1: sym + ' · ' + R[4], zone: vol, t2: sym + ' · ' + (vix ? R[5] : R[6]), news: vix || ctx });",
+  "para": "          // ⚠️ O CONTEXTO MACRO sumia quando existia VIX , eu usava 'vix || ctx' e o\n          // ctx (o paragrafo longo de mercado, que o site atual mostra logo abaixo da\n          // zona de atencao) era DESCARTADO. E o texto mais util da analise.\n          if (vol || vix) notas.push({ t1: sym + ' · ' + R[4], zone: vol, t2: sym + ' · ' + R[5], news: vix });\n          if (ctx) notas.push({ t1: sym + ' · ' + R[6], zone: ctx, t2: '', news: '' });"
+ },
+ {
+  "nome": "texto dentro do cartao do ativo",
+  "marca": "{{ a.rotZona }}",
+  "de": "{{ a.r2 }}</div></div>\n            </div>\n          </div>\n        </sc-for>",
+  "para": "{{ a.r2 }}</div></div>\n            </div>\n            <!-- ⚠️ IGUAL AO SITE ATUAL: o texto da analise fica DENTRO do cartao do\n                 ativo, na ordem zona de atencao, contexto, volume, cenario favoravel,\n                 cenario alternativo e noticias. Antes ficavam em cartoes soltos no fim\n                 da pagina, separados do ativo a que pertencem. -->\n            <div style=\"padding: 0 22px 16px;\"><div style=\"font-size: 10px; letter-spacing: 0.08em; color: #fbbf24; text-transform: uppercase; font-weight: 700; margin-bottom: 6px;\">{{ a.rotZona }}</div><p style=\"margin: 0; font-size: 13px; line-height: 1.6; color: #b8c0c8;\">{{ a.zona }}</p></div>\n            <div style=\"padding: 0 22px 16px;\"><div style=\"font-size: 10px; letter-spacing: 0.08em; color: #8a94a0; text-transform: uppercase; font-weight: 700; margin-bottom: 6px;\">{{ a.rotCtx }}</div><p style=\"margin: 0; font-size: 13px; line-height: 1.6; color: #b8c0c8;\">{{ a.ctx }}</p></div>\n            <div style=\"padding: 0 22px 16px;\"><div style=\"font-size: 10px; letter-spacing: 0.08em; color: #60a5fa; text-transform: uppercase; font-weight: 700; margin-bottom: 6px;\">{{ a.rotVol }}</div><p style=\"margin: 0; font-size: 13px; line-height: 1.6; color: #b8c0c8;\">{{ a.vol }}</p></div>\n            <div style=\"padding: 0 22px 16px;\"><div style=\"font-size: 10px; letter-spacing: 0.08em; color: #34d399; text-transform: uppercase; font-weight: 700; margin-bottom: 6px;\">{{ a.rotBull }}</div><p style=\"margin: 0; font-size: 13px; line-height: 1.6; color: #b8c0c8;\">{{ a.bull }}</p></div>\n            <div style=\"padding: 0 22px 16px;\"><div style=\"font-size: 10px; letter-spacing: 0.08em; color: #f87171; text-transform: uppercase; font-weight: 700; margin-bottom: 6px;\">{{ a.rotBear }}</div><p style=\"margin: 0; font-size: 13px; line-height: 1.6; color: #b8c0c8;\">{{ a.bear }}</p></div>\n            <div style=\"padding: 0 22px 16px;\"><div style=\"font-size: 10px; letter-spacing: 0.08em; color: #60a5fa; text-transform: uppercase; font-weight: 700; margin-bottom: 6px;\">{{ a.rotNews }}</div><p style=\"margin: 0; font-size: 13px; line-height: 1.6; color: #b8c0c8;\">{{ a.news }}</p></div>\n          </div>\n        </sc-for>"
+ },
+ {
+  "nome": "campos de texto no cartao",
+  "marca": "rotZona: R[0]",
+  "de": "            s2: a.support_2 != null ? String(a.support_2) : '',\n            r2: a.resistance_2 != null ? String(a.resistance_2) : '',",
+  "para": "            s2: a.support_2 != null ? String(a.support_2) : '',\n            r2: a.resistance_2 != null ? String(a.resistance_2) : '',\n            // texto da analise, no idioma do visitante, dentro do proprio cartao\n            zona: txt(a.attention_zone), ctx: txt(a.context), vol: txt(a.volume_analysis),\n            bull: txt(a.scenario_bull), bear: txt(a.scenario_bear), news: txt(a.news_impact),\n            rotZona: R[0], rotCtx: R[6], rotVol: R[4], rotBull: R[2], rotBear: R[3], rotNews: R[1],"
  }
 ]
