@@ -664,6 +664,65 @@ if (!d.includes('mc-navwrap > *')) {
       }
     }
 
+    // ── CLIQUE DO BLOG E DOS GUIAS ──────────────────────────────────────────────
+    // 3ª vez que caio na MESMA armadilha hoje (plataformas, reviews, e agora estes):
+    // o runtime do Design NÃO passa função dentro de lista , o onOpen vira no-op e o
+    // card não abre nada. O Everton: "blog ao clicar eu não consigo acessar".
+    // Aqui amarro pelo TEXTO do card, que é estável.
+    var GUIAS = {
+      'What is a prop firm?': 'o-que-e-uma-prop-firm',
+      'Drawdown Management': 'gerenciamento-drawdown',
+      'How to Pass the Challenge': 'como-passar-no-desafio',
+      'Position Sizing at Prop Firms': 'position-sizing',
+      'How to Withdraw Your Winnings': 'como-sacar-lucros'
+      // "Apex vs FTMO vs Bulenox" não tem guia próprio , cai na comparação, tratado abaixo
+    };
+    function lg() { return String(window.MC_LANG || 'EN').toLowerCase(); }
+    function pre() { var l = lg(); return l === 'en' ? '' : '/' + l; }
+
+    function ligaCards() {
+      // guias educativos
+      var ds = document.querySelectorAll('div');
+      for (var i = 0; i < ds.length; i++) {
+        var e = ds[i];
+        if (e.__mcCard) continue;
+        var t = (e.innerText || '').trim();
+        if (!t || t.length > 260) continue;
+        var alvo = null;
+        for (var titulo in GUIAS) { if (t.indexOf(titulo) === 0) { alvo = GUIAS[titulo]; break; } }
+        if (!alvo && t.indexOf('Apex vs FTMO vs Bulenox') === 0) alvo = '__compare';
+        if (!alvo) continue;
+        e.__mcCard = alvo;
+        e.style.cursor = 'pointer';
+        e.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          if (this.__mcCard === '__compare') location.href = '/apex-vs-bulenox';
+          else location.href = pre() + '/guides/' + this.__mcCard;
+        });
+      }
+      // artigos do blog: o slug fica no dado, então marco pelo TÍTULO
+      var mapa = {};
+      try {
+        var app = window.__mcBlogSlugs || {};
+        for (var k in app) mapa[k] = app[k];
+      } catch (e2) {}
+      var todos = document.querySelectorAll('div');
+      for (var j = 0; j < todos.length; j++) {
+        var c = todos[j];
+        if (c.__mcArt) continue;
+        var tx = (c.innerText || '').trim();
+        if (!tx || tx.length > 400) continue;
+        var linha1 = tx.split(String.fromCharCode(10))[0].trim();
+        if (!mapa[linha1]) continue;
+        c.__mcArt = mapa[linha1];
+        c.style.cursor = 'pointer';
+        c.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          location.href = pre() + '/blog/' + this.__mcArt;
+        });
+      }
+    }
+
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -705,7 +764,7 @@ if (!d.includes('mc-navwrap > *')) {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ajustaPainelAuth(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ajustaPainelAuth(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </scr` + `ipt>`;
@@ -927,6 +986,11 @@ remendo('blog e guias ao vivo', '_mcLigarBlogPagina',
             onOpen: (function (s, lg) { return function () { location.href = (lg === 'en' ? '' : '/' + lg) + '/blog/' + s; }; })(b.slug, lang)
           };
         });
+        // mapa título -> slug pro clique do card (o runtime não passa a função)
+        try {
+          window.__mcBlogSlugs = {};
+          ps.forEach(function (x) { window.__mcBlogSlugs[x.title] = x.slug; });
+        } catch (e) {}
         self._homeStatic = null;
         self.setState({ _mcBlogPag: 1 });
       }).catch(function () {});

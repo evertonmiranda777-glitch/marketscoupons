@@ -1510,7 +1510,13 @@ async function setL(lang, flag, code) {var _document$getElementB2;
 function initLang() {
   _currentLang = detectLang();
   const codes = { pt: 'BR', en: 'EN', es: 'ES', it: 'IT', fr: 'FR', de: 'DE', ar: 'AR' };
-  document.getElementById('l-code').textContent = ' ' + (codes[_currentLang] || 'EN');
+  // ⚠️ o Sentry pegou isto em producao: "Cannot set properties of null (setting
+  // 'textContent')". O #l-code existe no index.html, mas initLang tambem roda de
+  // contexto assincrono (onunhandledrejection no rastro), e ai pode chegar antes do
+  // elemento. Sem a guarda, o erro ABORTA o resto do initLang , traducao, dir=rtl,
+  // title e meta description ficavam pra tras em silencio.
+  const _lc = document.getElementById('l-code');
+  if (_lc) _lc.textContent = ' ' + (codes[_currentLang] || 'EN');
   document.body.dir = _currentLang === 'ar' ? 'rtl' : 'ltr';
   applyTranslations();
   updateTVWidgets(_currentLang);
