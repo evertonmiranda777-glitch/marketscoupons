@@ -1072,7 +1072,19 @@ const LEGACY_TXT={
   ar:{t:'حسابات Legacy',pill:'لوقت محدود',pop:'الأكثر رواجاً',cta:'عرض حسابات Legacy',sub:'شهري · خصم 90% للشهر الأول و80% بعده · مع MARKET · تفعيل PA بـ125$ حتى 11 أغسطس'},
   id:{t:'Akun Legacy',pill:'WAKTU TERBATAS',pop:'POPULER',cta:'Lihat Akun Legacy',sub:'Bulanan · 90% off bulan pertama, 80% setelahnya · dengan MARKET · aktivasi PA $125 s/d 11 Agu'}
 };
+// ══ BLOCO LEGACY DA APEX, DESLIGADO NESTA LP ═════════════════════════════════
+// Ordem do Everton (06/ago): tirar. O bloco anunciava as contas Legacy, mas o link
+// de afiliado da Apex (aff/go) cai no configurador de planos e NAO para na secao
+// Legacy , entao o cliente clicava, chegava la e nao achava. "Uma galera
+// perguntando onde esta" = a LP paga gerando duvida em vez de venda, e a culpa
+// parecendo da Apex.
+// PRA RELIGAR: LP_LEGACY = true (o bloco inteiro continua aqui, nada foi apagado).
+// ⚠️ SO NESTA PAGINA. O /apex (checkout do Everton) tem o dele proprio, vindo do
+// banco (cms_firms.detail_plans), e nao foi tocado.
+const LP_LEGACY = false;
+
 function legacyBlock(firm){
+  if(!LP_LEGACY) return '';
   if(firm.id!=='apex') return '';
   const c='#F97316', X=LEGACY_TXT[LANG]||LEGACY_TXT.en;
   const pills=LEGACY_PLANS.map(pl=>{
