@@ -3460,6 +3460,8 @@ class Component extends DCLogic {
                        'font-weight:800;letter-spacing:0.06em;background:rgba(' + rgb + ',0.14);color:' + txt + ';',
             s1: a.support_1 != null ? String(a.support_1) : '',
             r1: a.resistance_1 != null ? String(a.resistance_1) : '',
+            s2: a.support_2 != null ? String(a.support_2) : '',
+            r2: a.resistance_2 != null ? String(a.resistance_2) : '',
             // GRAFICO DE VERDADE. A casca desenhava uma caixa vazia escrita
             // "TradingView chart · ES · 1h" , e a propria pagina promete logo acima
             // "Live TradingView chart embedded for each asset". Era claim sem entrega.
@@ -3489,6 +3491,23 @@ class Component extends DCLogic {
           });
         });
         if (cards.length) self._mcAnaCards = cards;
+        // ZONA DE ATENCAO e NOTICIAS , estavam ESCRITAS na casca ("Zero Gamma at 7539",
+        // "Pivot S1 (79.00)"), numeros de outro dia na ferramenta que 316 membros usam.
+        // Os campos sao MULTILINGUES no banco ({en,pt,...}), nao string , sem tratar,
+        // a tela mostraria "[object Object]".
+        var txt = function (v) {
+          if (v == null) return '';
+          if (typeof v === 'object') return v.en || v.pt || '';
+          return String(v);
+        };
+        var notas = [];
+        var vistos2 = {};
+        linhas.forEach(function (a) {
+          if (vistos2[a.asset] || notas.length >= 4) return;
+          vistos2[a.asset] = 1;
+          notas.push({ zone: txt(a.attention_zone), news: txt(a.news_impact) });
+        });
+        if (notas.length) self._mcAnaNotas = notas;
       }
       if (datas.length) {
         var ja = {}, uniq = [];
@@ -4078,7 +4097,7 @@ class Component extends DCLogic {
         { sym:'GC', desc:'Gold', price:'4,002.00', chg:'+0.51%', chgColor:'#34d399', bias:'BEARISH', biasStyle:'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.06em;background:rgba(239,68,68,0.14);color:#f87171;', s1:'3,973.98', r1:'4,045.71' },
         { sym:'NQ', desc:'Nasdaq 100', price:'28,596.50', chg:'-1.64%', chgColor:'#f87171', bias:'BEARISH', biasStyle:'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.06em;background:rgba(239,68,68,0.14);color:#f87171;', s1:'28,782.3', r1:'29,354.68' },
       ],
-      analysisNotes: [
+      analysisNotes: this._mcAnaNotas || [
         { zone:'The 78.99–79.00 zone is crucial: Pivot S1 (79.00) and the breakout level for the bearish scenario, close to the previous day low (78.44). Holding above or breaking below defines short-term direction.', news:'High-impact US data (Michigan Consumer Sentiment Prel, Building Permits) can move the DXY and, in turn, oil. Middle East tensions add a geopolitical risk premium.' },
         { zone:'The most critical zone for ES today is 7539–7500. Zero Gamma at 7539 is the key level: above it market makers suppress volatility and buy dips; below, they amplify moves. Put Wall at 7500 is strong institutional support.', news:'US construction and consumer confidence data, plus Middle East tensions, are the catalysts. The rising VIX (+2.5%) points to institutional risk-off.' },
         { zone:'The 3973.00–3976.00 zone is critical: the 10-day swing low and yesterday\u2019s low, close to the lower Bollinger Band (3964). A break below confirms downward pressure.', news:'High-impact US data (Michigan Sentiment, Building Permits, Housing Starts) drives Gold. Weak data lifts Gold as a safe haven; strong data strengthens the dollar and pressures it.' },

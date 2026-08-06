@@ -1323,6 +1323,8 @@ remendo('analise da pagina', '_mcLigarAnalisePagina',
                        'font-weight:800;letter-spacing:0.06em;background:rgba(' + rgb + ',0.14);color:' + txt + ';',
             s1: a.support_1 != null ? String(a.support_1) : '',
             r1: a.resistance_1 != null ? String(a.resistance_1) : '',
+            s2: a.support_2 != null ? String(a.support_2) : '',
+            r2: a.resistance_2 != null ? String(a.resistance_2) : '',
             // GRAFICO DE VERDADE. A casca desenhava uma caixa vazia escrita
             // "TradingView chart · ES · 1h" , e a propria pagina promete logo acima
             // "Live TradingView chart embedded for each asset". Era claim sem entrega.
@@ -1352,6 +1354,23 @@ remendo('analise da pagina', '_mcLigarAnalisePagina',
           });
         });
         if (cards.length) self._mcAnaCards = cards;
+        // ZONA DE ATENCAO e NOTICIAS , estavam ESCRITAS na casca ("Zero Gamma at 7539",
+        // "Pivot S1 (79.00)"), numeros de outro dia na ferramenta que 316 membros usam.
+        // Os campos sao MULTILINGUES no banco ({en,pt,...}), nao string , sem tratar,
+        // a tela mostraria "[object Object]".
+        var txt = function (v) {
+          if (v == null) return '';
+          if (typeof v === 'object') return v.en || v.pt || '';
+          return String(v);
+        };
+        var notas = [];
+        var vistos2 = {};
+        linhas.forEach(function (a) {
+          if (vistos2[a.asset] || notas.length >= 4) return;
+          vistos2[a.asset] = 1;
+          notas.push({ zone: txt(a.attention_zone), news: txt(a.news_impact) });
+        });
+        if (notas.length) self._mcAnaNotas = notas;
       }
       if (datas.length) {
         var ja = {}, uniq = [];
@@ -1388,6 +1407,15 @@ for (const r of COMPL) {
   const n = d.split(r.de).length - 1;
   if (n !== 1) { console.error(`
 ✗ ANCORA de compliance ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}: ${r.nome}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
+const NOTAS = JSON.parse(fs.readFileSync('scripts/remendos-notas.json', 'utf8'));
+for (const r of NOTAS) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`\n✗ ANCORA das notas ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
   d = trocar(d, r.de, r.para);
   feitos.push(r.nome);
 }
