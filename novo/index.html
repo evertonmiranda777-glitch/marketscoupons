@@ -3321,6 +3321,12 @@ class Component extends DCLogic {
         };
       }));
       try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}
+      // RODAPE , a coluna "Trading Firms" era escrita a mao e trazia a GOAT FUNDED FUTURES,
+      // tirada do ar em 28/jul (296 URLs viraram 301): mandava o visitante pra uma firma que
+      // nao existe mais. E faltava a Funded Futures Family, que esta ativa.
+      // ⚠️ ESTE REMENDO E SEPARADO DE PROPOSITO: o bloco acima ja estava aplicado, entao
+      // editar o texto dele no pluga NAO reentra no HTML (a marca de "ja aplicado" pula).
+      self._mcRodapeFirmas = self.firms.map(function (f) { return f.name; });
       self._homeStatic = null; self.setState({ _mcBanco: 1 });
     }).catch(function (e) { try { window.__mcBanco.erro = String(e).slice(0, 120); } catch (_) {} });
   }
@@ -4340,7 +4346,7 @@ class Component extends DCLogic {
 
       isPlatforms: s.route === 'platforms',
       platformCards: [
-        { name:'TradingView', key:'tradingview', initials:'TV', logo:'tradingview.webp', logoSrc:'./novo/assets/logos/tradingview.webp', tagline:'Charts & Analysis', logoBg:'linear-gradient(135deg,#2962ff,#1e40af)', price:'$12.95', priceNote:'/mo · save 17%', border:'rgba(191,255,0,0.3)',
+        { name:'TradingView', key:'tradingview', initials:'TV', logo:'tradingview.webp', logoSrc:'./novo/assets/logos/tradingview.webp', tagline:'Charts & Analysis', logoBg:'linear-gradient(135deg,#2962ff,#1e40af)', price:'17% OFF', priceNote:'annual plan + $15 credit', border:'rgba(191,255,0,0.3)',
           badge:'EXCLUSIVE · 17% OFF + $15 CREDIT', badgeStyle:'padding:9px;text-align:center;font-size:11px;font-weight:800;letter-spacing:0.06em;color:#0a0d07;background:linear-gradient(90deg,#d4ff4d,#bfff00);',
           about:"The world's most-used charting platform. Futures, forex, stocks and crypto data, pro indicators, alerts and a huge trader community. Get $15 credit on your first subscription.",
           features:['Advanced charts','Custom indicators','Real-time alerts','Pine Script','Asset screener','Multi-market data'] },
@@ -4497,7 +4503,7 @@ class Component extends DCLogic {
         { title:'Live Trading Room Disclosure:', body:'This presentation is for educational purposes only and the opinions expressed are solely those of the presenter. All trades presented should be considered hypothetical and should not be expected to be replicated in a real trading account.' },
       ],
       footerCols: [
-        { title:'Trading Firms', items:['Apex Trader Funding','Bulenox','FTMO','FundedNext','Earn2Trade','The5ers','Funding Pips','BrightFunded','E8 Markets','City Traders Imperium','TradeDay','Blue Guardian','Top One Futures','Aqua Futures','Blueberry Futures','Alpha Futures','Futures Elite','Goat Funded Futures'] },
+        { title:'Trading Firms', items: this._mcRodapeFirmas || ['Apex Trader Funding','Bulenox','FTMO','FundedNext','Earn2Trade','The5ers','Funding Pips','BrightFunded','E8 Markets','City Traders Imperium','TradeDay','Blue Guardian','Top One Futures','Aqua Futures','Blueberry Futures','Alpha Futures','Futures Elite'] },
         { title:'Tools', items:['Position Size','Company Quiz','Comparison Tool','Calendar','Indicators','Gamma (GEX)','App & Alerts'] },
         { title:'Top Lists', items:['Best Overall','Best for Futures','With Exclusive Coupon','No Activation Fee','Cheapest','Highest Rated'] },
         { title:'Links', items:['Telegram','Instagram','X','Threads','Guides','Blog','Live Room','FAQ'] },

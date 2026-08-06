@@ -120,6 +120,11 @@ ${TRAD_TIPO}
         };
       });
       try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}
+      // RODAPE: a coluna "Trading Firms" era escrita a mao e trazia a GOAT FUNDED FUTURES,
+      // tirada do ar em 28/jul (296 URLs viraram 301). Levava o visitante pra uma firma que
+      // nao existe mais. E faltava a Funded Futures Family, que esta ativa.
+      self._mcRodapeFirmas = self.firms.map(function (f) { return f.name; });
+      self._homeStatic = null;   // homeStatic() CONGELA e roda antes do fetch voltar
       self.setState({ _mcBanco: 1 });
     }).catch(function (e) { try { window.__mcBanco.erro = String(e).slice(0, 120); } catch (_) {} });
   }
@@ -1454,6 +1459,37 @@ for (const r of NOTAS) {
   if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
   const n = d.split(r.de).length - 1;
   if (n !== 1) { console.error(`\n✗ ANCORA das notas ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
+// PRECO DE PLATAFORMA , o pacote do Design trazia "$12.95 /mo · save 17%" pra
+// TradingView. O proprio LEIA-ME dele avisa: "todo dado esta escrito a mao" e
+// "preco so aparece quando existe, nunca invente valor". Conferido na fonte
+// (tradingview.com/pricing, 06/08): o preco e GEO-DEPENDENTE (daqui aparece
+// R$66,95) e sai como "Special price" promocional , numero fixo em dolar estaria
+// errado pros 75% de trafego da India. O desconto de 17% e o credito de $15 sao
+// NOSSOS (vem do PLATFORMS do app.js) e esses sim podem ser afirmados.
+// RODAPE , a coluna "Trading Firms" era lista escrita a mao com 18 nomes, e trazia a
+// GOAT FUNDED FUTURES, tirada do ar em 28/jul (painel de afiliado sumiu e trader sem
+// sacar; as 296 URLs viraram 301). Levava o visitante pra uma firma que nao existe mais
+// no site. Faltava a Funded Futures Family, que esta ativa. Agora vem do banco.
+const RODAPE = JSON.parse(fs.readFileSync('scripts/remendos-rodape.json', 'utf8'));
+for (const r of RODAPE) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`
+✗ ANCORA ${r.nome} ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
+const PLAT_TAB = JSON.parse(fs.readFileSync('scripts/remendos-plataformas.json', 'utf8'));
+for (const r of PLAT_TAB) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`
+✗ ANCORA ${r.nome} ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
   d = trocar(d, r.de, r.para);
   feitos.push(r.nome);
 }

@@ -1,0 +1,14 @@
+[
+ {
+  "nome": "firmas do rodape",
+  "marca": "_mcRodapeFirmas",
+  "de": "{ title:'Trading Firms', items:['Apex Trader Funding','Bulenox','FTMO','FundedNext','Earn2Trade','The5ers','Funding Pips','BrightFunded','E8 Markets','City Traders Imperium','TradeDay','Blue Guardian','Top One Futures','Aqua Futures','Blueberry Futures','Alpha Futures','Futures Elite','Goat Funded Futures'] }",
+  "para": "{ title:'Trading Firms', items: this._mcRodapeFirmas || ['Apex Trader Funding','Bulenox','FTMO','FundedNext','Earn2Trade','The5ers','Funding Pips','BrightFunded','E8 Markets','City Traders Imperium','TradeDay','Blue Guardian','Top One Futures','Aqua Futures','Blueberry Futures','Alpha Futures','Futures Elite'] }"
+ },
+ {
+  "nome": "rodape do banco",
+  "marca": "self._mcRodapeFirmas = self.firms",
+  "de": "try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}",
+  "para": "try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}\n      // RODAPE , a coluna \"Trading Firms\" era escrita a mao e trazia a GOAT FUNDED FUTURES,\n      // tirada do ar em 28/jul (296 URLs viraram 301): mandava o visitante pra uma firma que\n      // nao existe mais. E faltava a Funded Futures Family, que esta ativa.\n      // ⚠️ ESTE REMENDO E SEPARADO DE PROPOSITO: o bloco acima ja estava aplicado, entao\n      // editar o texto dele no pluga NAO reentra no HTML (a marca de \"ja aplicado\" pula).\n      self._mcRodapeFirmas = self.firms.map(function (f) { return f.name; });"
+ }
+]
