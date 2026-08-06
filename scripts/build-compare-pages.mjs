@@ -676,7 +676,11 @@ img{max-width:100%;display:block}
   <!-- HERO -->
   <section class="cmp-hero">
     <div class="cmp-hero-eyebrow">${esc(S.heroEyebrow)}</div>
-    <h1 class="cmp-h1">${esc(a.name)}<span class="vs">vs</span>${esc(b.name)}</h1>
+    <!-- ⚠️ ESPACO DENTRO DO <span>, nao fora. Sem ele o H1 saia GRUDADO na leitura do
+         Google: "Apex Trader FundingvsBulenox" , um token so, que nao casa com a busca
+         "apex vs bulenox". O CSS ja separa visualmente, entao ninguem via o problema na
+         tela; so aparecia no texto extraido. Vale pras 924 paginas. -->
+    <h1 class="cmp-h1">${esc(a.name)} <span class="vs">vs</span> ${esc(b.name)}</h1>
     <p class="cmp-sub">${esc(heroSub)}</p>
   </section>
 

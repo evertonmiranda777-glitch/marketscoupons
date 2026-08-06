@@ -161,7 +161,11 @@ img{max-width:100%;display:block}
   <!-- HERO -->
   <section class="cmp-hero">
     <div class="cmp-hero-eyebrow">Comparativa Prop Firms 2026</div>
-    <h1 class="cmp-h1">Funding Pips<span class="vs">vs</span>Futures Elite</h1>
+    <!-- ⚠️ ESPACO DENTRO DO <span>, nao fora. Sem ele o H1 saia GRUDADO na leitura do
+         Google: "Apex Trader FundingvsBulenox" , um token so, que nao casa com a busca
+         "apex vs bulenox". O CSS ja separa visualmente, entao ninguem via o problema na
+         tela; so aparecia no texto extraido. Vale pras 924 paginas. -->
+    <h1 class="cmp-h1">Funding Pips <span class="vs">vs</span> Futures Elite</h1>
     <p class="cmp-sub">Análisis cara a cara de las dos prop firms. Cuenta de entrada a partir de $23.20.</p>
   </section>
 
