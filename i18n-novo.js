@@ -134,8 +134,8 @@ window.MC_I18N_NOVO = {
      que mantem as duas superficies coerentes pra quem vem do anuncio.
      ⚠️ "prop firm" NAO se traduz em nenhum idioma (lei do projeto). */
   'Compare': { pt:'Compare', es:'Compara', it:'Confronta', fr:'Comparez', de:'Vergleiche', ar:'قارن بين', id:'Bandingkan' },
-  'before you pay': { pt:'antes de pagar', es:'antes de pagar', it:'prima di pagare', fr:'avant de payer', de:'bevor du zahlst', ar:'قبل أن تدفع', id:'sebelum membayar' },
-  'Browse coupons': { pt:'Ver cupons', es:'Ver cupones', it:'Vedi coupon', fr:'Voir les coupons', de:'Coupons ansehen', ar:'تصفح الكوبونات', id:'Lihat Kupon' },
+  'before you buy': { pt:'antes de comprar', es:'antes de comprar', it:'prima di acquistare', fr:'avant d’acheter', de:'bevor du kaufst', ar:'قبل أن تشتري', id:'sebelum membeli' },
+  'See the coupons': { pt:'Ver os cupons', es:'Ver los cupones', it:'Vedi i coupon', fr:'Voir les coupons', de:'Coupons ansehen', ar:'شاهد الكوبونات', id:'Lihat kuponnya' },
   'Compare firms':  { pt:'Comparar firmas', es:'Comparar firmas', it:'Confronta società', fr:'Comparer les sociétés', de:'Firmen vergleichen', ar:'قارن الشركات', id:'Bandingkan Perusahaan' },
   'Trading firms':  { pt:'Firmas de trading', es:'Firmas de trading', it:'Società di trading', fr:'Sociétés de trading', de:'Trading-Firmen', ar:'شركات التداول', id:'Perusahaan trading' },
   'Max discount':   { pt:'Desconto máximo', es:'Descuento máximo', it:'Sconto massimo', fr:'Remise maximale', de:'Maximaler Rabatt', ar:'أقصى خصم', id:'Diskon maksimum' },

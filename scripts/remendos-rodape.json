@@ -94,5 +94,17 @@
   "marca": "data-mc-nfirmas]",
   "de": "        if (_mm !== null) {\n          var _el = document.querySelector('[data-mc-min100k]');\n          if (_el) _el.textContent = '$' + (_mm % 1 ? _mm.toFixed(2) : _mm);\n        }",
   "para": "        if (_mm !== null) {\n          var _el = document.querySelector('[data-mc-min100k]');\n          if (_el) _el.textContent = '$' + (_mm % 1 ? _mm.toFixed(2) : _mm);\n        }\n        // o H1 diz \"Compare 18 prop firms\" , o 18 vem das firmas ATIVAS, nunca\n        // escrito a mao. Firma nova entra e o titulo se corrige sozinho.\n        // \"prop firms\" nao se traduz (lei do projeto), por isso o numero e o termo\n        // vivem no MESMO no de texto e ficam fora do dicionario.\n        var _nf = document.querySelector('[data-mc-nfirmas]');\n        if (_nf && self.firms.length) _nf.textContent = self.firms.length + ' prop firms';"
+ },
+ {
+  "nome": "H1 comprar",
+  "marca": "before you buy</h1>",
+  "de": "</span> before you pay</h1>",
+  "para": "</span> before you buy</h1>"
+ },
+ {
+  "nome": "CTA principal",
+  "marca": ">See the coupons<",
+  "de": ">Browse coupons<",
+  "para": ">See the coupons<"
  }
 ]
