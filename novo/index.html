@@ -1519,6 +1519,8 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 22px 20px;">
               <div style="padding: 12px 14px; border-radius: 11px; background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.16);"><div style="font-size: 10px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Support 1</div><div style="font-weight: 700; font-size: 15px; color: #34d399; margin-top: 3px;">{{ a.s1 }}</div></div>
               <div style="padding: 12px 14px; border-radius: 11px; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.16);"><div style="font-size: 10px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Resistance 1</div><div style="font-weight: 700; font-size: 15px; color: #f87171; margin-top: 3px;">{{ a.r1 }}</div></div>
+              <div style="padding: 12px 14px; border-radius: 11px; background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.16);"><div style="font-size: 10px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Support 2</div><div style="font-weight: 700; font-size: 15px; color: #34d399; margin-top: 3px;">{{ a.s2 }}</div></div>
+              <div style="padding: 12px 14px; border-radius: 11px; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.16);"><div style="font-size: 10px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Resistance 2</div><div style="font-weight: 700; font-size: 15px; color: #f87171; margin-top: 3px;">{{ a.r2 }}</div></div>
             </div>
           </div>
         </sc-for>
@@ -3842,6 +3844,8 @@ class Component extends DCLogic {
     this._mcLigarAnalise();
     this._mcLigarMercado();
     this._mcLigarAnalise();
+    this._mcLigarMercado();
+    this._mcLigarAnalise();
     this._mcLigarAnalisePagina();
     this._mcLigarBlogPagina();
     this._mcLigarNumeros();
@@ -4150,9 +4154,16 @@ class Component extends DCLogic {
         { cat:'Comparison', catColor:'#fb923c', title:'Apex vs FTMO vs Bulenox', desc:'Detailed comparison: rules, prices, platforms, and payouts.', icon:'ti-chart-bar', imgBg:'linear-gradient(135deg,#33210f,#0d1119)' },
         { cat:'Financial', catColor:'#22d3ee', title:'How to Withdraw Your Winnings', desc:'Step-by-step guide to requesting payouts from each company.', icon:'ti-cash-banknote', imgBg:'linear-gradient(135deg,#0c2a30,#0d1119)' },
       ],
+      // ⚠️ O GEX ESTAVA INTEIRO ATRAS DO CADASTRO. No site atual ele mostra ES e NQ
+      // ABERTOS (Zero Gamma, Put/Call Wall, HVL, Vol Trigger, Max Pain e o grafico por
+      // strike) e so pede conta pros outros 10 tickers , o visitante ve o valor da
+      // ferramenta ANTES de decidir se cria conta. Aqui ele batia numa tela borrada e
+      // ia embora sem ver nada.
+      // Os dois sc-if sao INDEPENDENTES, entao os dois podem valer ao mesmo tempo:
+      // conteudo em cima + convite de cadastro embaixo, igual ao antigo.
       gexLocked: !s.authed,
-      gexUnlocked: s.authed,
-      gexTickers: ['ES','NQ','SPY','QQQ','GLD','AAPL','TSLA','NVDA','MSFT','AMZN','META','GOOGL'].map(t => ({
+      gexUnlocked: true,
+      gexTickers: (s.authed ? ['ES','NQ','SPY','QQQ','GLD','AAPL','TSLA','NVDA','MSFT','AMZN','META','GOOGL'] : ['ES','NQ']).map(t => ({
         label: t, onClick: () => this.setState({ gexTicker: t }),
         style: 'padding:9px 16px;border-radius:999px;border:1px solid ' + (s.gexTicker===t ? 'transparent;background:linear-gradient(180deg,#d4ff4d,#bfff00);color:#0a0d07;' : 'rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:#c4ccd2;') + 'font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;',
       })),
