@@ -1544,7 +1544,7 @@
       </sc-if>
     </div>
 
-    <sc-if value="{{ analysisSempre }}" hint-placeholder-val="{{ true }}">
+    <sc-if value="{{ analysisUnlocked }}" hint-placeholder-val="{{ false }}">
       <div style="margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
         <sc-for list="{{ analysisNotes }}" as="n" hint-placeholder-count="2">
           <div style="padding: 20px 22px; border-radius: 16px; background: linear-gradient(180deg, #121826, #0d1119); border: 1px solid rgba(255,255,255,0.07);">
@@ -3940,7 +3940,7 @@ class Component extends DCLogic {
       isCompare: s.route === 'compare',
       isAnalysis: s.route === 'analysis',
       analysisSempre: true,
-      analysisLocked: false,
+      analysisLocked: !s.authed,
       isGex: s.route === 'gex',
       isGuides: s.route === 'guides',      isBlog: s.route === 'blog',
       isPosition: s.route === 'position',
@@ -4162,8 +4162,8 @@ class Component extends DCLogic {
       // Os dois sc-if sao INDEPENDENTES, entao os dois podem valer ao mesmo tempo:
       // conteudo em cima + convite de cadastro embaixo, igual ao antigo.
       gexLocked: !s.authed,
-      gexUnlocked: true,
-      gexTickers: (s.authed ? ['ES','NQ','SPY','QQQ','GLD','AAPL','TSLA','NVDA','MSFT','AMZN','META','GOOGL'] : ['ES','NQ']).map(t => ({
+      gexUnlocked: s.authed,
+      gexTickers: ['ES','NQ','SPY','QQQ','GLD','AAPL','TSLA','NVDA','MSFT','AMZN','META','GOOGL'].map(t => ({
         label: t, onClick: () => this.setState({ gexTicker: t }),
         style: 'padding:9px 16px;border-radius:999px;border:1px solid ' + (s.gexTicker===t ? 'transparent;background:linear-gradient(180deg,#d4ff4d,#bfff00);color:#0a0d07;' : 'rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:#c4ccd2;') + 'font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;',
       })),
@@ -4198,8 +4198,8 @@ class Component extends DCLogic {
         { t:'How to use in trading?', d:'Use Zero Gamma as the key level of the day. Above it, trade mean reversions; below it, trade breakouts and trends. The Put Wall is reliable support and the Call Wall resistance. Combine with your technical analysis to increase accuracy.' },
       ],
       analysisUnlocked: s.authed,
-      analysisBlur: 'none',
-      analysisPE: 'auto',
+      analysisBlur: s.authed ? 'none' : 'blur(7px)',
+      analysisPE: s.authed ? 'auto' : 'none',
       unlockAnalysis: () => this.setState({ authed: true, toast: 'Welcome! Full access unlocked' }),
       analysisCards: this._mcAnaCards || [
         { sym:'CL', desc:'WTI Crude Oil', price:'79.07', chg:'-1.71%', chgColor:'#f87171', bias:'BEARISH', biasStyle:'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.06em;background:rgba(239,68,68,0.14);color:#f87171;', s1:'79.00', r1:'81.33' },

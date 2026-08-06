@@ -1525,15 +1525,6 @@ for (const r of COMPL) {
 // ⚠️ SAO DOIS PORTOES: o sc-if das notas (analysisUnlocked) e o BORRAO dos cards
 // (analysisLocked/analysisBlur). Abri o primeiro e o "Unlock full access" continuou na
 // tela , conferir a tela depois de cada um, nao supor que era o mesmo.
-remendo('analise sem borrao', 'analysisLocked: false',
-  '      analysisLocked: !s.authed,',
-  '      analysisLocked: false,');
-remendo('analise sem blur', "analysisBlur: 'none',",
-  "      analysisBlur: s.authed ? 'none' : 'blur(7px)',",
-  "      analysisBlur: 'none',");
-remendo('analise clicavel', "analysisPE: 'auto',",
-  "      analysisPE: s.authed ? 'auto' : 'none',",
-  "      analysisPE: 'auto',");
 
 remendo('analise sempre visivel', 'analysisSempre:',
   '      analysisLocked: false,',
