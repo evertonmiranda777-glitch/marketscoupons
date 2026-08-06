@@ -929,6 +929,85 @@ if (!d.includes('mc-navwrap > *')) {
       }).catch(function () {});
     }
 
+
+    // ══ BARRA DE PROMOCAO (contagem regressiva) ═══════════════════════════════
+    // O site atual mostra em TODAS as paginas. A casca do Design nao tem o
+    // elemento, entao eu CRIO e insiro como primeiro filho do body , sem mexer na
+    // marcacao existente.
+    // ⚠️ O prazo vem SO do banco (promo_ends_at). Codigo NUNCA inventa prazo: foi
+    // exatamente 'Date.now() + 48h' chumbado que fez o Telegram publicar
+    // "89% OFF vitalicio" e "Termina em 48h" na mesma mensagem em 28/07.
+    var PROMO_FIM = {};
+    function textoTermina() {
+      var m = {
+        pt: 'Termina em:', es: 'Termina en:', it: 'Termina tra:', fr: 'Se termine dans :',
+        de: 'Endet in:', ar: 'ينتهي خلال:', id: 'Berakhir dalam:'
+      };
+      // ⚠️ o evento mc:lang dispara ANTES do atributo lang ser gravado no <html>,
+      // entao ler o atributo aqui devolvia o idioma ANTERIOR. window.MC_LANG e
+      // atualizado pelo tradutor antes do disparo.
+      var l = String(window.MC_LANG || document.documentElement.lang || 'en').toLowerCase().slice(0, 2);
+      return m[l] || 'Ends in:';
+    }
+    function montaBarra(linhas) {
+      var bar = document.getElementById('mc-promo-topbar');
+      if (!bar) {
+        bar = document.createElement('div');
+        bar.id = 'mc-promo-topbar';
+        bar.style.cssText = 'position:relative;z-index:60;display:flex;align-items:center;' +
+          'justify-content:center;flex-wrap:wrap;gap:18px;padding:9px 16px;' +
+          'background:linear-gradient(90deg,rgba(191,255,0,0.10),rgba(191,255,0,0.04));' +
+          'border-bottom:1px solid rgba(191,255,0,0.22);' +
+          'font:700 12.5px Inter,system-ui,sans-serif;color:#E7ECEF;';
+        document.body.insertBefore(bar, document.body.firstChild);
+      }
+      bar.innerHTML = linhas.map(function (f, i) {
+        return '<span style="display:inline-flex;align-items:center;gap:8px">' +
+          '<span style="color:#F4F8F9">' + f.nome + '</span>' +
+          '<span style="color:#8a94a0;font-weight:600">' + textoTermina() + '</span>' +
+          '<span data-mc-fim="' + f.fim + '" style="color:#bfff00;font-variant-numeric:tabular-nums">--</span>' +
+          '</span>' + (i < linhas.length - 1 ? '<span style="color:#3a4340">•</span>' : '');
+      }).join('');
+      bar.style.display = linhas.length ? 'flex' : 'none';
+    }
+    function tiquePromo() {
+      var els = document.querySelectorAll('[data-mc-fim]');
+      for (var i = 0; i < els.length; i++) {
+        var fim = parseInt(els[i].getAttribute('data-mc-fim'), 10);
+        var resta = fim - Date.now();
+        if (!isFinite(resta) || resta <= 0) { els[i].textContent = '--'; continue; }
+        var s = Math.floor(resta / 1000), d = Math.floor(s / 86400);
+        var h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60), sg = s % 60;
+        var z = function (n) { return (n < 10 ? '0' : '') + n; };
+        els[i].textContent = z(d) + 'd ' + z(h) + 'h ' + z(m) + 'm ' + z(sg) + 's';
+      }
+    }
+    function ligaPromoBar() {
+      if (window.__mcPromoBar) return;
+      window.__mcPromoBar = 1;
+      var AN2 = '${ANON}';
+      fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/cms_firms' +
+        '?select=id,name,short_name,promo_ends_at&active=eq.true', {
+        headers: { apikey: AN2, Authorization: 'Bearer ' + AN2 }
+      }).then(function (r) { return r.ok ? r.json() : null; }).then(function (rows) {
+        if (!rows) return;
+        var agora = Date.now();
+        var vivas = rows.filter(function (f) {
+          var t = f.promo_ends_at ? Date.parse(f.promo_ends_at) : 0;
+          return t && t > agora;
+        }).sort(function (a, b) { return Date.parse(a.promo_ends_at) - Date.parse(b.promo_ends_at); })
+          .map(function (f) {
+            return { nome: f.short_name || f.name, fim: Date.parse(f.promo_ends_at) };
+          });
+        if (!vivas.length) return;   // sem prazo no banco = sem barra, nunca inventada
+        PROMO_FIM = vivas;
+        montaBarra(vivas);
+        tiquePromo();
+        setInterval(tiquePromo, 1000);
+        document.addEventListener('mc:lang', function () { setTimeout(function () { montaBarra(PROMO_FIM); tiquePromo(); }, 0); });
+      }).catch(function () {});
+    }
+
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -970,7 +1049,7 @@ if (!d.includes('mc-navwrap > *')) {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ligaHeatmap(); ligaAuth(); ajustaNome(); ajustaPainelAuth(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ligaHeatmap(); ligaAuth(); ajustaNome(); ajustaPainelAuth(); ligaPromoBar(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </scr` + `ipt>`;
