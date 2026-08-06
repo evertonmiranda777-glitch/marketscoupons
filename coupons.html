@@ -250,6 +250,10 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
 .fr-nofee{display:flex;align-items:center;gap:9px;padding:11px 14px;background:linear-gradient(90deg,var(--rib-bg1,rgba(46,168,143,.16)),var(--rib-bg2,rgba(63,224,189,.06)));border-bottom:1px solid var(--rib-bd,rgba(63,224,189,.35));position:relative}
 .fr-nofee::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--rib-glow,#3fe0bd),transparent);animation:frNofeeSweep 2.6s linear infinite}
 @keyframes frNofeeSweep{0%,100%{opacity:.35}50%{opacity:1}}
+/* selo curto (Apex) fica centralizado como no modelo da LP nova; os longos
+   (FFF, FundedNext, TradeDay) continuam alinhados a esquerda pra nao virar
+   bloco de texto centralizado, que fica pior quando quebra linha. */
+.fr-nofee.centro{justify-content:center}
 .fr-nofee svg{color:var(--rib-glow,#3fe0bd);flex-shrink:0;filter:drop-shadow(0 0 6px var(--rib-shadow,rgba(63,224,189,.7)))}
 .fr-nofee b{font-size:12px;font-weight:800;color:var(--rib-txt,#eafff9);letter-spacing:.1px;line-height:1.25}
 .fr-nofee b span{color:var(--rib-glow,#3fe0bd)}
@@ -971,6 +975,21 @@ const FN_NOFEE = {
   ar:'<span>بدون رسوم تفعيل</span>، مهما كان حجم الحساب',
   id:'<span>TANPA BIAYA AKTIVASI</span>, berapa pun ukuran akunnya'
 };
+// Apex: selo "tem plano SEM taxa de ativacao" (modelo da LP nova).
+// ⚠️ A palavra OPTIONS/OPCOES e o que mantem o selo honesto: a Apex COBRA
+// ativacao em parte dos planos e tem outros sem taxa. Selo verde dizendo que a
+// firma inteira e sem taxa seria propaganda enganosa (Lei #0). Nao tirar o plural.
+const APEX_NOFEE = {
+  pt:'<span>OPÇÕES SEM TAXA DE ATIVAÇÃO</span>',
+  en:'<span>NO ACTIVATION FEE OPTIONS</span>',
+  es:'<span>OPCIONES SIN CUOTA DE ACTIVACIÓN</span>',
+  it:'<span>OPZIONI SENZA COSTI DI ATTIVAZIONE</span>',
+  fr:"<span>OPTIONS SANS FRAIS D'ACTIVATION</span>",
+  de:'<span>OPTIONEN OHNE AKTIVIERUNGSGEBÜHR</span>',
+  ar:'<span>خيارات بدون رسوم تفعيل</span>',
+  id:'<span>OPSI TANPA BIAYA AKTIVASI</span>'
+};
+
 const FFF_NOFEE = {
   pt:'A única conta <span>SEM TAXA DE ATIVAÇÃO</span>, seja qual for o tamanho da conta',
   en:'The only account with <span>NO ACTIVATION FEE</span>, regardless of account size',
@@ -1121,6 +1140,7 @@ function renderFirms() {
         : firm.id==='fn' ? `<div class="fr-nofee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><b>${FN_NOFEE[LANG]||FN_NOFEE.en}</b></div>`
         : firm.id==='tradeday' ? `<div class="fr-nofee"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><b>${FN_NOFEE[LANG]||FN_NOFEE.en}</b></div>`
         : (firm.id==='apex' && Date.now() < APEX_FEE_ENDS) ? `<div class="fr-nofee" style="--rib-glow:#fb923c;--rib-shadow:rgba(251,146,60,.7);--rib-bg1:rgba(249,115,22,.16);--rib-bg2:rgba(251,146,60,.06);--rib-bd:rgba(251,146,60,.4);--rib-txt:#fff4ea"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><b>${APEX_FEE[LANG]||APEX_FEE.en}</b></div>`
+        : firm.id==='apex' ? `<div class="fr-nofee centro"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><b>${APEX_NOFEE[LANG]||APEX_NOFEE.en}</b></div>`
         : ''}
       <div class="fr-header">
         <img class="fr-logo" src="${firm.logo}" alt="${firm.name}" width="54" height="54" loading="lazy" decoding="async">
