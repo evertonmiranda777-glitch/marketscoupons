@@ -626,6 +626,42 @@ if (!d.includes('mc-navwrap > *')) {
       }
     }
 
+    // ── DESTINO DOS CARDS DE REVIEW (página Guides) ─────────────────────────────
+    // Mesma armadilha das plataformas: o runtime do Design NÃO passa função dentro
+    // dessa lista, então onOpen vira no-op e o botão "Read full review" não leva a
+    // lugar nenhum. Amarro pelo DOM: leio o nome da firma no próprio card.
+    var REV = {
+      'Apex Trader Funding': 'apex', 'Bulenox': 'bulenox', 'FundedNext': 'fn',
+      'TradeDay': 'tradeday', 'FTMO': 'ftmo', 'The5ers': 'the5ers',
+      'Funded Futures Family': 'funded-futures-family', 'Blue Guardian': 'blueguardian',
+      'Top One Futures': 'toponefutures'
+    };
+    function ligaReviews() {
+      // ⚠️ NAO sao <button>: o Design fez o "Read full review" como <div> com
+      // cursor:pointer. Meu 1o seletor procurava button e achava zero , o conserto
+      // parecia nao ter pegado. Conferir a TAG antes de escrever o seletor.
+      var bs = document.querySelectorAll('div,span,a,button');
+      for (var i = 0; i < bs.length; i++) {
+        var b = bs[i];
+        if (b.__mcRev) continue;
+        var tt = (b.innerText || '').trim();
+        if (tt.indexOf('Read full review') !== 0 || tt.length > 40) continue;
+        var card = b.closest('div');
+        for (var k = 0; k < 4 && card; k++) {
+          var txt = card.textContent || '';
+          var achou = null;
+          for (var nome in REV) { if (txt.indexOf(nome + ' Review') >= 0) { achou = REV[nome]; break; } }
+          if (achou) { b.__mcRev = achou; break; }
+          card = card.parentElement;
+        }
+        if (!b.__mcRev) continue;
+        b.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          location.href = '/' + this.__mcRev + '-coupon';
+        });
+      }
+    }
+
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -667,7 +703,7 @@ if (!d.includes('mc-navwrap > *')) {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ajustaPainelAuth(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ajustaPainelAuth(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </scr` + `ipt>`;
@@ -821,6 +857,98 @@ if (!d.includes('mcTraduzir')) {
   feitos.push('tradutor');
 } else pulados.push('tradutor');
 
+// ─────────────────────────────────────────────── 16d. página do Blog e dos Guias
+//
+// ACHADO 05/08: a página de Blog do site novo NÃO fazia chamada nenhuma ao banco , os
+// 8 artigos estavam ESCRITOS na casca. Coincidiam com os reais no dia da entrega, e por
+// isso passavam despercebidos: no dia em que o Everton publicar o 11º, ele não aparece,
+// e artigo despublicado continua na tela.
+//
+// PIOR, na página de Guias: ela oferecia "Apex Trader Funding Review", "FTMO Review",
+// "Bulenox Review"... e essas páginas DÃO 404. Só existe tradeday-review. Ou seja, o
+// site novo mandava o visitante pra parede.
+remendo('blog e guias ao vivo', '_mcLigarBlogPagina',
+  '  _mcLigarBlog() {',
+  `  // PÁGINA de blog (a home usa _mcLigarBlog, que traz só 3). Aqui vêm todos, com a
+  // CAPA de verdade do blog_posts , a casca desenhava um degradê no lugar da imagem.
+  _mcLigarBlogPagina() {
+    if (this._mcBlogPagBuscou) return;
+    this._mcBlogPagBuscou = true;
+    var self = this;
+    var AN = '${ANON}';
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
+      '?select=title,slug,category,level,read_time,cover_url,excerpt' +
+      '&lang=eq.en&active=eq.true&order=id.desc&limit=24',
+      { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (ps) {
+        if (!ps || !ps.length) return;   // banco fora: fica o que veio na casca
+        var cor = { beginner: '#34d399', intermediate: '#fbbf24', advanced: '#f87171', professional: '#f87171' };
+        self._mcBlogPag = ps.map(function (b) {
+          var lv = String(b.level || '').toLowerCase();
+          return {
+            title: b.title,
+            slug: b.slug,
+            excerpt: b.excerpt || '',
+            cat: b.category || 'Prop Firms',
+            catColor: '#60a5fa',
+            lvl: lv || 'beginner',
+            lvlLabel: (lv || 'beginner').toUpperCase(),
+            lvlColor: cor[lv] || '#8a94a0',
+            read: String(b.read_time || '').replace(/\s*min.*$/i, '') + ' min',
+            cover: b.cover_url || '',
+            imgBg: b.cover_url ? ('center/cover no-repeat url(' + b.cover_url + ')')
+                               : 'linear-gradient(135deg,#122036,#0d1119)',
+            onOpen: function () { location.href = '/blog/' + b.slug; }
+          };
+        });
+        self._homeStatic = null;
+        self.setState({ _mcBlogPag: 1 });
+      }).catch(function () {});
+  }
+
+  _mcLigarBlog() {`);
+
+remendo('chamada do blog da pagina', 'this._mcLigarBlogPagina();',
+  '    this._mcLigarBlog();',
+  '    this._mcLigarBlog();' + String.fromCharCode(10) + '    this._mcLigarBlogPagina();');
+
+// ⚠️ GUIAS: troco os cards de "review" (que dão 404) pelos 5 guias que EXISTEM em
+// en/guides/. Não invento página , aponto pro que está no ar.
+remendo('guias reais', 'MC_GUIAS',
+  '      reviewCards: [',
+  `      reviewCards: MC_GUIAS(),
+      _reviewCardsAntigo: [`);
+
+remendo('funcao dos guias', 'function MC_GUIAS',
+  'function MC_ORDEM(fs) {',
+  `// Os 5 guias canônicos que EXISTEM em en/guides/. A casca oferecia "Apex Review",
+// "FTMO Review", "Bulenox Review"... e essas páginas dão 404 , só existe tradeday-review.
+// Título e resumo iguais aos dos arquivos, pra não criar uma segunda versão do texto.
+// O molde deste card é de REVIEW DE FIRMA ("The X review, honest and complete").
+// A casca oferecia Apex Review, FTMO Review, Bulenox Review... e essas páginas DÃO 404.
+// Tentei trocar pelos 5 guias e ficou pior: virou "The Guide review".
+// A saída certa é apontar pras páginas que EXISTEM e que são exatamente isso , as
+// landings /{firma}-coupon, com regra, preço e payout de cada firma (200 conferido).
+function MC_GUIAS() {
+  return [
+    { name: 'Apex Trader Funding', short: 'Apex',        accent: '#f97316', tint: '#3a2410', slug: 'apex' },
+    { name: 'Bulenox',             short: 'Bulenox',     accent: '#3b82f6', tint: '#122036', slug: 'bulenox' },
+    { name: 'FundedNext',          short: 'FundedNext',  accent: '#a855f7', tint: '#241236', slug: 'fn' },
+    { name: 'TradeDay',            short: 'TradeDay',    accent: '#22d3ee', tint: '#0c302c', slug: 'tradeday' },
+    { name: 'FTMO',                short: 'FTMO',        accent: '#22c55e', tint: '#12321f', slug: 'ftmo' },
+    { name: 'The5ers',             short: 'The5ers',     accent: '#34d399', tint: '#123028', slug: 'the5ers' },
+    { name: 'Funded Futures Family', short: 'FFF',       accent: '#eab308', tint: '#332a0c', slug: 'funded-futures-family' },
+    { name: 'Blue Guardian',       short: 'Blue Guardian', accent: '#60a5fa', tint: '#12203a', slug: 'blueguardian' },
+    { name: 'Top One Futures',     short: 'Top One',     accent: '#f472b6', tint: '#33121f', slug: 'toponefutures' }
+  ].map(function (g) {
+    g.onOpen = function () { location.href = '/' + g.slug + '-coupon'; };
+    return g;
+  });
+}
+
+function MC_ORDEM(fs) {`);
+
 // ─────────────────────────────────────────────── 17. as prévias da home
 // Análise diária (NQ real), GEX (níveis reais), mini heatmap, fita do Live Room,
 // plataformas, calculadora de posição e quiz.
@@ -865,6 +993,89 @@ for (const p of PREVIAS) {
   novasPrevias++;
 }
 feitos.push(`prévias da home (${novasPrevias} aplicadas, ${jaPrevias} já estavam)`);
+
+// ─────────────────────────────────────────────── 17b. página da Análise e datas do GEX
+//
+// ACHADO 05/08: a PÁGINA de Análise Diária , a ferramenta que 316 membros do Telegram
+// usam todo dia , tinha os 4 ativos ESCRITOS na casca: CL a 79.07, ES a 7,496.25, com
+// viés e níveis inventados junto. Eu tinha plugado só a prévia do NQ na home e dei a
+// página por boa. E o seletor de datas do GEX estava congelado em JULHO (Jul 16 a 27).
+remendo('analise da pagina', '_mcLigarAnalisePagina',
+  '  _mcLigarAnalise() {',
+  `  // Os 4 ativos da página, do daily_analysis de hoje. Se o banco não tiver o ativo,
+  // ele simplesmente não entra , nunca completo a lista com número inventado.
+  _mcLigarAnalisePagina() {
+    if (this._mcAnaPagBuscou) return;
+    this._mcAnaPagBuscou = true;
+    var self = this;
+    var AN = '${ANON}';
+    var H = { headers: { apikey: AN, Authorization: 'Bearer ' + AN } };
+    var SB = 'https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/';
+    var NOME = { ES: 'S&P 500', NQ: 'Nasdaq 100', CL: 'WTI Crude Oil', GC: 'Gold' };
+    Promise.all([
+      fetch(SB + 'daily_analysis?select=*&order=date.desc&limit=16', H).then(function (r) { return r.ok ? r.json() : []; }),
+      fetch(SB + 'gex_levels?select=date&order=date.desc&limit=60', H).then(function (r) { return r.ok ? r.json() : []; })
+    ]).then(function (res) {
+      var linhas = res[0] || [], datas = res[1] || [];
+      if (linhas.length) {
+        var vistos = {}, cards = [];
+        linhas.forEach(function (a) {
+          if (vistos[a.asset] || cards.length >= 4) return;
+          vistos[a.asset] = 1;
+          var pos = Number(a.change_pct) >= 0;
+          var vies = String(a.bias || '').toUpperCase();
+          var rgb = vies === 'BULLISH' ? '52,211,153' : (vies === 'BEARISH' ? '239,68,68' : '191,255,0');
+          var txt = vies === 'BULLISH' ? '#34d399' : (vies === 'BEARISH' ? '#f87171' : '#bfff00');
+          cards.push({
+            sym: a.asset,
+            desc: NOME[a.asset] || a.asset_name || a.asset,
+            price: Number(a.last_price).toLocaleString('en-US', { maximumFractionDigits: 2 }),
+            chg: (a.change_pct > 0 ? '+' : '') + a.change_pct + '%',
+            chgColor: pos ? '#34d399' : '#f87171',
+            bias: vies,
+            biasStyle: 'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;' +
+                       'font-weight:800;letter-spacing:0.06em;background:rgba(' + rgb + ',0.14);color:' + txt + ';',
+            s1: a.support_1 != null ? String(a.support_1) : '',
+            r1: a.resistance_1 != null ? String(a.resistance_1) : ''
+          });
+        });
+        if (cards.length) self._mcAnaCards = cards;
+      }
+      if (datas.length) {
+        var ja = {}, uniq = [];
+        datas.forEach(function (x) { if (x.date && !ja[x.date]) { ja[x.date] = 1; uniq.push(x.date); } });
+        var M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        self._mcGexDatas = uniq.slice(0, 8).map(function (iso) {
+          var pd = iso.split('-');
+          return { k: iso, l: M[Number(pd[1]) - 1] + ' ' + Number(pd[2]) };
+        });
+      }
+      self._homeStatic = null;
+      self.setState({ _mcAnaPag: 1 });
+    }).catch(function () {});
+  }
+
+  _mcLigarAnalise() {`);
+
+remendo('chamada da analise da pagina', 'this._mcLigarAnalisePagina();',
+  '    this._mcLigarAnalise();',
+  '    this._mcLigarAnalise();' + String.fromCharCode(10) + '    this._mcLigarAnalisePagina();');
+
+// Estes dois vêm de tabela GERADA do texto exato da casca , eu ia contar colchete na mão
+// pra fechar o array e foi exatamente assim que quebrei a página 3× em 04/08.
+const ANALISE = JSON.parse(fs.readFileSync('scripts/remendos-analise.json', 'utf8'));
+for (const r of ANALISE) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) {
+    console.error(`\n✗ ÂNCORA ${n === 0 ? 'SUMIU' : `APARECE ${n}x`} em "${r.nome}"`);
+    process.exit(1);
+  }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
+
 
 // ─────────────────────────────────────────────── fim
 fs.writeFileSync(ARQ, d);

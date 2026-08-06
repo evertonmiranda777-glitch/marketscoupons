@@ -2670,6 +2670,31 @@
 // Vencedores calculados, nunca escritos. Ver remendo 8.
 // Contagem de reviews com apelido de id. Ver remendo 9.
 // Desconto decrescente + FundedNext presa em 3o. Ver remendo 15.
+// Os 5 guias canônicos que EXISTEM em en/guides/. A casca oferecia "Apex Review",
+// "FTMO Review", "Bulenox Review"... e essas páginas dão 404 , só existe tradeday-review.
+// Título e resumo iguais aos dos arquivos, pra não criar uma segunda versão do texto.
+// O molde deste card é de REVIEW DE FIRMA ("The X review, honest and complete").
+// A casca oferecia Apex Review, FTMO Review, Bulenox Review... e essas páginas DÃO 404.
+// Tentei trocar pelos 5 guias e ficou pior: virou "The Guide review".
+// A saída certa é apontar pras páginas que EXISTEM e que são exatamente isso , as
+// landings /{firma}-coupon, com regra, preço e payout de cada firma (200 conferido).
+function MC_GUIAS() {
+  return [
+    { name: 'Apex Trader Funding', short: 'Apex',        accent: '#f97316', tint: '#3a2410', slug: 'apex' },
+    { name: 'Bulenox',             short: 'Bulenox',     accent: '#3b82f6', tint: '#122036', slug: 'bulenox' },
+    { name: 'FundedNext',          short: 'FundedNext',  accent: '#a855f7', tint: '#241236', slug: 'fn' },
+    { name: 'TradeDay',            short: 'TradeDay',    accent: '#22d3ee', tint: '#0c302c', slug: 'tradeday' },
+    { name: 'FTMO',                short: 'FTMO',        accent: '#22c55e', tint: '#12321f', slug: 'ftmo' },
+    { name: 'The5ers',             short: 'The5ers',     accent: '#34d399', tint: '#123028', slug: 'the5ers' },
+    { name: 'Funded Futures Family', short: 'FFF',       accent: '#eab308', tint: '#332a0c', slug: 'funded-futures-family' },
+    { name: 'Blue Guardian',       short: 'Blue Guardian', accent: '#60a5fa', tint: '#12203a', slug: 'blueguardian' },
+    { name: 'Top One Futures',     short: 'Top One',     accent: '#f472b6', tint: '#33121f', slug: 'toponefutures' }
+  ].map(function (g) {
+    g.onOpen = function () { location.href = '/' + g.slug + '-coupon'; };
+    return g;
+  });
+}
+
 function MC_ORDEM(fs) {
   var n = function (f) { return parseFloat(String(f.discount).replace('%', '')) || 0; };
   var lista = fs.slice().sort(function (a, b) { return n(b) - n(a); });
@@ -3303,6 +3328,44 @@ class Component extends DCLogic {
   // A demo trazia eventos de JUNHO chumbados. Evento econômico com data velha é pior que
   // nenhum: o trader confere e perde a confiança no resto da página.
   // BLOG AO VIVO , 3 artigos reais de blog_posts (EN, ativos, mais recentes).
+  // PÁGINA de blog (a home usa _mcLigarBlog, que traz só 3). Aqui vêm todos, com a
+  // CAPA de verdade do blog_posts , a casca desenhava um degradê no lugar da imagem.
+  _mcLigarBlogPagina() {
+    if (this._mcBlogPagBuscou) return;
+    this._mcBlogPagBuscou = true;
+    var self = this;
+    var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
+      '?select=title,slug,category,level,read_time,cover_url,excerpt' +
+      '&lang=eq.en&active=eq.true&order=id.desc&limit=24',
+      { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (ps) {
+        if (!ps || !ps.length) return;   // banco fora: fica o que veio na casca
+        var cor = { beginner: '#34d399', intermediate: '#fbbf24', advanced: '#f87171', professional: '#f87171' };
+        self._mcBlogPag = ps.map(function (b) {
+          var lv = String(b.level || '').toLowerCase();
+          return {
+            title: b.title,
+            slug: b.slug,
+            excerpt: b.excerpt || '',
+            cat: b.category || 'Prop Firms',
+            catColor: '#60a5fa',
+            lvl: lv || 'beginner',
+            lvlLabel: (lv || 'beginner').toUpperCase(),
+            lvlColor: cor[lv] || '#8a94a0',
+            read: String(b.read_time || '').replace(/s*min.*$/i, '') + ' min',
+            cover: b.cover_url || '',
+            imgBg: b.cover_url ? ('center/cover no-repeat url(' + b.cover_url + ')')
+                               : 'linear-gradient(135deg,#122036,#0d1119)',
+            onOpen: function () { location.href = '/blog/' + b.slug; }
+          };
+        });
+        self._homeStatic = null;
+        self.setState({ _mcBlogPag: 1 });
+      }).catch(function () {});
+  }
+
   _mcLigarBlog() {
     if (this._mcBlogBuscou) return;
     this._mcBlogBuscou = true;
@@ -3339,6 +3402,59 @@ class Component extends DCLogic {
   // ANALISE + GAMMA do NQ , a previa da home mostrava ES 5,621.50 com texto inventado
   // ("Macro tariffs weigh on global markets..."). Analise de mercado inventada e o pior tipo
   // de dado falso num site de trading: o cara confere o preco no proprio grafico.
+  // Os 4 ativos da página, do daily_analysis de hoje. Se o banco não tiver o ativo,
+  // ele simplesmente não entra , nunca completo a lista com número inventado.
+  _mcLigarAnalisePagina() {
+    if (this._mcAnaPagBuscou) return;
+    this._mcAnaPagBuscou = true;
+    var self = this;
+    var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    var H = { headers: { apikey: AN, Authorization: 'Bearer ' + AN } };
+    var SB = 'https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/';
+    var NOME = { ES: 'S&P 500', NQ: 'Nasdaq 100', CL: 'WTI Crude Oil', GC: 'Gold' };
+    Promise.all([
+      fetch(SB + 'daily_analysis?select=*&order=date.desc&limit=16', H).then(function (r) { return r.ok ? r.json() : []; }),
+      fetch(SB + 'gex_levels?select=date&order=date.desc&limit=60', H).then(function (r) { return r.ok ? r.json() : []; })
+    ]).then(function (res) {
+      var linhas = res[0] || [], datas = res[1] || [];
+      if (linhas.length) {
+        var vistos = {}, cards = [];
+        linhas.forEach(function (a) {
+          if (vistos[a.asset] || cards.length >= 4) return;
+          vistos[a.asset] = 1;
+          var pos = Number(a.change_pct) >= 0;
+          var vies = String(a.bias || '').toUpperCase();
+          var rgb = vies === 'BULLISH' ? '52,211,153' : (vies === 'BEARISH' ? '239,68,68' : '191,255,0');
+          var txt = vies === 'BULLISH' ? '#34d399' : (vies === 'BEARISH' ? '#f87171' : '#bfff00');
+          cards.push({
+            sym: a.asset,
+            desc: NOME[a.asset] || a.asset_name || a.asset,
+            price: Number(a.last_price).toLocaleString('en-US', { maximumFractionDigits: 2 }),
+            chg: (a.change_pct > 0 ? '+' : '') + a.change_pct + '%',
+            chgColor: pos ? '#34d399' : '#f87171',
+            bias: vies,
+            biasStyle: 'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;' +
+                       'font-weight:800;letter-spacing:0.06em;background:rgba(' + rgb + ',0.14);color:' + txt + ';',
+            s1: a.support_1 != null ? String(a.support_1) : '',
+            r1: a.resistance_1 != null ? String(a.resistance_1) : ''
+          });
+        });
+        if (cards.length) self._mcAnaCards = cards;
+      }
+      if (datas.length) {
+        var ja = {}, uniq = [];
+        datas.forEach(function (x) { if (x.date && !ja[x.date]) { ja[x.date] = 1; uniq.push(x.date); } });
+        var M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        self._mcGexDatas = uniq.slice(0, 8).map(function (iso) {
+          var pd = iso.split('-');
+          return { k: iso, l: M[Number(pd[1]) - 1] + ' ' + Number(pd[2]) };
+        });
+      }
+      self._homeStatic = null;
+      self.setState({ _mcAnaPag: 1 });
+    }).catch(function () {});
+  }
+
   _mcLigarAnalise() {
     if (this._mcAnaBuscou) return;
     this._mcAnaBuscou = true;
@@ -3565,6 +3681,8 @@ class Component extends DCLogic {
     this._mcLigarBlog();
     this._mcLigarMercado();
     this._mcLigarAnalise();
+    this._mcLigarAnalisePagina();
+    this._mcLigarBlogPagina();
     this._mcLigarNumeros();
     const s = this.state;
     const isCatalog = s.route === 'firms';
@@ -3843,7 +3961,8 @@ class Component extends DCLogic {
           const m = lvlMap[p.lvl];
           return { ...p, lvlLabel:m.l, lvlColor:m.c, lvlBg:m.bg };
         });
-      })(),      reviewCards: [
+      })(),      reviewCards: MC_GUIAS(),
+      _reviewCardsAntigo: [
         { name:'Apex Trader Funding', short:'Apex', accent:'#f97316', tint:'#3a2410' },
         { name:'FTMO', short:'FTMO', accent:'#22c55e', tint:'#12321f' },
         { name:'Bulenox', short:'Bulenox', accent:'#3b82f6', tint:'#122036' },
@@ -3870,7 +3989,7 @@ class Component extends DCLogic {
         label: t, onClick: () => this.setState({ gexTicker: t }),
         style: 'padding:9px 16px;border-radius:999px;border:1px solid ' + (s.gexTicker===t ? 'transparent;background:linear-gradient(180deg,#d4ff4d,#bfff00);color:#0a0d07;' : 'rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:#c4ccd2;') + 'font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;',
       })),
-      gexDates: [{k:'all',l:'All'},{k:'jul16',l:'Jul 16'},{k:'jul17',l:'Jul 17'},{k:'jul20',l:'Jul 20'},{k:'jul21',l:'Jul 21'},{k:'jul22',l:'Jul 22'},{k:'jul23',l:'Jul 23'},{k:'jul24',l:'Jul 24'},{k:'jul27',l:'Jul 27'}].map(d => ({
+      gexDates: [{k:'all',l:'All'}].concat(this._mcGexDatas || [{k:'all',l:'All'},{k:'jul16',l:'Jul 16'},{k:'jul17',l:'Jul 17'},{k:'jul20',l:'Jul 20'},{k:'jul21',l:'Jul 21'},{k:'jul22',l:'Jul 22'},{k:'jul23',l:'Jul 23'},{k:'jul24',l:'Jul 24'},{k:'jul27',l:'Jul 27'}].slice(1)).map(d => ({
         label: d.l, onClick: () => this.setState({ gexDate: d.k }),
         style: 'padding:7px 13px;border-radius:999px;border:1px solid ' + (s.gexDate===d.k ? 'rgba(191,255,0,0.4);background:rgba(191,255,0,0.12);color:#bfff00;' : 'rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:#8a94a0;') + 'font-family:inherit;font-weight:600;font-size:12px;cursor:pointer;transition:all .15s;',
       })),
@@ -3904,7 +4023,7 @@ class Component extends DCLogic {
       analysisBlur: s.authed ? 'none' : 'blur(7px)',
       analysisPE: s.authed ? 'auto' : 'none',
       unlockAnalysis: () => this.setState({ authed: true, toast: 'Welcome! Full access unlocked' }),
-      analysisCards: [
+      analysisCards: this._mcAnaCards || [
         { sym:'CL', desc:'WTI Crude Oil', price:'79.07', chg:'-1.71%', chgColor:'#f87171', bias:'BEARISH', biasStyle:'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.06em;background:rgba(239,68,68,0.14);color:#f87171;', s1:'79.00', r1:'81.33' },
         { sym:'ES', desc:'S&P 500', price:'7,496.25', chg:'-0.54%', chgColor:'#f87171', bias:'NEUTRAL', biasStyle:'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.06em;background:rgba(251,191,36,0.14);color:#fbbf24;', s1:'7,500', r1:'7,557.56' },
         { sym:'GC', desc:'Gold', price:'4,002.00', chg:'+0.51%', chgColor:'#34d399', bias:'BEARISH', biasStyle:'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.06em;background:rgba(239,68,68,0.14);color:#f87171;', s1:'3,973.98', r1:'4,045.71' },
@@ -4461,6 +4580,42 @@ class Component extends DCLogic {
       }
     }
 
+    // ── DESTINO DOS CARDS DE REVIEW (página Guides) ─────────────────────────────
+    // Mesma armadilha das plataformas: o runtime do Design NÃO passa função dentro
+    // dessa lista, então onOpen vira no-op e o botão "Read full review" não leva a
+    // lugar nenhum. Amarro pelo DOM: leio o nome da firma no próprio card.
+    var REV = {
+      'Apex Trader Funding': 'apex', 'Bulenox': 'bulenox', 'FundedNext': 'fn',
+      'TradeDay': 'tradeday', 'FTMO': 'ftmo', 'The5ers': 'the5ers',
+      'Funded Futures Family': 'funded-futures-family', 'Blue Guardian': 'blueguardian',
+      'Top One Futures': 'toponefutures'
+    };
+    function ligaReviews() {
+      // ⚠️ NAO sao <button>: o Design fez o "Read full review" como <div> com
+      // cursor:pointer. Meu 1o seletor procurava button e achava zero , o conserto
+      // parecia nao ter pegado. Conferir a TAG antes de escrever o seletor.
+      var bs = document.querySelectorAll('div,span,a,button');
+      for (var i = 0; i < bs.length; i++) {
+        var b = bs[i];
+        if (b.__mcRev) continue;
+        var tt = (b.innerText || '').trim();
+        if (tt.indexOf('Read full review') !== 0 || tt.length > 40) continue;
+        var card = b.closest('div');
+        for (var k = 0; k < 4 && card; k++) {
+          var txt = card.textContent || '';
+          var achou = null;
+          for (var nome in REV) { if (txt.indexOf(nome + ' Review') >= 0) { achou = REV[nome]; break; } }
+          if (achou) { b.__mcRev = achou; break; }
+          card = card.parentElement;
+        }
+        if (!b.__mcRev) continue;
+        b.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          location.href = '/' + this.__mcRev + '-coupon';
+        });
+      }
+    }
+
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -4502,7 +4657,7 @@ class Component extends DCLogic {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ajustaPainelAuth(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ajustaPainelAuth(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </script>
