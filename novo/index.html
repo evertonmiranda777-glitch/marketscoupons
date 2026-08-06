@@ -3204,6 +3204,10 @@ class Component extends DCLogic {
         { who:'Member', msg:'Thanks for the breakdown', c:'#34d399' },
       ].map(m => ({
         ...m,
+        // o balao mostra {{ cm.initial }} e eu derrubei esse campo ao reescrever as
+        // mensagens (pra tirar os sinais de trading) , a bolinha do avatar ficava VAZIA.
+        // O console avisava: "{{ cm.initial }} never resolved , rendered as empty".
+        initial: String(m.who || '?').charAt(0).toUpperCase(),
         avStyle: 'width:22px;height:22px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;background:' + m.c + ';',
       })),
 
@@ -3356,10 +3360,17 @@ class Component extends DCLogic {
       document.addEventListener('mc:lang', function (e) {
         self._mcLigarBlogPagina(String(e.detail || 'EN'));
         self._mcBlogBuscou = false; self._mcLigarBlog(String(e.detail || 'EN'));
+        // A ANALISE tambem: o texto vem multilingue do banco e o idioma era escolhido
+        // NA HORA DA BUSCA. Quem trocava pra portugues depois continuava lendo ingles
+        // na ferramenta que 316 membros do Telegram usam todo dia.
+        try { self._mcAnaBuscou = false; self._mcLigarAnalise(); } catch (_) {}
+        // ⚠️ a PAGINA da analise tem guard PROPRIO (_mcAnaPagBuscou). Resetei so o da
+        // home e ela continuou servindo o texto em ingles , dois guards, dois resets.
+        try { self._mcAnaPagBuscou = false; self._mcLigarAnalisePagina(); } catch (_) {}
       });
     }
     fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
-      '?select=title,slug,category,level,read_time,cover_url,excerpt' +
+      '?select=title,slug,category,level,read_time,cover_url,excerpt,created_at' +
       '&lang=eq.' + lang + '&active=eq.true&order=id.desc&limit=24',
       { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
       .then(function (r) { return r.ok ? r.json() : null; })
@@ -3383,6 +3394,18 @@ class Component extends DCLogic {
             lvlLabel: (lv || 'beginner').toUpperCase(),
             lvlColor: cor[lv] || '#8a94a0',
             read: String(b.read_time || '').replace(/s*min.*$/i, '') + ' min',
+            // o cartao mostra {{ p.date }} e o objeto nao trazia esse campo , saia
+            // vazio (o console avisava "never resolved"). blog_posts NAO tem
+            // published_at, so created_at. Data no idioma de quem esta lendo.
+            date: (function (v) {
+              if (!v) return '';
+              var dt = new Date(v);
+              if (isNaN(dt.getTime())) return '';
+              try {
+                return dt.toLocaleDateString(lang === 'en' ? 'en-US' : lang,
+                       { year: 'numeric', month: 'short', day: 'numeric' });
+              } catch (e) { return String(v).slice(0, 10); }
+            })(b.created_at),
             cover: b.cover_url || '',
             imgBg: b.cover_url ? ('center/cover no-repeat url(' + b.cover_url + ')')
                                : 'linear-gradient(135deg,#122036,#0d1119)',
@@ -3506,9 +3529,19 @@ class Component extends DCLogic {
         // "Pivot S1 (79.00)"), numeros de outro dia na ferramenta que 316 membros usam.
         // Os campos sao MULTILINGUES no banco ({en,pt,...}), nao string , sem tratar,
         // a tela mostraria "[object Object]".
+        // ⚠️ ESTAVA PEGANDO SEMPRE O INGLES. O campo e multilingue no banco
+        // ({en,pt,es,...}) e eu escrevia `v.en || v.pt`, entao o brasileiro lia a
+        // analise em ingles mesmo com o site em portugues , numa ferramenta que 316
+        // membros do Telegram usam todo dia. Agora segue o idioma da pagina.
+        var _lg = (function () {
+          try {
+            var l = (document.documentElement.lang || '').toLowerCase().slice(0, 2);
+            return l || 'en';
+          } catch (e) { return 'en'; }
+        })();
         var txt = function (v) {
           if (v == null) return '';
-          if (typeof v === 'object') return v.en || v.pt || '';
+          if (typeof v === 'object') return v[_lg] || v.en || v.pt || '';
           return String(v);
         };
         // O OFICIAL mostra, por ativo: zona de atencao, contexto, volume, cenario
@@ -3526,9 +3559,19 @@ class Component extends DCLogic {
           var bull = txt(a.scenario_bull), bear = txt(a.scenario_bear);
           var vol = txt(a.volume_analysis), vix = txt(a.vix_context);
           var ctx = txt(a.context);
-          if (zona || news) notas.push({ t1: sym + ' · Attention Zone', zone: zona, t2: sym + ' · News Impact', news: news });
-          if (bull || bear) notas.push({ t1: sym + ' · Favorable Scenario', zone: bull, t2: sym + ' · Alternative Scenario', news: bear });
-          if (vol || vix || ctx) notas.push({ t1: sym + ' · Volume', zone: vol, t2: sym + (vix ? ' · VIX Context' : ' · Market Context'), news: vix || ctx });
+          // rotulos no idioma de quem le , estavam chumbados em ingles
+          var R = ({
+            pt: ['Zona de atencao','Impacto de noticias','Cenario favoravel','Cenario alternativo','Volume','Contexto do VIX','Contexto de mercado'],
+            es: ['Zona de atencion','Impacto de noticias','Escenario favorable','Escenario alternativo','Volumen','Contexto del VIX','Contexto de mercado'],
+            it: ['Zona di attenzione','Impatto notizie','Scenario favorevole','Scenario alternativo','Volume','Contesto VIX','Contesto di mercato'],
+            fr: ['Zone de vigilance','Impact des news','Scenario favorable','Scenario alternatif','Volume','Contexte VIX','Contexte de marche'],
+            de: ['Achtungszone','News-Auswirkung','Guenstiges Szenario','Alternatives Szenario','Volumen','VIX-Kontext','Marktkontext'],
+            ar: ['منطقة الانتباه','تأثير الأخبار','السيناريو المرجح','السيناريو البديل','الحجم','سياق VIX','سياق السوق'],
+            id: ['Zona perhatian','Dampak berita','Skenario utama','Skenario alternatif','Volume','Konteks VIX','Konteks pasar']
+          })[_lg] || ['Attention Zone','News Impact','Favorable Scenario','Alternative Scenario','Volume','VIX Context','Market Context'];
+          if (zona || news) notas.push({ t1: sym + ' · ' + R[0], zone: zona, t2: sym + ' · ' + R[1], news: news });
+          if (bull || bear) notas.push({ t1: sym + ' · ' + R[2], zone: bull, t2: sym + ' · ' + R[3], news: bear });
+          if (vol || vix || ctx) notas.push({ t1: sym + ' · ' + R[4], zone: vol, t2: sym + ' · ' + (vix ? R[5] : R[6]), news: vix || ctx });
         });
         if (notas.length) self._mcAnaNotas = notas;
       }

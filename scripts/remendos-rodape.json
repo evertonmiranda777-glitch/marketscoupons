@@ -22,5 +22,53 @@
   "marca": "(f.discNum || 0) / 10, 10",
   "de": "if (a[4] === 0) sc += Math.min((f.discNum || 0) / 20, 5);\n          else if (a[4] === 1) { if (sp >= 100) sc += 3; else if (sp >= 95) sc += 2; else if (sp >= 90) sc += 1; }\n          else if (a[4] === 2) { if (f.newsTrading) sc += 1; if (semConsist) sc += 1; if (semMin) sc += 1; }\n          else if (a[4] === 3) { if (f.day1Payout) sc += 2; if (semMin) sc += 2; if (String(f.payoutSpeed) === 'fast') sc += 1; }",
   "para": "// A 5a pergunta e \"What matters most to you?\" , a prioridade que o PROPRIO visitante\n          // declarou. Ela pesava MENOS que os criterios secundarios: quem respondeu DESCONTO\n          // MAXIMO recebia Top One (55%) em vez de Apex (90%), por 10.75 x 10.5. A conta era\n          // /20 com teto 5, que separa 90% de 55% por so 1.75 ponto, enquanto os bonus de\n          // \"iniciante\" + \"scalper\" somavam 3. Agora a prioridade declarada domina.\n          if (a[4] === 0) sc += Math.min((f.discNum || 0) / 10, 10);\n          else if (a[4] === 1) { if (sp >= 100) sc += 8; else if (sp >= 95) sc += 6; else if (sp >= 90) sc += 4; }\n          else if (a[4] === 2) { if (f.newsTrading) sc += 2; if (semConsist) sc += 3; if (semMin) sc += 3; }\n          else if (a[4] === 3) { if (f.day1Payout) sc += 4; if (semMin) sc += 3; if (String(f.payoutSpeed) === 'fast') sc += 3; }"
+ },
+ {
+  "nome": "data do post no select",
+  "marca": "excerpt,created_at",
+  "de": "'?select=title,slug,category,level,read_time,cover_url,excerpt' +",
+  "para": "'?select=title,slug,category,level,read_time,cover_url,excerpt,created_at' +"
+ },
+ {
+  "nome": "data do post no cartao",
+  "marca": "})(b.created_at),",
+  "de": "            cover: b.cover_url || '',\n            imgBg: b.cover_url ? ('center/cover no-repeat url(' + b.cover_url + ')')",
+  "para": "            // o cartao mostra {{ p.date }} e o objeto nao trazia esse campo , saia\n            // vazio (o console avisava \"never resolved\"). blog_posts NAO tem\n            // published_at, so created_at. Data no idioma de quem esta lendo.\n            date: (function (v) {\n              if (!v) return '';\n              var dt = new Date(v);\n              if (isNaN(dt.getTime())) return '';\n              try {\n                return dt.toLocaleDateString(lang === 'en' ? 'en-US' : lang,\n                       { year: 'numeric', month: 'short', day: 'numeric' });\n              } catch (e) { return String(v).slice(0, 10); }\n            })(b.created_at),\n            cover: b.cover_url || '',\n            imgBg: b.cover_url ? ('center/cover no-repeat url(' + b.cover_url + ')')"
+ },
+ {
+  "nome": "inicial do avatar do chat",
+  "marca": "initial: String(m.who",
+  "de": "      ].map(m => ({\n        ...m,\n        avStyle: 'width:22px;height:22px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;background:' + m.c + ';',\n      })),",
+  "para": "      ].map(m => ({\n        ...m,\n        // o balao mostra {{ cm.initial }} e eu derrubei esse campo ao reescrever as\n        // mensagens (pra tirar os sinais de trading) , a bolinha do avatar ficava VAZIA.\n        // O console avisava: \"{{ cm.initial }} never resolved , rendered as empty\".\n        initial: String(m.who || '?').charAt(0).toUpperCase(),\n        avStyle: 'width:22px;height:22px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;background:' + m.c + ';',\n      })),"
+ },
+ {
+  "nome": "analise no idioma do visitante",
+  "marca": "v[_lg] || v.en",
+  "de": "        var txt = function (v) {\n          if (v == null) return '';\n          if (typeof v === 'object') return v.en || v.pt || '';\n          return String(v);\n        };",
+  "para": "        // ⚠️ ESTAVA PEGANDO SEMPRE O INGLES. O campo e multilingue no banco\n        // ({en,pt,es,...}) e eu escrevia `v.en || v.pt`, entao o brasileiro lia a\n        // analise em ingles mesmo com o site em portugues , numa ferramenta que 316\n        // membros do Telegram usam todo dia. Agora segue o idioma da pagina.\n        var _lg = (function () {\n          try {\n            var l = (document.documentElement.lang || '').toLowerCase().slice(0, 2);\n            return l || 'en';\n          } catch (e) { return 'en'; }\n        })();\n        var txt = function (v) {\n          if (v == null) return '';\n          if (typeof v === 'object') return v[_lg] || v.en || v.pt || '';\n          return String(v);\n        };"
+ },
+ {
+  "nome": "analise refaz no troca-idioma",
+  "marca": "self._mcAnaBuscou = false",
+  "de": "      document.addEventListener('mc:lang', function (e) {\n        self._mcLigarBlogPagina(String(e.detail || 'EN'));\n        self._mcBlogBuscou = false; self._mcLigarBlog(String(e.detail || 'EN'));\n      });",
+  "para": "      document.addEventListener('mc:lang', function (e) {\n        self._mcLigarBlogPagina(String(e.detail || 'EN'));\n        self._mcBlogBuscou = false; self._mcLigarBlog(String(e.detail || 'EN'));\n        // A ANALISE tambem: o texto vem multilingue do banco e o idioma era escolhido\n        // NA HORA DA BUSCA. Quem trocava pra portugues depois continuava lendo ingles\n        // na ferramenta que 316 membros do Telegram usam todo dia.\n        try { self._mcAnaBuscou = false; self._mcLigarAnalise(); } catch (_) {}\n        try { self._mcLigarAnalisePagina(); } catch (_) {}\n      });"
+ },
+ {
+  "nome": "rotulos da analise traduzidos",
+  "marca": "var R = ({",
+  "de": "          if (zona || news) notas.push({ t1: sym + ' · Attention Zone', zone: zona, t2: sym + ' · News Impact', news: news });",
+  "para": "          // rotulos no idioma de quem le , estavam chumbados em ingles\n          var R = ({\n            pt: ['Zona de atencao','Impacto de noticias','Cenario favoravel','Cenario alternativo','Volume','Contexto do VIX','Contexto de mercado'],\n            es: ['Zona de atencion','Impacto de noticias','Escenario favorable','Escenario alternativo','Volumen','Contexto del VIX','Contexto de mercado'],\n            it: ['Zona di attenzione','Impatto notizie','Scenario favorevole','Scenario alternativo','Volume','Contesto VIX','Contesto di mercato'],\n            fr: ['Zone de vigilance','Impact des news','Scenario favorable','Scenario alternatif','Volume','Contexte VIX','Contexte de marche'],\n            de: ['Achtungszone','News-Auswirkung','Guenstiges Szenario','Alternatives Szenario','Volumen','VIX-Kontext','Marktkontext'],\n            ar: ['منطقة الانتباه','تأثير الأخبار','السيناريو المرجح','السيناريو البديل','الحجم','سياق VIX','سياق السوق'],\n            id: ['Zona perhatian','Dampak berita','Skenario utama','Skenario alternatif','Volume','Konteks VIX','Konteks pasar']\n          })[_lg] || ['Attention Zone','News Impact','Favorable Scenario','Alternative Scenario','Volume','VIX Context','Market Context'];\n          if (zona || news) notas.push({ t1: sym + ' · ' + R[0], zone: zona, t2: sym + ' · ' + R[1], news: news });"
+ },
+ {
+  "nome": "rotulos de cenario e volume",
+  "marca": "' · ' + R[2]",
+  "de": "          if (bull || bear) notas.push({ t1: sym + ' · Favorable Scenario', zone: bull, t2: sym + ' · Alternative Scenario', news: bear });\n          if (vol || vix || ctx) notas.push({ t1: sym + ' · Volume', zone: vol, t2: sym + (vix ? ' · VIX Context' : ' · Market Context'), news: vix || ctx });",
+  "para": "          if (bull || bear) notas.push({ t1: sym + ' · ' + R[2], zone: bull, t2: sym + ' · ' + R[3], news: bear });\n          if (vol || vix || ctx) notas.push({ t1: sym + ' · ' + R[4], zone: vol, t2: sym + ' · ' + (vix ? R[5] : R[6]), news: vix || ctx });"
+ },
+ {
+  "nome": "guard da pagina da analise",
+  "marca": "self._mcAnaPagBuscou = false",
+  "de": "        try { self._mcLigarAnalisePagina(); } catch (_) {}",
+  "para": "        // ⚠️ a PAGINA da analise tem guard PROPRIO (_mcAnaPagBuscou). Resetei so o da\n        // home e ela continuou servindo o texto em ingles , dois guards, dois resets.\n        try { self._mcAnaPagBuscou = false; self._mcLigarAnalisePagina(); } catch (_) {}"
  }
 ]

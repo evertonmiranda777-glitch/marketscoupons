@@ -1368,9 +1368,19 @@ remendo('analise da pagina', '_mcLigarAnalisePagina',
         // "Pivot S1 (79.00)"), numeros de outro dia na ferramenta que 316 membros usam.
         // Os campos sao MULTILINGUES no banco ({en,pt,...}), nao string , sem tratar,
         // a tela mostraria "[object Object]".
+        // ⚠️ ESTAVA PEGANDO SEMPRE O INGLES. O campo e multilingue no banco
+        // ({en,pt,es,...}) e eu lia "v.en" primeiro, entao o brasileiro via a analise
+        // em ingles mesmo com o site em portugues , numa ferramenta que 316 membros do
+        // Telegram usam todo dia. Agora segue o idioma da pagina.
+        var _lg = (function () {
+          try {
+            var l = (document.documentElement.lang || '').toLowerCase().slice(0, 2);
+            return l || 'en';
+          } catch (e) { return 'en'; }
+        })();
         var txt = function (v) {
           if (v == null) return '';
-          if (typeof v === 'object') return v.en || v.pt || '';
+          if (typeof v === 'object') return v[_lg] || v.en || v.pt || '';
           return String(v);
         };
         // O OFICIAL mostra, por ativo: zona de atencao, contexto, volume, cenario
