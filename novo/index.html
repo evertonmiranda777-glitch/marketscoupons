@@ -2690,7 +2690,8 @@ function MC_GUIAS() {
     { name: 'Blue Guardian',       short: 'Blue Guardian', accent: '#60a5fa', tint: '#12203a', slug: 'blueguardian' },
     { name: 'Top One Futures',     short: 'Top One',     accent: '#f472b6', tint: '#33121f', slug: 'toponefutures' }
   ].map(function (g) {
-    g.onOpen = function () { location.href = '/' + g.slug + '-coupon'; };
+    g.onOpen = function () { var lg = String(window.MC_LANG || 'EN').toLowerCase();
+      location.href = (lg === 'en' ? '' : '/' + lg) + '/' + g.slug + '-coupon'; };
     return g;
   });
 }
@@ -3330,14 +3331,25 @@ class Component extends DCLogic {
   // BLOG AO VIVO , 3 artigos reais de blog_posts (EN, ativos, mais recentes).
   // PÁGINA de blog (a home usa _mcLigarBlog, que traz só 3). Aqui vêm todos, com a
   // CAPA de verdade do blog_posts , a casca desenhava um degradê no lugar da imagem.
-  _mcLigarBlogPagina() {
-    if (this._mcBlogPagBuscou) return;
-    this._mcBlogPagBuscou = true;
+  _mcLigarBlogPagina(forcarLang) {
+    var lang = (forcarLang || window.MC_LANG || 'EN').toLowerCase();
+    if (this._mcBlogPagLang === lang) return;
+    this._mcBlogPagLang = lang;
     var self = this;
     var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    // ⚠️ NAO traduzo titulo de artigo na tela: os 70 artigos JA existem traduzidos em 7
+    // idiomas no blog_posts. Traduzir na interface criaria uma 2a versao divergente da
+    // real. Aqui e so buscar no idioma certo.
+    if (!this._mcLangOuvindo) {
+      this._mcLangOuvindo = 1;
+      document.addEventListener('mc:lang', function (e) {
+        self._mcLigarBlogPagina(String(e.detail || 'EN'));
+        self._mcBlogBuscou = false; self._mcLigarBlog(String(e.detail || 'EN'));
+      });
+    }
     fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
       '?select=title,slug,category,level,read_time,cover_url,excerpt' +
-      '&lang=eq.en&active=eq.true&order=id.desc&limit=24',
+      '&lang=eq.' + lang + '&active=eq.true&order=id.desc&limit=24',
       { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (ps) {
@@ -3351,14 +3363,19 @@ class Component extends DCLogic {
             excerpt: b.excerpt || '',
             cat: b.category || 'Prop Firms',
             catColor: '#60a5fa',
-            lvl: lv || 'beginner',
+            // ⚠️ o mapa da casca só conhece beginner/intermediate/professional. O banco
+            // também usa 'advanced', e lvlMap['advanced'] vinha undefined , derrubava a
+            // RENDERIZAÇÃO INTEIRA da página (Cannot read properties of undefined).
+            lvl: (lv === 'advanced' ? 'professional'
+                 : (lv === 'intermediate' ? 'intermediate'
+                 : (lv === 'professional' ? 'professional' : 'beginner'))),
             lvlLabel: (lv || 'beginner').toUpperCase(),
             lvlColor: cor[lv] || '#8a94a0',
             read: String(b.read_time || '').replace(/s*min.*$/i, '') + ' min',
             cover: b.cover_url || '',
             imgBg: b.cover_url ? ('center/cover no-repeat url(' + b.cover_url + ')')
                                : 'linear-gradient(135deg,#122036,#0d1119)',
-            onOpen: function () { location.href = '/blog/' + b.slug; }
+            onOpen: (function (s, lg) { return function () { location.href = (lg === 'en' ? '' : '/' + lg) + '/blog/' + s; }; })(b.slug, lang)
           };
         });
         self._homeStatic = null;
@@ -3366,13 +3383,14 @@ class Component extends DCLogic {
       }).catch(function () {});
   }
 
-  _mcLigarBlog() {
+  _mcLigarBlog(forcarLang) {
     if (this._mcBlogBuscou) return;
     this._mcBlogBuscou = true;
     var self = this;
     var AN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
+    var lang = (forcarLang || window.MC_LANG || 'EN').toLowerCase();
     fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
-      '?select=title,slug,category,level,read_time&lang=eq.en&active=eq.true&order=id.desc&limit=3',
+      '?select=title,slug,category,level,read_time&lang=eq.' + lang + '&active=eq.true&order=id.desc&limit=3',
       { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (ps) {
@@ -3945,7 +3963,7 @@ class Component extends DCLogic {
       }),
       blogPosts: (() => {
         const lvlMap = { beginner:{l:'BEGINNER',c:'#34d399',bg:'rgba(52,211,153,0.16)'}, intermediate:{l:'INTERMEDIATE',c:'#fbbf24',bg:'rgba(251,191,36,0.16)'}, professional:{l:'PROFESSIONAL',c:'#f87171',bg:'rgba(239,68,68,0.16)'} };
-        const posts = [
+        const posts = this._mcBlogPag || [
           { cat:'Prop Firms', catColor:'#60a5fa', lvl:'beginner', title:'Apex vs Bulenox: Which is Worth More in 2026?', excerpt:'Apex Trader Funding and Bulenox compared plan by plan in 2026: drawdown, payout, profit split, coupon codes MARKET and MARKET89, Trustpilot, and who wins in each scenario.', date:'Jun 24, 2026', icon:'ti-versus', imgBg:'linear-gradient(135deg,#122036,#0d1119)' },
           { cat:'Technical Analysis', catColor:'#60a5fa', lvl:'beginner', title:'Volume Price Analysis (VPA), How to Read Institutional Intent in Every Bar', excerpt:'The complete VPA guide built on Wyckoff, Tom Williams and Anna Coulling: effort vs result, no-supply and climax bars, the four-phase cycle, three high-probability setups, and prop-firm risk.', date:'May 28, 2026', icon:'ti-chart-bar', imgBg:'linear-gradient(135deg,#1a2740,#0d1119)' },
           { cat:'Risk Management', catColor:'#60a5fa', lvl:'intermediate', title:'Position Sizing & Scaling, The Pro Math That Most Traders Skip', excerpt:'The complete position sizing playbook: fixed fractional, volatility-adjusted, Kelly criterion, pyramid scaling, multi-account aggregate sizing, and prop firm calibration.', date:'May 27, 2026', icon:'ti-arrows-diff', imgBg:'linear-gradient(135deg,#241236,#0d1119)' },
@@ -4611,7 +4629,8 @@ class Component extends DCLogic {
         if (!b.__mcRev) continue;
         b.addEventListener('click', function (ev) {
           ev.preventDefault();
-          location.href = '/' + this.__mcRev + '-coupon';
+          var lg = String(window.MC_LANG || 'EN').toLowerCase();
+          location.href = (lg === 'en' ? '' : '/' + lg) + '/' + this.__mcRev + '-coupon';
         });
       }
     }
@@ -4664,6 +4683,7 @@ class Component extends DCLogic {
 <script>
   (function () {
     var LANG = 'EN';
+    try { window.MC_LANG = localStorage.getItem('mc_novo_lang') || 'EN'; } catch (e) { window.MC_LANG = 'EN'; }
     var ORIG = new WeakMap();   // guarda o inglês pra poder VOLTAR ao trocar de idioma
 
     function dic() { return window.MC_I18N_NOVO || {}; }
@@ -4714,7 +4734,13 @@ class Component extends DCLogic {
     var esperando = 0;
     function ciclo() {
       var atual = idiomaDaTela();
-      if (atual !== LANG) { LANG = atual; try { localStorage.setItem('mc_novo_lang', LANG); } catch (e) {} }
+      if (atual !== LANG) {
+        LANG = atual;
+        window.MC_LANG = LANG;
+        try { localStorage.setItem('mc_novo_lang', LANG); } catch (e) {}
+        // blog e guias JA existem traduzidos no banco/repo , rebusca no idioma novo
+        try { document.dispatchEvent(new CustomEvent('mc:lang', { detail: LANG })); } catch (e) {}
+      }
       mcTraduzir();
     }
 

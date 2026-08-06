@@ -344,13 +344,14 @@ remendo('separador dos reviews (lista)', '{{ r.rating }}★</span>{{ r.reviews }
 remendo('blog da home', '_mcLigarBlog',
   '  _mcLigarCalendario() {',
   `  // BLOG AO VIVO , 3 artigos reais de blog_posts (EN, ativos, mais recentes).
-  _mcLigarBlog() {
+  _mcLigarBlog(forcarLang) {
     if (this._mcBlogBuscou) return;
     this._mcBlogBuscou = true;
     var self = this;
     var AN = '${ANON}';
+    var lang = (forcarLang || window.MC_LANG || 'EN').toLowerCase();
     fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
-      '?select=title,slug,category,level,read_time&lang=eq.en&active=eq.true&order=id.desc&limit=3',
+      '?select=title,slug,category,level,read_time&lang=eq.' + lang + '&active=eq.true&order=id.desc&limit=3',
       { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (ps) {
@@ -657,7 +658,8 @@ if (!d.includes('mc-navwrap > *')) {
         if (!b.__mcRev) continue;
         b.addEventListener('click', function (ev) {
           ev.preventDefault();
-          location.href = '/' + this.__mcRev + '-coupon';
+          var lg = String(window.MC_LANG || 'EN').toLowerCase();
+          location.href = (lg === 'en' ? '' : '/' + lg) + '/' + this.__mcRev + '-coupon';
         });
       }
     }
@@ -789,6 +791,7 @@ if (!d.includes('mcTraduzir')) {
   const TRAD = `<script>
   (function () {
     var LANG = 'EN';
+    try { window.MC_LANG = localStorage.getItem('mc_novo_lang') || 'EN'; } catch (e) { window.MC_LANG = 'EN'; }
     var ORIG = new WeakMap();   // guarda o inglês pra poder VOLTAR ao trocar de idioma
 
     function dic() { return window.MC_I18N_NOVO || {}; }
@@ -839,7 +842,13 @@ if (!d.includes('mcTraduzir')) {
     var esperando = 0;
     function ciclo() {
       var atual = idiomaDaTela();
-      if (atual !== LANG) { LANG = atual; try { localStorage.setItem('mc_novo_lang', LANG); } catch (e) {} }
+      if (atual !== LANG) {
+        LANG = atual;
+        window.MC_LANG = LANG;
+        try { localStorage.setItem('mc_novo_lang', LANG); } catch (e) {}
+        // blog e guias JA existem traduzidos no banco/repo , rebusca no idioma novo
+        try { document.dispatchEvent(new CustomEvent('mc:lang', { detail: LANG })); } catch (e) {}
+      }
       mcTraduzir();
     }
 
@@ -868,17 +877,28 @@ if (!d.includes('mcTraduzir')) {
 // "Bulenox Review"... e essas páginas DÃO 404. Só existe tradeday-review. Ou seja, o
 // site novo mandava o visitante pra parede.
 remendo('blog e guias ao vivo', '_mcLigarBlogPagina',
-  '  _mcLigarBlog() {',
+  '  _mcLigarBlog(forcarLang) {',
   `  // PÁGINA de blog (a home usa _mcLigarBlog, que traz só 3). Aqui vêm todos, com a
   // CAPA de verdade do blog_posts , a casca desenhava um degradê no lugar da imagem.
-  _mcLigarBlogPagina() {
-    if (this._mcBlogPagBuscou) return;
-    this._mcBlogPagBuscou = true;
+  _mcLigarBlogPagina(forcarLang) {
+    var lang = (forcarLang || window.MC_LANG || 'EN').toLowerCase();
+    if (this._mcBlogPagLang === lang) return;
+    this._mcBlogPagLang = lang;
     var self = this;
     var AN = '${ANON}';
+    // ⚠️ NAO traduzo titulo de artigo na tela: os 70 artigos JA existem traduzidos em 7
+    // idiomas no blog_posts. Traduzir na interface criaria uma 2a versao divergente da
+    // real. Aqui e so buscar no idioma certo.
+    if (!this._mcLangOuvindo) {
+      this._mcLangOuvindo = 1;
+      document.addEventListener('mc:lang', function (e) {
+        self._mcLigarBlogPagina(String(e.detail || 'EN'));
+        self._mcBlogBuscou = false; self._mcLigarBlog(String(e.detail || 'EN'));
+      });
+    }
     fetch('https://qfwhduvutfumsaxnuofa.supabase.co/rest/v1/blog_posts' +
       '?select=title,slug,category,level,read_time,cover_url,excerpt' +
-      '&lang=eq.en&active=eq.true&order=id.desc&limit=24',
+      '&lang=eq.' + lang + '&active=eq.true&order=id.desc&limit=24',
       { headers: { apikey: AN, Authorization: 'Bearer ' + AN } })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (ps) {
@@ -892,14 +912,19 @@ remendo('blog e guias ao vivo', '_mcLigarBlogPagina',
             excerpt: b.excerpt || '',
             cat: b.category || 'Prop Firms',
             catColor: '#60a5fa',
-            lvl: lv || 'beginner',
+            // ⚠️ o mapa da casca só conhece beginner/intermediate/professional. O banco
+            // também usa 'advanced', e lvlMap['advanced'] vinha undefined , derrubava a
+            // RENDERIZAÇÃO INTEIRA da página (Cannot read properties of undefined).
+            lvl: (lv === 'advanced' ? 'professional'
+                 : (lv === 'intermediate' ? 'intermediate'
+                 : (lv === 'professional' ? 'professional' : 'beginner'))),
             lvlLabel: (lv || 'beginner').toUpperCase(),
             lvlColor: cor[lv] || '#8a94a0',
             read: String(b.read_time || '').replace(/\s*min.*$/i, '') + ' min',
             cover: b.cover_url || '',
             imgBg: b.cover_url ? ('center/cover no-repeat url(' + b.cover_url + ')')
                                : 'linear-gradient(135deg,#122036,#0d1119)',
-            onOpen: function () { location.href = '/blog/' + b.slug; }
+            onOpen: (function (s, lg) { return function () { location.href = (lg === 'en' ? '' : '/' + lg) + '/blog/' + s; }; })(b.slug, lang)
           };
         });
         self._homeStatic = null;
@@ -907,7 +932,7 @@ remendo('blog e guias ao vivo', '_mcLigarBlogPagina',
       }).catch(function () {});
   }
 
-  _mcLigarBlog() {`);
+  _mcLigarBlog(forcarLang) {`);
 
 remendo('chamada do blog da pagina', 'this._mcLigarBlogPagina();',
   '    this._mcLigarBlog();',
@@ -942,7 +967,8 @@ function MC_GUIAS() {
     { name: 'Blue Guardian',       short: 'Blue Guardian', accent: '#60a5fa', tint: '#12203a', slug: 'blueguardian' },
     { name: 'Top One Futures',     short: 'Top One',     accent: '#f472b6', tint: '#33121f', slug: 'toponefutures' }
   ].map(function (g) {
-    g.onOpen = function () { location.href = '/' + g.slug + '-coupon'; };
+    g.onOpen = function () { var lg = String(window.MC_LANG || 'EN').toLowerCase();
+      location.href = (lg === 'en' ? '' : '/' + lg) + '/' + g.slug + '-coupon'; };
     return g;
   });
 }
@@ -1063,6 +1089,18 @@ remendo('chamada da analise da pagina', 'this._mcLigarAnalisePagina();',
 
 // Estes dois vêm de tabela GERADA do texto exato da casca , eu ia contar colchete na mão
 // pra fechar o array e foi exatamente assim que quebrei a página 3× em 04/08.
+// A casca monta os artigos numa funcao com `const posts = [...]` escrito. Eu tinha
+// criado _mcBlogPag e esquecido de LIGAR , os dados chegavam do banco e ninguem usava.
+const BLOGTAB = JSON.parse(fs.readFileSync('scripts/remendos-blog.json', 'utf8'));
+for (const r of BLOGTAB) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`
+✗ ÂNCORA do blog ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
 const ANALISE = JSON.parse(fs.readFileSync('scripts/remendos-analise.json', 'utf8'));
 for (const r of ANALISE) {
   if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
