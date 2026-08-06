@@ -154,15 +154,26 @@ try {
   Object.entries(bySlug).forEach(([slug, langs]) => {
     const langArr = [...langs];
     const alts = [];
-    if (langArr.includes('pt')) alts.push({ lang: 'pt-BR', url: `${SITE}/blog/${slug}` });
+    // 🔴 CONTRADICAO CORRIGIDA (06/08): este bloco dizia ao Google que a raiz
+    // /blog/<slug> era **pt-BR**, e o blog.html diz que a raiz e **INGLES**
+    // (hl-en aponta pra raiz, pt vai pra /blog/pt/). O Google confia no sitemap,
+    // que e servido pelo servidor, e nao no hreflang injetado por JavaScript ,
+    // por isso ele servia a versao EM PORTUGUES pra quem buscava em ingles.
+    // Sintoma medido: "apex trader funding vs bulenox" com 71 impressoes e ZERO
+    // clique, mostrando "Apex vs Bulenox: Qual Vale Mais em 2026?" no resultado.
+    // O site e EN-default: a RAIZ e o ingles, ponto.
+    if (langArr.includes('en')) {
+      alts.push({ lang: 'en', url: `${SITE}/blog/${slug}` });
+      alts.push({ lang: 'x-default', url: `${SITE}/blog/${slug}` });
+    }
     langArr.forEach(l => {
-      if (l === 'pt') return;
-      alts.push({ lang: l, url: `${SITE}/blog/${l}/${slug}` });
+      if (l === 'en') return;
+      alts.push({ lang: l === 'pt' ? 'pt-BR' : l, url: `${SITE}/blog/${l}/${slug}` });
     });
-    if (langArr.includes('pt')) alts.push({ lang: 'x-default', url: `${SITE}/blog/${slug}` });
-    // Emit one URL entry per language variant
+    // uma entrada por idioma. O ingles mora na RAIZ , /blog/en/<slug> nao entra no
+    // sitemap de proposito: serve o mesmo conteudo e seria duplicata da raiz.
     langArr.forEach(l => {
-      const loc = l === 'pt' ? `${SITE}/blog/${slug}` : `${SITE}/blog/${l}/${slug}`;
+      const loc = l === 'en' ? `${SITE}/blog/${slug}` : `${SITE}/blog/${l}/${slug}`;
       entries.push(urlEntry({ loc, changefreq: 'monthly', priority: '0.7', alternates: alts.length > 1 ? alts : null }));
     });
   });
