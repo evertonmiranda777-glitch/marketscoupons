@@ -1542,13 +1542,13 @@
       </sc-if>
     </div>
 
-    <sc-if value="{{ analysisUnlocked }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ analysisSempre }}" hint-placeholder-val="{{ true }}">
       <div style="margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
         <sc-for list="{{ analysisNotes }}" as="n" hint-placeholder-count="2">
           <div style="padding: 20px 22px; border-radius: 16px; background: linear-gradient(180deg, #121826, #0d1119); border: 1px solid rgba(255,255,255,0.07);">
-            <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #fbbf24; text-transform: uppercase; margin-bottom: 10px;">Attention Zone</div>
+            <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #fbbf24; text-transform: uppercase; margin-bottom: 10px;">{{ n.t1 }}</div>
             <p style="font-size: 13.5px; line-height: 1.6; color: #e0c98a; margin: 0 0 18px;">{{ n.zone }}</p>
-            <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #60a5fa; text-transform: uppercase; margin-bottom: 8px;">News Impact</div>
+            <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #60a5fa; text-transform: uppercase; margin-bottom: 8px;">{{ n.t2 }}</div>
             <p style="font-size: 13px; line-height: 1.6; color: #b8c0c8; margin: 0;">{{ n.news }}</p>
           </div>
         </sc-for>
@@ -3500,12 +3500,24 @@ class Component extends DCLogic {
           if (typeof v === 'object') return v.en || v.pt || '';
           return String(v);
         };
+        // O OFICIAL mostra, por ativo: zona de atencao, contexto, volume, cenario
+        // favoravel, cenario alternativo e impacto de noticias. O novo mostrava so os
+        // dois primeiros. Como o molde do cartao tem 2 campos, eu gero 3 cartoes por
+        // ativo e os ROTULOS viraram binding (t1/t2) , sem inventar marcacao nova.
         var notas = [];
         var vistos2 = {};
         linhas.forEach(function (a) {
-          if (vistos2[a.asset] || notas.length >= 4) return;
+          if (vistos2[a.asset]) return;
           vistos2[a.asset] = 1;
-          notas.push({ zone: txt(a.attention_zone), news: txt(a.news_impact) });
+          if (notas.length >= 12) return;
+          var sym = a.asset;
+          var zona = txt(a.attention_zone), news = txt(a.news_impact);
+          var bull = txt(a.scenario_bull), bear = txt(a.scenario_bear);
+          var vol = txt(a.volume_analysis), vix = txt(a.vix_context);
+          var ctx = txt(a.context);
+          if (zona || news) notas.push({ t1: sym + ' · Attention Zone', zone: zona, t2: sym + ' · News Impact', news: news });
+          if (bull || bear) notas.push({ t1: sym + ' · Favorable Scenario', zone: bull, t2: sym + ' · Alternative Scenario', news: bear });
+          if (vol || vix || ctx) notas.push({ t1: sym + ' · Volume', zone: vol, t2: sym + (vix ? ' · VIX Context' : ' · Market Context'), news: vix || ctx });
         });
         if (notas.length) self._mcAnaNotas = notas;
       }
@@ -3842,7 +3854,8 @@ class Component extends DCLogic {
       })(),
       isCompare: s.route === 'compare',
       isAnalysis: s.route === 'analysis',
-      analysisLocked: !s.authed,
+      analysisSempre: true,
+      analysisLocked: false,
       isGex: s.route === 'gex',
       isGuides: s.route === 'guides',      isBlog: s.route === 'blog',
       isPosition: s.route === 'position',
@@ -4088,8 +4101,8 @@ class Component extends DCLogic {
         { t:'How to use in trading?', d:'Use Zero Gamma as the key level of the day. Above it, trade mean reversions; below it, trade breakouts and trends. The Put Wall is reliable support and the Call Wall resistance. Combine with your technical analysis to increase accuracy.' },
       ],
       analysisUnlocked: s.authed,
-      analysisBlur: s.authed ? 'none' : 'blur(7px)',
-      analysisPE: s.authed ? 'auto' : 'none',
+      analysisBlur: 'none',
+      analysisPE: 'auto',
       unlockAnalysis: () => this.setState({ authed: true, toast: 'Welcome! Full access unlocked' }),
       analysisCards: this._mcAnaCards || [
         { sym:'CL', desc:'WTI Crude Oil', price:'79.07', chg:'-1.71%', chgColor:'#f87171', bias:'BEARISH', biasStyle:'display:inline-block;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:0.06em;background:rgba(239,68,68,0.14);color:#f87171;', s1:'79.00', r1:'81.33' },

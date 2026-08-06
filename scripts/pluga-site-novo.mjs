@@ -1363,12 +1363,24 @@ remendo('analise da pagina', '_mcLigarAnalisePagina',
           if (typeof v === 'object') return v.en || v.pt || '';
           return String(v);
         };
+        // O OFICIAL mostra, por ativo: zona de atencao, contexto, volume, cenario
+        // favoravel, cenario alternativo e impacto de noticias. O novo mostrava so os
+        // dois primeiros. Como o molde do cartao tem 2 campos, eu gero 3 cartoes por
+        // ativo e os ROTULOS viraram binding (t1/t2) , sem inventar marcacao nova.
         var notas = [];
         var vistos2 = {};
         linhas.forEach(function (a) {
-          if (vistos2[a.asset] || notas.length >= 4) return;
+          if (vistos2[a.asset]) return;
           vistos2[a.asset] = 1;
-          notas.push({ zone: txt(a.attention_zone), news: txt(a.news_impact) });
+          if (notas.length >= 12) return;
+          var sym = a.asset;
+          var zona = txt(a.attention_zone), news = txt(a.news_impact);
+          var bull = txt(a.scenario_bull), bear = txt(a.scenario_bear);
+          var vol = txt(a.volume_analysis), vix = txt(a.vix_context);
+          var ctx = txt(a.context);
+          if (zona || news) notas.push({ t1: sym + ' · Attention Zone', zone: zona, t2: sym + ' · News Impact', news: news });
+          if (bull || bear) notas.push({ t1: sym + ' · Favorable Scenario', zone: bull, t2: sym + ' · Alternative Scenario', news: bear });
+          if (vol || vix || ctx) notas.push({ t1: sym + ' · Volume', zone: vol, t2: sym + (vix ? ' · VIX Context' : ' · Market Context'), news: vix || ctx });
         });
         if (notas.length) self._mcAnaNotas = notas;
       }
@@ -1407,6 +1419,32 @@ for (const r of COMPL) {
   const n = d.split(r.de).length - 1;
   if (n !== 1) { console.error(`
 ✗ ANCORA de compliance ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}: ${r.nome}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
+// ⚠️ SAO DOIS PORTOES: o sc-if das notas (analysisUnlocked) e o BORRAO dos cards
+// (analysisLocked/analysisBlur). Abri o primeiro e o "Unlock full access" continuou na
+// tela , conferir a tela depois de cada um, nao supor que era o mesmo.
+remendo('analise sem borrao', 'analysisLocked: false',
+  '      analysisLocked: !s.authed,',
+  '      analysisLocked: false,');
+remendo('analise sem blur', "analysisBlur: 'none',",
+  "      analysisBlur: s.authed ? 'none' : 'blur(7px)',",
+  "      analysisBlur: 'none',");
+remendo('analise clicavel', "analysisPE: 'auto',",
+  "      analysisPE: s.authed ? 'auto' : 'none',",
+  "      analysisPE: 'auto',");
+
+remendo('analise sempre visivel', 'analysisSempre:',
+  '      analysisLocked: false,',
+  '      analysisSempre: true,' + String.fromCharCode(10) + '      analysisLocked: false,');
+
+const NOTAS2 = JSON.parse(fs.readFileSync('scripts/remendos-notas2.json', 'utf8'));
+for (const r of NOTAS2) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`\n✗ ANCORA ${r.nome} ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
   d = trocar(d, r.de, r.para);
   feitos.push(r.nome);
 }

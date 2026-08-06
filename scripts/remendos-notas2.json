@@ -1,0 +1,20 @@
+[
+ {
+  "nome": "rotulo 1 da analise",
+  "marca": "{{ n.t1 }}</div>",
+  "de": "<div style=\"font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #fbbf24; text-transform: uppercase; margin-bottom: 10px;\">Attention Zone</div>",
+  "para": "<div style=\"font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #fbbf24; text-transform: uppercase; margin-bottom: 10px;\">{{ n.t1 }}</div>"
+ },
+ {
+  "nome": "rotulo 2 da analise",
+  "marca": "{{ n.t2 }}</div>",
+  "de": "<div style=\"font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #60a5fa; text-transform: uppercase; margin-bottom: 8px;\">News Impact</div>",
+  "para": "<div style=\"font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #60a5fa; text-transform: uppercase; margin-bottom: 8px;\">{{ n.t2 }}</div>"
+ },
+ {
+  "nome": "analise aberta como no oficial",
+  "marca": "<sc-if value=\"{{ analysisSempre }}\"",
+  "de": "<sc-if value=\"{{ analysisUnlocked }}\" hint-placeholder-val=\"{{ false }}\">",
+  "para": "<sc-if value=\"{{ analysisSempre }}\" hint-placeholder-val=\"{{ true }}\">"
+ }
+]
