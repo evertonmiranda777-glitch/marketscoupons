@@ -10,5 +10,17 @@
   "marca": "self._mcRodapeFirmas = self.firms",
   "de": "try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}",
   "para": "try { window.__mcBanco.ok = true; window.__mcBanco.qtd = self.firms.length; } catch (e) {}\n      // RODAPE , a coluna \"Trading Firms\" era escrita a mao e trazia a GOAT FUNDED FUTURES,\n      // tirada do ar em 28/jul (296 URLs viraram 301): mandava o visitante pra uma firma que\n      // nao existe mais. E faltava a Funded Futures Family, que esta ativa.\n      // ⚠️ ESTE REMENDO E SEPARADO DE PROPOSITO: o bloco acima ja estava aplicado, entao\n      // editar o texto dele no pluga NAO reentra no HTML (a marca de \"ja aplicado\" pula).\n      self._mcRodapeFirmas = self.firms.map(function (f) { return f.name; });"
+ },
+ {
+  "nome": "tipo de firma palavra a palavra",
+  "marca": "'futuros': 'Futures'",
+  "de": "var m = { 'Futuros': 'Futures', 'Forex/Futuros': 'Forex/Futures',\n                      'Forex': 'Forex', 'Cripto': 'Crypto', 'Acoes': 'Stocks', 'Ações': 'Stocks' };\n            return m[v] || v || velha.type || 'Futures';",
+  "para": "// ⚠️ PALAVRA A PALAVRA, nao string inteira. O mapa exato deixava passar\n            // qualquer combinacao nova: \"Futuros & Forex\" (blueguardian) chegava CRU na\n            // tela inglesa, e ainda fazia o quiz nao reconhecer a firma como de futuros.\n            var m = { 'futuros': 'Futures', 'forex': 'Forex', 'cripto': 'Crypto',\n                      'acoes': 'Stocks', 'ações': 'Stocks', 'indices': 'Indices',\n                      'índices': 'Indices', 'acoes/etf': 'Stocks/ETF' };\n            var t = String(v || velha.type || 'Futures');\n            return t.replace(/[A-Za-zÀ-ÿ]+/g, function (w) { return m[w.toLowerCase()] || w; });"
+ },
+ {
+  "nome": "peso da prioridade no quiz",
+  "marca": "(f.discNum || 0) / 10, 10",
+  "de": "if (a[4] === 0) sc += Math.min((f.discNum || 0) / 20, 5);\n          else if (a[4] === 1) { if (sp >= 100) sc += 3; else if (sp >= 95) sc += 2; else if (sp >= 90) sc += 1; }\n          else if (a[4] === 2) { if (f.newsTrading) sc += 1; if (semConsist) sc += 1; if (semMin) sc += 1; }\n          else if (a[4] === 3) { if (f.day1Payout) sc += 2; if (semMin) sc += 2; if (String(f.payoutSpeed) === 'fast') sc += 1; }",
+  "para": "// A 5a pergunta e \"What matters most to you?\" , a prioridade que o PROPRIO visitante\n          // declarou. Ela pesava MENOS que os criterios secundarios: quem respondeu DESCONTO\n          // MAXIMO recebia Top One (55%) em vez de Apex (90%), por 10.75 x 10.5. A conta era\n          // /20 com teto 5, que separa 90% de 55% por so 1.75 ponto, enquanto os bonus de\n          // \"iniciante\" + \"scalper\" somavam 3. Agora a prioridade declarada domina.\n          if (a[4] === 0) sc += Math.min((f.discNum || 0) / 10, 10);\n          else if (a[4] === 1) { if (sp >= 100) sc += 8; else if (sp >= 95) sc += 6; else if (sp >= 90) sc += 4; }\n          else if (a[4] === 2) { if (f.newsTrading) sc += 2; if (semConsist) sc += 3; if (semMin) sc += 3; }\n          else if (a[4] === 3) { if (f.day1Payout) sc += 4; if (semMin) sc += 3; if (String(f.payoutSpeed) === 'fast') sc += 3; }"
  }
 ]

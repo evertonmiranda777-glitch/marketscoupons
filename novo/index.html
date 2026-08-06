@@ -3298,9 +3298,14 @@ class Component extends DCLogic {
           // ⚠️ cms_firms.type está em PORTUGUÊS (o admin é PT). O site é EN-default: sem isto
           // o card inglês exibe "Futuros" pro visitante da Índia, que é 75% do tráfego.
           type: (function (v) {
-            var m = { 'Futuros': 'Futures', 'Forex/Futuros': 'Forex/Futures',
-                      'Forex': 'Forex', 'Cripto': 'Crypto', 'Acoes': 'Stocks', 'Ações': 'Stocks' };
-            return m[v] || v || velha.type || 'Futures';
+            // ⚠️ PALAVRA A PALAVRA, nao string inteira. O mapa exato deixava passar
+            // qualquer combinacao nova: "Futuros & Forex" (blueguardian) chegava CRU na
+            // tela inglesa, e ainda fazia o quiz nao reconhecer a firma como de futuros.
+            var m = { 'futuros': 'Futures', 'forex': 'Forex', 'cripto': 'Crypto',
+                      'acoes': 'Stocks', 'ações': 'Stocks', 'indices': 'Indices',
+                      'índices': 'Indices', 'acoes/etf': 'Stocks/ETF' };
+            var t = String(v || velha.type || 'Futures');
+            return t.replace(/[A-Za-zÀ-ÿ]+/g, function (w) { return m[w.toLowerCase()] || w; });
           })(f.type),
           initials: velha.initials || String(f.name || f.id).slice(0, 2).toUpperCase(),
           logo: velha.logo || (f.id + '.webp'),
@@ -3974,10 +3979,15 @@ class Component extends DCLogic {
           if (a[3] === 0 || a[3] === 1) { if (f.newsTrading) sc += 1; if (semMin) sc += 1; }
           else if (a[3] === 2) { if (/EOD|end.of.day/i.test(f.dd || '')) sc += 2; }
           else if (a[3] === 3) { if (semConsist) sc += 1; }
-          if (a[4] === 0) sc += Math.min((f.discNum || 0) / 20, 5);
-          else if (a[4] === 1) { if (sp >= 100) sc += 3; else if (sp >= 95) sc += 2; else if (sp >= 90) sc += 1; }
-          else if (a[4] === 2) { if (f.newsTrading) sc += 1; if (semConsist) sc += 1; if (semMin) sc += 1; }
-          else if (a[4] === 3) { if (f.day1Payout) sc += 2; if (semMin) sc += 2; if (String(f.payoutSpeed) === 'fast') sc += 1; }
+          // A 5a pergunta e "What matters most to you?" , a prioridade que o PROPRIO visitante
+          // declarou. Ela pesava MENOS que os criterios secundarios: quem respondeu DESCONTO
+          // MAXIMO recebia Top One (55%) em vez de Apex (90%), por 10.75 x 10.5. A conta era
+          // /20 com teto 5, que separa 90% de 55% por so 1.75 ponto, enquanto os bonus de
+          // "iniciante" + "scalper" somavam 3. Agora a prioridade declarada domina.
+          if (a[4] === 0) sc += Math.min((f.discNum || 0) / 10, 10);
+          else if (a[4] === 1) { if (sp >= 100) sc += 8; else if (sp >= 95) sc += 6; else if (sp >= 90) sc += 4; }
+          else if (a[4] === 2) { if (f.newsTrading) sc += 2; if (semConsist) sc += 3; if (semMin) sc += 3; }
+          else if (a[4] === 3) { if (f.day1Payout) sc += 4; if (semMin) sc += 3; if (String(f.payoutSpeed) === 'fast') sc += 3; }
           if (sc > bestS) { bestS = sc; best = f; }
         });
         return best;

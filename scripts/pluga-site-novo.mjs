@@ -48,9 +48,14 @@ function remendo(nome, marca, de, para) {
 const TRAD_TIPO = `          // ⚠️ cms_firms.type está em PORTUGUÊS (o admin é PT). O site é EN-default: sem isto
           // o card inglês exibe "Futuros" pro visitante da Índia, que é 75% do tráfego.
           type: (function (v) {
-            var m = { 'Futuros': 'Futures', 'Forex/Futuros': 'Forex/Futures',
-                      'Forex': 'Forex', 'Cripto': 'Crypto', 'Acoes': 'Stocks', 'Ações': 'Stocks' };
-            return m[v] || v || velha.type || 'Futures';
+            // ⚠️ PALAVRA A PALAVRA, nao string inteira. O mapa exato deixava passar
+            // qualquer combinacao nova: "Futuros & Forex" (blueguardian) chegava CRU na
+            // tela inglesa, e ainda fazia o quiz nao reconhecer a firma como de futuros.
+            var m = { 'futuros': 'Futures', 'forex': 'Forex', 'cripto': 'Crypto',
+                      'acoes': 'Stocks', 'ações': 'Stocks', 'indices': 'Indices',
+                      'índices': 'Indices', 'acoes/etf': 'Stocks/ETF' };
+            var t = String(v || velha.type || 'Futures');
+            return t.replace(/[A-Za-zÀ-ÿ]+/g, function (w) { return m[w.toLowerCase()] || w; });
           })(f.type),`;
 
 // ─────────────────────────────────────────────── 2. firmas + calendário
