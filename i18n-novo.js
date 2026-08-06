@@ -133,8 +133,8 @@ window.MC_I18N_NOVO = {
      resto da frase, e o numero nao se traduz. Mesma promessa da LP /coupons, o
      que mantem as duas superficies coerentes pra quem vem do anuncio.
      ⚠️ "prop firm" NAO se traduz em nenhum idioma (lei do projeto). */
-  'Save up to': { pt:'Economize até', es:'Ahorra hasta', it:'Risparmia fino al', fr:'Économisez jusqu’à', de:'Spare bis zu', ar:'وفّر حتى', id:'Hemat hingga' },
-  'on your prop firm account': { pt:'na sua conta de prop firm', es:'en tu cuenta de prop firm', it:'sul tuo account prop firm', fr:'sur votre compte prop firm', de:'auf dein Prop-Firm-Konto', ar:'على حساب Prop Firm', id:'untuk akun prop firm Anda' },
+  'Compare': { pt:'Compare', es:'Compara', it:'Confronta', fr:'Comparez', de:'Vergleiche', ar:'قارن بين', id:'Bandingkan' },
+  'before you pay': { pt:'antes de pagar', es:'antes de pagar', it:'prima di pagare', fr:'avant de payer', de:'bevor du zahlst', ar:'قبل أن تدفع', id:'sebelum membayar' },
   'Browse coupons': { pt:'Ver cupons', es:'Ver cupones', it:'Vedi coupon', fr:'Voir les coupons', de:'Coupons ansehen', ar:'تصفح الكوبونات', id:'Lihat Kupon' },
   'Compare firms':  { pt:'Comparar firmas', es:'Comparar firmas', it:'Confronta società', fr:'Comparer les sociétés', de:'Firmen vergleichen', ar:'قارن الشركات', id:'Bandingkan Perusahaan' },
   'Trading firms':  { pt:'Firmas de trading', es:'Firmas de trading', it:'Società di trading', fr:'Sociétés de trading', de:'Trading-Firmen', ar:'شركات التداول', id:'Perusahaan trading' },

@@ -85,8 +85,14 @@
  },
  {
   "nome": "H1 da home",
-  "marca": "on your prop firm account",
-  "de": "Hunt the <span style=\"color: #bfff00;\">biggest</span> trading deals",
-  "para": "Save up to <span style=\"color: #bfff00;\">90%</span> on your prop firm account"
+  "marca": "data-mc-nfirmas",
+  "de": "Save up to <span style=\"color: #bfff00;\">90%</span> on your prop firm account",
+  "para": "Compare <span style=\"color: #bfff00;\" data-mc-nfirmas=\"1\">18 prop firms</span> before you pay"
+ },
+ {
+  "nome": "numero de firmas no H1",
+  "marca": "data-mc-nfirmas]",
+  "de": "        if (_mm !== null) {\n          var _el = document.querySelector('[data-mc-min100k]');\n          if (_el) _el.textContent = '$' + (_mm % 1 ? _mm.toFixed(2) : _mm);\n        }",
+  "para": "        if (_mm !== null) {\n          var _el = document.querySelector('[data-mc-min100k]');\n          if (_el) _el.textContent = '$' + (_mm % 1 ? _mm.toFixed(2) : _mm);\n        }\n        // o H1 diz \"Compare 18 prop firms\" , o 18 vem das firmas ATIVAS, nunca\n        // escrito a mao. Firma nova entra e o titulo se corrige sozinho.\n        // \"prop firms\" nao se traduz (lei do projeto), por isso o numero e o termo\n        // vivem no MESMO no de texto e ficam fora do dicionario.\n        var _nf = document.querySelector('[data-mc-nfirmas]');\n        if (_nf && self.firms.length) _nf.textContent = self.firms.length + ' prop firms';"
  }
 ]

@@ -872,7 +872,7 @@
         <div data-herobadge="1" style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px; border-radius: 999px; background: rgba(191,255,0,0.1); border: 1px solid rgba(191,255,0,0.28); font-size: 12.5px; font-weight: 700; letter-spacing: 0.08em; color: #bfff00; margin-bottom: 26px;">
           <span style="width: 7px; height: 7px; border-radius: 999px; background: #bfff00; box-shadow: 0 0 8px #bfff00; animation: mc-pulse 1.8s infinite;"></span>VERIFIED · UPDATED DAILY
         </div>
-        <h1 style="font-weight: 900; font-size: 78px; line-height: 0.92; letter-spacing: -0.045em; margin: 0 0 22px; color: #F4F8F9; text-wrap: balance;">Save up to <span style="color: #bfff00;">90%</span> on your prop firm account</h1>
+        <h1 style="font-weight: 900; font-size: 78px; line-height: 0.92; letter-spacing: -0.045em; margin: 0 0 22px; color: #F4F8F9; text-wrap: balance;">Compare <span style="color: #bfff00;" data-mc-nfirmas="1">18 prop firms</span> before you pay</h1>
         <p style="font-size: 18px; line-height: 1.55; color: #b8c0c8; margin: 0 0 34px; max-width: 480px; text-wrap: pretty;">Exclusive codes for Apex, Bulenox, FTMO, FundedNext and more. A 100K account from <span style="color: #F4F8F9; font-weight: 700;" data-mc-min100k="1">$23.65</span>.</p>
         <div data-herocta="1" style="display: flex; gap: 14px; flex-wrap: wrap;">
           <button sc-camel-on-click="{{ goFirms }}" style="font-family: inherit; font-weight: 800; font-size: 16px; color: #0a0d07; background: linear-gradient(180deg, #d4ff4d, #bfff00); border: none; padding: 16px 32px; border-radius: 999px; cursor: pointer; box-shadow: 0 10px 34px rgba(191,255,0,0.28);" style-hover="filter: brightness(1.05); transform: translateY(-1px);">Browse coupons</button>
@@ -3349,6 +3349,12 @@ class Component extends DCLogic {
           var _el = document.querySelector('[data-mc-min100k]');
           if (_el) _el.textContent = '$' + (_mm % 1 ? _mm.toFixed(2) : _mm);
         }
+        // o H1 diz "Compare 18 prop firms" , o 18 vem das firmas ATIVAS, nunca
+        // escrito a mao. Firma nova entra e o titulo se corrige sozinho.
+        // "prop firms" nao se traduz (lei do projeto), por isso o numero e o termo
+        // vivem no MESMO no de texto e ficam fora do dicionario.
+        var _nf = document.querySelector('[data-mc-nfirmas]');
+        if (_nf && self.firms.length) _nf.textContent = self.firms.length + ' prop firms';
       } catch (_) {}
       self._homeStatic = null; self.setState({ _mcBanco: 1 });
     }).catch(function (e) { try { window.__mcBanco.erro = String(e).slice(0, 120); } catch (_) {} });

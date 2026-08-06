@@ -1490,8 +1490,18 @@ for (const r of NOTAS) {
 // sacar; as 296 URLs viraram 301). Levava o visitante pra uma firma que nao existe mais
 // no site. Faltava a Funded Futures Family, que esta ativa. Agora vem do banco.
 const RODAPE = JSON.parse(fs.readFileSync('scripts/remendos-rodape.json', 'utf8'));
+// ⚠️ QUEBRA DE LINHA DO WINDOWS: o arquivo do Design vem com CRLF e o git converte
+// de volta a cada checkout. O Python monta a tabela lendo em modo texto (converte e
+// casa), o Node le CRU e NAO casa , a ancora "some" mesmo estando la, e o remendo
+// falha em cima de um arquivo intacto. Ja esta no CLAUDE.md e me pegou de novo.
+const LF = String.fromCharCode(10);
+const CRLF = String.fromCharCode(13, 10);
 for (const r of RODAPE) {
   if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  if (!d.includes(r.de) && d.includes(r.de.split(LF).join(CRLF))) {
+    r.de = r.de.split(LF).join(CRLF);
+    r.para = r.para.split(LF).join(CRLF);
+  }
   const n = d.split(r.de).length - 1;
   if (n !== 1) { console.error(`
 ✗ ANCORA ${r.nome} ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
