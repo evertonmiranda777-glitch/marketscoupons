@@ -742,6 +742,183 @@ if (!d.includes('mc-navwrap > *')) {
       f.parentNode.replaceChild(novo, f);
     }
 
+    // ══ AUTENTICACAO DE VERDADE ═══════════════════════════════════════════════
+    // A casca fingia: doAuth vira setState({ authed: true, toast: Logged in as
+    // Everton }). Virava um booleano com o nome do Everton chumbado , qualquer
+    // visitante virava "Everton" na tela, nenhuma conta era criada e nenhum lead
+    // salvo. Testado: ZERO chamada de rede ao clicar em Create account.
+    //
+    // Falo direto com a API de auth do Supabase (sem SDK, sem dependencia nova).
+    // O token fica no localStorage com a MESMA chave do site atual (mc-user-auth),
+    // entao quem loga aqui continua logado la e vice-versa.
+    var SBURL = 'https://qfwhduvutfumsaxnuofa.supabase.co';
+    var SBKEY = '${ANON}';
+    var CHAVE = 'mc-novo-auth';
+
+    function authSalvar(sessao) {
+      try { localStorage.setItem(CHAVE, JSON.stringify(sessao)); } catch (e) {}
+    }
+    function authLer() {
+      try { return JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch (e) { return null; }
+    }
+    function authLimpar() { try { localStorage.removeItem(CHAVE); } catch (e) {} }
+
+    function authPost(caminho, corpo) {
+      return fetch(SBURL + '/auth/v1/' + caminho, {
+        method: 'POST',
+        headers: { apikey: SBKEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify(corpo)
+      }).then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, dados: j }; });
+      });
+    }
+
+    function nomeDoUsuario() {
+      var s = authLer();
+      if (!s || !s.user) return null;
+      var m = s.user.user_metadata || {};
+      return m.full_name || m.name || (s.user.email || '').split('@')[0] || null;
+    }
+
+    // troca o "Everton" chumbado pelo nome de quem esta logado de verdade
+    function ajustaNome() {
+      var nome = nomeDoUsuario();
+      if (!nome) return;
+      var it = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      var n;
+      while ((n = it.nextNode())) {
+        var t = (n.nodeValue || '').trim();
+        if (t === 'Everton' && nome !== 'Everton') n.nodeValue = n.nodeValue.replace('Everton', nome);
+      }
+    }
+
+    function avisa(msg) {
+      var el = document.getElementById('mc-auth-aviso');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'mc-auth-aviso';
+        el.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);bottom:28px;z-index:99999;' +
+          'padding:12px 18px;border-radius:12px;font:600 13.5px Inter,system-ui,sans-serif;' +
+          'background:#0f1409;border:1px solid rgba(191,255,0,0.35);color:#E7ECEF;box-shadow:0 10px 30px rgba(0,0,0,.5);';
+        document.body.appendChild(el);
+      }
+      el.textContent = msg;
+      el.style.display = 'block';
+      clearTimeout(el.__t);
+      el.__t = setTimeout(function () { el.style.display = 'none'; }, 4200);
+    }
+
+    function campos(botao) {
+      // ⚠️ EXISTEM DOIS PAINEIS de cadastro no DOM ao mesmo tempo (o de 340px e o de
+      // 620px), cada um com o seu "Create account", e ainda ha o campo de busca e o de
+      // newsletter na pagina. Subir procurando "2 inputs" pegava um container que
+      // englobava tudo e o e-mail vazio ganhava , dava "Enter a valid email" com o campo
+      // preenchido na tela. Agora subo UM NIVEL POR VEZ e paro no PRIMEIRO container que
+      // tem campo de senha: esse e o formulario do botao que foi clicado, sem ambiguidade.
+      var raiz = null, e = botao;
+      for (var k = 0; k < 10 && e; k++) {
+        if (e.querySelector && e.querySelector('input[type=password]')) { raiz = e; break; }
+        e = e.parentElement;
+      }
+      if (!raiz) return { nome: null, email: null, senha: null };
+      var vis = [].slice.call(raiz.querySelectorAll('input'));
+      var nome = null, email = null, senha = null;
+      vis.forEach(function (i) {
+        var ph = (i.placeholder || '').toLowerCase();
+        if (i.type === 'password') { if (!senha) senha = i; return; }
+        if (ph === 'you@email.com') return;                 // esse e da newsletter
+        if (ph.indexOf('search') >= 0) return;              // esse e a busca
+        if (!email && ph.indexOf('@') >= 0) { email = i; return; }
+        if (!nome && (ph.indexOf('smith') >= 0 || ph.indexOf('name') >= 0)) { nome = i; return; }
+      });
+      return { nome: nome, email: email, senha: senha };
+    }
+
+    function ligaAuth() {
+      var bs = document.querySelectorAll('button');
+      for (var i = 0; i < bs.length; i++) {
+        var b = bs[i];
+        if (b.__mcAuthLig) continue;
+        var t = (b.innerText || '').trim();
+        var ehCriar = /^Create account$/i.test(t);
+        var ehEntrar = /^(Sign In|Log in)$/i.test(t) && b.closest('div') &&
+                       /password|senha/i.test((b.closest('div').textContent || ''));
+        var ehSair = /^(Log out|Sair)$/i.test(t);
+        if (!ehCriar && !ehEntrar && !ehSair) continue;
+        b.__mcAuthLig = 1;
+        b.__mcModo = ehCriar ? 'criar' : (ehEntrar ? 'entrar' : 'sair');
+        b.addEventListener('click', function (ev) {
+          var self = this;
+          if (self.__mcPassar) { self.__mcPassar = false; return; }   // 2a passada: deixa a casca agir
+          ev.preventDefault();
+          ev.stopImmediatePropagation();
+
+          if (self.__mcModo === 'sair') {
+            authLimpar();
+            self.__mcPassar = true; self.click();
+            return;
+          }
+
+          var c = campos(self);
+          var email = c.email ? c.email.value.trim() : '';
+          var senha = c.senha ? c.senha.value : '';
+          var nome = c.nome ? c.nome.value.trim() : '';
+          // ⚠️ SEM REGEX. A versao com \s escapado PERDEU a barra na escrita e virou
+          // [^@s], que rejeita qualquer e-mail com a letra S , 6a vez que caio nisso hoje.
+          var arroba = email.indexOf('@');
+          var ponto = email.lastIndexOf('.');
+          if (arroba < 1 || ponto < arroba + 2 || ponto >= email.length - 1 || email.indexOf(' ') >= 0) {
+            avisa('Enter a valid email'); return;
+          }
+          if ((senha || '').length < 6) { avisa('Password needs at least 6 characters'); return; }
+
+          avisa(self.__mcModo === 'criar' ? 'Creating your account...' : 'Signing in...');
+
+          var chamada = self.__mcModo === 'criar'
+            ? authPost('signup', { email: email, password: senha, data: { full_name: nome } })
+            : authPost('token?grant_type=password', { email: email, password: senha });
+
+          chamada.then(function (r) {
+            if (!r.ok) {
+              var msg = (r.dados && (r.dados.msg || r.dados.error_description || r.dados.message)) || 'Could not complete';
+              avisa(msg);
+              return;
+            }
+            var s = r.dados;
+            if (s.access_token) {
+              authSalvar({ access_token: s.access_token, refresh_token: s.refresh_token, user: s.user });
+              self.__mcPassar = true; self.click();
+              setTimeout(ajustaNome, 300);
+              avisa(self.__mcModo === 'criar' ? 'Account created' : 'Signed in');
+            } else {
+              // signup com confirmacao de e-mail ligada: conta criada, sessao vem depois
+              avisa('Account created. Check your email to confirm.');
+            }
+          }).catch(function () { avisa('Network error, try again'); });
+        }, true);
+      }
+    }
+
+    // ja logado? destrava sozinho ao abrir
+    function restaurarSessao() {
+      if (window.__mcSessaoOk) return;
+      var s = authLer();
+      if (!s || !s.access_token) return;
+      window.__mcSessaoOk = 1;
+      fetch(SBURL + '/auth/v1/user', {
+        headers: { apikey: SBKEY, Authorization: 'Bearer ' + s.access_token }
+      }).then(function (r) { return r.ok ? r.json() : null; }).then(function (u) {
+        if (!u || !u.id) { authLimpar(); return; }
+        s.user = u; authSalvar(s);
+        // aciona o botao de login da casca so pra virar o estado, sem rede
+        var b = [].slice.call(document.querySelectorAll('button')).find(function (x) {
+          return /^(Sign In|Log in)$/i.test((x.innerText || '').trim());
+        });
+        if (b) { b.__mcPassar = true; b.click(); }
+        setTimeout(ajustaNome, 400);
+      }).catch(function () {});
+    }
+
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -783,7 +960,7 @@ if (!d.includes('mc-navwrap > *')) {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ligaHeatmap(); ajustaPainelAuth(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ligaHeatmap(); ligaAuth(); ajustaNome(); ajustaPainelAuth(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </scr` + `ipt>`;
