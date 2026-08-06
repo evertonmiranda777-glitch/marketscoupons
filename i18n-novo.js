@@ -125,9 +125,16 @@ window.MC_I18N_NOVO = {
 
   /* hero */
   'VERIFIED · UPDATED DAILY': { pt:'VERIFICADO · ATUALIZADO TODO DIA', es:'VERIFICADO · ACTUALIZADO A DIARIO', it:'VERIFICATO · AGGIORNATO OGNI GIORNO', fr:'VÉRIFIÉ · MIS À JOUR CHAQUE JOUR', de:'GEPRÜFT · TÄGLICH AKTUALISIERT', ar:'مُتحقق · يُحدَّث يوميًا', id:'TERVERIFIKASI · DIPERBARUI HARIAN' },
-  'Hunt the':      { pt:'Cace as', es:'Caza las', it:'Caccia le', fr:'Chassez les', de:'Jage die', ar:'اصطد', id:'Buru' },
-  'biggest':       { pt:'maiores', es:'mayores', it:'migliori', fr:'meilleures', de:'größten', ar:'أكبر', id:'terbesar' },
-  'trading deals': { pt:'ofertas de trading', es:'ofertas de trading', it:'offerte di trading', fr:'offres de trading', de:'Trading-Angebote', ar:'عروض التداول', id:'penawaran trading' },
+  /* ── H1 DA HOME (06/08, escrito com a skill do Everton) ──────────────────
+     O anterior era "Hunt the [biggest] trading deals" e vinha CORTADO EM 3 NOS
+     de texto (o destaque limao fica num <span>), entao a traducao saia palavra
+     por palavra: em PT dava "Cace as maiores ofertas de trading". Frankenstein.
+     O corte novo foi escolhido pra sobreviver aos 8 idiomas: prefixo + numero +
+     resto da frase, e o numero nao se traduz. Mesma promessa da LP /coupons, o
+     que mantem as duas superficies coerentes pra quem vem do anuncio.
+     ⚠️ "prop firm" NAO se traduz em nenhum idioma (lei do projeto). */
+  'Save up to': { pt:'Economize até', es:'Ahorra hasta', it:'Risparmia fino al', fr:'Économisez jusqu’à', de:'Spare bis zu', ar:'وفّر حتى', id:'Hemat hingga' },
+  'on your prop firm account': { pt:'na sua conta de prop firm', es:'en tu cuenta de prop firm', it:'sul tuo account prop firm', fr:'sur votre compte prop firm', de:'auf dein Prop-Firm-Konto', ar:'على حساب Prop Firm', id:'untuk akun prop firm Anda' },
   'Browse coupons': { pt:'Ver cupons', es:'Ver cupones', it:'Vedi coupon', fr:'Voir les coupons', de:'Coupons ansehen', ar:'تصفح الكوبونات', id:'Lihat Kupon' },
   'Compare firms':  { pt:'Comparar firmas', es:'Comparar firmas', it:'Confronta società', fr:'Comparer les sociétés', de:'Firmen vergleichen', ar:'قارن الشركات', id:'Bandingkan Perusahaan' },
   'Trading firms':  { pt:'Firmas de trading', es:'Firmas de trading', it:'Società di trading', fr:'Sociétés de trading', de:'Trading-Firmen', ar:'شركات التداول', id:'Perusahaan trading' },

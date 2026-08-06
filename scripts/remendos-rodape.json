@@ -82,5 +82,11 @@
   "marca": "data-mc-min100k]",
   "de": "      self._mcRodapeFirmas = self.firms.map(function (f) { return f.name; });",
   "para": "      self._mcRodapeFirmas = self.firms.map(function (f) { return f.name; });\n      // O hero diz \"A 100K account from $23.65\" com o valor CHUMBADO (era o 100K da\n      // Bulenox). Se a Bulenox mudar de preco, a primeira frase do site mente. Agora\n      // e o MENOR 100K entre as firmas ativas , que e exatamente o que \"from\" promete.\n      try {\n        var _mm = null;\n        self.firms.forEach(function (f) {\n          var v = parseFloat(String(f.priceNow || '').replace(/[^0-9.]/g, ''));\n          if (isFinite(v) && v > 0 && (_mm === null || v < _mm)) _mm = v;\n        });\n        if (_mm !== null) {\n          var _el = document.querySelector('[data-mc-min100k]');\n          if (_el) _el.textContent = '$' + (_mm % 1 ? _mm.toFixed(2) : _mm);\n        }\n      } catch (_) {}"
+ },
+ {
+  "nome": "H1 da home",
+  "marca": "on your prop firm account",
+  "de": "Hunt the <span style=\"color: #bfff00;\">biggest</span> trading deals",
+  "para": "Save up to <span style=\"color: #bfff00;\">90%</span> on your prop firm account"
  }
 ]
