@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+// Data de geração, usada na meta descrição e no schema. Sinal de FRESCOR: consulta
+// de comparação é sazonal ("... 2026") e o Google privilegia o que foi atualizado.
+// Honesto: estas páginas são REGERADAS toda vez que o dado de firma muda.
+const _AGORA = new Date();
+const MES_ANO = _AGORA.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+const ISO_HOJE = _AGORA.toISOString().slice(0, 10);
 /**
  * build-compare-pages.mjs, Gera páginas /{firmA}-vs-{firmB} a partir de cms_firms.
  *
@@ -46,7 +52,7 @@ const STR = {
   pt: {
     navBack: '← Voltar pra home',
     title: (sA, sB) => `${sA} vs ${sB} 2026: Comparativo | Markets Coupons`,
-    desc: (a, b) => `Compare ${a.name} e ${b.name}: preços, drawdown, profit split, payout. Cupom exclusivo${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' e ' + b.coupon : ''}.`,
+    desc: (a, b) => `${a.name} ${a.discount}% OFF x ${b.name} ${b.discount}% OFF. Compare preço, drawdown, profit split, payout e regras lado a lado${a.coupon ? ', com o cupom ' + a.coupon : ''}. Atualizado ${MES_ANO}.`,
     heroEyebrow: 'Comparativo Prop Firms 2026',
     heroSubBase: 'Análise lado a lado das duas prop firms.',
     heroSubEntry: (v) => ` Conta de entrada a partir de $${v}.`,
@@ -85,7 +91,7 @@ const STR = {
   en: {
     navBack: '← Back to home',
     title: (sA, sB) => `${sA} vs ${sB} 2026: Comparison | Markets Coupons`,
-    desc: (a, b) => `Compare ${a.name} and ${b.name}: prices, drawdown, profit split, payout. Exclusive coupon${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' and ' + b.coupon : ''}.`,
+    desc: (a, b) => `${a.name} ${a.discount}% OFF vs ${b.name} ${b.discount}% OFF. Compare price, drawdown, profit split, payout and rules side by side${a.coupon ? ', with coupon ' + a.coupon : ''}. Updated ${MES_ANO}.`,
     heroEyebrow: 'Prop Firm Comparison 2026',
     heroSubBase: 'Side-by-side analysis of both prop firms.',
     heroSubEntry: (v) => ` Entry account starting from $${v}.`,
@@ -124,7 +130,7 @@ const STR = {
   es: {
     navBack: '← Volver a inicio',
     title: (sA, sB) => `${sA} vs ${sB} 2026: Comparativa | Markets Coupons`,
-    desc: (a, b) => `Compara ${a.name} y ${b.name}: precios, drawdown, profit split, payout. Cupón exclusivo${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' y ' + b.coupon : ''}.`,
+    desc: (a, b) => `${a.name} ${a.discount}% OFF vs ${b.name} ${b.discount}% OFF. Compara precio, drawdown, profit split, payout y reglas lado a lado${a.coupon ? ', con el cupón ' + a.coupon : ''}. Actualizado ${MES_ANO}.`,
     heroEyebrow: 'Comparativa Prop Firms 2026',
     heroSubBase: 'Análisis cara a cara de las dos prop firms.',
     heroSubEntry: (v) => ` Cuenta de entrada a partir de $${v}.`,
@@ -163,7 +169,7 @@ const STR = {
   fr: {
     navBack: '← Retour à l\'accueil',
     title: (sA, sB) => `${sA} vs ${sB} 2026: Comparatif | Markets Coupons`,
-    desc: (a, b) => `Comparez ${a.name} et ${b.name} : prix, drawdown, profit split, payout. Coupon exclusif${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' et ' + b.coupon : ''}.`,
+    desc: (a, b) => `${a.name} ${a.discount}% OFF vs ${b.name} ${b.discount}% OFF. Comparez prix, drawdown, profit split, payout et règles côte à côte${a.coupon ? ', avec le coupon ' + a.coupon : ''}. Mis à jour ${MES_ANO}.`,
     heroEyebrow: 'Comparatif Prop Firms 2026',
     heroSubBase: 'Analyse côte à côte des deux prop firms.',
     heroSubEntry: (v) => ` Compte d'entrée à partir de $${v}.`,
@@ -202,7 +208,7 @@ const STR = {
   de: {
     navBack: '← Zur Startseite',
     title: (sA, sB) => `${sA} vs ${sB} 2026: Vergleich | Markets Coupons`,
-    desc: (a, b) => `Vergleiche ${a.name} und ${b.name}: Preise, Drawdown, Profit Split, Payout. Exklusiver Gutschein${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' und ' + b.coupon : ''}.`,
+    desc: (a, b) => `${a.name} ${a.discount}% OFF vs ${b.name} ${b.discount}% OFF. Preis, Drawdown, Profit Split, Payout und Regeln direkt nebeneinander${a.coupon ? ', mit Gutschein ' + a.coupon : ''}. Aktualisiert ${MES_ANO}.`,
     heroEyebrow: 'Prop-Firm-Vergleich 2026',
     heroSubBase: 'Side-by-Side-Analyse der beiden Prop Firms.',
     heroSubEntry: (v) => ` Einstiegskonto ab $${v}.`,
@@ -241,7 +247,7 @@ const STR = {
   it: {
     navBack: '← Torna alla home',
     title: (sA, sB) => `${sA} vs ${sB} 2026: Confronto | Markets Coupons`,
-    desc: (a, b) => `Confronta ${a.name} e ${b.name}: prezzi, drawdown, profit split, payout. Coupon esclusivo${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' e ' + b.coupon : ''}.`,
+    desc: (a, b) => `${a.name} ${a.discount}% OFF vs ${b.name} ${b.discount}% OFF. Confronta prezzo, drawdown, profit split, payout e regole fianco a fianco${a.coupon ? ', con il coupon ' + a.coupon : ''}. Aggiornato ${MES_ANO}.`,
     heroEyebrow: 'Confronto Prop Firm 2026',
     heroSubBase: 'Analisi fianco a fianco delle due prop firms.',
     heroSubEntry: (v) => ` Conto di ingresso a partire da $${v}.`,
@@ -280,7 +286,7 @@ const STR = {
   ar: {
     navBack: '← العودة للرئيسية',
     title: (sA, sB) => `${sA} vs ${sB} 2026: مقارنة | Markets Coupons`,
-    desc: (a, b) => `قارن ${a.name} و${b.name}: الأسعار، Drawdown، Profit Split، Payout. كوبون حصري${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' و ' + b.coupon : ''}.`,
+    desc: (a, b) => `${a.name} ${a.discount}% OFF مقابل ${b.name} ${b.discount}% OFF. قارن السعر و Drawdown و Profit Split و Payout والقواعد جنبًا إلى جنب${a.coupon ? '، بكوبون ' + a.coupon : ''}. تم التحديث ${MES_ANO}.`,
     heroEyebrow: 'مقارنة شركات التمويل 2026',
     heroSubBase: 'تحليل مقارن بين الشركتين.',
     heroSubEntry: (v) => ` حساب البدء من $${v}.`,
@@ -319,7 +325,7 @@ const STR = {
   id: {
     navBack: '← Kembali ke beranda',
     title: (sA, sB) => `${sA} vs ${sB} 2026: Perbandingan | Markets Coupons`,
-    desc: (a, b) => `Bandingkan ${a.name} dan ${b.name}: harga, drawdown, profit split, payout. Kupon eksklusif${a.coupon ? ' ' + a.coupon : ''}${b.coupon ? ' dan ' + b.coupon : ''}.`,
+    desc: (a, b) => `${a.name} ${a.discount}% OFF vs ${b.name} ${b.discount}% OFF. Bandingkan harga, drawdown, profit split, payout dan aturan berdampingan${a.coupon ? ', dengan kupon ' + a.coupon : ''}. Diperbarui ${MES_ANO}.`,
     heroEyebrow: 'Perbandingan Prop Firm 2026',
     heroSubBase: 'Analisis berdampingan dari kedua prop firm.',
     heroSubEntry: (v) => ` Akun awal mulai dari $${v}.`,
@@ -480,15 +486,47 @@ function genPage(a, b, allFirms) {
       { '@type': 'ListItem', position: 3, name: `${shortA} vs ${shortB}`, item: `https://www.marketscoupons.com${PFX}/${slugPair}` }
     ]
   };
+  // ⚠️ FALTAVA SINAL DE FRESCOR. A pagina nao declarava NENHUMA data , nem no schema
+  // nem na tela. Consulta de comparacao e sazonal ("apex vs bulenox 2026") e o Google
+  // privilegia o que foi atualizado; sem data, ele nao tem como saber que estas
+  // paginas sao regeradas toda vez que preco ou cupom muda.
+  // dateModified e HONESTO: e a data em que o build rodou, e o build roda quando o
+  // dado de firma muda (regen-static.mjs compara hash antes de regerar).
+  const artigoSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${shortA} vs ${shortB}`,
+    inLanguage: LANG,
+    dateModified: ISO_HOJE,
+    datePublished: ISO_HOJE,
+    author: { '@type': 'Organization', name: 'Markets Coupons', url: 'https://www.marketscoupons.com/' },
+    publisher: { '@type': 'Organization', name: 'Markets Coupons', url: 'https://www.marketscoupons.com/' },
+    mainEntityOfPage: `https://www.marketscoupons.com${PFX}/${slugPair}`,
+    about: [
+      { '@type': 'Organization', name: a.name },
+      { '@type': 'Organization', name: b.name }
+    ]
+  };
 
   // Internal links, outras combos com firma A e firma B
+  // Data de geração, usada na descrição e no schema. É sinal de FRESCOR , consulta
+  // de comparação é sazonal ("2026") e o Google privilegia o que foi atualizado.
+  // Honesto: estas páginas são REGERADAS toda vez que o dado de firma muda.
+  // ⚠️ Antes só ligava a firma A com as outras (8 links). A firma B ficava sem
+  // nenhuma ligação, e são 19 firmas = 153 pares , esse é o nosso maior ativo de
+  // SEO e metade dele não era aproveitada. Agora liga as DUAS.
   const otherCombos = allFirms
     .filter(f => f.id !== a.id && f.id !== b.id)
-    .slice(0, 8)
-    .map(f => {
-      const lhs = f.sort_order < a.sort_order ? f.id : a.id;
-      const rhs = f.sort_order < a.sort_order ? a.id : f.id;
-      return `<a class="cmp-link" href="${PFX}/${lhs}-vs-${rhs}">${esc(shortA)} <span style="opacity:.6">vs</span> ${esc(f.short_name || f.name.split(' ')[0])}</a>`;
+    .slice(0, 12)
+    .flatMap(f => {
+      const par = (x) => {
+        const lhs = f.sort_order < x.sort_order ? f.id : x.id;
+        const rhs = f.sort_order < x.sort_order ? x.id : f.id;
+        const nome = esc(x.short_name || x.name.split(' ')[0]);
+        const outra = esc(f.short_name || f.name.split(' ')[0]);
+        return `<a class="cmp-link" href="${PFX}/${lhs}-vs-${rhs}">${nome} <span style="opacity:.6">vs</span> ${outra}</a>`;
+      };
+      return [par(a), par(b)];
     }).join('');
 
   // Render category cards (mini-UIs com winner badge)
@@ -538,6 +576,7 @@ function genPage(a, b, allFirms) {
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
+<script type="application/ld+json">${JSON.stringify(artigoSchema)}</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
