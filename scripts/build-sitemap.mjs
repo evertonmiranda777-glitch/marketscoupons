@@ -112,32 +112,38 @@ compares.forEach(slug => {
 const guidesPt = lsHtml('pt/guides');
 const guidesEn = lsHtml('en/guides');
 
-// PT-only guides (reviews por firma)
-guidesPt.forEach(slug => {
-  entries.push(urlEntry({
-    loc: `${SITE}/pt/guides/${slug}`,
-    changefreq: 'monthly',
-    priority: '0.75',
-  }));
-});
-// EN guides + outros idiomas
-guidesEn.forEach(slug => {
+// 🔴 CORRIGIDO 06/08 , o sitemap listava 18 guias e existem 91 no disco.
+// A causa: ele enumerava a pasta `en/guides` (que tem so 6 arquivos, resto de uma
+// estrutura antiga) para montar as URLs da RAIZ, mas os guias em ingles moram em
+// `/guides` (17 arquivos). E es/fr/de/it/ar (17 cada) nao entravam de jeito nenhum.
+// Efeito medido: "fundednext review" nos EUA aparecia com a versao /pt/ na posicao
+// 51 competindo com a inglesa na 31 , duas paginas nossas disputando a mesma busca,
+// e as versoes europeias invisiveis.
+// A RAIZ e o INGLES (o site e EN-default), igual ao blog.
+const OUTRAS = ['pt', 'es', 'fr', 'de', 'it', 'ar', 'id'];
+const guidesRaiz = lsHtml('guides');
+guidesRaiz.forEach(slug => {
   const alts = [
     { lang: 'en', url: `${SITE}/guides/${slug}` },
-    { lang: 'pt-BR', url: `${SITE}/pt/guides/${slug}` },
+    { lang: 'x-default', url: `${SITE}/guides/${slug}` },
   ];
-  // Tenta alternates noutros idiomas
-  ['es', 'fr', 'de', 'it', 'ar', 'id'].forEach(l => {
+  OUTRAS.forEach(l => {
     if (fs.existsSync(path.join(ROOT, l, 'guides', `${slug}.html`))) {
-      alts.push({ lang: l, url: `${SITE}/${l}/guides/${slug}` });
+      alts.push({ lang: l === 'pt' ? 'pt-BR' : l, url: `${SITE}/${l}/guides/${slug}` });
     }
   });
-  entries.push(urlEntry({
-    loc: `${SITE}/guides/${slug}`,
-    changefreq: 'monthly',
-    priority: '0.75',
-    alternates: alts,
-  }));
+  // uma entrada por idioma que EXISTE no disco, todas apontando uma pra outra
+  entries.push(urlEntry({ loc: `${SITE}/guides/${slug}`, changefreq: 'monthly', priority: '0.75', alternates: alts }));
+  OUTRAS.forEach(l => {
+    if (fs.existsSync(path.join(ROOT, l, 'guides', `${slug}.html`))) {
+      entries.push(urlEntry({ loc: `${SITE}/${l}/guides/${slug}`, changefreq: 'monthly', priority: '0.7', alternates: alts }));
+    }
+  });
+});
+// guia que so existe em PT (review de firma sem versao inglesa ainda)
+guidesPt.forEach(slug => {
+  if (guidesRaiz.includes(slug)) return;
+  entries.push(urlEntry({ loc: `${SITE}/pt/guides/${slug}`, changefreq: 'monthly', priority: '0.7' }));
 });
 
 // ── Blog posts (fetch from Supabase blog_posts) ──
