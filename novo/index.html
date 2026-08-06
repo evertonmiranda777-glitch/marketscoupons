@@ -3633,7 +3633,12 @@ class Component extends DCLogic {
         // attention_zone e MULTILINGUE no banco (objeto {en,es,pt...}), nao string.
         // Sem tratar, a tela mostraria "[object Object]".
         var z = a.attention_zone;
-        var txt = (z && typeof z === 'object') ? (z.en || z.pt || '') : (z || '');
+        var _lgh = (function () { try { return (document.documentElement.lang || 'en').toLowerCase().slice(0, 2) || 'en'; } catch (e) { return 'en'; } })();
+        // ⚠️ A PREVIA DA HOME lia SEMPRE o ingles. Eu corrigi a PAGINA da analise e
+        // achei que estava resolvido , sao dois caminhos diferentes lendo o mesmo
+        // campo multilingue. O brasileiro via a pagina em portugues e o cartao da
+        // home, que e o primeiro contato, em ingles.
+        var txt = (z && typeof z === 'object') ? (z[_lgh] || z.en || z.pt || '') : (z || '');
         self._mcAna = {
           titulo: (a.asset || 'NQ') + ' · ' + (a.asset_name || 'Nasdaq 100'),
           preco: Number(a.last_price).toLocaleString('en-US', { maximumFractionDigits: 2 }),

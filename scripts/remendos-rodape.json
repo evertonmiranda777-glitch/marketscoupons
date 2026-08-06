@@ -106,5 +106,11 @@
   "marca": ">See the coupons<",
   "de": ">Browse coupons<",
   "para": ">See the coupons<"
+ },
+ {
+  "nome": "previa da analise no idioma",
+  "marca": "z[_lgh] ||",
+  "de": "var txt = (z && typeof z === 'object') ? (z.en || z.pt || '') : (z || '');",
+  "para": "var _lgh = (function () { try { return (document.documentElement.lang || 'en').toLowerCase().slice(0, 2) || 'en'; } catch (e) { return 'en'; } })();\n        // ⚠️ A PREVIA DA HOME lia SEMPRE o ingles. Eu corrigi a PAGINA da analise e\n        // achei que estava resolvido , sao dois caminhos diferentes lendo o mesmo\n        // campo multilingue. O brasileiro via a pagina em portugues e o cartao da\n        // home, que e o primeiro contato, em ingles.\n        var txt = (z && typeof z === 'object') ? (z[_lgh] || z.en || z.pt || '') : (z || '');"
  }
 ]
