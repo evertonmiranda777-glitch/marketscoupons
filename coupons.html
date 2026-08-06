@@ -92,9 +92,8 @@
       "numberOfItems": 16,
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Bulenox", "url": "https://www.marketscoupons.com/bulenox" },
-        { "@type": "ListItem", "position": 2, "name": "Funded Futures Family", "url": "https://www.marketscoupons.com/funded-futures-family" },
-        { "@type": "ListItem", "position": 3, "name": "TradeDay", "url": "https://www.marketscoupons.com/tradeday" },
-        { "@type": "ListItem", "position": 4, "name": "Earn2Trade", "url": "https://www.marketscoupons.com/e2t" }
+        { "@type": "ListItem", "position": 2, "name": "TradeDay", "url": "https://www.marketscoupons.com/tradeday" },
+        { "@type": "ListItem", "position": 3, "name": "Earn2Trade", "url": "https://www.marketscoupons.com/e2t" }
       ]
     }
   ]
@@ -765,6 +764,17 @@ const I18N = {
 };
 
 // Firm catalogue with full plan data
+// ══ FIRMA DESLIGADA SO NESTA LP ═══════════════════════════════════════════════
+// TESTE do Everton (06/ago): tirar a Funded Futures Family da LP de trafego pago
+// pra medir se a venda das outras sobe. A comissao dela e baixa e ela ocupava o
+// 2o cartao, o lugar mais visto da pagina depois do 1o.
+//
+// ⚠️ SO AQUI. A firma continua viva no site, no Max, no banco, nas paginas SEO e
+// no Telegram , nada foi apagado, nenhum dado mudou.
+// PRA RELIGAR: deixar a lista vazia -> const LP_OFF = [];
+const LP_OFF = ['funded-futures-family'];
+const LP_ATIVA = f => !LP_OFF.includes(f.id);
+
 const FIRMS = [
   {
     id: 'apex', name: 'Apex Trader Funding', logo: '/img/Firms/108/apex.webp', coupon: null /* vem da tabela `firms` */,
@@ -1085,7 +1095,7 @@ function legacyBlock(firm){
 
 function renderFirms() {
   const container = document.getElementById('firms-list');
-  FIRMS.forEach(firm => {
+  FIRMS.filter(LP_ATIVA).forEach(firm => {
     const state = { type: firm.types[0], sizeIdx: firm.plans[firm.types[0]].findIndex(p => p.popular), pack: '1', variant: 'std', accountType: firm.accountTypes?.[0] || null };
     if (state.sizeIdx < 0) state.sizeIdx = 0;
     const hasPack = Object.values(firm.plans).some(arr => arr.some(p => p.p5));
@@ -1526,7 +1536,9 @@ async function loadPromoBar(){
     const res = await fetch(url, { headers: { apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY } });
     if (!res.ok) return;
     const rows = await res.json();
-    const active = rows.filter(r => r.promo_ends_at && Date.parse(r.promo_ends_at) > Date.now())
+    // nao anunciar contador de firma que nao tem cartao nesta LP (LP_OFF)
+    const active = rows.filter(r => LP_OFF.indexOf(r.id) < 0)
+      .filter(r => r.promo_ends_at && Date.parse(r.promo_ends_at) > Date.now())
       .sort((a,b) => Date.parse(a.promo_ends_at) - Date.parse(b.promo_ends_at));
     if (!active.length) return;
     const bar = document.getElementById('promo-topbar');
