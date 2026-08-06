@@ -3849,11 +3849,11 @@ class Component extends DCLogic {
       liveLocked: !s.authed,
       liveUnlocked: s.authed,
       liveChat: [
-        { user:'Trader01', text:'Long ES 7620, stop under VWAP', initial:'T', avatarBg:'linear-gradient(135deg,#3b82f6,#1d4ed8)' },
-        { user:'Maria', text:'NQ broke the OB, watching retest', initial:'M', avatarBg:'linear-gradient(135deg,#a855f7,#7e22ce)' },
-        { user:'Carlos', text:'TP1 hit, moving stop to BE', initial:'C', avatarBg:'linear-gradient(135deg,#f97316,#c2410c)' },
-        { user:'Ana', text:'FVG on the 15m still open below', initial:'A', avatarBg:'linear-gradient(135deg,#34d399,#047857)' },
-        { user:'Desk', text:'Zero gamma at 7539, mind the flip', initial:'D', avatarBg:'linear-gradient(135deg,#d4ff4d,#bfff00)' },
+        { user:'Trader01', text:'Just joined, good session everyone', initial:'T', avatarBg:'linear-gradient(135deg,#3b82f6,#1d4ed8)' },
+        { user:'Maria', text:'Question about the NQ structure on the 15m', initial:'M', avatarBg:'linear-gradient(135deg,#a855f7,#7e22ce)' },
+        { user:'Carlos', text:'Thanks for the breakdown, that was clear', initial:'C', avatarBg:'linear-gradient(135deg,#f97316,#c2410c)' },
+        { user:'Ana', text:'Is the session recording available later?', initial:'A', avatarBg:'linear-gradient(135deg,#34d399,#047857)' },
+        { user:'Host', text:'Sharing the screen, walking through the levels', initial:'H', avatarBg:'linear-gradient(135deg,#d4ff4d,#bfff00)' },
       ],
       awardCards: [
         { category:'Biggest Discount', tag:'TOP DISCOUNTS', icon:'ti-trending-up', iconColor:'#34d399', iconBg:'rgba(52,211,153,0.14)', fid:'apex', value:'90% OFF' },
@@ -4699,6 +4699,25 @@ class Component extends DCLogic {
       }
     }
 
+    // ── BOTÕES DO HEATMAP ───────────────────────────────────────────────────────
+    // "OS BOTÕES NÃO FUNCIONAM": Nasdaq 100, Market cap, Change 1W %, Sector.
+    // O rótulo TROCAVA e o mapa não mudava , e a causa é sutil: a configuração do widget
+    // do TradingView vai no HASH da URL (#...), e trocar só o hash de um iframe que já
+    // carregou NÃO recarrega nada. O React atualizava o src e o navegador ignorava.
+    // Aqui eu observo o src e, quando muda, TROCO o iframe por um clone , que é a única
+    // forma de forçar carga nova sem tocar no runtime do Design.
+    var ifrSrc = null;
+    function ligaHeatmap() {
+      var f = document.querySelector('iframe[src*="tradingview.com/embed-widget"]');
+      if (!f) { ifrSrc = null; return; }
+      if (ifrSrc === null) { ifrSrc = f.src; return; }
+      if (f.src === ifrSrc) return;
+      ifrSrc = f.src;
+      var novo = f.cloneNode(false);
+      novo.src = f.src;
+      f.parentNode.replaceChild(novo, f);
+    }
+
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -4740,7 +4759,7 @@ class Component extends DCLogic {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ajustaPainelAuth(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ligaHeatmap(); ajustaPainelAuth(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </script>

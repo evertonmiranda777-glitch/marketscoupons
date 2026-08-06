@@ -1,0 +1,8 @@
+[
+ {
+  "nome": "chat do live room sem sinal",
+  "marca": "good session everyone",
+  "de": "liveChat: [\n        { user:'Trader01', text:'Long ES 7620, stop under VWAP', initial:'T', avatarBg:'linear-gradient(135deg,#3b82f6,#1d4ed8)' },\n        { user:'Maria', text:'NQ broke the OB, watching retest', initial:'M', avatarBg:'linear-gradient(135deg,#a855f7,#7e22ce)' },\n        { user:'Carlos', text:'TP1 hit, moving stop to BE', initial:'C', avatarBg:'linear-gradient(135deg,#f97316,#c2410c)' },\n        { user:'Ana', text:'FVG on the 15m still open below', initial:'A', avatarBg:'linear-gradient(135deg,#34d399,#047857)' },\n        { user:'Desk', text:'Zero gamma at 7539, mind the flip', initial:'D', avatarBg:'linear-gradient(135deg,#d4ff4d,#bfff00)' },\n      ]",
+  "para": "liveChat: [\n        { user:'Trader01', text:'Just joined, good session everyone', initial:'T', avatarBg:'linear-gradient(135deg,#3b82f6,#1d4ed8)' },\n        { user:'Maria', text:'Question about the NQ structure on the 15m', initial:'M', avatarBg:'linear-gradient(135deg,#a855f7,#7e22ce)' },\n        { user:'Carlos', text:'Thanks for the breakdown, that was clear', initial:'C', avatarBg:'linear-gradient(135deg,#f97316,#c2410c)' },\n        { user:'Ana', text:'Is the session recording available later?', initial:'A', avatarBg:'linear-gradient(135deg,#34d399,#047857)' },\n        { user:'Host', text:'Sharing the screen, walking through the levels', initial:'H', avatarBg:'linear-gradient(135deg,#d4ff4d,#bfff00)' },\n      ]"
+ }
+]

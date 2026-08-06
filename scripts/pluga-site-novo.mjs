@@ -723,6 +723,25 @@ if (!d.includes('mc-navwrap > *')) {
       }
     }
 
+    // ── BOTÕES DO HEATMAP ───────────────────────────────────────────────────────
+    // "OS BOTÕES NÃO FUNCIONAM": Nasdaq 100, Market cap, Change 1W %, Sector.
+    // O rótulo TROCAVA e o mapa não mudava , e a causa é sutil: a configuração do widget
+    // do TradingView vai no HASH da URL (#...), e trocar só o hash de um iframe que já
+    // carregou NÃO recarrega nada. O React atualizava o src e o navegador ignorava.
+    // Aqui eu observo o src e, quando muda, TROCO o iframe por um clone , que é a única
+    // forma de forçar carga nova sem tocar no runtime do Design.
+    var ifrSrc = null;
+    function ligaHeatmap() {
+      var f = document.querySelector('iframe[src*="tradingview.com/embed-widget"]');
+      if (!f) { ifrSrc = null; return; }
+      if (ifrSrc === null) { ifrSrc = f.src; return; }
+      if (f.src === ifrSrc) return;
+      ifrSrc = f.src;
+      var novo = f.cloneNode(false);
+      novo.src = f.src;
+      f.parentNode.replaceChild(novo, f);
+    }
+
     function ligaPlataformas() {
       var bs = document.querySelectorAll('button');
       for (var i = 0; i < bs.length; i++) {
@@ -764,7 +783,7 @@ if (!d.includes('mc-navwrap > *')) {
     var esperando = 0;
     new MutationObserver(function () {
       if (esperando) return;
-      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ajustaPainelAuth(); }, 120);
+      esperando = setTimeout(function () { esperando = 0; liga(); ligaPlataformas(); ligaReviews(); ligaCards(); ligaHeatmap(); ajustaPainelAuth(); }, 120);
     }).observe(document.body, { childList: true, subtree: true });
   })();
   </scr` + `ipt>`;
@@ -1155,6 +1174,21 @@ remendo('chamada da analise da pagina', 'this._mcLigarAnalisePagina();',
 // pra fechar o array e foi exatamente assim que quebrei a página 3× em 04/08.
 // A casca monta os artigos numa funcao com `const posts = [...]` escrito. Eu tinha
 // criado _mcBlogPag e esquecido de LIGAR , os dados chegavam do banco e ninguem usava.
+// 🚨 COMPLIANCE , NAO REMOVER. O chat do Live Room veio com "Long ES 7620",
+// "TP1 hit, moving stop to BE" e "FVG on the 15m": entrada, take profit e stop, que sao
+// PROIBIDOS em superficie publica. Ja tinhamos tirado isso em 04/08 e VOLTOU na entrega
+// nova do Design , prova de que toda entrega tem que passar por este filtro de novo.
+// O Live Room e "conteudo exclusivo VIP, nunca sinais".
+const COMPL = JSON.parse(fs.readFileSync('scripts/remendos-compliance.json', 'utf8'));
+for (const r of COMPL) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`
+✗ ANCORA de compliance ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}: ${r.nome}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
 const BLOGTAB = JSON.parse(fs.readFileSync('scripts/remendos-blog.json', 'utf8'));
 for (const r of BLOGTAB) {
   if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
