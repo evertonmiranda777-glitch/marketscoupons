@@ -364,7 +364,7 @@ body.has-promo-topbar{padding-top:var(--promo-h,64px)}
 <div id="promo-topbar" class="promo-topbar" style="display:none;"></div>
 
 <div class="lp-top">
-  <a class="lp-top-logo" href="/?utm_source=lp_coupons&amp;utm_medium=logo" aria-label="Markets Coupons">
+  <a class="lp-top-logo" href="/?utm_source=lp_coupons&amp;utm_medium=logo" aria-label="Markets Coupons" onclick="try{trackEvent('lp_explore_site',{location:'lp_coupons_logo'})}catch(e){}">
     <svg width="26" height="26" viewBox="0 0 50 50" fill="none" aria-hidden="true"><defs><linearGradient id="lgtop" x1="0" y1="0" x2="50" y2="50"><stop offset="0%" stop-color="#FCD34D"/><stop offset="100%" stop-color="#D97706"/></linearGradient></defs><path d="M25 3L45 14.5V35.5L25 47 5 35.5V14.5Z" stroke="url(#lgtop)" stroke-width="2.2" fill="none"/><path d="M14 33V20l11 8" stroke="url(#lgtop)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 33V20l-11 8" stroke="url(#lgtop)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="14" r="2" fill="url(#lgtop)"/></svg><span><em>Markets</em> Coupons</span>
   </a>
   <div class="lp-lang">
@@ -503,7 +503,7 @@ function lpMarcaIdioma(l){
 </section>
 
 <section class="see-all">
-  <a class="see-all-btn" href="/firms?utm_source=instagram&utm_medium=bio&utm_campaign=ig_bio_all">
+  <a class="see-all-btn" href="/firms?utm_source=lp_coupons&utm_medium=see_all&utm_campaign=site_explore">
     <span class="see-all-lbl">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       <span data-i18n="see_all_firms">See all 18 firms on the site</span>
@@ -1455,6 +1455,10 @@ const GA4_FUNNEL = {
   page_view:            'page_view',
   coupon_copy:          'add_to_cart',
   checkout_click:       'begin_checkout',
+  // 06/08: medir quantos saem da LP paga PRA DENTRO do site. Ficava so no navegador
+  // (fora da allowlist) e a tabela `events` esta desligada desde o fix do 522 =
+  // o clique nao existia em lugar nenhum. `location` separa logo / more / see_all.
+  lp_explore_site:      'select_content',
   newsletter_subscribe: 'subscribe',
 };
 function trackEvent(event, params={}){
@@ -1776,7 +1780,10 @@ trackEvent('page_view', { page_name: 'lp_coupons', lang: LANG });
   if (utm.fbclid) params.set('fbclid', utm.fbclid);
   link.href = '/firms?' + params.toString();
   link.addEventListener('click', () => {
-    trackEvent('see_all_firms_click', { page_name: 'lp_coupons', destination: '/firms' });
+    // mesmo nome dos outros dois botoes que levam pro site: da pra somar os tres e
+    // separar por `location`. O antigo `see_all_firms_click` nao chegava em lugar
+    // nenhum (fora da allowlist do GA4 + tabela `events` desligada).
+    trackEvent('lp_explore_site', { page_name: 'lp_coupons', location: 'lp_coupons_see_all', destination: '/firms' });
   });
 })();
 </script>
