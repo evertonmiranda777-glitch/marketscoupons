@@ -1,5 +1,84 @@
 # MarketsCoupons, Contexto do Projeto
 
+## 🧭 PLANO COMBINADO 06/ago — DUAS ETAPAS, NESSA ORDEM
+
+**(1) Terminar de plugar o site novo. (2) Depois ajustar todo o SEO.** Ordem dele, textual:
+*"Vamos terminar de plugar o site novo ai vamos ajustar tudo do SEO. Vamos fazer por etapas."*
+
+## 🙈 LEI 06/ago — TEXTO QUE EU CONSIGO LER PODE ESTAR BLOQUEADO NA TELA
+
+Fui ligar **Análise Diária** e **GEX** no site novo. Li o `innerText` do site antigo, o texto
+veio inteiro, concluí "é público" e **abri os dois portões**. O conteúdo do site antigo **está
+no DOM de propósito, DESFOCADO atrás do cartão de cadastro** — eu tinha aberto de graça o que
+faz as pessoas se cadastrarem. **Ele pegou 3 vezes.**
+
+**Pergunta de VISIBILIDADE se responde com SCREENSHOT**, nunca com `innerText`/`grep`/`curl`.
+`filter`, `opacity`, `overflow`, `clip-path` e elemento por cima não apagam texto do DOM.
+**E o inverso também vale:** `curl` cru serve `<title>Loading...</title>` em página cujo título
+no Google está perfeito — o Google **renderiza**. Achei 3 problemas FALSOS assim no mesmo dia
+(blog, `/best-prop-firms`, `/cheapest-prop-firms`) e quase reconstruí o que funcionava.
+
+⚠️ **Se o buraco veio de um remendo, APAGAR O REMENDO** — desfazer só o arquivo faz o buraco
+voltar sozinho no próximo desempacotamento.
+
+## 📏 LEI 06/ago — NÚMERO SEM DENOMINADOR LÊ COMO ENTREGA PELA METADE
+
+> *"vc ta entregando tudo pela metade né? **timer com 4 idiomas só**"*
+
+O timer tinha os **8**. Eu testei 4 e escrevi "4". **Ou testo tudo e digo "8 de 8", ou digo
+"testei 4 dos 8, faltam 4".** Nunca o número solto. Vale pra idioma, firma, plano, rota, tela.
+
+## 🚫 LEI 06/ago — FILTRO SOBRE CAMPO DE FIRMA EXIGE O CAMPO PRESENTE
+
+Criei `/prop-firms-no-consistency-rule` e o `SELECT` do `best.html` não trazia `consistency`.
+Meu filtro tratou campo **ausente** como "não tem regra" → a página listou **as 18 firmas,
+inclusive as 7 que TÊM**. Afirmação falsa sobre firma numa página pública (mesma família da
+Lei #0). **Sem dado, a firma fica FORA.** E conferir o `SELECT` antes de escrever o filtro.
+
+## 🩹 LEI 06/ago — EDITAR O GERADOR NÃO RE-ENTRA EM BLOCO JÁ APLICADO
+
+Me pegou **3x** (rodapé, barra de promo, data do post). O remendo é idempotente: se a marca já
+está no `novo/index.html`, ele **PULA** — mudar o `para` de um remendo aplicado não faz nada.
+**Registrar remendo NOVO, com marca própria.**
+
+⚠️ **CRLF:** o git converte `novo/index.html`; Python casa (newline universal), **Node não** →
+"ANCORA SUMIU" em arquivo intacto. O carregador do `pluga-site-novo.mjs` já tolera os dois.
+⚠️ **Crase dentro de comentário fecha template literal** no `pluga-site-novo.mjs`.
+
+## 💰 LEI 06/ago — DE ONDE VEM O CLIQUE MUDA O VALOR DELE EM 17×
+
+Painel de afiliado da Apex: Instagram pago **$0,28/clique** · Google orgânico **$0,67** ·
+**site próprio $4,71**. É por isso que SEO virou prioridade, e por isso que mandar o visitante
+da LP pro site (`lp_explore_site`) vale mais que otimizar a LP.
+
+**Apex parou de vender em 30/jul:** cliques SUBINDO (20→55/dia), gasto igual (~$41/dia),
+cupom VIVO (checkout dele: MARKET leva $167→$16,70), **conversão 44%→2%→0%**. Não era cupom
+nem tráfego.
+
+## 🔍 LEI 06/ago — SEO: MEDIR ANTES DE ESCREVER
+
+Linha de base guardada: **80 cliques/28d em 28/jul → 103 em 06/ago.** Marca 36 cliques;
+**não-marca 7 cliques em 890 impressões** — é esse o buraco. Cluster "best/top prop firms" tem
+**340 impressões na posição 51** (maior demanda, mais longe); comparação está na **13**.
+
+⚠️ **DE/ES/IT não tem problema de título, tem 7-8 consultas cada.** Ia reescrever título neles
+e seria trabalho jogado fora. **Os EUA têm 173 consultas** — é lá que existe demanda.
+
+**Ferramentas:** `scripts/gsc-organico.mjs` (Search Console: marca × não-marca, distância por
+cluster) e `scripts/demanda-busca.mjs` (autocomplete do Google por país — mostra **o quê**,
+nunca volume). ⚠️ GA4 e Search Console são produtos SEPARADOS, autorizações separadas.
+
+**Consertado:** H1 grudado nas 1.224 comparações (`${a.name}<span>vs</span>` sem espaço = o
+Google lia UM token) · schema com `dateModified` · descrições com número real nos 8 idiomas ·
+rede interna ligando as DUAS firmas · **o sitemap dizia que o blog inglês era português**
+(hreflang por JS não conta — o Google confia no sitemap) · **o sitemap listava 18 guias,
+existem 114** · **as 6 páginas de lista nunca entraram no sitemap**.
+
+**NÃO atacado — não dizer que o SEO está "ok", está menos quebrado:** backlinks e Core Web
+Vitals **nunca medidos**, as ~133 `/{firma}-coupon` atacam cluster de 18 impressões contra
+340, volume de conteúdo (10 posts), raiz das comparações em PT competindo com `/en/`.
+Detalhe: [[project_seo_organico_2026_08_06]] · [[project_sessao_2026_08_06]]
+
 ## 🔗🔗 REGRA PERMANENTE , APEX E BULENOX ANDAM JUNTAS. SEMPRE.
 
 Desde 30/03/2026 (dia 1 do site). **Não é efeito colateral de gatilho, não é coincidência,
