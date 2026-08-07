@@ -188,6 +188,35 @@ const PATH_CONFIGS = {
     desc: 'Highest rated prop firms 2026 by real Trustpilot reviews. Top scoring: FTMO, Alpha Futures, The5ers, TopOne, verified daily.',
     filter: f => (parseFloat(f.rating||0) >= 4) && (parseInt(f.reviews||0) >= 500),
     sort: (a,b) => parseFloat(b.rating||0) - parseFloat(a.rating||0)
+  },
+  /* ── DUAS LISTAS NOVAS (06/08) ────────────────────────────────────────────
+     Vieram da raspagem de demanda dos EUA (scripts/demanda-busca.mjs), nao de
+     palpite: "best prop firm without consistency rule" e "futures prop firm no
+     consistency rule" aparecem repetidamente no autocomplete, e a resposta e um
+     FILTRO DO NOSSO BANCO , 11 das 18 firmas nao tem regra de consistencia.
+     Ninguem consegue montar essa lista sem ter os dados das 19 firmas. E o nosso
+     ativo virando pagina.
+     ⚠️ "prop firms you can trade on tradingview" tambem tem demanda, mas so 3
+     firmas tem TradingView , lista fina demais, nao criei. */
+  '/prop-firms-no-consistency-rule': {
+    title: 'Prop Firms With No Consistency Rule 2026 | Markets Coupons',
+    h1: 'Prop Firms With <em>No Consistency Rule</em>',
+    sub: 'Firms that do not cap how much of your profit can come from a single day. Trade your way, take the big day when it shows up.',
+    desc: 'Prop firms with no consistency rule in 2026. No cap on how much profit can come from one day, compared side by side with prices, drawdown and payout.',
+    // ⚠️ EXIGE o campo preenchido. A versao anterior tratava campo VAZIO como
+    // "nao tem regra" e listou as 18 firmas, inclusive as que TEM , afirmacao
+    // falsa sobre a firma numa pagina publica. Sem dado, a firma fica FORA.
+    filter: f => { const c = String(f.consistency||'').trim().toLowerCase();
+      return !!c && (c.startsWith('n') || c.indexOf('not req') > -1 || c === 'none'); },
+    sort: (a,b) => parseFloat(b.discount||0) - parseFloat(a.discount||0)
+  },
+  '/prop-firms-day-1-payout': {
+    title: 'Prop Firms With Day 1 Payout 2026, Fastest Withdrawals | Markets Coupons',
+    h1: 'Prop Firms With <em>Day 1 Payout</em>',
+    sub: 'Firms that let you request a withdrawal from the first profitable day, with no minimum waiting period.',
+    desc: 'Prop firms with day 1 payout in 2026. Withdraw from your first profitable day, compared with prices, drawdown, profit split and exclusive coupons.',
+    filter: f => !!f.day1_payout,
+    sort: (a,b) => parseFloat(b.discount||0) - parseFloat(a.discount||0)
   }
 };
 
@@ -206,7 +235,7 @@ document.getElementById('hero-h1').innerHTML = CFG.h1;
 document.getElementById('hero-sub').textContent = CFG.sub;
 
 // Fetch firms
-fetch(SB_URL+'/rest/v1/cms_firms?select=id,name,type,color,bg,icon,icon_url,rating,reviews,discount,coupon,link,tags,platforms,split,drawdown,dd_pct,target,prices,trustpilot_url,has_activation_fee&active=eq.true', {
+fetch(SB_URL+'/rest/v1/cms_firms?select=id,name,type,color,bg,icon,icon_url,rating,reviews,discount,coupon,link,tags,platforms,split,drawdown,dd_pct,target,prices,trustpilot_url,has_activation_fee,consistency,day1_payout&active=eq.true', {
   headers: { apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY }
 }).then(r=>r.json()).then(firms => {
   const filtered = firms.filter(CFG.filter).sort(CFG.sort).slice(0, 18);

@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Sitemap regenerated:
+Sitemap regenerated:
   - 1 home + 7 lang variants
   - 16 core pages
   - 18 firm landings
   - 306 compare pages
   - 12 PT guides
   - 6 EN guides
-  TOTAL: 2680 URLs · 3074.2kb
-map.mjs -->
-  <!-- 2680 URLs total -->
+  TOTAL: 2682 URLs · 3074.5kb
+8-07T00:39:36.991Z by scripts/build-sitemap.mjs -->
+  <!-- 2682 URLs total -->
 
   <url>
     <loc>https://www.marketscoupons.com/</loc>
@@ -224,6 +223,20 @@ map.mjs -->
 
   <url>
     <loc>https://www.marketscoupons.com/highest-rated-prop-firms</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.marketscoupons.com/prop-firms-no-consistency-rule</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.marketscoupons.com/prop-firms-day-1-payout</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>

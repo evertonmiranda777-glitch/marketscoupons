@@ -87,6 +87,8 @@ const LISTAS = [
   'best-prop-firms-with-coupon',
   'cheapest-prop-firms',
   'highest-rated-prop-firms',
+  'prop-firms-no-consistency-rule',
+  'prop-firms-day-1-payout',
 ];
 LISTAS.forEach(p => {
   entries.push(urlEntry({ loc: `${SITE}/${p}`, changefreq: 'weekly', priority: '0.9' }));

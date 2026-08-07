@@ -316,6 +316,14 @@
       "dest": "/best.html"
     },
     {
+      "src": "/prop-firms-no-consistency-rule",
+      "dest": "/best.html"
+    },
+    {
+      "src": "/prop-firms-day-1-payout",
+      "dest": "/best.html"
+    },
+    {
       "src": "/highest-rated-prop-firms",
       "dest": "/best.html"
     },
