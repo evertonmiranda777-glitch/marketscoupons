@@ -72,6 +72,26 @@ corePages.forEach(p => {
   entries.push(urlEntry({ loc: `${SITE}/${p}`, priority: '0.6' }));
 });
 
+// 🔴 AS 6 LISTAS NAO ESTAVAM NO SITEMAP (achado 06/08).
+// Sao exatamente as paginas que atacam o maior cluster de demanda dos EUA:
+// "best/top/ranking prop firms" tem 340 impressoes em 30 dias, e "cheapest prop
+// firm" e o termo mais forte do autocomplete americano no grupo de preco.
+// As paginas existem, sao boas (534 palavras, 18 firmas com preco real, titulo e
+// canonical proprios por rota) e o Google nunca foi avisado de que existem , o
+// que sobrou foi rastreio por link interno, mais lento e com menos prioridade.
+// Prioridade 0.9: e o cluster de maior demanda nao-marca do site.
+const LISTAS = [
+  'best-prop-firms',
+  'best-prop-firms-futures',
+  'best-prop-firms-no-activation-fee',
+  'best-prop-firms-with-coupon',
+  'cheapest-prop-firms',
+  'highest-rated-prop-firms',
+];
+LISTAS.forEach(p => {
+  entries.push(urlEntry({ loc: `${SITE}/${p}`, changefreq: 'weekly', priority: '0.9' }));
+});
+
 // ── Firm landings (SPA routes via cms_firms) ──
 const SB_URL_F = 'https://qfwhduvutfumsaxnuofa.supabase.co';
 const ANON_F = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmd2hkdXZ1dGZ1bXNheG51b2ZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzc5NDYsImV4cCI6MjA4OTk1Mzk0Nn0.efRel6U68misvPSRj8-p31-gOhzjXN4eIFMiloTNyk4';
