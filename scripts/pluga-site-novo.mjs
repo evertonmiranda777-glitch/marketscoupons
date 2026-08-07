@@ -1589,6 +1589,8 @@ for (const r of PLAT_TAB) {
   feitos.push(r.nome);
 }
 
+
+
 // GEX: nome certo dos 12 tickers e escala inteira de strikes.
 const GEX2 = JSON.parse(fs.readFileSync('scripts/remendos-gex2.json', 'utf8'));
 for (const r of GEX2) {
@@ -1651,6 +1653,35 @@ for (const r of ANALISE) {
 }
 
 
+
+
+// ⚠️ CRLF: o git converte novo/index.html. Todo laço de remendo precisa tolerar as
+// duas quebras de linha, senão dá "ANCORA SUMIU" em arquivo intacto (lei 06/ago).
+function aplicarTabela(tabela, feitos, pulados, texto) {
+  const LF = String.fromCharCode(10), CRLF = String.fromCharCode(13, 10);
+  for (const r of tabela) {
+    if (texto.includes(r.marca)) { pulados.push(r.nome); continue; }
+    let de = r.de, para = r.para;
+    if (!texto.includes(de) && texto.includes(de.split(LF).join(CRLF))) {
+      de = de.split(LF).join(CRLF); para = para.split(LF).join(CRLF);
+    }
+    const n = texto.split(de).length - 1;
+    if (n !== 1) { console.error(`
+✗ ANCORA ${r.nome} ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
+    texto = texto.split(de).join(para);
+    feitos.push(r.nome);
+  }
+  return texto;
+}
+
+// Previa da calculadora na home: mesmos campos e mesma conta da /calculator.
+// O pacote do Design inventou "Stop (ES) 5 pts", campo que a nossa NAO TEM.
+d = aplicarTabela(JSON.parse(fs.readFileSync('scripts/remendos-calc.json', 'utf8')), feitos, pulados, d);
+
+// Analise: eventos do dia + bolinhas de confianca, como no site atual.
+for (const arq of ['scripts/remendos-analise3.json', 'scripts/remendos-analise4.json', 'scripts/remendos-gex3.json']) {
+  d = aplicarTabela(JSON.parse(fs.readFileSync(arq, 'utf8')), feitos, pulados, d);
+}
 
 // ─────────────────────────────────────────────── fim
 fs.writeFileSync(ARQ, d);
