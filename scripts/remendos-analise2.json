@@ -1,0 +1,14 @@
+[
+  {
+    "nome": "analise em UMA coluna (igual ao site atual)",
+    "marca": "ANALISE EM UMA COLUNA",
+    "de": "grid-template-columns: 1fr 1fr; gap: 16px; filter: {{ analysisBlur }}",
+    "para": "/* ANALISE EM UMA COLUNA , o site atual empilha UM ativo por linha, com o grafico grande e os 6 blocos de texto embaixo. O pacote do Design vinha em 2 colunas de 572px, o que espremia o grafico e o texto. */ grid-template-columns: 1fr; gap: 16px; filter: {{ analysisBlur }}"
+  },
+  {
+    "nome": "grafico da analise no tamanho do site atual",
+    "marca": "height: 420px; /* GRAFICO GRANDE",
+    "de": "margin: 0 22px 16px; height: 180px;",
+    "para": "margin: 0 22px 16px; height: 420px; /* GRAFICO GRANDE , 180px era altura de miniatura, cabia em 2 colunas; numa coluna so o grafico e a peca principal da pagina */"
+  }
+]

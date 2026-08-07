@@ -1,0 +1,14 @@
+[
+  {
+    "nome": "precos da TradingView fora do ar (Lei #0)",
+    "marca": "LEI #0 , PRECO NAO VISTO NAO VAI PRO AR",
+    "de": "periods: [\n        { key:'annual', label:'Annual (17% OFF)' },\n        { key:'monthly', label:'Monthly' },\n      ],\n      plans: [\n        { key:'essential', label:'Essential', details:'2 charts per tab · 5 indicators · 20 alerts',\n          px: { annual:['$12.95','$15.95'], monthly:['$15.95',''] } },\n        { key:'plus', label:'Plus', popular:true, details:'4 charts per tab · 10 indicators · 200 alerts',\n          px: { annual:['$24.95','$29.95'], monthly:['$29.95',''] } },\n        { key:'premium', label:'Premium', details:'8 charts per tab · 25 indicators · 400 alerts',\n          px: { annual:['$49.95','$59.95'], monthly:['$59.95',''] } },\n        { key:'ultimate', label:'Ultimate', details:'16 charts per tab · 50 indicators · 2,000 alerts',\n          px: { annual:['$166.95','$199.95'], monthly:['$199.95',''] } },\n      ],\n      priceUnit: '/mo',",
+    "para": "periods: [],\n      // 🚨 LEI #0 , PRECO NAO VISTO NAO VAI PRO AR.\n      // O pacote do Design trazia a tabela de precos da TradingView em USD\n      // (Essential $12.95 riscando $15.95, etc). NAO CONSIGO CONFERIR: a pagina de\n      // precos da TradingView e geolocalizada e entrega TUDO em R$ pro nosso IP ,\n      // ela so anuncia 'Save up to 17%' pro plano anual, e o 'up to' vale so no\n      // Ultimate. Mostrar mensal MAIOR que o real inflaria o desconto A NOSSO FAVOR,\n      // que e justamente a direcao desonesta.\n      // ⚠️ O SITE ANTIGO NUNCA MOSTROU PRECO DE PLATAFORMA , so badge, descricao,\n      // recursos e o link de afiliado. Entao aqui fica igual ao site antigo.\n      // PRA RELIGAR: conferir os 8 valores numa tela dos EUA e devolver o px.\n      plans: [\n        { key:'essential', label:'Essential', details:'2 charts per tab · 5 indicators · 20 alerts',\n          px: { one:['See plans','']  } },\n        { key:'plus', label:'Plus', popular:true, details:'4 charts per tab · 10 indicators · 200 alerts',\n          px: { one:['See plans','']  } },\n        { key:'premium', label:'Premium', details:'8 charts per tab · 25 indicators · 400 alerts',\n          px: { one:['See plans','']  } },\n        { key:'ultimate', label:'Ultimate', details:'16 charts per tab · 50 indicators · 2,000 alerts',\n          px: { one:['See plans','']  } },\n      ],\n      priceUnit: '',"
+  },
+  {
+    "nome": "TradingView sem seletor de periodo",
+    "marca": "hasDiscount: true, hasPeriod: false,",
+    "de": "hasDiscount: true, hasPeriod: true,",
+    "para": "hasDiscount: true, hasPeriod: false,"
+  }
+]

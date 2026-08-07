@@ -1507,7 +1507,7 @@
 
     <div style="position: relative;">
       <!-- gated content preview -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; filter: {{ analysisBlur }}; pointer-events: {{ analysisPE }};">
+      <div style="display: grid; /* ANALISE EM UMA COLUNA , o site atual empilha UM ativo por linha, com o grafico grande e os 6 blocos de texto embaixo. O pacote do Design vinha em 2 colunas de 572px, o que espremia o grafico e o texto. */ grid-template-columns: 1fr; gap: 16px; filter: {{ analysisBlur }}; pointer-events: {{ analysisPE }};">
         <sc-for list="{{ analysisCards }}" as="a" hint-placeholder-count="2">
           <div style="border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, #121826, #0d1119); border: 1px solid rgba(255,255,255,0.07);">
             <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px 22px 16px;">
@@ -1515,7 +1515,7 @@
               <div style="text-align: right;"><div style="font-weight: 800; font-size: 20px; color: #F4F8F9;">{{ a.price }}</div><div style="font-size: 13px; font-weight: 700; color: {{ a.chgColor }};">{{ a.chg }}</div></div>
             </div>
             <div style="padding: 0 22px 14px;"><span style="{{ a.biasStyle }}">{{ a.bias }}</span></div>
-            <div style="margin: 0 22px 16px; height: 180px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); background: #0a0e08;"><iframe src="{{ a.chartUrl }}" title="{{ a.sym }} chart" loading="lazy" style="width:100%;height:100%;border:0;display:block;"></iframe></div>
+            <div style="margin: 0 22px 16px; height: 420px; /* GRAFICO GRANDE , 180px era altura de miniatura, cabia em 2 colunas; numa coluna so o grafico e a peca principal da pagina */ border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); background: #0a0e08;"><iframe src="{{ a.chartUrl }}" title="{{ a.sym }} chart" loading="lazy" style="width:100%;height:100%;border:0;display:block;"></iframe></div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 22px 20px;">
               <div style="padding: 12px 14px; border-radius: 11px; background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.16);"><div style="font-size: 10px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Support 1</div><div style="font-weight: 700; font-size: 15px; color: #34d399; margin-top: 3px;">{{ a.s1 }}</div></div>
               <div style="padding: 12px 14px; border-radius: 11px; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.16);"><div style="font-size: 10px; letter-spacing: 0.06em; color: #7c8791; text-transform: uppercase;">Resistance 1</div><div style="font-weight: 700; font-size: 15px; color: #f87171; margin-top: 3px;">{{ a.r1 }}</div></div>
@@ -2812,7 +2812,7 @@ class Component extends DCLogic {
     tradingview: {
       accent: '#2962ff',
       leftBg: 'radial-gradient(900px 520px at 30% 0%, rgba(41,98,255,0.16), transparent 62%), #0a0d14',
-      hasDiscount: true, hasPeriod: true,
+      hasDiscount: true, hasPeriod: false,
       offLabel: '17% OFF', offSub: 'Discount annual plan',
       creditBadge: '+$15',
       creditText: 'Subscribe through Markets Coupons and get $15 of credit on your TradingView account.',
@@ -2828,21 +2828,28 @@ class Component extends DCLogic {
         { k:'Language', v:'Pine Script' }, { k:'Community', v:'50M+ active traders' },
         { k:'Founded', v:'2011' }, { k:'Countries', v:'190+' },
       ],
-      periods: [
-        { key:'annual', label:'Annual (17% OFF)' },
-        { key:'monthly', label:'Monthly' },
-      ],
+      periods: [],
+      // 🚨 LEI #0 , PRECO NAO VISTO NAO VAI PRO AR.
+      // O pacote do Design trazia a tabela de precos da TradingView em USD
+      // (Essential $12.95 riscando $15.95, etc). NAO CONSIGO CONFERIR: a pagina de
+      // precos da TradingView e geolocalizada e entrega TUDO em R$ pro nosso IP ,
+      // ela so anuncia 'Save up to 17%' pro plano anual, e o 'up to' vale so no
+      // Ultimate. Mostrar mensal MAIOR que o real inflaria o desconto A NOSSO FAVOR,
+      // que e justamente a direcao desonesta.
+      // ⚠️ O SITE ANTIGO NUNCA MOSTROU PRECO DE PLATAFORMA , so badge, descricao,
+      // recursos e o link de afiliado. Entao aqui fica igual ao site antigo.
+      // PRA RELIGAR: conferir os 8 valores numa tela dos EUA e devolver o px.
       plans: [
         { key:'essential', label:'Essential', details:'2 charts per tab · 5 indicators · 20 alerts',
-          px: { annual:['$12.95','$15.95'], monthly:['$15.95',''] } },
+          px: { one:['See plans','']  } },
         { key:'plus', label:'Plus', popular:true, details:'4 charts per tab · 10 indicators · 200 alerts',
-          px: { annual:['$24.95','$29.95'], monthly:['$29.95',''] } },
+          px: { one:['See plans','']  } },
         { key:'premium', label:'Premium', details:'8 charts per tab · 25 indicators · 400 alerts',
-          px: { annual:['$49.95','$59.95'], monthly:['$59.95',''] } },
+          px: { one:['See plans','']  } },
         { key:'ultimate', label:'Ultimate', details:'16 charts per tab · 50 indicators · 2,000 alerts',
-          px: { annual:['$166.95','$199.95'], monthly:['$199.95',''] } },
+          px: { one:['See plans','']  } },
       ],
-      priceUnit: '/mo',
+      priceUnit: '',
       cta: 'Subscribe to TradingView',
       includes: [
         'No ads', 'Volume Profile', 'Custom timeframes', 'Bar Replay',
@@ -3546,6 +3553,10 @@ class Component extends DCLogic {
             s2: a.support_2 != null ? String(a.support_2) : '',
             r2: a.resistance_2 != null ? String(a.resistance_2) : '',
             // texto da analise, no idioma do visitante, dentro do proprio cartao
+            zona: txt(a.attention_zone), ctx: txt(a.context), vol: txt(a.volume_analysis),
+            bull: txt(a.scenario_bull), bear: txt(a.scenario_bear), news: txt(a.news_impact),
+            rotZona: R[0], rotCtx: R[6], rotVol: R[4], rotBull: R[2], rotBear: R[3], rotNews: R[1],
+            // texto da analise, no idioma do visitante, dentro do proprio cartao
             zona: mlt(a.attention_zone), ctx: mlt(a.context), vol: mlt(a.volume_analysis),
             bull: mlt(a.scenario_bull), bear: mlt(a.scenario_bear), news: mlt(a.news_impact),
             rotZona: Rr[0], rotCtx: Rr[6], rotVol: Rr[4], rotBull: Rr[2], rotBear: Rr[3], rotNews: Rr[1],
@@ -3703,7 +3714,7 @@ class Component extends DCLogic {
             vistos[x.ticker] = 1;
             var pos = Number(x.total_gex) >= 0;
             // barras: strikes reais, largura proporcional ao MAIOR gamma absoluto
-            var ts = (x.top_strikes || []).slice(0, 14);
+            var ts = (x.top_strikes || []).slice(0, 40);   /* ESCALA INTEIRA , 14 strikes cortavam o grafico bem no meio: o site atual desenha a faixa toda (Call Wall em cima, Put Wall embaixo). Com 14 linhas as paredes ficavam fora da tela e o grafico perdia o sentido. */
             var maior = ts.reduce(function (m, s) { return Math.max(m, Math.abs(Number(s.gex) || 0)); }, 1);
             var bars = ts.map(function (s) {
               var call = (Number(s.gex) || 0) >= 0;
@@ -3714,7 +3725,7 @@ class Component extends DCLogic {
             });
             cards.push({
               sym: x.ticker,
-              desc: x.ticker === 'NQ' ? 'Nasdaq 100 Futures' : 'S&P 500 Futures',
+              desc: (function(){ var GEXNOME = { NQ:'Nasdaq 100 Futures', ES:'S&P 500 Futures', SPY:'SPDR S&P 500 ETF', QQQ:'Invesco QQQ Trust', GLD:'SPDR Gold Shares', AAPL:'Apple', TSLA:'Tesla', NVDA:'NVIDIA', MSFT:'Microsoft', AMZN:'Amazon', META:'Meta Platforms', GOOGL:'Alphabet' }; return GEXNOME[x.ticker] || x.ticker; })(),
               spot: fmt(x.spot_price),
               regime: pos ? 'Positive Gamma' : 'Negative Gamma',
               regimeStyle: 'padding:5px 12px;border-radius:8px;font-size:12px;font-weight:700;background:' +

@@ -1589,6 +1589,36 @@ for (const r of PLAT_TAB) {
   feitos.push(r.nome);
 }
 
+// GEX: nome certo dos 12 tickers e escala inteira de strikes.
+const GEX2 = JSON.parse(fs.readFileSync('scripts/remendos-gex2.json', 'utf8'));
+for (const r of GEX2) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`\n✗ ANCORA ${r.nome} ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
+// Forma da pagina de Analise: uma coluna e grafico grande, igual ao site atual.
+const ANA2 = JSON.parse(fs.readFileSync('scripts/remendos-analise2.json', 'utf8'));
+for (const r of ANA2) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`\n✗ ANCORA ${r.nome} ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
+// Preco de plataforma: ver o comentario dentro do proprio remendo (Lei #0).
+const PLAT_TAB2 = JSON.parse(fs.readFileSync('scripts/remendos-plataformas2.json', 'utf8'));
+for (const r of PLAT_TAB2) {
+  if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
+  const n = d.split(r.de).length - 1;
+  if (n !== 1) { console.error(`\n✗ ANCORA ${r.nome} ${n === 0 ? 'SUMIU' : `APARECE ${n}x`}`); process.exit(1); }
+  d = trocar(d, r.de, r.para);
+  feitos.push(r.nome);
+}
+
 const GRAF = JSON.parse(fs.readFileSync('scripts/remendos-grafico.json', 'utf8'));
 for (const r of GRAF) {
   if (d.includes(r.marca)) { pulados.push(r.nome); continue; }
