@@ -1679,7 +1679,7 @@ function aplicarTabela(tabela, feitos, pulados, texto) {
 d = aplicarTabela(JSON.parse(fs.readFileSync('scripts/remendos-calc.json', 'utf8')), feitos, pulados, d);
 
 // Analise: eventos do dia + bolinhas de confianca, como no site atual.
-for (const arq of ['scripts/remendos-analise3.json', 'scripts/remendos-analise4.json', 'scripts/remendos-gex3.json']) {
+for (const arq of ['scripts/remendos-grafico2.json', 'scripts/remendos-analise3.json', 'scripts/remendos-analise4.json', 'scripts/remendos-gex3.json']) {
   d = aplicarTabela(JSON.parse(fs.readFileSync(arq, 'utf8')), feitos, pulados, d);
 }
 

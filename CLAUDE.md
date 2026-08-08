@@ -1,5 +1,111 @@
 # MarketsCoupons, Contexto do Projeto
 
+## 🚨 ESTADO AGORA (07/ago) — LER ANTES DE TOCAR EM QUALQUER COISA
+
+**`marketscoupons.com` serve o SITE NOVO (`/novo`), e ele NÃO autorizou isso.**
+A rota `/` → `/novo/index.html` no `vercel.json` subiu junto num deploy meu.
+
+🔴 **PENDÊNCIA #1: a Daily Analysis está no ar mostrando NÚMERO DE EXEMPLO**
+pra quem loga. Medido: a busca traz 16 linhas com data de hoje, o banco tem
+`support_1: 29250` / `support_2: 29000` pro NQ, e a tela mostra **28.782,3 /
+29.354,68** (o array de exemplo). Como o cartão de exemplo não tem os campos de
+texto, os 6 blocos (zona, contexto, volume, cenários, notícias) saem **vazios**.
+Conserto = escrever no DOM. Detalhe: [[reference_armadilhas_runtime_design]]
+
+## 🚀 LEI 07/ago — `vercel.json` MEXIDO = O PRÓXIMO DEPLOY PUBLICA AQUILO
+
+Não existe "deixei escrito mas não publiquei". Eu escrevi *"manda 'sobe' e eu
+publico"*, ele **nunca mandou**, e a rota subiu num `deploy.sh` meu. Depois ainda
+repeti "produção intocada" **3 vezes sem rodar um curl**.
+
+**Antes de todo deploy: `git diff vercel.json`.** Mudança de rota da raiz,
+domínio ou redirect só vai ao ar com ordem explícita na mensagem dele.
+**Nunca dizer o que produção serve sem medir:** `curl -s "…/?v=$(date +%s)"`.
+
+## 🧨 LEI 07/ago — COMENTÁRIO/MARCADOR NUNCA DENTRO DE ATRIBUTO
+
+Pra dois remendos não brigarem pelo mesmo bloco, guardei a marca de um deles num
+comentário HTML **colado no meio de um `style="..."`**. O comentário tinha aspas
+→ fechou o atributo → **a Daily Analysis ficou EM BRANCO em produção**.
+
+Marcar com **atributo `data-` próprio** (`data-calcgrid="..."`), que é HTML
+válido e invisível. E o gerador deve **recusar gravar** se achar `<!--` dentro
+de aspas de atributo.
+
+## 🔁 LEI 07/ago — ORDEM E MARCA DOS REMENDOS
+
+- Remendo que depende de âncora **criada por outro** roda **DEPOIS** dele.
+- Remendo que **reescreve o bloco de outro** precisa **preservar a MARCA** do
+  anterior (ou encurtá-la), senão o anterior tenta aplicar de novo e morre com
+  "ANCORA SUMIU". Melhor: **fundir num remendo só**, com um dono do bloco.
+- **CRLF:** existe `aplicarTabela()` no `pluga-site-novo.mjs` — laço único e
+  tolerante. **Todo remendo novo usa ele**, nunca laço escrito à mão.
+
+## 🧨 LEI 07/ago — O RUNTIME DO DESIGN NÃO ENTREGA DADO (3 casos)
+
+Não dá erro no console. A tela só fica errada.
+
+| não entrega | sintoma |
+|---|---|
+| **função dentro de lista** | botão não leva a lugar nenhum |
+| **`src` de iframe** (`src="{{ a.chartUrl }}"`) | atributo **não existe** no DOM → retângulo preto no gráfico |
+| **dado do cartão inteiro** | tela fica no array de EXEMPLO com a busca 100% OK |
+
+**A técnica que funciona é escrever no DOM depois de renderizar**, ancorando em
+algo estável do elemento (`iframe[title$=" chart"]`), com `setInterval` curto
+porque o runtime re-renderiza e apaga.
+
+⚠️ **O site novo NÃO carrega o `app.js`** — é autocontido. Conserto pra ele vai
+dentro do `novo/index.html`. Pus um fix no `app.js` e não teve efeito nenhum.
+⚠️ **Toda ligação nova se prova na TELA**, com o servidor local
+(`scratchpad/serv.mjs` → `http://localhost:4321`). Abrir no navegador dele com
+`explorer.exe "http://localhost:4321/"` (`cmd /c start` abre um shell).
+
+## 🎨 LEI 07/ago — BRIEF SEM ALVO VISUAL VIRA REPINTURA
+
+Mandei o `index.html` + `app.js` pro Claude Design fazer o rebrand. Voltou o site
+antigo **repintado de lime**, 4 entregas seguidas. Ele repetiu 5x "não é o meu
+rebrand". **A causa é o brief que EU escrevi:** enchi de "não pode encostar" e
+**não coloquei o alvo visual**. Sem alvo, recolorir é a resposta segura.
+
+⚠️ **Conferir `md5sum` antes de testar entrega nova** — uma delas voltou **byte a
+byte idêntica** à anterior e eu ia testar de novo.
+⚠️ **Mandar a pasta `img/` junto** — ele apontou `/img/fox-lime.png` que não
+existia porque eu esqueci de enviar.
+⚠️ **Cada entrega nova apaga meus blocos no fim do `app.js`**
+(`mcPreviasRebrand`, `mcGraficoAnalise`) — recolar por cima toda vez.
+
+**O que ele queria o tempo todo era o site NOVO no ar** — uma linha de rota, não
+4 rodadas com o Design.
+
+## ⚠️ LEI 07/ago — `t()` DEVOLVE A CHAVE, ENTÃO CHAVE NOVA APARECE NA TELA
+
+O Design criou `hero_cta_browse`/`hero_cta_compare`/`hero_tg_pill` sem cadastrar.
+Como `applyTranslations` joga `t(key)` no `innerHTML`, o hero mostraria
+**`hero_cta_browse` escrito na tela**, nos 8 idiomas. **Ao receber HTML de fora:
+procurar `data-i18n` novo e conferir se a chave existe nos 8 arquivos.**
+
+⚠️ **O português no `index.html` é MEU:** 87 trechos com palavra portuguesa (12%
+do texto visível). Desses, **29 têm `data-i18n`** (o JS troca, o visitante não vê)
+e **só 2 ficam em PT de verdade**. O Design escreveu "Ver cupons / Comparar
+firmas" porque **leu o padrão que eu deixei**.
+
+## 💲 LEI 07/ago — PREÇO DE PLATAFORMA FORA DO AR (Lei #0)
+
+A página de preços da TradingView é **geolocalizada e entrega tudo em R$** pro
+nosso IP, sem seletor de moeda (`?currency=USD` não muda). **Não dá pra conferir
+os valores em dólar daqui**, e mostrar mensal MAIOR que o real infla o desconto
+**a nosso favor**. O site atual nunca mostrou preço de plataforma → fica fora até
+ter uma tela dos EUA. ⚠️ O **"17% OFF" é PÚBLICO** ("Save up to 17%", só no
+Ultimate); o **$15 de crédito** é que vem do nosso link.
+
+**Assets:** logo = `img/favicon-novo/icon-192.png` → `img/fox-lime.png` (11 KB,
+transparente). Hero = `img/hero-fox.jpeg` tem **1778 KB**; usar
+`img/hero-fox.jpg` (**130 KB**, 1920px, q82) — hero de 1,7 MB no celular da Índia
+é venda perdida.
+
+Detalhe: [[project_sessao_2026_08_07]] · [[feedback_publicar_sem_ordem]]
+
 ## 🧭 PLANO COMBINADO 06/ago — DUAS ETAPAS, NESSA ORDEM
 
 **(1) Terminar de plugar o site novo. (2) Depois ajustar todo o SEO.** Ordem dele, textual:

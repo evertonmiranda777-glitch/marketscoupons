@@ -15,3 +15,4 @@ Object.assign(window.I18N.id,{"aw_dia": "hari", "aw_dias": "hari", "aw_todas": "
 Object.assign(window.I18N.id,{"lg_title": "Akun Legacy", "lg_pill": "WAKTU TERBATAS", "lg_popular": "POPULER", "lg_cta": "Lihat Akun Legacy", "lg_sub": "Bulanan · 90% off bulan pertama, 80% setelahnya · dengan MARKET · aktivasi PA $125 s/d 11 Agu"});
 Object.assign(window.I18N.id,{actv_no_fee:'Tanpa Biaya Aktivasi',actv_nofee_plan:'Ada paket tanpa biaya'});
 Object.assign(window.I18N.id,{"promo_lifetime":"Diskon seumur hidup"});
+Object.assign(window.I18N.id,{"hero_cta_browse":"Lihat kupon","hero_cta_compare":"Bandingkan firm","hero_tg_pill":"Gabung"});

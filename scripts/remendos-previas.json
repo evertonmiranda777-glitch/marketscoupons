@@ -50,7 +50,7 @@
     "para": "        <div style=\"text-align: right; font-variant-numeric: tabular-nums;\"><span style=\"font-weight: 800; font-size: 16px; color: #F4F8F9;\">{{ esPreco }}</span> <span style=\"font-size: 12.5px; color: {{ esCor }};\">{{ esVar }}</span></div>"
   },
   {
-    "marca": "<div><div style=\"font-size: 11px; color: #7c8791; margin-bottom: 5px;\">Stop (ES)</div><div style=\"font-weight: 700; font-size: 14px; color: #E7ECEF; padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.04); font-variant-numeric: tabular-nums;\">5 pts</div></div>",
+    "marca": "Stop (ES)",
     "de": "          <div><div style=\"font-size: 11px; color: #7c8791; margin-bottom: 5px;\">Stop</div><div style=\"font-weight: 700; font-size: 14px; color: #E7ECEF; padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.04); font-variant-numeric: tabular-nums;\">25 pts</div></div>",
     "para": "          <div><div style=\"font-size: 11px; color: #7c8791; margin-bottom: 5px;\">Stop (ES)</div><div style=\"font-weight: 700; font-size: 14px; color: #E7ECEF; padding: 8px 10px; border-radius: 9px; background: rgba(255,255,255,0.04); font-variant-numeric: tabular-nums;\">5 pts</div></div>"
   },
@@ -203,5 +203,11 @@
     "marca": "'TradingView':   'https://tradingview.com/?aff_id=164855',",
     "de": "      'TradingView': 'https://tradingview.com/?aff_id=164855',\n      'NinjaTrader': 'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO'",
     "para": "      'TradingView':   'https://tradingview.com/?aff_id=164855',\n      'NinjaTrader':   'https://ninjatraderdomesticvendor.sjv.io/xJJ7ZO',\n      'Rithmic':       'https://rithmic.com',\n      'Tradovate':     'https://tradovate.com',\n      'MetaTrader 5':  'https://metatrader5.com',\n      'WealthCharts':  'https://wealthcharts.com'"
+  },
+  {
+    "nome": "grade da calculadora igual a /calculator",
+    "marca": ">2</div>",
+    "de": ">Contracts</div><div style=\"font-weight: 800; font-size: 18px; color: #bfff00; font-variant-numeric: tabular-nums;\">3.0</div>",
+    "para": ">Contracts</div><div style=\"font-weight: 800; font-size: 18px; color: #bfff00; font-variant-numeric: tabular-nums;\">2</div>"
   }
 ]

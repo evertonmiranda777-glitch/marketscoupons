@@ -1229,8 +1229,8 @@ function dualRatingPill(f) {
   const _Tbf = (k, fb) => {try {const v = t(k);return !v || v === k ? fb : v;} catch (e) {return fb;}};
   const beFirst = _Tbf('mc_be_first', _currentLang === 'pt' ? 'Seja o primeiro a avaliar' : 'Be the first to review');
   const mcInner = mcCount === 0 ?
-  `${star('#F0B429')}<span style="color:#F0B429;font-weight:600;">${beFirst}</span>` :
-  `${star('#F0B429')}<b style="color:#F0B429;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span>`;
+  `${star('#BFFF00')}<span style="color:#BFFF00;font-weight:600;">${beFirst}</span>` :
+  `${star('#BFFF00')}<b style="color:#BFFF00;">${mcDisplay}</b><span style="color:rgba(255,255,255,.65);">MarketsCoupons Reviews</span>`;
   return `
     <div style="display:block;margin:8px 0 4px;">
       <div style="display:flex;align-items:stretch;justify-content:center;width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:9px;overflow:hidden;font-size:11px;color:#fff;white-space:nowrap;">
@@ -1252,12 +1252,12 @@ function mcRatingBadge(f) {
   const reviewS = _T('mc_review', langPT ? 'avaliação' : 'review');
   const reviewP = _T('mc_reviews', langPT ? 'avaliações' : 'reviews');
   const _href = `onclick="event.preventDefault();event.stopPropagation();openD('${f.id}');setTimeout(()=>{const el=document.querySelector('.fd-reviews-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},400)"`;
-  const _style = `style="display:inline-flex;align-items:center;gap:5px;background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.3);border-radius:8px;padding:4px 8px;text-decoration:none;font-size:11px;color:#fff;flex-shrink:0;white-space:nowrap;"`;
-  const _svg = `<svg width="11" height="11" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+  const _style = `style="display:inline-flex;align-items:center;gap:5px;background:rgba(191,255,0,.10);border:1px solid rgba(191,255,0,.3);border-radius:8px;padding:4px 8px;text-decoration:none;font-size:11px;color:#fff;flex-shrink:0;white-space:nowrap;"`;
+  const _svg = `<svg width="11" height="11" viewBox="0 0 24 24" fill="#BFFF00" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
   if (count === 0) {
-    return `<a class="mc-badge mc-badge-empty" href="#" ${_href} ${_style}>${_svg}<span style="color:#F0B429;font-weight:600;">${beFirst}</span></a>`;
+    return `<a class="mc-badge mc-badge-empty" href="#" ${_href} ${_style}>${_svg}<span style="color:#BFFF00;font-weight:600;">${beFirst}</span></a>`;
   }
-  return `<a class="mc-badge" href="#" ${_href} ${_style}>${_svg}<b style="color:#F0B429;">${rating.toFixed(1)}</b><span style="color:rgba(255,255,255,.6);">MarketsCoupons Reviews</span></a>`;
+  return `<a class="mc-badge" href="#" ${_href} ${_style}>${_svg}<b style="color:#BFFF00;">${rating.toFixed(1)}</b><span style="color:rgba(255,255,255,.6);">MarketsCoupons Reviews</span></a>`;
 }
 
 /* NAV */
@@ -1312,8 +1312,8 @@ function globalSearch(q) {
   const results = [];
   // Search pages/sections
   const pages = [
-  { id: 'home', icon: 'tag', label: t('nav_ofertas'), sub: t('nav_ofertas'), color: '#F0B429' },
-  { id: 'firms', icon: 'briefcase', label: t('nav_firmas'), sub: t('nav_firmas'), color: '#F0B429' },
+  { id: 'home', icon: 'tag', label: t('nav_ofertas'), sub: t('nav_ofertas'), color: '#BFFF00' },
+  { id: 'firms', icon: 'briefcase', label: t('nav_firmas'), sub: t('nav_firmas'), color: '#BFFF00' },
   { id: 'plataformas', icon: 'monitor', label: t('nav_plataformas'), sub: t('nav_plataformas'), color: '#8B5CF6' },
   { id: 'indicators', icon: 'activity', label: t('nav_indicadores'), sub: t('nav_indicadores'), color: '#22C55E' },
   { id: 'compare', icon: 'bar', label: t('nav_comparar'), sub: t('nav_comparar'), color: '#3B82F6' },
@@ -1325,7 +1325,7 @@ function globalSearch(q) {
   { id: 'calc', icon: 'calc', label: t('nav_calc'), sub: 'Position Size Calculator', color: '#22C55E' },
   { id: 'quiz', icon: '?', label: t('nav_quiz'), sub: 'Quiz', color: '#F59E0B' },
   { id: 'faq', icon: 'faq', label: t('nav_faq'), sub: 'FAQ', color: '#64748B' },
-  { id: 'awards', icon: 'award', label: 'Awards', sub: 'Awards', color: '#F0B429' },
+  { id: 'awards', icon: 'award', label: 'Awards', sub: 'Awards', color: '#BFFF00' },
   { id: 'live', icon: 'live', label: 'Live Room', sub: 'Live Room VIP', color: '#EF4444' }];
 
   pages.forEach((p) => {
@@ -2912,7 +2912,7 @@ async function openBlogArticle(slug) {
       <div class="blog-art-meta">${authorHtml}<span>${dateStr}</span>${post.read_time ? ' · <span>' + post.read_time + '</span>' : ''}</div>
       <div class="blog-art-body">${DOMPurify.sanitize(post.body || '')}</div>
       <div class="blog-art-end" style="margin:40px 0 8px;display:flex;justify-content:center;flex-wrap:wrap;gap:12px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);">
-        <button onclick="closeBlogArticle()" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(255,255,255,.03);color:#E6EAF2;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;transition:.2s;" onmouseover="this.style.borderColor='#F0B429';this.style.color='#F0B429'" onmouseout="this.style.borderColor='rgba(255,255,255,.18)';this.style.color='#E6EAF2'">&larr; ${backLabel}</button>
+        <button onclick="closeBlogArticle()" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(255,255,255,.03);color:#E6EAF2;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;transition:.2s;" onmouseover="this.style.borderColor='#BFFF00';this.style.color='#BFFF00'" onmouseout="this.style.borderColor='rgba(255,255,255,.18)';this.style.color='#E6EAF2'">&larr; ${backLabel}</button>
       </div>`;
   } catch (e) {
     art.innerHTML = '<div style="color:var(--t2);padding:40px 0;">' + t('err_blog_post') + '</div>';
@@ -3100,6 +3100,33 @@ function pinFN(list) {
   return list;
 }
 
+
+/* Card stat boxes: 100K price, split, drawdown. Same three the approved
+   design shows between the rating row and the coupon. Reads f.prices[],
+   f.split and f.drawdown, all already loaded from cms_firms. Never
+   invents a value: missing data renders a neutral dash. */
+function ocStats(f) {
+  var price = '';
+  try {
+    if (f && f.prices && f.prices.length) {
+      var m = f.prices.find(function (p) {return /100/.test(String(p.a || ''));});
+      if (!m) m = f.prices.find(function (p) {return p.pop;}) || f.prices[0];
+      if (m) price = m.n || m.disc || m.o || '';
+    }
+  } catch (e) {}
+  var split = f && f.split ? f.split : '';
+  var dd = f && f.drawdown ? f.drawdown : '';
+  var cell = function (label, value, lime) {
+    return '<div class="ocs-box"><div class="ocs-k">' + label + '</div><div class="ocs-v' + (
+    lime ? ' lime' : '') + '">' + (value || '&mdash;') + '</div></div>';
+  };
+  return '<div class="oc-stats">' +
+  cell('100K', price, true) +
+  cell('Split', split, false) +
+  cell('DD', dd, false) +
+  '</div>';
+}
+
 /* HOME */
 function renderHome() {
   const g = document.getElementById('home-offers');if (!g) return;
@@ -3114,6 +3141,7 @@ function renderHome() {
   `<div class="oc-disc" style="color:var(--t2);font-size:15px;line-height:1.1">${t('met_via')}</div><div class="oc-off">${t('met_nocode')}</div>`}</div>
       </div>
       ${dualRatingPill(f)}
+      ${ocStats(f)}
       ${couponTypeable(f) ? `<div class="oc-coupon"><div class="offer-coupon-left"><div class="offer-coupon-label">${t('offers_cupom_label')}</div><span class="oc-code">${shortCode(f.coupon)}</span></div><button class="oc-copy" onclick="cpCoupon('${f.coupon}','${f.id}','home')">${t('geral_copiar')}</button></div>
       <div class="oc-hint">${t('firms_hint_cupom')}</div>` : `<div class="oc-coupon" style="border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);"><div class="offer-coupon-label" style="color:var(--green);">${t('offers_desconto_exclusivo')}</div><span class="oc-code" style="color:var(--green);font-size:12px;letter-spacing:0;">✓ ${t('offers_desconto_link')}</span></div>
       <div class="oc-hint" style="visibility:hidden;">&nbsp;</div>`}
@@ -3160,7 +3188,7 @@ function activationSelo(f) {
   // Verde = firma 100% sem taxa (afirmacao forte, so as 14 verificadas).
   if (a && a.fee === 0) return `<span class="fr-tag" style="background:rgba(34,197,94,.12);color:#22c55e;font-weight:700;">✓ ${t('actv_no_fee')}</span>`;
   // Ambar = firma que COBRA mas OFERECE plano sem taxa (Apex). Honesto: nao afirma que a firma toda e' sem taxa (Lei #0).
-  if (a && a.hasNoFeeOption) return `<span class="fr-tag" style="background:rgba(240,180,41,.12);color:#F0B429;font-weight:700;">${t('actv_nofee_plan')}</span>`;
+  if (a && a.hasNoFeeOption) return `<span class="fr-tag" style="background:rgba(191,255,0,.12);color:#BFFF00;font-weight:700;">${t('actv_nofee_plan')}</span>`;
   return '';
 }
 
@@ -3346,7 +3374,7 @@ function renderAwards() {
   const ranked = [...FIRMS].sort((a, b) => _rating(b) - _rating(a) || (parseFloat(b.discount) || 0) - (parseFloat(a.discount) || 0));
   const rows = ranked.map((f, i) => {
     const disc = parseFloat(f.discount) || 0;
-    return `<div onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)" style="display:flex;align-items:center;gap:11px;padding:11px 14px;border-top:1px solid rgba(107,182,201,.12);cursor:pointer;">
+    return `<div onclick="go('firms');setTimeout(()=>openD('${f.id}'),150)" style="display:flex;align-items:center;gap:11px;padding:11px 14px;border-top:1px solid rgba(255,255,255,.12);cursor:pointer;">
       <span style="width:22px;font-size:13px;font-weight:800;color:var(--t3);text-align:center;flex-shrink:0;">${i + 1}</span>
       ${firmIco(f, '34px', '12px')}
       <div style="flex:1;min-width:0;">
@@ -3686,7 +3714,7 @@ function openFD(id, f) {var _f$platforms2, _f$trustpilot2, _f$trustpilot3, _f$tr
   // Reviews section, mount lazy depois do paint inicial (não bloqueia overlay)
   const _revTitleMap = { pt: 'Avaliações de Traders', en: 'Trader Reviews', es: 'Reseñas de Traders', it: 'Recensioni dei Trader', fr: 'Avis des Traders', de: 'Trader-Bewertungen', ar: 'تقييمات المتداولين', id: 'Ulasan Trader' };
   const _revTitle = _revTitleMap[_currentLang] || _revTitleMap.en;
-  L += `<div class="fd-section fd-reviews-section" style="margin-top:22px;padding-top:24px;border-top:2px solid rgba(240,180,41,.25);"><div class="fd-section-title" style="font-size:20px;font-weight:800;color:#F0B429;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F0B429" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>${_revTitle}</div><div id="fd-reviews-mount"></div></div>`;
+  L += `<div class="fd-section fd-reviews-section" style="margin-top:22px;padding-top:24px;border-top:2px solid rgba(191,255,0,.25);"><div class="fd-section-title" style="font-size:20px;font-weight:800;color:#BFFF00;margin-bottom:14px;display:flex;align-items:center;gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#BFFF00" style="flex-shrink:0"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>${_revTitle}</div><div id="fd-reviews-mount"></div></div>`;
   document.getElementById('fd-left').innerHTML = L;
 
   // Lazy mount reviews UI
@@ -5040,6 +5068,59 @@ function renderAchFirmTabs() {
   const el = document.getElementById('ach-firm-tabs');if (!el) return;
   el.innerHTML = CHECKOUT_FIRMS.map((f) => `<button class="ach-firm-tab${f.id === achActiveFirm ? ' active' : ''}" onclick="achSelectFirm('${escHtml(f.id)}')">${escHtml(f.name)}<span class="tab-disc">${escHtml(f.discount)}</span></button>`).join('');
 }
+
+function achRebrandLeft(f) {
+  if (!f) return;
+  var set = function (id, html) {var el = document.getElementById(id);if (el) el.innerHTML = html || '';};
+
+  set('ach-left-logo', typeof firmIco === 'function' ? firmIco(f, '58px', '20px') : '');
+  set('ach-left-type', f.type ? escHtml(String(f.type)).toUpperCase() : '');
+  set('ach-left-off', f.discount > 0 ? f.discount + '% OFF' : '');
+  set('ach-left-flash', f.coupon ?
+    (t('checkout_cupom_ativo') + ': ' + escHtml(f.coupon)) :
+    (t('offers_desconto_link') || ''));
+
+  if (f.trustpilot && f.trustpilot.score) {
+    var sc = f.trustpilot.score;
+    var word = sc >= 4.5 ? 'Excellent' : sc >= 4 ? 'Great' : sc >= 3 ? 'Average' : 'Poor';
+    var rv = f.trustpilot.reviews || 0;
+    var rvs = rv >= 1000 ? (rv / 1000).toFixed(1) + 'K' : String(rv);
+    set('ach-left-tp', '<span class="n">' + sc + '</span><div><div class="w">' + word +
+      '</div><div class="c">' + rvs + ' Trustpilot</div></div>');
+  } else set('ach-left-tp', '');
+
+  set('ach-left-about', f.about ? escHtml(f.about) : '');
+
+  var mets = [];
+  if (f.paid) mets.push(['Paid to traders', f.paid]);
+  if (f.split) mets.push(['Profit split', f.split]);
+  if (f.discount > 0) mets.push(['Max discount', f.discount + '%']);
+  set('ach-left-metrics', mets.map(function (m) {
+    return '<div class="m"><div class="mv">' + escHtml(String(m[1])) +
+      '</div><div class="mk">' + m[0] + '</div></div>';
+  }).join(''));
+
+  var rules = [
+    ['Profit split', f.split, 'lime'],
+    ['Drawdown', f.drawdown, ''],
+    ['Target', f.target, ''],
+    ['Min days', f.minDays, ''],
+    ['Platforms', f.platforms, ''],
+    ['News trading', f.news, 'ok'],
+    ['Payout', f.payout, ''],
+    ['Max accounts', f.maxAccounts, '']];
+
+  set('ach-left-rules', rules.filter(function (r) {return r[1];}).map(function (r) {
+    return '<div class="r"><div class="rk">' + r[0] + '</div><div class="rv ' + r[2] + '">' +
+      escHtml(String(r[1])) + '</div></div>';
+  }).join(''));
+
+  var rc = f.trustpilot && f.trustpilot.reviews ? f.trustpilot.reviews : 0;
+  set('ach-left-reviews', rc ?
+    (t('checkout_reviews_tp') || 'Reviews vindos do Trustpilot: ') + rc :
+    (t('checkout_seja_primeiro') || 'Be the first to review'));
+}
+
 function achSelectFirm(id) {var _CHECKOUT_FIRMS$;
   const firmExists = CHECKOUT_FIRMS.find((f) => f.id === id);
   achActiveFirm = firmExists ? id : ((_CHECKOUT_FIRMS$ = CHECKOUT_FIRMS[0]) === null || _CHECKOUT_FIRMS$ === void 0 ? void 0 : _CHECKOUT_FIRMS$.id) || id;
@@ -5049,7 +5130,7 @@ function achSelectFirm(id) {var _CHECKOUT_FIRMS$;
   renderAchFirmTabs();
   renderAchTypeTabs();
   renderAchPlans();
-  const ti = document.getElementById('ach-firm-title');if (ti) ti.textContent = firm.name;
+  const ti = document.getElementById('ach-firm-title');if (ti) ti.textContent = firm.name; achRebrandLeft(firm);
   const strip = document.getElementById('ach-coupon-strip');
   if (strip) {if (firm.coupon) {strip.style.display = 'flex';const cd = document.getElementById('ach-code-display');if (cd) cd.textContent = firm.coupon;} else strip.style.display = 'none';}
 }
@@ -5699,7 +5780,7 @@ const CUR_COLORS = {
   GBP: { bg: 'rgba(168,85,247,.15)', c: '#a78bfa' },
   CAD: { bg: 'rgba(249,115,22,.15)', c: '#F97316' },
   AUD: { bg: 'rgba(6,182,212,.15)', c: '#06b6d4' },
-  JPY: { bg: 'rgba(240,180,41,.15)', c: 'var(--gold)' },
+  JPY: { bg: 'rgba(191,255,0,.15)', c: 'var(--gold)' },
   BRL: { bg: 'rgba(34,197,94,.15)', c: '#22c55e' },
   CNY: { bg: 'rgba(239,68,68,.15)', c: '#ef4444' },
   CHF: { bg: 'rgba(239,68,68,.15)', c: '#ef4444' },
@@ -6287,11 +6368,11 @@ function showPreviewBanner(secs) {
   if (document.getElementById(PREVIEW_BANNER_ID)) return;
   const bar = document.createElement('div');
   bar.id = PREVIEW_BANNER_ID;
-  bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,rgba(240,180,41,.95),rgba(200,148,26,.95));color:#07090D;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 -4px 20px rgba(0,0,0,.3);';
-  bar.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#07090D" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+  bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,rgba(191,255,0,.95),rgba(200,148,26,.95));color:#070A06;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 -4px 20px rgba(0,0,0,.3);';
+  bar.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#070A06" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
     <span>${t('preview_banner_text')}</span>
-    <span class="pvw-time" style="background:#07090D;color:var(--gold);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:800;min-width:42px;text-align:center;">${typeof secs === 'string' ? secs : secs + 's'}</span>
-    <button onclick="openAuthModal('signup')" style="background:#07090D;color:var(--gold);border:none;padding:6px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-left:8px;">${t('da_gate_btn_login')}</button>`;
+    <span class="pvw-time" style="background:#070A06;color:var(--gold);padding:2px 8px;border-radius:6px;font-size:12px;font-weight:800;min-width:42px;text-align:center;">${typeof secs === 'string' ? secs : secs + 's'}</span>
+    <button onclick="openAuthModal('signup')" style="background:#070A06;color:var(--gold);border:none;padding:6px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-left:8px;">${t('da_gate_btn_login')}</button>`;
   document.body.appendChild(bar);
 }
 function removePreviewBanner() {const el = document.getElementById(PREVIEW_BANNER_ID);if (el) el.remove();}
@@ -8936,4 +9017,76 @@ window.addEventListener('mc:user-loaded', async function () {
     try {track('giveaway_popup_instagram_open', { slug: pendingSlug });} catch (e) {}
     setTimeout(() => window.open(pendingIg, '_blank', 'noopener'), 1500);
   }
-});
+});/* ── PRÉVIAS DAS SEÇÕES NOVAS (rebrand) ─────────────────────────────────────
+   O Design deixou `XX%` no comparador e `—` nos níveis da análise DE PROPÓSITO:
+   preço, desconto e nível só podem vir do banco (regra 1 do brief). Aqui eu
+   ligo os dois na fonte que a home já usa. Se o dado não chegar, o placeholder
+   FICA — nunca inventa número.                                                */
+function mcPreviasRebrand() {
+  try {
+    /* comparador: as 3 firmas de maior desconto, com desconto e split reais */
+    var linhas = document.querySelectorAll('#rb-compare .rb-cmp-r');
+    var F = (window.MC_AUTH && MC_AUTH.getFirms && MC_AUTH.getFirms()) || [];
+    if (linhas.length && F.length) {
+      var top = F.slice().sort(function (a, b) {
+        return (parseFloat(b.discount) || 0) - (parseFloat(a.discount) || 0);
+      }).slice(0, linhas.length);
+      for (var i = 0; i < top.length; i++) {
+        var c = linhas[i].querySelectorAll('span');
+        var f = top[i];
+        if (c[0]) c[0].textContent = f.name || '';
+        var d = parseFloat(f.discount);
+        if (c[1] && d > 0) c[1].textContent = Math.round(d) + '% OFF';
+        var sp = String(f.split || '').trim();
+        if (c[2] && sp) c[2].textContent = sp;
+      }
+    }
+    /* níveis da análise do dia: mesma tabela que a página /analise usa */
+    var lv = document.querySelectorAll('#rb-analysis .rb-lv-c b, .rb-lv .rb-lv-c b');
+    /* ⚠️ `db` e `let` do escopo do app.js , NAO existe em window (lei 16/jul).
+       A ponte oficial e MC_AUTH.getDb(), que devolve o client ATUAL (ele e
+       recriado no retry de sessao, entao guardar a referencia da errado). */
+    var _db = (window.MC_AUTH && MC_AUTH.getDb && MC_AUTH.getDb()) || null;
+    if (lv.length && _db) {
+      _db.from('daily_analysis')
+        .select('asset,support_1,resistance_1,support_2,resistance_2,created_at')
+        .order('created_at', { ascending: false }).limit(4)
+        .then(function (r) {
+          var a = (r.data || []).filter(function (x) { return x.asset === 'NQ'; })[0] || (r.data || [])[0];
+          if (!a) return;                       /* sem dado, o travessão fica */
+          var v = [a.support_1, a.resistance_1, a.support_2, a.resistance_2];
+          for (var k = 0; k < lv.length && k < 4; k++) {
+            if (v[k] != null && v[k] !== '') lv[k].textContent = v[k];
+          }
+        })["catch"](function () {});
+    }
+  } catch (e) {}
+}
+
+/* ── GRAFICO DA ANALISE: o runtime do Design APAGA o src do iframe ──────────
+   O molde tem src="{{ a.chartUrl }}", mas o iframe chega no DOM SEM o atributo
+   src , o binding nao e passado pra iframe (mesma familia do "nao passa funcao
+   dentro de lista"). Resultado: retangulo preto no lugar do grafico.
+   Aqui eu escrevo o src pelo DOM, lendo o ticker do proprio title do iframe.
+   ⚠️ Simbolos: CME_MINI:ES1! e NASDAQ:NDX NAO abrem no widget gratuito
+   ("content is not available"). Uso os feeds spot livres, que sao os mesmos
+   citados no aviso do rodape da pagina.                                      */
+function mcGraficoAnalise() {
+  var S = { ES: 'FOREXCOM:SPXUSD', NQ: 'FOREXCOM:NSXUSD', CL: 'TVC:USOIL', GC: 'TVC:GOLD' };
+  var ifs = document.querySelectorAll('iframe[title$=" chart"]');
+  for (var i = 0; i < ifs.length; i++) {
+    var f = ifs[i];
+    if (f.getAttribute('src')) continue;
+    var sym = String(f.getAttribute('title') || '').replace(' chart', '').trim();
+    if (!S[sym]) continue;
+    var cfg = { symbol: S[sym], interval: '60', timezone: 'Etc/UTC', theme: 'dark', style: '1',
+      locale: 'en', hide_top_toolbar: true, hide_legend: false, allow_symbol_change: false,
+      save_image: false, backgroundColor: 'rgba(10,14,8,1)', gridColor: 'rgba(255,255,255,0.05)',
+      width: '100%', height: '100%' };
+    f.setAttribute('src', 'https://s.tradingview.com/widgetembed/?locale=en#' + encodeURIComponent(JSON.stringify(cfg)));
+  }
+}
+setInterval(mcGraficoAnalise, 1500);
+document.addEventListener('DOMContentLoaded', function () { setTimeout(mcGraficoAnalise, 800); });
+window.addEventListener('mc:firms-loaded', mcPreviasRebrand);
+document.addEventListener('DOMContentLoaded', function () { setTimeout(mcPreviasRebrand, 1200); });

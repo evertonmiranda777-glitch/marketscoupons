@@ -15,3 +15,4 @@ Object.assign(window.I18N.de,{"aw_dia": "Tag", "aw_dias": "Tage", "aw_todas": "A
 Object.assign(window.I18N.de,{"lg_title": "Legacy-Konten", "lg_pill": "BEGRENZTE ZEIT", "lg_popular": "BELIEBT", "lg_cta": "Legacy-Konten ansehen", "lg_sub": "Monatlich · 90% im 1. Monat, danach 80% · mit MARKET · PA-Aktivierung $125 bis 11. Aug"});
 Object.assign(window.I18N.de,{actv_no_fee:'Keine Aktivierungsgebühr',actv_nofee_plan:'Plan ohne Gebühr verfügbar'});
 Object.assign(window.I18N.de,{"promo_lifetime":"Lifetime-Rabatt"});
+Object.assign(window.I18N.de,{"hero_cta_browse":"Gutscheine ansehen","hero_cta_compare":"Firmen vergleichen","hero_tg_pill":"Beitreten"});

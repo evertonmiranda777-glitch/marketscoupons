@@ -15,3 +15,4 @@ Object.assign(window.I18N.en,{"aw_dia": "day", "aw_dias": "days", "aw_todas": "A
 Object.assign(window.I18N.en,{"lg_title": "Legacy Accounts", "lg_pill": "LIMITED TIME", "lg_popular": "POPULAR", "lg_cta": "View Legacy Accounts", "lg_sub": "Monthly · 90% off 1st month, 80% after · with MARKET · PA activation $125 till Aug 11"});
 Object.assign(window.I18N.en,{actv_no_fee:'No Activation Fee',actv_nofee_plan:'No-fee plan available'});
 Object.assign(window.I18N.en,{"promo_lifetime":"Lifetime deal"});
+Object.assign(window.I18N.en,{"hero_cta_browse":"Browse coupons","hero_cta_compare":"Compare firms","hero_tg_pill":"Join"});

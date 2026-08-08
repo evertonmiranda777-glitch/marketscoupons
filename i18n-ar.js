@@ -15,3 +15,4 @@ Object.assign(window.I18N.ar,{"aw_dia": "يوم", "aw_dias": "أيام", "aw_tod
 Object.assign(window.I18N.ar,{"lg_title": "حسابات Legacy", "lg_pill": "لوقت محدود", "lg_popular": "الأكثر رواجاً", "lg_cta": "عرض حسابات Legacy", "lg_sub": "شهري · خصم 90% للشهر الأول و80% بعده · مع MARKET · تفعيل PA بـ125$ حتى 11 أغسطس"});
 Object.assign(window.I18N.ar,{actv_no_fee:'بدون رسوم تفعيل',actv_nofee_plan:'تتوفر خطة بدون رسوم'});
 Object.assign(window.I18N.ar,{"promo_lifetime":"خصم مدى الحياة"});
+Object.assign(window.I18N.ar,{"hero_cta_browse":"تصفّح الكوبونات","hero_cta_compare":"قارن الشركات","hero_tg_pill":"انضم"});

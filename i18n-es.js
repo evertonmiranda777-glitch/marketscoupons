@@ -15,3 +15,4 @@ Object.assign(window.I18N.es,{"aw_dia": "día", "aw_dias": "días", "aw_todas": 
 Object.assign(window.I18N.es,{"lg_title": "Cuentas Legacy", "lg_pill": "TIEMPO LIMITADO", "lg_popular": "POPULAR", "lg_cta": "Ver cuentas Legacy", "lg_sub": "Mensual · 90% off el 1er mes, 80% después · con MARKET · activación PA $125 hasta 11 ago"});
 Object.assign(window.I18N.es,{actv_no_fee:'Sin Cuota de Activación',actv_nofee_plan:'Plan sin cuota disponible'});
 Object.assign(window.I18N.es,{"promo_lifetime":"Descuento de por vida"});
+Object.assign(window.I18N.es,{"hero_cta_browse":"Ver cupones","hero_cta_compare":"Comparar firmas","hero_tg_pill":"Entrar"});
